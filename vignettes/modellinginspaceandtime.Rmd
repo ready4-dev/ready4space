@@ -1,0 +1,471 @@
+---
+title: "Modelling in space and time with readyforwhatsnext packages"
+author: "Matthew Hamilton"
+date: "12 Sept 2018"
+output:
+  pdf_document: default
+classoption: landscape
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(magrittr)
+```
+
+## The role of space and time
+
+Current literature on resilience emphasises the role of social determinants of mental wellbeing in young people. It is therefore desireable that we represent the interaction of individuals with their environment. That environment (in our case Victoria) will itself undergo changes (e.g. demographic) over the 25 year lifetime of our model. This document illustrates some potential ways to approach modeling in space and time using the spatial functions of the rfwnsimenv package. That package is still undergoing validation checks, so estimates produced here should be regarded as provisional.
+
+## Boundary data
+
+We may wish to model Victoria as a whole or focus on a number of subsidiary geographical areas. Many potential geographical areas that we may wish to profile for our model already have publicly available boundary data that we can use (e.g. State, PHN, LGA or electoral division).
+
+```{r standard_profile_units, echo=FALSE, warning=FALSE, results='hide'}
+
+vic_boundary_phns_sf <- rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_boundary_phns_sf") %>%
+  dplyr::filter(FIRST_STE1=="Victoria") %>%
+  sf::st_as_sf()
+vic_boundary_lgas_sf <- rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_boundary_lgas_sf") %>% 
+  dplyr::filter(STE_NAME16=="Victoria") %>%
+  sf::st_as_sf()
+vic_boundary_state_electorates_sf <- rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "vic_boundary_state_electorates_sf")
+vic_boundary_sa2s_sf <- rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_boundary_sa2s_sf") %>%
+  dplyr::filter(STE_NAME16=="Victoria")
+vic_boundary_sa1s_sf <- rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_boundary_sa1s_sf") %>% 
+  dplyr::filter(STE_NAME16=="Victoria") %>%
+  sf::st_as_sf()
+vic_boundary_state_sf <- vic_boundary_phns_sf %>%
+  dplyr::group_by(FIRST_STE1) %>%
+  dplyr::summarise(AREASQ = sum(SUM_AREASQ),
+                   geometry = sf::st_union(geometry))
+ggplot2::ggplot(vic_boundary_state_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Victoria State") +
+  ggplot2::theme_bw()
+ggplot2::ggplot(vic_boundary_phns_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Victorian Primary Health Networks") +
+  ggplot2::theme_bw()
+ggplot2::ggplot(vic_boundary_lgas_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Victorian Local Government Areas") +
+  ggplot2::theme_bw()
+ggplot2::ggplot(vic_boundary_state_electorates_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Victorian State Electoral Boundaries") +
+  ggplot2::theme_bw()
+
+```
+
+
+However, we may also be interested in profiling geographic areas for which there is no pre-existing boundary file available. Instead we may need to construct a custom area by adding and subtracting geographic areas for which we have boundary data. For example, the Orygen Youth Health catchment area can be represented by combining the boundary data from a number of large sub-units (e.g. LGAs) plus a number of smaller sub-units (e.g. SA1s). There are pre-existing tools that help us do this (e.g. R's SF package).
+
+```{r custom_profiled_units, warning=FALSE}
+
+oyh_all_intersecting_boundary_LGAs_sf <- vic_boundary_lgas_sf %>%
+                                       dplyr::filter(LGA_NAME16 %in% c(
+                                                                "Brimbank (C)",
+                                                                "Hobsons Bay (C)",
+                                                                "Hume (C)",
+                                                                "Maribyrnong (C)",
+                                                                "Melbourne (C)",
+                                                                "Melton (C)",
+                                                                "Moonee Valley (C)",
+                                                                "Moreland (C)",
+                                                                "Wyndham (C)"
+                                       )
+                                       ) %>%
+  sf::st_union()
+oyh_excluded_boundary_sa1s_sf <- vic_boundary_sa1s_sf %>%
+  dplyr::filter(SA1_MAIN16 %in% c(20604111801,
+                                  20604111802,
+                                  20604111808,
+                                  20604111814,
+                                  20604112501,
+                                  20604112502,
+                                  20604112503,
+                                  20604112504,
+                                  20604112505,
+                                  20604112506,
+                                  20604112507,
+                                  20604112508,
+                                  20604112509,
+                                  20604112510,
+                                  20604112511,
+                                  20604112512,
+                                  20604112513,
+                                  20604112514,
+                                  #20604112601, # deprecated in 2016
+                                  20604112602,
+                                  20604112603,
+                                  20604112604,
+                                  20604112605,
+                                  20604112606,
+                                  #20604112607, # deprecated in 2016
+                                  #20604112608, # deprecated in 2016
+                                  20604112609,
+                                  20604112610, # incorporates 20604112608 in 2016
+                                  20604112611,
+                                  20604112612,
+                                  20604112613,
+                                  20604112614,
+                                  20604112615,
+                                  20604112616,
+                                  20604112617,
+                                  20604112618,
+                                  20604112619,
+                                  20604112620,
+                                  #20604112621,
+                                  20604112622,
+                                  20604112623,
+                                  20604112624,
+                                  20604112625,
+                                  20604112626,
+                                  20604112627,
+                                  20604112628,
+                                  20604112629, # new 2016 code
+                                  20604112630, # new 2016 code
+                                  20604112631, # new 2016 code
+                                  20604112632, # new 2016 code
+                                  20604112633, # new 2016 code
+                                  20604112634, # new 2016 code
+                                  20604112635, # new 2016 code
+                                  20605113102
+                                           )) %>%
+  sf::st_union()
+oyh_catchment_boundary_sf <-  sf::st_difference(oyh_all_intersecting_boundary_LGAs_sf,
+                                      oyh_excluded_boundary_sa1s_sf) %>% 
+  sf::st_sf() %>%
+  dplyr::mutate(area_name="OYH Catchment")
+ggplot2::ggplot(oyh_all_intersecting_boundary_LGAs_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Object A: LGAs wholly or paritally within OYH catchment") +
+  ggplot2::theme_bw()
+ggplot2::ggplot(oyh_excluded_boundary_sa1s_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("Object B: SA1s in Object A but not in the OYH catchment") +
+  ggplot2::theme_bw()
+ggplot2::ggplot(oyh_catchment_boundary_sf) +
+  ggplot2::geom_sf(ggplot2::aes()) +
+  ggplot2::ggtitle("The OYH catchment defined by Object A - Object B") +
+  ggplot2::theme_bw()
+
+```
+
+Alternatively, we may be interested in defining our area to be profiled in terms of distance from a service or network of services that deliver interventions we include.
+
+```{r service_profiled_units, warning=FALSE}
+geelong_headspace_lat_long_tb = tibble::tibble(lat = -38.151004, 
+                                          long = 144.362310,
+                                          cluster.name= NA,
+                                          service.name= "Geelong Headspace")
+
+geelong_headspace_boundary_20k_sf <- rfwn.space.time::spatial_area_within_xkm_of_points(point_locations = geelong_headspace_lat_long_tb,
+                                                                       land_sf = vic_boundary_phns_sf,
+                                                                       distance = 20000)
+
+rfwn.analysis::plot_area_within_xkm_from_services(service_centre_locations_sf = geelong_headspace_boundary_20k_sf,
+                         distance = 20000,
+                         titlestring = "Geelong headspace")
+
+
+```
+
+```{r cluster_profiled_unit, warning=FALSE}
+orygen_headspace_cluster_long_lat_10k_tb =  tibble::tibble(lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
+                                           long = c(144.918099,144.831070,144.914055,144.662196))
+
+
+orygen_headspace_cluster_boundary_10k_sf <- rfwn.space.time::spatial_area_within_xkm_of_points(point_locations = orygen_headspace_cluster_long_lat_10k_tb,
+                                              land_sf = vic_boundary_state_sf,
+                                              distance = 10000)
+rfwn.analysis::plot_area_within_xkm_from_services(service_centre_locations_sf = orygen_headspace_cluster_boundary_10k_sf,
+                                               distance = 10000,
+                                               titlestring = "Orygen Headspace Centres")
+
+
+```
+
+## Data and data resolution
+
+Having defined our area to profile the next step is to identify relevant data at the best available spatial resolution (generally SA2, though LGA and SA1 data may be appropriate in some instances). The code below synthesises data relating to resident population by age and sex, SEIFA percentile and whether part of a capital city. However, there are readily available datasets for other variables - the www.nationalmap.gov.au website outlines many of these data.
+
+```{r resolution_data, warning=FALSE, results='hide'}
+resolution_lgas_sf <- rfwn.setup::spatial_merge_areas_attributes(area_unit = "LGA",
+                                                            area_sf = vic_boundary_lgas_sf,
+                                                            child_youth_pop_t0_tb = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_pop_age_sex_lga_2011_tb"),
+                     child_youth_pop_t1_tb = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_pop_age_sex_lga_2016_tb"),
+                     seifa_deciles_by_unit = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_seifa_deciles_by_lga_2016_tb"))
+
+resolution_sa2s_sf <- rfwn.setup::spatial_merge_areas_attributes(area_unit="SA2",
+                                                            area_sf = vic_boundary_sa2s_sf,
+                                                            child_youth_pop_t0_tb = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_pop_age_sex_sa2_2006_tb"),
+                     child_youth_pop_t1_tb = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_pop_age_sex_sa2_2016_tb"),
+                     seifa_deciles_by_unit = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_seifa_deciles_by_sa2_2016_tb"))
+resolution_sa1s_sf <- merge(vic_boundary_sa1s_sf,
+                                  rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                     lookup_reference = "aus_pop_proj_sa1_2011_2016_tb"),
+                                    by.x = c("SA1_7DIG16"),
+                                    by.y = c("SA1"),
+                                    all = FALSE)
+
+```
+
+## Merge profiled area with resolution unit attribute data
+
+The boundary data and attribute data can now be merged, with population counts based on wholly included SA2s or partially included SA2s combined with assumption that age and sex population distribution is the same as total SA1 population distributions. For components smaller than SA1s, it is assumed that population is uniformly distributed.
+
+
+```{r merge_profile_res, warning=FALSE, results='hide'}
+
+victorian_phns_by_SA2_2006_2016_sf <- rfwn.space.time::spatial_profile_by_resolution_and_update_counts(profiled_sf = vic_boundary_phns_sf,
+                                                                                      resolution_sf = resolution_sa2s_sf,
+                                                                                      resolution_sa1s_sf = resolution_sa1s_sf,
+                                                                                      resolution_sa2s_sf = resolution_sa2s_sf,
+                                                                                      return_resolution = "SA2")
+oyh_catchment_sf <- rfwn.space.time::spatial_profile_by_resolution_and_update_counts(profiled_sf = st_sf(oyh_catchment_boundary_sf),
+                                                                                      resolution_sf = resolution_sa2s_sf,
+                                                                                      resolution_sa1s_sf = resolution_sa1s_sf,
+                                                                                      resolution_sa2s_sf = resolution_sa2s_sf,
+                                                                                      return_resolution = "SA2")
+geelong_headspace_20k_sf <- rfwn.space.time::spatial_profile_by_resolution_and_update_counts(profiled_sf = geelong_headspace_boundary_20k_sf,
+                                                                                      resolution_sf = resolution_sa2s_sf,
+                                                                                      resolution_sa1s_sf = resolution_sa1s_sf,
+                                                                                      resolution_sa2s_sf = resolution_sa2s_sf,
+                                                                                      return_resolution = "SA2")
+orygen_headspace_cluster_10k_sf <- rfwn.space.time::spatial_profile_by_resolution_and_update_counts(profiled_sf = orygen_headspace_cluster_boundary_10k_sf,
+                                                                                      resolution_sf = resolution_sa2s_sf,
+                                                                                      resolution_sa1s_sf = resolution_sa1s_sf,
+                                                                                      resolution_sa2s_sf = resolution_sa2s_sf,
+                                                                                      return_resolution = "SA2")
+## Following command takes long time to calculate. Only use when needed
+##victorian_electorates_sf <- rfwn.space.time::spatial_profile_by_resolution_and_update_counts(profiled_sf = vic_boundary_state_electorates_sf,
+##                                                                                      resolution_sf = resolution_sa2s_sf,
+##                                                                                      resolution_sa1s_sf = resolution_sa1s_sf,
+##                                                                                      resolution_sa2s_sf = resolution_sa2s_sf,
+##                                                                                      return_resolution = "SA2")
+```
+
+```{r plot_merged}
+
+rfwn.analysis::plot_seifa_by_SA2_SA1(profiled_sf = victorian_phns_by_SA2_2006_2016_sf %>%
+                                    dplyr::filter(PHN_NAME %in% c("South Eastern Melbourne",
+                                                                "Gippsland")),
+                                profiled_unit_name = "SE Melbourne & Gipplsland PHNs",
+                                resolution_unit_name = "sa2",
+                                year = "2016")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = victorian_phns_by_SA2_2006_2016_sf %>%
+                                    dplyr::filter(PHN_NAME %in% c("South Eastern Melbourne",
+                                                                "Gippsland")),
+                                profiled_unit_name = "SE Melbourne & Gipplsland PHNs",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total0to14p",
+                                age_range_string = "0-14")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = victorian_phns_by_SA2_2006_2016_sf %>%
+                                  dplyr::filter(PHN_NAME %in% c("South Eastern Melbourne",
+                                                                "Gippsland")),
+                                profiled_unit_name = "SE Melbourne & Gipplsland PHNs",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total15to24p",
+                                age_range_string = "15-24")
+rfwn.analysis::plot_seifa_by_SA2_SA1(profiled_sf = oyh_catchment_sf,
+                                profiled_unit_name = "OYH Catchment",
+                                resolution_unit_name = "sa2",
+                                year = "2016")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = oyh_catchment_sf,
+                                profiled_unit_name = "OYH Catchment",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total0to14p",
+                                age_range_string = "0-14")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = oyh_catchment_sf,
+                                profiled_unit_name = "OYH Catchment",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total15to24p",
+                                age_range_string = "15-24")
+rfwn.analysis::plot_seifa_by_SA2_SA1(profiled_sf = geelong_headspace_20k_sf,
+                                profiled_unit_name = "Area <20km from Geelong Headspace",
+                                resolution_unit_name = "sa2",
+                                year = "2016")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = geelong_headspace_20k_sf ,
+                                profiled_unit_name = "Area <20km from Geelong Headspace",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total0to14p",
+                                age_range_string = "0-14")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = geelong_headspace_20k_sf ,
+                                profiled_unit_name = "Area <20km from Geelong Headspace",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total15to24p",
+                                age_range_string = "15-24")
+rfwn.analysis::plot_seifa_by_SA2_SA1(profiled_sf = orygen_headspace_cluster_10k_sf,
+                                profiled_unit_name = "Area <10km from Orygen Headspaces",
+                                resolution_unit_name = "sa2",
+                                year = "2016")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = orygen_headspace_cluster_10k_sf,
+                                profiled_unit_name = "Area <10km from Orygen Headspaces",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total0to14p",
+                                age_range_string = "0-14")
+rfwn.analysis::plot_pop_by_SA2_SA1(profiled_sf = orygen_headspace_cluster_10k_sf,
+                                profiled_unit_name = "Area <10km from Orygen Headspaces",
+                                resolution_unit_name = "sa2",
+                                year = "2016",
+                                col_ref_string = "total15to24p",
+                                age_range_string = "15-24")
+
+
+
+```
+
+
+
+## Evolution over time
+
+There are a number of ways in which the space we model is likely to change over time. One of the most obvious is population, as can be seen by recent changes in population counts and distributions.
+
+```{r hist_pop_growth, warning=FALSE, results='hide'}
+
+victorian_phns_by_SA2_2006_2016_sf <- rfwn.space.time::spatial_population_growth(victorian_phns_by_SA2_2006_2016_sf,
+                                                        t0 = "2006",
+                                                        t1 = "2016")
+oyh_catchment_sf <- rfwn.space.time::spatial_population_growth(oyh_catchment_sf,
+                                                        t0 = "2006",
+                                                        t1 = "2016")
+geelong_headspace_20k_sf <- rfwn.space.time::spatial_population_growth(geelong_headspace_20k_sf,
+                                                        t0 = "2006",
+                                                        t1 = "2016")
+orygen_headspace_cluster_10k_sf <- rfwn.space.time::spatial_population_growth(orygen_headspace_cluster_10k_sf,
+                                                        t0 = "2006",
+                                                        t1 = "2016")
+
+```
+
+```{r plot_pop_changes}
+rfwn.analysis::plot_child_pop_growth(profiled_sf = victorian_phns_by_SA2_2006_2016_sf %>%
+                                           dplyr::filter(PHN_NAME %in% c("Gippsland",
+                                                                         "South Eastern Melbourne")),
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "SE Melbourne & Gipplsland PHNs",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = victorian_phns_by_SA2_2006_2016_sf %>%
+                                           dplyr::filter(PHN_NAME %in% c("Gippsland",
+                                                                         "South Eastern Melbourne")),
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "SE Melbourne & Gipplsland PHNs",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+
+rfwn.analysis::plot_child_pop_growth(profiled_sf = oyh_catchment_sf,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "OYH Catchment",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = oyh_catchment_sf,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "OYH Catchment",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+
+rfwn.analysis::plot_child_pop_growth(profiled_sf = geelong_headspace_20k_sf ,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "Area <20km from Geelong Headspace",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = geelong_headspace_20k_sf ,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "Area <20km from Geelong Headspace",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+rfwn.analysis::plot_child_pop_growth(profiled_sf = orygen_headspace_cluster_10k_sf,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "Area <10km from Orygen Headspaces",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = orygen_headspace_cluster_10k_sf,
+                                         period = "10",
+                                         year = "2016",
+                                         profiled_unit_name = "Area <10km from Orygen Headspaces",
+                      resolution_unit_name = "SA2",
+                      stat = "n"
+)
+
+```
+
+
+We can also avail of official population projections, though the resolution for this data is not particulary high.
+
+```{r projected_population_growth, warning=FALSE}
+
+vic_pop_growth_by_age_lga_2016_2031 <- rfwn.space.time::spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                                                                           lookup_reference = "vic_pop_growth_by_age_lga_2016_tb"),
+                                       vic_pop_growth_by_age_lga_t1 = rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                                                                           lookup_reference = "vic_pop_growth_by_age_lga_2031_tb"),
+                                       t0 ="2016",
+                                       t1 ="2031")
+vic_pop_growth_by_age_lga_2016_2031_sf <- dplyr::inner_join(vic_boundary_lgas_sf,
+                                                            vic_pop_growth_by_age_lga_2016_2031)
+rfwn.analysis::plot_child_pop_growth(profiled_sf = vic_pop_growth_by_age_lga_2016_2031_sf,
+                      period = "15",
+                      year = "2031",
+                      profiled_unit_name = "Victoria",
+                      resolution_unit_name = "LGA",
+                      stat = "n")
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = vic_pop_growth_by_age_lga_2016_2031_sf,
+                      period = "15",
+                      year = "2031",
+                      profiled_unit_name = "Victoria",
+                      resolution_unit_name = "LGA",
+                      stat = "n")
+rfwn.analysis::plot_child_pop_growth(profiled_sf = vic_pop_growth_by_age_lga_2016_2031_sf,
+                                  period = "15",
+                                  year = "2031",
+                                  profiled_unit_name = "Victoria",
+                                  resolution_unit_name = "LGA",
+                                  stat = "pc")
+rfwn.analysis::plot_youth_pop_growth(profiled_sf = vic_pop_growth_by_age_lga_2016_2031_sf,
+                      period = "15",
+                      year = "2031",
+                      profiled_unit_name = "Victoria",
+                      resolution_unit_name = "LGA",
+                      stat = "pc")
+
+
+```
+
+## Further steps
+
+Other projected changes in the environment that may be relevant to consider include those identified in VicHealth's megatrends report into youth mental wellbeing. To link the environment to individuals, we can apply epidemiological models to the profiled areas in order to estimate the incidence and prevalence of variables of interest to us, based on predictors such as age, sex, SEIFA and urbanicity. We can generate agents based on these models and locate them in space. The spatial coorinates of individuals can be used to determine the probability that individuals access interventions delivered at specified locations and the time and travel cost of that access.
+
+
