@@ -21,28 +21,28 @@ old_spatial_lookup_tb <- tibble::tibble(variable_name = c("aus_age_sex_seifa_lga
                                                           "vic_pop_growth_by_age_lga_2021_tb",
                                                           "vic_pop_growth_by_age_lga_2026_tb",
                                                           "vic_pop_growth_by_age_lga_2031_tb"),
-                                        source_reference = c("ready.australia::aus_age_sex_seifa_lgas_sf",
-                                                             "ready.australia::aus_age_sex_seifa_sa2s_sf",
-                                                             "ready.australia::aus_boundary_lgas_sf",
-                                                             "ready.australia::aus_boundary_phns_sf",
-                                                             "ready.australia::aus_boundary_sa1s_sf",
-                                                             "ready.australia::aus_boundary_sa2s_sf",
-                                                             "ready.australia::aus_boundary_postal_sf",
-                                                             "ready.australia::aus_state_suburbs_sf",
-                                                             "ready.australia::aus_correspondences_lga_2011_2016_tb",
-                                                             "ready.australia::aus_pop_age_sex_lga_2011_tb",
-                                                             "ready.australia::aus_pop_age_sex_lga_2016_tb",
-                                                             "ready.australia::aus_pop_age_sex_sa2_2006_tb",
-                                                             "ready.australia::aus_pop_age_sex_sa2_2016_tb",
-                                                             "ready.australia::aus_pop_proj_sa1_2011_2016_tb",
-                                                             "ready.australia::aus_seifa_deciles_by_lga_2011_tb",
-                                                             "ready.australia::aus_seifa_deciles_by_lga_2016_tb",
-                                                             "ready.australia::aus_seifa_deciles_by_sa2_2016_tb",
-                                                             "ready.australia::vic_boundary_state_electorates_sf",
-                                                             "ready.australia::vic_pop_growth_by_age_lga_2016_tb",
-                                                             "ready.australia::vic_pop_growth_by_age_lga_2021_tb",
-                                                             "ready.australia::vic_pop_growth_by_age_lga_2026_tb",
-                                                             "ready.australia::vic_pop_growth_by_age_lga_2031_tb"))
+                                        source_reference = c("ready.aus.data::aus_age_sex_seifa_lgas_sf",
+                                                             "ready.aus.data::aus_age_sex_seifa_sa2s_sf",
+                                                             "ready.aus.data::aus_boundary_lgas_sf",
+                                                             "ready.aus.data::aus_boundary_phns_sf",
+                                                             "ready.aus.data::aus_boundary_sa1s_sf",
+                                                             "ready.aus.data::aus_boundary_sa2s_sf",
+                                                             "ready.aus.data::aus_boundary_postal_sf",
+                                                             "ready.aus.data::aus_state_suburbs_sf",
+                                                             "ready.aus.data::aus_correspondences_lga_2011_2016_tb",
+                                                             "ready.aus.data::aus_pop_age_sex_lga_2011_tb",
+                                                             "ready.aus.data::aus_pop_age_sex_lga_2016_tb",
+                                                             "ready.aus.data::aus_pop_age_sex_sa2_2006_tb",
+                                                             "ready.aus.data::aus_pop_age_sex_sa2_2016_tb",
+                                                             "ready.aus.data::aus_pop_proj_sa1_2011_2016_tb",
+                                                             "ready.aus.data::aus_seifa_deciles_by_lga_2011_tb",
+                                                             "ready.aus.data::aus_seifa_deciles_by_lga_2016_tb",
+                                                             "ready.aus.data::aus_seifa_deciles_by_sa2_2016_tb",
+                                                             "ready.aus.data::vic_boundary_state_electorates_sf",
+                                                             "ready.aus.data::vic_pop_growth_by_age_lga_2016_tb",
+                                                             "ready.aus.data::vic_pop_growth_by_age_lga_2021_tb",
+                                                             "ready.aus.data::vic_pop_growth_by_age_lga_2026_tb",
+                                                             "ready.aus.data::vic_pop_growth_by_age_lga_2031_tb"))
 
 old_spatial_lookup_tb <- old_spatial_lookup_tb %>%
   dplyr::rename(name = variable_name)
@@ -55,7 +55,7 @@ sp_saved_data_lookup_tb <- rbind(sp_saved_data_lookup_tb,
                                                  main_feature = "ERP by age and sex for 2016 boundaries")) %>%
   dplyr::arrange(name)
 sp_saved_data_lookup_tb <- sp_saved_data_lookup_tb %>%
-  dplyr::mutate(source_reference = paste0("ready.australia::",name))
+  dplyr::mutate(source_reference = paste0("ready.aus.data::",name))
 aus_spatial_lookup_tb <- dplyr::bind_rows(sp_saved_data_lookup_tb,
                                           old_spatial_lookup_tb)
 
