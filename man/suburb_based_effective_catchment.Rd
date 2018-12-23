@@ -13,7 +13,7 @@
 \title{Create a simple features object based on suburbs from which cluster clients come from.}
 \usage{
 
-  suburb_based_effective_catchment(aus_state_suburbs_sf = rfwn.setup::data_get(data_lookup_tb
+  suburb_based_effective_catchment(aus_state_suburbs_sf = ready.data::data_get(data_lookup_tb
   = aus_spatial_lookup_tb, lookup_reference = "aus_ssc_nat_shp_bound_2016",
   lookup_variable = "name", target_variable = "source_reference"),
   client_locations_ref = NULL, year = 2018, cluster, state_names)
@@ -41,7 +41,7 @@ reconcile_suburb_names(raw_name)
 get_client_suburb_vector(clients_by_suburb)
 }
 \arguments{
-\item{aus_state_suburbs_sf}{PARAM_DESCRIPTION, Default: rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+\item{aus_state_suburbs_sf}{PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
 lookup_reference = "aus_state_suburbs_sf")}
 
 \item{client_locations_ref}{PARAM_DESCRIPTION, Default: NULL}
@@ -120,7 +120,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[rfwn.setup]{data_get}}
+\code{\link[ready.data]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{rowwise}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_length}},\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_order}}
  \code{\link[purrr]{map}}

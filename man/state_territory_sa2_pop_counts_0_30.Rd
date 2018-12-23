@@ -34,6 +34,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[rfwn.setup]{data_get}}
+\code{\link[ready.data]{data_get}}
  \code{\link[dplyr]{filter}}
 }

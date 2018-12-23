@@ -35,12 +35,12 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready.data]{ready.data::data_get}}
+#'  \code{\link[ready.data]{data_get}}
 #'  \code{\link[purrr]{pluck}}
 #'  \code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
 #' @rdname spatial_vic_pop_growth_lga
 #' @export
-#' @importFrom ready.data ready.data::data_get
+#' @importFrom ready.data data_get
 #' @importFrom purrr pluck
 #' @importFrom dplyr rename inner_join
 

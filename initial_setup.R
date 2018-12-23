@@ -1,8 +1,3 @@
-# If not already installed, add the following packages:
-#install.packages("devtools")
-#install.packages("roxygen2")
-#install.packages("magrittr")
-#install.packages("testthat")
 library(roxygen2)
 library(magrittr)
 setwd("C:/Users/mahamilton/Desktop/R_Projects")
@@ -28,9 +23,10 @@ setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 ##               git lfs track "*.rda"
 ##               git add .gitattributes
 ##
-setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
-devtools::use_package("sf")
-devtools::use_package("ready.data")
+#setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
+setwd("/Users/Alejandra/Desktop/R_Projects/ready.space")
+usethis::use_package("sf")
+usethis:use_package("ready.data")
 devtools::document()
 ##
 devtools::use_vignette()
@@ -45,7 +41,8 @@ devtools::use_testthat()
 #setwd("tests/testthat")
 devtools::load_all(".")
 ##
-setwd("C:/Users/mahamilton/Desktop/R_Projects")
+#setwd("C:/Users/mahamilton/Desktop/R_Projects")
+setwd("/Users/Alejandra/Desktop/R_Projects")
 devtools::install_local("ready.space")
 ## extra line to test merging of orygen forked repo with personal account original repo.
 ##

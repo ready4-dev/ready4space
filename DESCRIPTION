@@ -7,9 +7,9 @@ Depends: R (>= 3.5.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports:  sf,
+Imports: sf,
     ready.utils
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: knitr,
     rmarkdown,
     testthat

@@ -5,21 +5,21 @@
 \title{Read in Victorian 2016 to 2021 population growth data}
 \usage{
 
-  spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = rfwn.setup::data_get(data_lookup_tb
+  spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb
   = aus_spatial_lookup_tb, lookup_reference = "aus_lga_vic_att_ppr_2016",
   lookup_variable = "name", target_variable = "source_reference") \%>\%
   purrr::pluck("y2016"),
-  vic_pop_growth_by_age_lga_t1 = rfwn.setup::data_get(data_lookup_tb =
+  vic_pop_growth_by_age_lga_t1 = ready.data::data_get(data_lookup_tb =
   aus_spatial_lookup_tb, lookup_reference = "aus_lga_vic_att_ppr_2016",
   lookup_variable = "name", target_variable = "source_reference") \%>\%
   purrr::pluck("y2021"), t0 = "2016", t1 = "2021")
 }
 \arguments{
-\item{vic_pop_growth_by_age_lga_t0}{PARAM_DESCRIPTION, Default: rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+\item{vic_pop_growth_by_age_lga_t0}{PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
 lookup_reference = "aus_lga_vic_att_ppr_2016", lookup_variable = "name",
 target_variable = "source_reference") %>% purrr::pluck("y2016")}
 
-\item{vic_pop_growth_by_age_lga_t1}{PARAM_DESCRIPTION, Default: rfwn.setup::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+\item{vic_pop_growth_by_age_lga_t1}{PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
 lookup_reference = "aus_lga_vic_att_ppr_2016", lookup_variable = "name",
 target_variable = "source_reference") %>% purrr::pluck("y2021"), Default: '2016'}
 
@@ -51,7 +51,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[rfwn.setup]{data_get}}
+\code{\link[ready.data]{data_get}}
  \code{\link[purrr]{pluck}}
  \code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
 
