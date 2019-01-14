@@ -23,8 +23,8 @@ setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 ##               git lfs track "*.rda"
 ##               git add .gitattributes
 ##
-#setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
-setwd("/Users/Alejandra/Desktop/R_Projects/ready.space")
+setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
+#setwd("/Users/Alejandra/Desktop/R_Projects/ready.space")
 usethis::use_package("sf")
 usethis:use_package("ready.data")
 devtools::document()
@@ -41,8 +41,8 @@ devtools::use_testthat()
 #setwd("tests/testthat")
 devtools::load_all(".")
 ##
-#setwd("C:/Users/mahamilton/Desktop/R_Projects")
-setwd("/Users/Alejandra/Desktop/R_Projects")
+setwd("../")
 devtools::install_local("ready.space")
+setwd("./ready.space")
 ## extra line to test merging of orygen forked repo with personal account original repo.
 ##

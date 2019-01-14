@@ -58,6 +58,9 @@ sp_saved_data_lookup_tb <- sp_saved_data_lookup_tb %>%
   dplyr::mutate(source_reference = paste0("ready.aus.data::",name))
 aus_spatial_lookup_tb <- dplyr::bind_rows(sp_saved_data_lookup_tb,
                                           old_spatial_lookup_tb)
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>% dplyr::mutate(main_feature = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "ERP by age and sex",main_feature),
+                                                                 area_type = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "SA2",area_type))
+
 
 usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE)
