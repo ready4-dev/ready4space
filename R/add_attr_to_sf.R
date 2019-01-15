@@ -7,8 +7,14 @@
 #' @details  Makes data transformations (variable name, changes from strings to factors) necessary
 #' to ensure that merged objects are compatible.
 #'
+#' @param country A String naming the country to which data applies
+#' @param state A String naming the State to which data applies
 #' @param area_unit A String specifying that the area type is either "LGA" or "SA2".
-#' @param area_sf A SF opject, with the boundary geometeries of the specified spatial unit type.
+#' @param boundary_year A String specifying the year to which boundary data applies
+#' @param attribute_data A String vector, specifying the names of the files from which attribute data will
+#' be taken.
+#' @param data_lookup_tb A tibble, with lookup values for all data input files.
+#'
 #'
 #' @return
 #' Returns a SF.
@@ -17,13 +23,77 @@
 #'
 #' @examples
 #'
+recur_add_attr_to_sf <- function(country,
+                                 state = NULL,
+                                 area_unit,
+                                 boundary_year,
+                                 attribute_data,
+                                 data_lookup_tb = aus_spatial_lookup_tb){
+  data_lookup_tb <- data_lookup_tb %>%
+    dplyr::filter(area_type == area_unit) %>%
+    dplyr::filter(year == boundary_year)
+  boundary_file = ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                                       lookup_reference = "Boundary",
+                                       lookup_variable = "main_feature",
+                                       target_variable = "source_reference")
+  if(!is.null(state)){
+    if(country=="Australia")
+      state_var_name <- paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
+    boundary_file <- boundary_file %>%
+      dplyr::filter(!!rlang::sym(state_var_name) == state)
+  }
+  boundary_file_as_list <- list(sf = boundary_file)
+
+  attribute_data_list <-purrr::map(attribute_data,
+                                   ~ .x) %>%
+    stats::setNames(attribute_data)
+  reduce_list <- purrr::prepend(attribute_data_list,
+                                boundary_file_as_list)
+  purrr::reduce(reduce_list,
+                ~ add_attr_list_to_sf(.x,
+                                      .y,
+                                      area_unit = area_unit,
+                                      boundary_year = boundary_year))
+}
+##
+add_attr_list_to_sf <- function(x,
+                                y,
+                                area_unit,
+                                boundary_year){
+  add_attr_to_sf(area_unit = area_unit,
+                 area_sf = x,
+                 attr_data_tb = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                                     lookup_reference = y,
+                                                     lookup_variable = "name",
+                                                     target_variable = "source_reference"),
+                 attr_data_desc = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                                       lookup_reference = y,
+                                                       lookup_variable = "name",
+                                                       target_variable = "main_feature",
+                                                       evaluate = FALSE),
+                 attr_data_year = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                                       lookup_reference = y,
+                                                       lookup_variable = "name",
+                                                       target_variable = "year",
+                                                       evaluate = FALSE),
+                 boundary_year = boundary_year)
+}
+##
 add_attr_to_sf <- function(area_unit,
                            area_sf,
                            attr_data_tb,
                            attr_data_desc,
-                           seifa_deciles_by_unit,
-                           #attr_data_year,
+                           attr_data_year,
                            boundary_year = "2016"){
+  if(attr_data_desc == "Population projections"){
+    pop_preds_data <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
+                                             attr_data_year = attr_data_year,
+                                             area_unit = area_unit,
+                                             boundary_year = boundary_year)
+    merged_units <- dplyr::inner_join(area_sf,
+                                      pop_preds_data) %>%
+      sf::st_as_sf()
+  }
   if(stringr::str_detect(attr_data_desc, "ERP by age and sex")){
     child_youth_pop_data <- prepare_child_youth_data(child_youth_data = attr_data_tb,
                                                      area_unit = area_unit,
@@ -75,6 +145,30 @@ add_attr_to_sf <- function(area_unit,
                         "resident.pop.all.parts"))
   }##
   return(merged_units)
+}
+prepare_pop_preds_data <- function(attr_data_tb,
+                                   attr_data_year,
+                                   area_unit,
+                                   boundary_year){
+  t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
+  pop_preds_data <- attr_data_tb
+  if(area_unit=="LGA"){
+    pop_preds_data <- pop_preds_data %>%
+      dplyr::mutate(`Local Government Area` = ifelse(`Local Government Area` =="Kingston (C)","Kingston (C) (Vic.)",`Local Government Area`),
+                    `Local Government Area` = ifelse(`Local Government Area` =="Latrobe (C)","Latrobe (C) (Vic.)",`Local Government Area`),
+                    `Local Government Area` = ifelse(`Local Government Area` =="Wodonga (RC)","Wodonga (C)",`Local Government Area`))
+
+    pop_preds_data[["LGA Code"]] <- factor(pop_preds_data[["LGA Code"]])
+    pop_preds_data[["Local Government Area"]] <- factor(pop_preds_data[["Local Government Area"]])
+    pop_preds_data <- pop_preds_data %>%
+      dplyr::rename(!!rlang::sym(paste0("LGA_CODE",t1_stub)) := "LGA Code") %>%
+      dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
+    pop_preds_data <- spatial_select_rename_age_sex(pop_preds_data,
+                                                    attr_data_year,
+                                                    also_include = c(paste0("LGA_CODE",t1_stub),
+                                                                     paste0("LGA_NAME",t1_stub)))
+  }
+  return(pop_preds_data)
 }
 #
 prepare_child_youth_data <- function(child_youth_data,
@@ -171,50 +265,6 @@ summarise_seifa <- function(seifa_sf,
   return(seifa_sf)
 }
 ##
-add_attr_list_to_sf <- function(x,
-                               y,
-                               area_unit,
-                               boundary_year){
-  add_attr_to_sf(area_unit = area_unit,
-                 area_sf = x,
-                 attr_data_tb = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                     lookup_reference = y,
-                                                     lookup_variable = "name",
-                                                     target_variable = "source_reference"),
-                 attr_data_desc = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                       lookup_reference = y,
-                                                       lookup_variable = "name",
-                                                       target_variable = "main_feature",
-                                                       evaluate = FALSE),
-                 boundary_year = boundary_year)
-}
-##
-recur_add_attr_to_sf <- function(country,
-                                 state = NULL,
-                                 area_unit,
-                                 boundary_year,
-                                 attribute_data){
-  data_lookup_tb <- aus_spatial_lookup_tb
-  data_lookup_tb <- data_lookup_tb %>%
-    dplyr::filter(area_type == area_unit) %>%
-    dplyr::filter(year == boundary_year)
-  boundary_file = ready.data::data_get(data_lookup_tb = data_lookup_tb,
-                                       lookup_reference = "Boundary",
-                                       lookup_variable = "main_feature",
-                                       target_variable = "source_reference")
-  if(!is.null(state)){
-    if(country=="Australia")
-      state_var_name <- paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
-    boundary_file <- boundary_file %>%
-      dplyr::filter(!!rlang::sym(state_var_name) == state)
-  }
-  boundary_file_as_list <- list(sf = boundary_file)
 
-  attribute_data_list <-purrr::map(attribute_data,
-                                   ~ .x) %>%
-    stats::setNames(attribute_data)
-  reduce_list <- purrr::prepend(attribute_data_list,
-                                boundary_file_as_list)
-  purrr::reduce(reduce_list,
-                ~ add_attr_list_to_sf(.x,.y,area_unit = "SA2", boundary_year = "2016"))
-}
+##
+

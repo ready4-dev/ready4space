@@ -58,8 +58,81 @@ sp_saved_data_lookup_tb <- sp_saved_data_lookup_tb %>%
   dplyr::mutate(source_reference = paste0("ready.aus.data::",name))
 aus_spatial_lookup_tb <- dplyr::bind_rows(sp_saved_data_lookup_tb,
                                           old_spatial_lookup_tb)
-aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>% dplyr::mutate(main_feature = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "ERP by age and sex",main_feature),
-                                                                 area_type = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "SA2",area_type))
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(main_feature = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "ERP by age and sex",main_feature),
+                area_type = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "SA2",area_type))
+###
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(country = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "Australia", country),
+                region = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "National", region),
+                data_type = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "Attribute", data_type),
+                year = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "2006", year))
+###
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(name = ifelse(name =="aus_lga_vic_att_ppr_2016", "aus_lga_vic_att_ppr_2016_31",name))
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(year = ifelse(name =="aus_lga_vic_att_ppr_2016_31", "2016_31",year))
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "Australia",country),
+                area_type = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "LGA",area_type),
+                region = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "VIC",region),
+                data_type = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "Attribute",data_type),
+                main_feature = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "Population projections",main_feature),
+                year = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "2016",year),
+                name = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "aus_lga_vic_att_ppr_2016",name)) %>%
+  dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "Australia",country),
+                area_type = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "LGA",area_type),
+                region = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "VIC",region),
+                data_type = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "Attribute",data_type),
+                main_feature = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "Population projections",main_feature),
+                year = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "2021",year),
+                name = ifelse(name=="vic_pop_growth_by_age_lga_2021_tb", "aus_lga_vic_att_ppr_2021",name)) %>%
+  dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "Australia",country),
+                area_type = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "LGA",area_type),
+                region = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "VIC",region),
+                data_type = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "Attribute",data_type),
+                main_feature = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "Population projections",main_feature),
+                year = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "2026",year),
+                name = ifelse(name=="vic_pop_growth_by_age_lga_2026_tb", "aus_lga_vic_att_ppr_2026",name)) %>%
+  dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "Australia",country),
+                area_type = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "LGA",area_type),
+                region = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "VIC",region),
+                data_type = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "Attribute",data_type),
+                main_feature = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "Population projections",main_feature),
+                year = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "2031",year),
+                name = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "aus_lga_vic_att_ppr_2031",name))
+
+
+#aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+#  dplyr::add_row(name = "aus_lga_vic_att_ppr_2021",
+#                 country = "Australia",
+#                 area_type = "LGA",
+#                 region = "VIC",
+#                 data_type = "Attribute",
+#                 main_feature = "Population projections",
+#                 year = "2021",
+#                 source_reference = "ready.aus.data::aus_lga_vic_att_ppr_2016[[2]]") %>%
+#  dplyr::add_row(name = "aus_lga_vic_att_ppr_2026",
+#                 country = "Australia",
+#                 area_type = "LGA",
+#                 region = "VIC",
+#                 data_type = "Attribute",
+#                 main_feature = "Population projections",
+#                 year = "2026",
+#                 source_reference = "ready.aus.data::aus_lga_vic_att_ppr_2016[[3]]") %>%
+#  dplyr::add_row(name = "aus_lga_vic_att_ppr_2031",
+#                 country = "Australia",
+#                 area_type = "LGA",
+#                 region = "VIC",
+#                 data_type = "Attribute",
+#                 main_feature = "Population projections",
+#                 year = "2031",
+#                 source_reference = "ready.aus.data::aus_lga_vic_att_ppr_2016[[4]]") %>%
+#  dplyr::mutate(source_reference = ifelse(name=="aus_lga_vic_att_ppr_2016",
+#                                          "ready.aus.data::aus_lga_vic_att_ppr_2016[[1]]",
+#                                          source_reference)) %>%
+#  dplyr::arrange(name)
+
 
 
 usethis::use_data(aus_spatial_lookup_tb,

@@ -7,12 +7,11 @@
 
   spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb
   = aus_spatial_lookup_tb, lookup_reference = "aus_lga_vic_att_ppr_2016",
-  lookup_variable = "name", target_variable = "source_reference") \%>\%
-  purrr::pluck("y2016"),
+  lookup_variable = "name", target_variable = "source_reference"),
   vic_pop_growth_by_age_lga_t1 = ready.data::data_get(data_lookup_tb =
-  aus_spatial_lookup_tb, lookup_reference = "aus_lga_vic_att_ppr_2016",
-  lookup_variable = "name", target_variable = "source_reference") \%>\%
-  purrr::pluck("y2021"), t0 = "2016", t1 = "2021")
+  aus_spatial_lookup_tb, lookup_reference = "aus_lga_vic_att_ppr_2021",
+  lookup_variable = "name", target_variable = "source_reference"),
+  t0 = "2016", t1 = "2021")
 }
 \arguments{
 \item{vic_pop_growth_by_age_lga_t0}{PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,

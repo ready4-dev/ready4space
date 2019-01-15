@@ -37,7 +37,9 @@ demographic_by_yearly_age_sex <- function(profiled_sf,
                                           years,
                                           age0,
                                           age1,
-                                          intervals = 5){
+                                          intervals = 5,
+                                          gen_projections = TRUE,
+                                          drop_projs = FALSE){
   first_age_band <- c(floor(age0/intervals)*intervals,
                       ceiling(age0/intervals)*intervals-1)
   last_age_band <- c(floor(age1/intervals)*intervals,
@@ -84,8 +86,34 @@ demographic_by_yearly_age_sex <- function(profiled_sf,
                                .f = function(x,y,...) x %>% col_pair_growth_rate(list_element = y,
                                                                                  included_cols_pairs = included_cols_pairs,
                                                                                  included_time_intervals_start_end = included_time_intervals_start_end ))
+  if(gen_projections){
+    profiled_sf <- gen_age_sex_projs_from_rate(profiled_sf,
+                                               years,
+                                               included_time_intervals,
+                                               included_cols_pairs,
+                                               included_age_bands_num,
+                                               age0,
+                                               age1,
+                                               intervals)
+  }
+  if(drop_projs){
+    profiled_sf <- profiled_sf %>%
+      dplyr::select(-dplyr::starts_with("y20")) %>%
+      dplyr::select(-dplyr::starts_with("growth."))
+  }
+  return(profiled_sf)
+}
+
+gen_age_sex_projs_from_rate <- function(profiled_sf,
+                                        years,
+                                        included_time_intervals,
+                                        included_cols_pairs,
+                                        included_age_bands_num,
+                                        age0,
+                                        age1,
+                                        intervals){
   extra_years <- setdiff(years,
-                               included_time_intervals)
+                         included_time_intervals)
 
   if(length(extra_years)>0){
     profiled_sf <- purrr::reduce(purrr::prepend(1:(extra_years %>%

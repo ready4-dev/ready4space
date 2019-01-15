@@ -11,7 +11,7 @@
 \title{Calculate age/sex populations for each year / age of interest.}
 \usage{
 demographic_by_yearly_age_sex(profiled_sf, years, age0, age1,
-  intervals = 5)
+  intervals = 5, gen_projections = TRUE, drop_projs = FALSE)
 
 demographic_compound_growth_rate(t0_pop, t1_pop, n_periods)
 
