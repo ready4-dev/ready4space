@@ -39,7 +39,9 @@ demographic_by_yearly_age_sex <- function(profiled_sf,
                                           age1,
                                           intervals = 5,
                                           gen_projections = TRUE,
-                                          drop_projs = FALSE){
+                                          drop_projs = FALSE,
+                                          param_tb,
+                                          it_nbr){
   first_age_band <- c(floor(age0/intervals)*intervals,
                       ceiling(age0/intervals)*intervals-1)
   last_age_band <- c(floor(age1/intervals)*intervals,
@@ -85,30 +87,40 @@ demographic_by_yearly_age_sex <- function(profiled_sf,
                                               list(a=profiled_sf)),
                                .f = function(x,y,...) x %>% col_pair_growth_rate(list_element = y,
                                                                                  included_cols_pairs = included_cols_pairs,
-                                                                                 included_time_intervals_start_end = included_time_intervals_start_end ))
-  if(gen_projections){
-    profiled_sf <- gen_age_sex_projs_from_rate(profiled_sf,
-                                               years,
-                                               included_time_intervals,
-                                               included_cols_pairs,
-                                               included_age_bands_num,
-                                               age0,
-                                               age1,
-                                               intervals)
+                                                                                 included_time_intervals_start_end = included_time_intervals_start_end,
+                                                                                 param_tb = param_tb,
+                                                                                 it_nbr = it_nbr))
+  profiled_sf <- profiled_sf %>%
+    dplyr::rename_at(dplyr::vars(dplyr::starts_with(paste0("y",t0_year))),
+                     dplyr::funs(paste0("t0_",.))) %>%
+    dplyr::select(-dplyr::starts_with("y20")) %>%
+    dplyr::select(-dplyr::starts_with("growth.")) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::starts_with(paste0("t0_y",t0_year))),
+                     dplyr::funs(stringr::str_sub(.,start = 4)))
+  if(gen_projections){ # Change to: age_by_year
+    profiled_sf <- gen_age_sex_estimates_t0(profiled_sf,
+                                            t0_year = t0_year,
+                                            included_time_intervals,
+                                            included_cols_pairs,
+                                            included_age_bands_num,
+                                            included_age_bands_num_all,
+                                            age0,
+                                            age1,
+                                            intervals)
   }
   if(drop_projs){
     profiled_sf <- profiled_sf %>%
-      dplyr::select(-dplyr::starts_with("y20")) %>%
-      dplyr::select(-dplyr::starts_with("growth."))
+      dplyr::select(-dplyr::starts_with("y20"))
   }
   return(profiled_sf)
 }
 
-gen_age_sex_projs_from_rate <- function(profiled_sf,
+DEPR_gen_age_sex_projs_from_rate_DEPR <- function(profiled_sf,
                                         years,
                                         included_time_intervals,
                                         included_cols_pairs,
                                         included_age_bands_num,
+                                        included_age_bands_num_all,
                                         age0,
                                         age1,
                                         intervals){
@@ -125,8 +137,7 @@ gen_age_sex_projs_from_rate <- function(profiled_sf,
   }
   age_bands_vect <- included_age_bands_num %>% purrr::flatten_dbl()
   age_bands_ref <- purrr::map_dbl(age0:age1,
-                                  ~ ceiling(max(which(age_bands_vect <= .)/2))
-  )
+                                  ~ ceiling(max(which(age_bands_vect <= .)/2)))
   profiled_sf <- purrr::reduce(purrr::prepend(years,
                                               list(a=profiled_sf)),
                                .f = function(x,y) x %>% by_age_sex_for_a_year (age0 = age0,
@@ -138,6 +149,29 @@ gen_age_sex_projs_from_rate <- function(profiled_sf,
   return(profiled_sf)
 }
 
+gen_age_sex_estimates_t0 <- function(profiled_sf,
+                                        t0_year,
+                                        included_time_intervals,
+                                        included_cols_pairs,
+                                        included_age_bands_num,
+                                        included_age_bands_num_all,
+                                        age0,
+                                        age1,
+                                        intervals){
+  age_bands_vect <- included_age_bands_num %>% purrr::flatten_dbl()
+  age_bands_ref <- purrr::map_dbl(age0:age1,
+                                  ~ ceiling(max(which(age_bands_vect <= .)/2)))
+  profiled_sf <- by_age_sex_for_a_year(profiled_sf = profiled_sf,
+                          age0 = age0,
+                          age1 = age1,
+                          year =  t0_year,
+                          age_bands_ref = age_bands_ref,
+                          intervals = intervals,
+                          included_age_bands_num_all = included_age_bands_num_all)
+  return(profiled_sf)
+}
+
+
 #' @describeIn demographic_by_yearly_age_sex Calculates the compound annual growth rate between two periods.
 #' @param t0_pop A numeric vector of population counts in the baseline year.
 #' @param t1_pop A numeric vector of population counts in the follow-up year.
@@ -145,9 +179,50 @@ gen_age_sex_projs_from_rate <- function(profiled_sf,
 
 demographic_compound_growth_rate <- function(t0_pop,
                                              t1_pop,
-                                             n_periods){
+                                             n_periods,
+                                             age_sex_band,
+                                             param_tb,
+                                             it_nbr){
+  t1_pop <- adjust_pop_proj_for_pe(t0_pop,
+                                   t1_pop,
+                                   n_periods,
+                                   age_sex_band,
+                                   param_tb,
+                                   it_nbr)
   acgr <- (t1_pop/t0_pop)^(1/n_periods)-1
   return(acgr)
+}
+
+adjust_pop_proj_for_pe <- function(t0_pop,
+                                   t1_pop,
+                                   n_periods,
+                                   age_sex_band,
+                                   param_tb,
+                                   it_nbr){
+  if(n_periods < 10){
+    yrs <- paste0("0",as.character(n_periods))
+  }else
+    yrs <- as.character(n_periods)
+  age_sex_lookup <- paste0("mape_",
+                           yrs,
+                           "_yr_",
+                           stringr::str_sub(age_sex_band,1,1),
+                           stringr::str_sub(age_sex_band,-6))
+  ape <- ready.data::data_get(data_lookup_tb = test_par_val_master,
+                       lookup_reference = age_sex_lookup,
+                       lookup_variable = "param_name",
+                       target_variable = paste0("v_it_",it_nbr),
+                       evaluate = FALSE)
+  pe_sign <- ready.data::data_get(data_lookup_tb = param_tb,
+                                     lookup_reference = "pop_pe_sign",
+                                     lookup_variable = "param_name",
+                                     target_variable = paste0("v_it_",it_nbr),
+                                     evaluate = FALSE)
+  pe <- ape * pe_sign
+  growth_pc <- (t1_pop/t0_pop -1)*100
+  adj_growth_pc <- growth_pc + pe
+  adj_t1_pop = (adj_growth_pc / 100 +1) * t0_pop
+  return(adj_t1_pop)
 }
 
 #' @describeIn demographic_by_yearly_age_sex Adds columns with the compound annual growth rate between two periods to inputted sf.
@@ -159,7 +234,9 @@ demographic_compound_growth_rate <- function(t0_pop,
 col_pair_growth_rate <- function(profiled_sf,
                                  list_element,
                                  included_cols_pairs,
-                                 included_time_intervals_start_end){
+                                 included_time_intervals_start_end,
+                                 param_tb,
+                                 it_nbr){
   profiled_sf  <- purrr::reduce(purrr::prepend(1:(included_cols_pairs %>%
                                                     purrr::pluck(list_element) %>%
                                                     purrr::pluck("t0") %>%
@@ -178,7 +255,16 @@ col_pair_growth_rate <- function(profiled_sf,
                                                                                                                                                                  purrr::pluck("t1") %>%
                                                                                                                                                                  purrr::pluck(y)),
                                                                                                                                          n_periods = included_time_intervals_start_end %>%
-                                                                                                                                           purrr::pluck(list_element) %>% diff())))
+                                                                                                                                           purrr::pluck(list_element) %>% diff(),
+                                                                                                                                         age_sex_band = included_cols_pairs %>%
+                                                                                                                                           purrr::pluck(list_element) %>%
+                                                                                                                                           purrr::pluck("t1") %>%
+                                                                                                                                           purrr::pluck(y) %>%
+                                                                                                                                           stringr::str_sub(start = 7) %>%
+                                                                                                                                           stringr::str_replace_all("\\.","_") %>%
+                                                                                                                                           stringr::str_to_lower(),
+                                                                                                                                         param_tb = param_tb,
+                                                                                                                                         it_nbr = it_nbr)))
 
 
   return(profiled_sf)

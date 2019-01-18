@@ -47,38 +47,39 @@ vic_age_sex_seifa_sa2s_2006_2016_sf <- recur_add_attr_to_sf(country = "Australia
                                                                                "aus_sa2_vic_att_erp_2016",
                                                                                "aus_sa2_nat_att_seifa_2016"))
 ## NEED TO CHECK LGA AS WELL
+test_par_val_mape <- ready.agents::gen_par_vals(ready.aus.data::params_struc_mape_tb,
+                                                nbr_its = 5,
+                                                jt_dist = FALSE)
+
+test_par_val_env <- ready.agents::gen_par_vals(ready.agents::par_str_environment_tb,
+                                               5)
+
+test_par_val_master <- dplyr::bind_rows(test_par_val_env,
+                                        test_par_val_mape)
+## Can use below to eliminate uncertainty from population predictions:
+# test_par_val_master <- test_par_val_master %>%
+#   dplyr::mutate_if(is.numeric,dplyr::funs(ifelse(param_name=="pop_pe_sign",0,.)))
 vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
                                                             state = "Victoria",
                                                             area_unit = "LGA",
                                                             boundary_year = "2016",
                                                             attribute_data = c("aus_lga_vic_att_ppr_2016",
                                                                                "aus_lga_vic_att_ppr_2021",
+                                                                               "aus_lga_vic_att_ppr_2026",
                                                                                "aus_lga_vic_att_ppr_2031"))
-
-vic_lga_y_16_31 <- spatial_population_growth(population_tib = vic_pop_growth_projs_sf,
-                          t0 = "2016",
-                          t1 = "2031")
-
-growth_rates <- ready.space::demographic_by_yearly_age_sex(profiled_sf = vic_lga_y_16_31,
+growth_rates <- demographic_by_yearly_age_sex(profiled_sf = vic_pop_growth_projs_sf,
                                            years = c(2016,2019,2031,2025),
                                            age0 = 12,
                                            age1 = 18,
-                                           gen_projections = FALSE,
-                                           drop_projs = FALSE)
-
-ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                     lookup_reference = "aus_lga_vic_att_ppr_2021",
-                     lookup_variable = "name",
-                     target_variable = "main_feature",
-                     evaluate = FALSE)
-ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                     lookup_reference = "aus_lga_vic_att_ppr_2021",
-                     lookup_variable = "name",
-                     target_variable = "source_reference")
+                                           gen_projections = TRUE,
+                                           drop_projs = TRUE,
+                                           param_tb = test_par_val_master,
+                                           it_nbr = 1)
+#vic_lga_y_16_31 <- spatial_population_growth(population_tib = vic_pop_growth_projs_sf,
+#                          t0 = "2016",
+#                          t1 = "2031")
 ####
 ####
-
-
 spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
                                                                                                 lookup_reference = "aus_lga_vic_att_ppr_2016",
                                                                                                 lookup_variable = "name",
@@ -89,4 +90,4 @@ spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(d
                                                                                                 target_variable = "source_reference"),
                                             t0 ="2016",
                                             t1 ="2031")
-vic_pop_growth_by_age_lga_2016_2031_sf <- dplyr::in
+#vic_pop_growth_by_age_lga_2016_2031_sf <- dplyr::in

@@ -11,12 +11,14 @@
 \title{Calculate age/sex populations for each year / age of interest.}
 \usage{
 demographic_by_yearly_age_sex(profiled_sf, years, age0, age1,
-  intervals = 5, gen_projections = TRUE, drop_projs = FALSE)
+  intervals = 5, gen_projections = TRUE, drop_projs = FALSE,
+  param_tb, it_nbr)
 
-demographic_compound_growth_rate(t0_pop, t1_pop, n_periods)
+demographic_compound_growth_rate(t0_pop, t1_pop, n_periods, age_sex_band,
+  param_tb, it_nbr)
 
 col_pair_growth_rate(profiled_sf, list_element, included_cols_pairs,
-  included_time_intervals_start_end)
+  included_time_intervals_start_end, param_tb, it_nbr)
 
 future_pop_from_comp_g_r(cgr, base_year_pop, nyears)
 
