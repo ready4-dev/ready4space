@@ -65,3 +65,15 @@ spatial_intersect_profiled_resolution_units<-function(profiled_sf,
                                           resolution_sf)
   return(profiled_by_resolution)
 }
+#' @describeIn spatial_intersect_profiled_resolution_units Function to intesect two sfs and drop extra columns.
+#' @export
+
+intersect_sf_drop_cols <- function(main_sf,
+                                   adjunct_sf){
+
+  drop_names <- names(main_sf)[names(main_sf) %in% names(adjunct_sf)]
+  drop_names <- drop_names[-stringr::str_which(drop_names,"geometry")]
+  sf::st_intersection(main_sf,
+                      adjunct_sf %>%
+                        dplyr::select(-drop_names))
+}

@@ -2,10 +2,13 @@
 % Please edit documentation in R/spatial_intersect_profiled_resolution_units.R
 \name{spatial_intersect_profiled_resolution_units}
 \alias{spatial_intersect_profiled_resolution_units}
+\alias{intersect_sf_drop_cols}
 \title{Create a simple features object of two intersecting areas.}
 \usage{
 spatial_intersect_profiled_resolution_units(profiled_sf,
   profiled_colref = NA, profiled_rowref = NA, resolution_sf)
+
+intersect_sf_drop_cols(main_sf, adjunct_sf)
 }
 \arguments{
 \item{profiled_sf}{A SF object corresponding to the geographic unit that is to be profiled.}
@@ -30,6 +33,11 @@ This function:
 \details{
 
 }
+\section{Functions}{
+\itemize{
+\item \code{intersect_sf_drop_cols}: Function to intesect two sfs and drop extra columns.
+}}
+
 \examples{
 \dontrun{
 if(interactive()){

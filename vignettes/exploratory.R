@@ -1,4 +1,5 @@
 library(magrittr)
+devtools::load_all(".")
 vic_land_boundary_sf <- ready.space::create_australia_land_boundary(aus_boundary_sf =
                                                                       ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
                                                                                            lookup_reference = "aus_boundary_phns_sf",
@@ -27,17 +28,17 @@ boundary_list <- purrr::map(boundary_list,
                             ~ .x %>% dplyr::filter(STE_NAME16=="Victoria")) %>%
   stats::setNames(boundaries_to_import)
 ## OLD
-vic_age_sex_seifa_sa2s_sf <- ready.space::spatial_merge_areas_attributes(area_unit = "SA2",
-                                                                         area_sf = boundary_list %>%
-                                                                           purrr::pluck("aus_sa2_nat_shp_bound_2016"),
-                                                                         child_youth_pop_t0_tb = ready.data::data_get(data_lookup_tb = ready.space::aus_spatial_lookup_tb,
-                                                                                                                      lookup_reference = "aus_pop_age_sex_sa2_2006_tb",
-                                                                                                                      lookup_variable = "name",
-                                                                                                                      target_variable = "source_reference"),
-                                                                         child_youth_pop_t1_tb = attribute_list %>%
-                                                                           purrr::pluck("aus_sa2_vic_att_erp_2016"),
-                                                                         seifa_deciles_by_unit = attribute_list %>%
-                                                                           purrr::pluck("aus_sa2_nat_att_seifa_2016"))
+# vic_age_sex_seifa_sa2s_sf <- ready.space::spatial_merge_areas_attributes(area_unit = "SA2",
+#                                                                          area_sf = boundary_list %>%
+#                                                                            purrr::pluck("aus_sa2_nat_shp_bound_2016"),
+#                                                                          child_youth_pop_t0_tb = ready.data::data_get(data_lookup_tb = ready.space::aus_spatial_lookup_tb,
+#                                                                                                                       lookup_reference = "aus_pop_age_sex_sa2_2006_tb",
+#                                                                                                                       lookup_variable = "name",
+#                                                                                                                       target_variable = "source_reference"),
+#                                                                          child_youth_pop_t1_tb = attribute_list %>%
+#                                                                            purrr::pluck("aus_sa2_vic_att_erp_2016"),
+#                                                                          seifa_deciles_by_unit = attribute_list %>%
+#                                                                            purrr::pluck("aus_sa2_nat_att_seifa_2016"))
 ### NEW
 vic_age_sex_seifa_sa2s_2006_2016_sf <- recur_add_attr_to_sf(country = "Australia",
                                                             state = "Victoria",
@@ -67,14 +68,30 @@ vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
                                                                                "aus_lga_vic_att_ppr_2021",
                                                                                "aus_lga_vic_att_ppr_2026",
                                                                                "aus_lga_vic_att_ppr_2031"))
-growth_rates <- demographic_by_yearly_age_sex(profiled_sf = vic_pop_growth_projs_sf,
+vic_age_sex_acgr_lga_2016_31_sf <- demographic_by_yearly_age_sex(profiled_sf = vic_pop_growth_projs_sf,
                                            years = c(2016,2019,2031,2025),
                                            age0 = 12,
                                            age1 = 18,
-                                           gen_projections = TRUE,
-                                           drop_projs = TRUE,
+                                           #age_by_year = FALSE,
+                                           #drop_projs = TRUE,
                                            param_tb = test_par_val_master,
                                            it_nbr = 1)
+##
+
+vic_merged_attr_sf <- intersect_sf_drop_cols(main_sf = vic_age_sex_seifa_sa2s_2006_2016_sf,
+                       adjunct_sf = vic_age_sex_acgr_lga_2016_31_sf)
+
+vic_merged_attr_by_age_sf <- demographic_by_yearly_age_sex(profiled_sf = vic_merged_attr_sf,
+                                                           years = c(2016,2019,2031,2025),
+                                                           age0 = 12,
+                                                           age1 = 18,
+                                                           acgr = FALSE,
+                                                           age_by_year = TRUE,
+                                                           drop_bands = FALSE,
+                                                           param_tb = test_par_val_master,
+                                                           it_nbr = 1)
+
+
 #vic_lga_y_16_31 <- spatial_population_growth(population_tib = vic_pop_growth_projs_sf,
 #                          t0 = "2016",
 #                          t1 = "2031")
