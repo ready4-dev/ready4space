@@ -33,16 +33,18 @@
 
 
 
-demographic_by_yearly_age_sex <- function(profiled_sf,
-                                          years,
-                                          age0,
-                                          age1,
-                                          intervals = 5,
-                                          acgr = TRUE,
-                                          age_by_year = FALSE,
-                                          drop_bands = TRUE,
-                                          param_tb,
-                                          it_nbr){
+gen_demog_features <- function(profiled_sf,
+                                years,
+                                age0,
+                                age1,
+                                param_tb,
+                                it_nbr,
+                                acgr = TRUE,
+                                age_by_year = FALSE,
+                                drop_bands = TRUE,
+                                intervals = 5,
+                                month = "07",
+                                day = "01"){
   fn_pars <- gen_demog_fun_par_vals(profiled_sf,
                                     years,
                                     age0,
@@ -58,9 +60,7 @@ demographic_by_yearly_age_sex <- function(profiled_sf,
   }
   if(age_by_year){
     profiled_sf <- gen_age_sex_estimates_t0(profiled_sf = profiled_sf,
-                                            t0_year = fn_pars$t0_year,
-                                            included_time_intervals = fn_pars$included_time_intervals,
-                                            included_cols_pairs = fn_pars$included_cols_pairs,
+                                            t0_date = paste0(fn_pars$t0_year,month,day),
                                             included_age_bands_num = fn_pars$included_age_bands_num,
                                             included_age_bands_num_all = fn_pars$included_age_bands_num_all,
                                             age0 = age0,
@@ -91,7 +91,15 @@ gen_demog_acgr <- function(profiled_sf,
     dplyr::select(-dplyr::starts_with("y20")) %>%
     dplyr::select(-dplyr::starts_with("growth.")) %>%
     dplyr::rename_at(dplyr::vars(dplyr::starts_with(paste0("t0_y",fn_pars$t0_year))),
-                     dplyr::funs(stringr::str_sub(.,start = 4)))
+                     dplyr::funs(stringr::str_sub(.,start = 4))) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::starts_with("acgr_y")),
+                     dplyr::funs(paste0(stringr::str_sub(.,1,10),
+                                        "_",
+                                        stringr::str_sub(.,12,12) %>% stringr::str_to_lower(),
+                                        "_",
+                                        stringr::str_sub(.,-5,-4),
+                                        "_",
+                                        stringr::str_sub(.,-2,-1))))
 }
 
 gen_demog_fun_par_vals <- function(profiled_sf,
@@ -164,9 +172,7 @@ gen_demog_fun_par_vals <- function(profiled_sf,
 
 
 gen_age_sex_estimates_t0 <- function(profiled_sf,
-                                     t0_year,
-                                     included_time_intervals,
-                                     included_cols_pairs,
+                                     t0_date,
                                      included_age_bands_num,
                                      included_age_bands_num_all,
                                      age0,
@@ -178,13 +184,70 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
   profiled_sf <- by_age_sex_for_a_year(profiled_sf = profiled_sf,
                                        age0 = age0,
                                        age1 = age1,
-                                       year =  t0_year,
+                                       t0_date =  t0_date,
                                        age_bands_ref = age_bands_ref,
                                        intervals = intervals,
                                        included_age_bands_num_all = included_age_bands_num_all)
   return(profiled_sf)
 }
 
+#' @describeIn demographic_by_yearly_age_sex Calculates age populations for each sex.
+#' @param age Numeric, ...
+#' @param year Numeric, ....
+#' @param included_age_bands_num_all A list ....
+
+by_sex_for_an_age <- function(profiled_sf,
+                              age,
+                              age0,
+                              age1,
+                              t0_date,
+                              age_bands_ref,
+                              intervals,
+                              included_age_bands_num_all){
+  year <- t0_date %>% stringr::str_sub(1,4)
+  profiled_sf <- purrr::reduce(purrr::prepend(c("Females","Males"),
+                                              list(a=profiled_sf)),
+                               .f = function(x,y) x %>% dplyr::mutate(!!paste0("t0_",
+                                                                               t0_date,
+                                                                               "_",
+                                                                               stringr::str_sub(y,1,1) %>%
+                                                                                 stringr::str_to_lower(),
+                                                                               "_",
+                                                                               age) := !!rlang::sym(paste0("y",
+                                                                                                           year,
+                                                                                                           ".",
+                                                                                                           y,
+                                                                                                           ".",
+                                                                                                           included_age_bands_num_all  %>%
+                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
+                                                                                                             purrr::pluck(1),
+                                                                                                           ".",
+                                                                                                           included_age_bands_num_all  %>%
+                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
+                                                                                                             purrr::pluck(2))) / intervals))
+  return(profiled_sf)
+}
+#' @describeIn demographic_by_yearly_age_sex Calculates age and sex populations for a specific year.
+#' @param year Numeric, ....
+#' @param included_age_bands_num_all A list ....
+
+by_age_sex_for_a_year <- function(profiled_sf,
+                                  age0,
+                                  age1,
+                                  t0_date,
+                                  age_bands_ref,
+                                  intervals,
+                                  included_age_bands_num_all){
+  profiled_sf <- purrr::reduce(purrr::prepend(age0:age1,
+                                              list(a=profiled_sf)),
+                               .f = function(x,y) x %>% by_sex_for_an_age(age = y,
+                                                                          age0 = age0,
+                                                                          age1 = age1,
+                                                                          t0_date = t0_date,
+                                                                          age_bands_ref = age_bands_ref,
+                                                                          intervals = intervals,
+                                                                          included_age_bands_num_all = included_age_bands_num_all))
+}
 
 #' @describeIn demographic_by_yearly_age_sex Calculates the compound annual growth rate between two periods.
 #' @param t0_pop A numeric vector of population counts in the baseline year.
@@ -321,60 +384,46 @@ add_extra_year_pop_totals <- function(profiled_sf,
   return(profiled_sf)
 }
 
-#' @describeIn demographic_by_yearly_age_sex Calculates age populations for each sex.
-#' @param age Numeric, ...
-#' @param year Numeric, ....
-#' @param included_age_bands_num_all A list ....
-
-by_sex_for_an_age <- function(profiled_sf,
-                              age,
-                              age0,
-                              age1,
-                              year,
-                              age_bands_ref,
-                              intervals,
-                              included_age_bands_num_all){
-  profiled_sf <- purrr::reduce(purrr::prepend(c("Females","Males"),
-                                              list(a=profiled_sf)),
-                               .f = function(x,y) x %>% dplyr::mutate(!!paste0("y_",
-                                                                               year,
-                                                                               "_",
-                                                                               y,
-                                                                               "_",
-                                                                               age) := !!rlang::sym(paste0("y",
-                                                                                                           year,
-                                                                                                           ".",
-                                                                                                           y,
-                                                                                                           ".",
-                                                                                                           included_age_bands_num_all  %>%
-                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
-                                                                                                             purrr::pluck(1),
-                                                                                                           ".",
-                                                                                                           included_age_bands_num_all  %>%
-                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
-                                                                                                             purrr::pluck(2))) / intervals))
-  return(profiled_sf)
-}
-#' @describeIn demographic_by_yearly_age_sex Calculates age and sex populations for a specific year.
-#' @param year Numeric, ....
-#' @param included_age_bands_num_all A list ....
-
-by_age_sex_for_a_year <- function(profiled_sf,
-                                  age0,
-                                  age1,
-                                  year,
-                                  age_bands_ref,
-                                  intervals,
-                                  included_age_bands_num_all){
-  profiled_sf <- purrr::reduce(purrr::prepend(age0:age1,
-                                              list(a=profiled_sf)),
-                               .f = function(x,y) x %>% by_sex_for_an_age(age = y,
-                                                                          age0 = age0,
-                                                                          age1 = age1,
-                                                                          year = year,
-                                                                          age_bands_ref = age_bands_ref,
-                                                                          intervals = intervals,
-                                                                          included_age_bands_num_all = included_age_bands_num_all))
+gen_age_sex_estimates_tx <- function(profiled_sf,
+                                     ymwd_step){
+  if(profiled_sf %>% names() %>% startsWith("t0_") %>% sum() ==0){
+    stop("Inputted SF object does not have baseline year population counts by age. See help for gen_demog_features function for
+         details about creating SF objects with the required features.")
+  }
+  if(profiled_sf %>% names() %>% startsWith("tx_") %>% sum() ==0){
+    profiled_sf <- profiled_sf %>%
+      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("t0_")),
+                       dplyr::funs(tx = .*1)) %>%
+      dplyr::rename_at(dplyr::vars(dplyr::contains("_tx")),
+                       dplyr::funs(paste0("tx_",
+                                          stringr::str_sub(.,4,-4))))
+  }
+  tx_cols <- profiled_sf %>%
+    dplyr::select(dplyr::starts_with("tx_")) %>%
+    names() %>%
+    setdiff("geometry")
+  t0_date <- tx_cols  %>%
+    stringr::str_sub(4,11) %>%
+    purrr::pluck(1) %>%
+    lubridate::ymd()
+  step_in_time <- lubridate::years(ymwd_step[1]) +
+    months(ymwd_step[2]) +
+    lubridate::weeks(ymwd_step[3]) +
+    lubridate::days(ymwd_step[4])
+  t1_date <- t0_date + step_in_time
+  step_in_years <- lubridate::interval(t0_date,t1_date) / (lubridate::years(1))
+  gr_cols <- profiled_sf %>%
+    dplyr::select(dplyr::starts_with("acgr_y")) %>%
+    names() %>%
+    setdiff("geometry")
+  gr_base_years <- stringr::str_sub(gr_cols,7,10) %>%
+    as.numeric()
+  gr_base_unique <- unique(gr_base_years)
+  matched_gr_year <- max(gr_base_unique[gr_base_unique<=as.numeric(t0_date %>% stringr::str_sub(1,4))])
+  gr_cols_matched_yr <- gr_cols[gr_base_years == matched_gr_year]
+  gr_cols_age_low <- stringr::str_sub(gr_cols_matched_yr,-5,-4)
+  gr_cols_age_high <- stringr::str_sub(gr_cols_matched_yr,-2,-1)
+  gr_cols_sex <- stringr::str_sub(gr_cols_matched_yr,-7,-7)
 }
 
 

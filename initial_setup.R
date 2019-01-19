@@ -42,7 +42,7 @@ devtools::use_testthat()
 devtools::load_all(".")
 ##
 setwd("../")
-devtools::install_local("ready.space")
+devtools::install_local("ready.space",force=TRUE)
 setwd("./ready.space")
 ## extra line to test merging of orygen forked repo with personal account original repo.
 ##

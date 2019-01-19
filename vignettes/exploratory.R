@@ -68,7 +68,7 @@ vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
                                                                                "aus_lga_vic_att_ppr_2021",
                                                                                "aus_lga_vic_att_ppr_2026",
                                                                                "aus_lga_vic_att_ppr_2031"))
-vic_age_sex_acgr_lga_2016_31_sf <- demographic_by_yearly_age_sex(profiled_sf = vic_pop_growth_projs_sf,
+vic_age_sex_acgr_lga_2016_31_sf <- gen_demog_features(profiled_sf = vic_pop_growth_projs_sf,
                                            years = c(2016,2019,2031,2025),
                                            age0 = 12,
                                            age1 = 18,
@@ -81,13 +81,13 @@ vic_age_sex_acgr_lga_2016_31_sf <- demographic_by_yearly_age_sex(profiled_sf = v
 vic_merged_attr_sf <- intersect_sf_drop_cols(main_sf = vic_age_sex_seifa_sa2s_2006_2016_sf,
                        adjunct_sf = vic_age_sex_acgr_lga_2016_31_sf)
 
-vic_merged_attr_by_age_sf <- demographic_by_yearly_age_sex(profiled_sf = vic_merged_attr_sf,
+vic_merged_attr_by_age_sf <- gen_demog_features(profiled_sf = vic_merged_attr_sf,
                                                            years = c(2016,2019,2031,2025),
                                                            age0 = 12,
                                                            age1 = 18,
                                                            acgr = FALSE,
                                                            age_by_year = TRUE,
-                                                           drop_bands = FALSE,
+                                                           drop_bands = TRUE,
                                                            param_tb = test_par_val_master,
                                                            it_nbr = 1)
 
