@@ -7,7 +7,7 @@
 \alias{demographic_compound_growth_rate}
 \alias{col_pair_growth_rate}
 \alias{future_pop_from_comp_g_r}
-\alias{add_extra_year_pop_totals}
+\alias{gen_age_sex_estimates_tx}
 \title{Calculate age/sex populations for each year / age of interest.}
 \usage{
 gen_demog_features(profiled_sf, years, age0, age1, param_tb, it_nbr,
@@ -28,8 +28,7 @@ col_pair_growth_rate(profiled_sf, list_element, included_cols_pairs,
 
 future_pop_from_comp_g_r(cgr, base_year_pop, nyears)
 
-add_extra_year_pop_totals(profiled_sf, year, included_time_intervals,
-  included_cols_pairs)
+gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}
@@ -66,8 +65,6 @@ add_extra_year_pop_totals(profiled_sf, year, included_time_intervals,
 
 \item{year}{Numeric, ....}
 
-\item{included_time_intervals}{A list, ....}
-
 \item{year}{Numeric, ....}
 
 \item{included_age_bands_num_all}{A list ....}
@@ -75,6 +72,8 @@ add_extra_year_pop_totals(profiled_sf, year, included_time_intervals,
 \item{year}{Numeric, ....}
 
 \item{included_cols_pairs}{A list, ....}
+
+\item{included_time_intervals}{A list, ....}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -97,7 +96,7 @@ DETAILS
 
 \item \code{future_pop_from_comp_g_r}: Calculates a projected future population using the annual compound growth rate.
 
-\item \code{add_extra_year_pop_totals}: Calculates grouped age / sex counts for additional years.
+\item \code{gen_age_sex_estimates_tx}: Calculates grouped age / sex counts for additional years.
 }}
 
 \examples{

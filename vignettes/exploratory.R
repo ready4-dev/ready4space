@@ -1,4 +1,4 @@
-library(magrittr)
+#library(magrittr)
 devtools::load_all(".")
 vic_land_boundary_sf <- ready.space::create_australia_land_boundary(aus_boundary_sf =
                                                                       ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
@@ -91,7 +91,8 @@ vic_merged_attr_by_age_sf <- gen_demog_features(profiled_sf = vic_merged_attr_sf
                                                            param_tb = test_par_val_master,
                                                            it_nbr = 1)
 
-
+gen_age_sex_estimates_tx(profiled_sf = vic_merged_attr_by_age_sf,
+                         ymwd_step = c(3,5,2,1))
 #vic_lga_y_16_31 <- spatial_population_growth(population_tib = vic_pop_growth_projs_sf,
 #                          t0 = "2016",
 #                          t1 = "2031")

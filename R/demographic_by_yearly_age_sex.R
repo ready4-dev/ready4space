@@ -364,26 +364,6 @@ future_pop_from_comp_g_r <- function(cgr,
 #' @param included_cols_pairs A list, ....
 #' @param included_time_intervals A list, ....
 
-add_extra_year_pop_totals <- function(profiled_sf,
-                                      year,
-                                      included_time_intervals,
-                                      included_cols_pairs){
-  index_ref <- min(which(included_time_intervals<year))
-  base_year <- included_time_intervals[index_ref]
-  base_string <- included_cols_pairs %>% purrr::pluck(index_ref) %>% purrr::pluck(1)
-  new_cols <- stringr::str_replace(base_string, as.character(base_year),as.character(year))
-  acgr_cols <- paste0("acgr_",base_string)
-  profiled_sf <-  purrr::reduce(purrr::prepend(1:(base_string %>%
-                                                   length()),
-                                               list(a=profiled_sf)),
-                                .f = function(x,y,...) x %>% dplyr::mutate(!!new_cols[y] := future_pop_from_comp_g_r(cgr= x %>%
-                                                                                                                       dplyr::pull(acgr_cols[y]),
-                                                                                                                     base_year_pop = x %>%
-                                                                                                                       dplyr::pull(base_string[y]),
-                                                                                                                     nyears = year-base_year)))
-  return(profiled_sf)
-}
-
 gen_age_sex_estimates_tx <- function(profiled_sf,
                                      ymwd_step){
   if(profiled_sf %>% names() %>% startsWith("t0_") %>% sum() ==0){
@@ -424,7 +404,24 @@ gen_age_sex_estimates_tx <- function(profiled_sf,
   gr_cols_age_low <- stringr::str_sub(gr_cols_matched_yr,-5,-4)
   gr_cols_age_high <- stringr::str_sub(gr_cols_matched_yr,-2,-1)
   gr_cols_sex <- stringr::str_sub(gr_cols_matched_yr,-7,-7)
+  gr_cols_matched_categ <- purrr::map_chr(tx_cols,
+                                          ~ gr_cols_matched_yr[(gr_cols_age_low <= stringr::str_sub(.x,-2,-1) %>% as.numeric()) +
+                                            (stringr::str_sub(.x,-2,-1) %>% as.numeric() <= gr_cols_age_high)  +
+                                            (gr_cols_sex==stringr::str_sub(.x,-4,-4)) ==3])
+  purrr::reduce(purrr::prepend(1:(tx_cols %>%
+                                    length()),
+                               list(a=profiled_sf)),
+                .f = function(x,y,...) x %>% dplyr::mutate(!!tx_cols[y] := future_pop_from_comp_g_r(cgr= x %>%
+                                                                                                      dplyr::pull(gr_cols_matched_categ[y]),
+                                                                                                    base_year_pop = x %>%
+                                                                                                      dplyr::pull(tx_cols[y]),
+                                                                                                    nyears = step_in_years))) %>%
+    dplyr::rename_at(dplyr::vars(tx_cols),
+                     dplyr::funs(stringr::str_replace(.,
+                                                      t0_date %>% stringr::str_replace_all("-",""),
+                                                      t1_date %>% stringr::str_replace_all("-",""))))
 }
+
 
 
 # DEPR_gen_age_sex_projs_from_rate_DEPR <- function(profiled_sf,
@@ -458,5 +455,24 @@ gen_age_sex_estimates_tx <- function(profiled_sf,
 #                                                                                age_bands_ref = age_bands_ref,
 #                                                                                intervals = intervals,
 #                                                                                included_age_bands_num_all = included_age_bands_num_all))
+#   return(profiled_sf)
+# }
+# DEPR_add_extra_year_pop_totals_DEPR <- function(profiled_sf,
+#                                       year,
+#                                       included_time_intervals,
+#                                       included_cols_pairs){
+#   index_ref <- min(which(included_time_intervals<year))
+#   base_year <- included_time_intervals[index_ref]
+#   base_string <- included_cols_pairs %>% purrr::pluck(index_ref) %>% purrr::pluck(1)
+#   new_cols <- stringr::str_replace(base_string, as.character(base_year),as.character(year))
+#   acgr_cols <- paste0("acgr_",base_string)
+#   profiled_sf <-  purrr::reduce(purrr::prepend(1:(base_string %>%
+#                                                    length()),
+#                                                list(a=profiled_sf)),
+#                                 .f = function(x,y,...) x %>% dplyr::mutate(!!new_cols[y] := future_pop_from_comp_g_r(cgr= x %>%
+#                                                                                                                        dplyr::pull(acgr_cols[y]),
+#                                                                                                                      base_year_pop = x %>%
+#                                                                                                                        dplyr::pull(base_string[y]),
+#                                                                                                                      nyears = year-base_year)))
 #   return(profiled_sf)
 # }
