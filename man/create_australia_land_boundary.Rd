@@ -4,9 +4,14 @@
 \alias{create_australia_land_boundary}
 \title{create_australia_land_boundary}
 \usage{
-create_australia_land_boundary(aus_boundary_sf)
+create_australia_land_boundary(state_territories = NULL,
+  aus_boundary_sf = ready.data::data_get(data_lookup_tb =
+  aus_spatial_lookup_tb, lookup_reference = "aus_boundary_phns_sf",
+  lookup_variable = "name", target_variable = "source_reference"))
 }
 \arguments{
+\item{state_territories}{PARAM_DESCRIPTION}
+
 \item{aus_boundary_sf}{PARAM_DESCRIPTION}
 }
 \value{

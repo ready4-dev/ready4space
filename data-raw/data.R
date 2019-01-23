@@ -69,10 +69,10 @@ aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
                 year = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "2006", year))
 ###
 aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
-  dplyr::mutate(name = ifelse(name =="aus_lga_vic_att_ppr_2016", "aus_lga_vic_att_ppr_2016_31",name))
+  dplyr::mutate(name = ifelse(name =="aus_lga_vic_att_ppr_2016", "aus_lga_vic_att_ppr_2016_31",naaus_spatial_lookup_tb me))
 aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
   dplyr::mutate(year = ifelse(name =="aus_lga_vic_att_ppr_2016_31", "2016_31",year))
-aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+aus_spatial_lookup_tb <- %>%
   dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "Australia",country),
                 area_type = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "LGA",area_type),
                 region = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "VIC",region),
@@ -101,8 +101,19 @@ aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
                 main_feature = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "Population projections",main_feature),
                 year = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "2031",year),
                 name = ifelse(name=="vic_pop_growth_by_age_lga_2031_tb", "aus_lga_vic_att_ppr_2031",name))
-
-
+##
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
+  dplyr::mutate(additional_detail = ifelse(stringr::str_detect(main_feature, " 10 yr from 2006")," 10 yr from 2006",NA_character_)) %>%
+  dplyr::mutate(additional_detail = ifelse(stringr::str_detect(main_feature, " for 2016 boundaries")," for 2016 boundaries",additional_detail)) %>%
+  dplyr::mutate(main_feature = ifelse(stringr::str_detect(main_feature, "ERP by age and sex"),"ERP by age and sex", main_feature))
+##
+aus_data_resolution_tb <- tibble::tibble(area_type = c("SA1","SA2","SA3","SA4","LGA", "PHN","POA","SSC","GCCSA","ST","CED","SED"),
+                                         boundary_year = c(2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2018,2018),
+                                         area_count = c(57523,2310,358,107,547,31,2670,15304,8,8,150,425),
+                                         complete = c(TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE))
+aus_state_short_tb <- tibble::tibble(state_territory = c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland",
+                                                         "South Australia", "Tasmania", "Victoria", "Western Australia"),
+                                     short_name = c("ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"))
 #aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
 #  dplyr::add_row(name = "aus_lga_vic_att_ppr_2021",
 #                 country = "Australia",
@@ -134,9 +145,12 @@ aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
 #  dplyr::arrange(name)
 
 
-
 usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE)
 usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE,
                    internal = TRUE)
+usethis::use_data(aus_data_resolution_tb,
+                  overwrite = TRUE)
+usethis::use_data(aus_state_short_tb,
+                  overwrite = TRUE)
