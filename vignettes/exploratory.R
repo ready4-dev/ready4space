@@ -1,5 +1,6 @@
 devtools::load_all(".")
-## PARAMETER MATRICES
+library(magrittr)
+## 1. GET PARAMETER MATRICES
 test_par_val_mape <- ready.agents::gen_par_vals(ready.aus.data::params_struc_mape_tb,
                                                 nbr_its = 5,
                                                 jt_dist = FALSE)
@@ -12,7 +13,61 @@ test_par_val_master <- dplyr::bind_rows(test_par_val_env,
 ## Can use below to eliminate uncertainty from population predictions:
 # test_par_val_master <- test_par_val_master %>%
 #   dplyr::mutate_if(is.numeric,dplyr::funs(ifelse(param_name=="pop_pe_sign",0,.)))
-## TEMP PLACE FOR FUNCTIONS
+## 2. GET SPATIAL DATA
+sp_data_list <- get_spatial_data_list(at_highest_res = c("ERP by age and sex",
+                                                         "ERP",
+                                                         "Population projections"),
+                                      at_time = "2016",
+                                      to_time = "2031",
+                                      at_specified_res = list(a=c("SEIFA","SA2")),
+                                      country = "Australia",
+                                      state = "Victoria",
+                                      require_year_match = FALSE,
+                                      excl_diff_bound_yr = TRUE)
+## 3. SIMULATE EVOLUTION OF ENVIRONMENT OVER TIME
+sp_data_sf <- sim_environment(sp_data_list = sp_data_list,
+                              age0 = 12,
+                              age1 = 18,
+                              at_time = at_time,
+                              to_time = to_time,
+                              param_tb = test_par_val_master,
+                              it_nbr = 1,
+                              sp_data_sf = sp_data_sf,
+                              ymwd_step_to_bl = NULL,
+                              ymwd_step_from_tx = c(1,0,2,1),
+                              nbr_steps = 2)
+
+##
+## 4. TEMP PLACE FOR FUNCTIONS
+get_closest_year <- function(data_lookup_tb = aus_spatial_lookup_tb,
+                             incl_main_ft_vec,
+                             target_year,
+                             target_area = NULL,
+                             find_closest = "abs"){
+  if(!is.null(target_area)){
+    data_lookup_tb <- data_lookup_tb %>%
+      dplyr::filter(area_type == target_area)
+  }
+  avail_years <- purrr::map(incl_main_ft_vec,
+                            ~ data_lookup_tb %>%
+                              dplyr::filter(main_feature == .x) %>%
+                              dplyr::pull(year) %>%
+                              as.numeric())
+  if(find_closest == "abs"){
+    closest_year <- purrr::map(avail_years,
+                               ~ .x[which(abs(.x - as.numeric(target_year)) == min(abs(.x - as.numeric(target_year))))])
+  }
+  if(find_closest == "previous"){
+    closest_year <- purrr::map(avail_years,
+                               ~ .x[which(as.numeric(target_year) - .x == min(max(as.numeric(target_year) - .x,0)))])
+  }
+
+  if(find_closest == "next"){
+    closest_year <- purrr::map(avail_years,
+                               ~ .x[which(.x - as.numeric(target_year) == min(max(.x - as.numeric(target_year),0)))])
+  }
+  return(closest_year)
+}
 get_resolution_hierarchy <- function(data_year,
                                      resolution_tb = aus_data_resolution_tb,
                                      whole_area = TRUE){
@@ -27,7 +82,7 @@ get_resolution_hierarchy <- function(data_year,
     dplyr::pull(area_type)
 }
 get_highest_res <- function(options_vec,
-                year){
+                            year){
   if(!is.na(options_vec[1])){
     res_hierarchy <- get_resolution_hierarchy(as.numeric(at_time))
     res_hierarchy[min(which(res_hierarchy %in% options_vec))]
@@ -35,27 +90,23 @@ get_highest_res <- function(options_vec,
     NA
 }
 get_spatial_data_names <- function(at_highest_res,
-                             at_time,
-                             to_time = NULL,
-                             at_specified_res = NULL,
-                             country = "Australia",
-                             state = NULL,
-                             require_year_match = TRUE,
-                             excl_diff_bound_yr = TRUE){ #### NEED TO WORK ON SECOND HALF
+                                   at_time,
+                                   to_time = NULL,
+                                   at_specified_res = NULL,
+                                   country = "Australia",
+                                   state = NULL,
+                                   require_year_match = TRUE,
+                                   excl_diff_bound_yr = TRUE){ #### NEED TO WORK ON SECOND HALF
   if(excl_diff_bound_yr){
     spatial_lookup_tb <- aus_spatial_lookup_tb %>%
       dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
   }else
     spatial_lookup_tb <- aus_spatial_lookup_tb
-
-  year_vec <- c(at_time,
-                paste0(at_time,
-                       "_",
-                       stringr::str_sub(to_time,3,4)))
+  year_vec <- as.character(as.numeric(at_time):as.numeric(to_time))
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
-                                 dplyr::filter(year %in% year_vec))
+                                 dplyr::filter(year %in% year_vec[if(.x=="Population projections") 1:length(year_vec) else 1]))
   data_res_vec <- purrr::map_chr(lookup_tb_list,
                                  ~ .x %>%
                                    dplyr::pull(area_type) %>%
@@ -83,23 +134,14 @@ get_spatial_data_names <- function(at_highest_res,
                                              region_lookup,
                                              ~  .x %>% dplyr::filter(region %in% .y))
   }
-  matched_yr_lookup_tb_list <- purrr::map(matched_yr_lookup_tb_list,
-                                          ~ .x %>%
-                                            dplyr::filter(year == ifelse(year_vec[2] %in% (.x %>% dplyr::pull(year)),year_vec[2],year_vec[1]))
-  )
-  names_of_data_vec <- purrr::map_chr(matched_yr_lookup_tb_list,
-                                      ~ .x %>%
-                                        dplyr::pull(name))
+  names_of_data_vec <- purrr::map(matched_yr_lookup_tb_list,
+                                  ~ .x %>%
+                                    dplyr::pull(name)) %>%
+    purrr::flatten_chr()
 
   if(!identical(non_matched_year_vec,character(0))){
-    avail_years <-   purrr::map(non_matched_year_vec,
-                                ~ spatial_lookup_tb %>%
-                                  dplyr::filter(main_feature == .x) %>%
-                                  dplyr::pull(year) %>%
-                                  as.numeric())
-    closest_years <- purrr::map(avail_years,
-                                ~ .x[which(abs(.x - as.numeric(at_time)) == min(abs(.x - as.numeric(at_time))))])
-
+    closest_years <- get_closest_year(incl_main_ft_vec = non_matched_year_vec,
+                                      target_year = at_time)
     extra_names <- purrr::map2_chr(non_matched_year_vec,closest_years,
                                    ~     ready.data::data_get(data_lookup_tb = spatial_lookup_tb %>%
                                                                 dplyr::filter(year == .y),
@@ -121,166 +163,192 @@ get_spatial_data_names <- function(at_highest_res,
   c(names_of_data_vec,extra_names)
 }
 ##
-get_spatial_data <- function(at_highest_res,
-                             at_time,
-                             to_time = NULL,
-                             at_specified_res = NULL,
-                             country = "Australia",
-                             state = NULL,
-                             require_year_match = TRUE,
-                             excl_diff_bound_yr = TRUE){
+get_spatial_data_list <- function(at_highest_res,
+                                  at_time,
+                                  to_time = NULL,
+                                  at_specified_res = NULL,
+                                  country = "Australia",
+                                  state = NULL,
+                                  require_year_match = TRUE,
+                                  excl_diff_bound_yr = TRUE){
 
   attributes_to_import <- get_spatial_data_names(at_highest_res = at_highest_res,
-                                       at_time = at_time,
-                                       to_time = to_time,
-                                       at_specified_res = at_specified_res,
-                                       country = country,
-                                       state = state,
-                                       require_year_match =require_year_match,
-                                       excl_diff_bound_yr = excl_diff_bound_yr)
+                                                 at_time = at_time,
+                                                 to_time = to_time,
+                                                 at_specified_res = at_specified_res,
+                                                 country = country,
+                                                 state = state,
+                                                 require_year_match = require_year_match,
+                                                 excl_diff_bound_yr = excl_diff_bound_yr)
 
-  attribute_list <- purrr::map(attributes_to_import,
-                               ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                      lookup_reference = .,
-                                                      lookup_variable = "name",
-                                                      target_variable = "source_reference")) %>%
-    stats::setNames(attributes_to_import)
   boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper()
-  #boundary_year <-
-  boundary_list <- purrr::map(boundary_res,
-                                     ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb %>%
-                                                 dplyr::filter(main_feature == "Boundary"),
-                                               lookup_reference = .,
-                                               lookup_variable = "area_type",
-                                               target_variable = "source_reference"))
-
-  boundary_list <- purrr::map(boundary_list,
-                              ~ .x %>% dplyr::filter(STE_NAME16 %in% state)) %>%
+  data_names_list <- purrr::map(boundary_res,
+                                ~ attributes_to_import[stringr::str_sub(attributes_to_import,5,7) == tolower(.x )]) %>%
     stats::setNames(boundary_res)
-  ##
-  vic_age_sex_seifa_sa2s_2006_2016_sf <- recur_add_attr_to_sf(country = "Australia",
-                                                              state = "Victoria",
-                                                              area_unit = "SA2",
-                                                              boundary_year = "2016",
-                                                              attribute_data = c("aus_pop_age_sex_sa2_2006_tb",
-                                                                                 "aus_sa2_vic_att_erp_2016",
-                                                                                 "aus_sa2_nat_att_seifa_2016"))
-
-
-  vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
-                                                  state = "Victoria",
-                                                  area_unit = "LGA",
-                                                  boundary_year = "2016",
-                                                  attribute_data = c("aus_lga_vic_att_ppr_2016",
-                                                                     "aus_lga_vic_att_ppr_2021",
-                                                                     "aus_lga_vic_att_ppr_2026",
-                                                                     "aus_lga_vic_att_ppr_2031"))
-  vic_age_sex_acgr_lga_2016_31_sf <- gen_demog_features(profiled_sf = vic_pop_growth_projs_sf,
-                                                        years = c(2016,2019,2031,2025),
-                                                        age0 = 12,
-                                                        age1 = 18,
-                                                        #age_by_year = FALSE,
-                                                        #drop_projs = TRUE,
-                                                        param_tb = test_par_val_master,
-                                                        it_nbr = 1)
-  ##
-
-  vic_merged_attr_sf <- intersect_sf_drop_cols(main_sf = vic_age_sex_seifa_sa2s_2006_2016_sf,
-                                               adjunct_sf = vic_age_sex_acgr_lga_2016_31_sf)
-
-  vic_merged_attr_by_age_sf <- gen_demog_features(profiled_sf = vic_merged_attr_sf,
-                                                  years = c(2016,2019,2031,2025),
-                                                  age0 = 12,
-                                                  age1 = 18,
-                                                  acgr = FALSE,
-                                                  age_by_year = TRUE,
-                                                  drop_bands = TRUE,
-                                                  param_tb = test_par_val_master,
-                                                  it_nbr = 1)
-  ###
-
-  gen_age_sex_estimates_tx(profiled_sf = vic_merged_attr_by_age_sf,
-                           ymwd_step = c(22,5,2,1))
-
+  data_sf_list <- purrr::map2(boundary_res,
+                              data_names_list,
+                              ~ recur_add_attr_to_sf(country = country,
+                                                     state = state,
+                                                     area_unit = .x,
+                                                     boundary_year = at_time,
+                                                     attribute_data = .y)) %>%
+    stats::setNames(boundary_res)
+  index_ppr <- purrr::map_lgl(data_names_list,
+                              ~ check_if_ppr(.x,
+                                             data_lookup_tb = aus_spatial_lookup_tb)) %>%
+    which() + 1
+  data_sf_list <- purrr::prepend(data_sf_list,
+                                 list(index_ppr=index_ppr))
+  return(data_sf_list)
 }
-attributes_to_import <- get_spatial_data_names(at_highest_res = c("ERP by age and sex",
-                                          "ERP",
-                                          "Population projections"),
-                       at_time <- "2016",
-                       to_time <- "2031",
-                       at_specified_res = list(a=c("SEIFA","SA2")),
-                       state = "Victoria",
-                       require_year_match = FALSE
+check_if_ppr <- function(data_name_item,
+                         data_lookup_tb){
+  purrr::map_chr(data_name_item,
+                 ~ ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                                        lookup_reference = .x,
+                                        lookup_variable = "name",
+                                        target_variable = "main_feature",
+                                        evaluate = FALSE)) %>%
+    stringr::str_detect("Population projections") %>%
+    sum() %>%
+    magrittr::is_greater_than(0)
+}
+###
+make_sp_sf <-function(sp_data_list,
+                      age0,
+                      age1,
+                      at_time,
+                      to_time,
+                      param_tb,
+                      it_nbr){
+  years_vec <- as.numeric(c(at_time,to_time))
+  sp_data_list[[sp_data_list[[1]]]]  <- gen_demog_features(profiled_sf = sp_data_list[[sp_data_list[[1]]]],
+                                                           years = years_vec,
+                                                           age0 = age0,
+                                                           age1 = age1,
+                                                           param_tb = param_tb,
+                                                           it_nbr = it_nbr)
 
-                       )
-
-
-##
-vic_land_boundary_sf <- create_australia_land_boundary(state_territories = c("Victoria"))
-attributes_to_import <- c("aus_sa2_vic_att_erp_2016",
-                          "aus_sa2_nat_att_seifa_2016",
-                          "aus_sa1_nat_att_erp_2017",
-                          "aus_lga_vic_att_ppr_2016")
-attribute_list <- purrr::map(attributes_to_import,
-                             ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                   lookup_reference = .,
-                                                   lookup_variable = "name",
-                                                   target_variable = "source_reference")) %>%
-  stats::setNames(attributes_to_import)
-boundaries_to_import <- c("aus_lga_nat_shp_bound_2016",
-                          "aus_sa1_nat_shp_bound_2016",
-                          "aus_sa2_nat_shp_bound_2016")
-boundary_list <- purrr::map(boundaries_to_import,
-                            ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                   lookup_reference = .,
-                                                   lookup_variable = "name",
-                                                   target_variable = "source_reference"))
-boundary_list <- purrr::map(boundary_list,
-                            ~ .x %>% dplyr::filter(STE_NAME16=="Victoria")) %>%
-  stats::setNames(boundaries_to_import)
-##
-vic_age_sex_seifa_sa2s_2006_2016_sf <- recur_add_attr_to_sf(country = "Australia",
-                                                            state = "Victoria",
-                                                            area_unit = "SA2",
-                                                            boundary_year = "2016",
-                                                            attribute_data = c("aus_pop_age_sex_sa2_2006_tb",
-                                                                               "aus_sa2_vic_att_erp_2016",
-                                                                               "aus_sa2_nat_att_seifa_2016"))
-
-
-vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
-                                                            state = "Victoria",
-                                                            area_unit = "LGA",
-                                                            boundary_year = "2016",
-                                                            attribute_data = c("aus_lga_vic_att_ppr_2016",
-                                                                               "aus_lga_vic_att_ppr_2021",
-                                                                               "aus_lga_vic_att_ppr_2026",
-                                                                               "aus_lga_vic_att_ppr_2031"))
-vic_age_sex_acgr_lga_2016_31_sf <- gen_demog_features(profiled_sf = vic_pop_growth_projs_sf,
-                                           years = c(2016,2019,2031,2025),
-                                           age0 = 12,
-                                           age1 = 18,
-                                           #age_by_year = FALSE,
-                                           #drop_projs = TRUE,
-                                           param_tb = test_par_val_master,
-                                           it_nbr = 1)
-##
-
-vic_merged_attr_sf <- intersect_sf_drop_cols(main_sf = vic_age_sex_seifa_sa2s_2006_2016_sf,
-                       adjunct_sf = vic_age_sex_acgr_lga_2016_31_sf)
-
-vic_merged_attr_by_age_sf <- gen_demog_features(profiled_sf = vic_merged_attr_sf,
-                                                           years = c(2016,2019,2031,2025),
-                                                           age0 = 12,
-                                                           age1 = 18,
-                                                           acgr = FALSE,
-                                                           age_by_year = TRUE,
-                                                           drop_bands = TRUE,
-                                                           param_tb = test_par_val_master,
-                                                           it_nbr = 1)
+  ## Add order picker
+  sp_data_sf <- purrr::reduce(sp_data_list[-1],
+                              ~ intersect_sf_drop_cols(main_sf = .x,
+                                                       adjunct_sf = .y))
+  sp_data_sf <- gen_demog_features(profiled_sf = sp_data_sf,
+                                   years = years_vec,
+                                   age0 = age0,
+                                   age1 = age1,
+                                   acgr = FALSE,
+                                   age_by_year = TRUE,
+                                   drop_bands = TRUE,
+                                   param_tb = param_tb,
+                                   it_nbr = it_nbr)
+}
+###
+project_future_pop <- function(sp_data_sf,
+                               ymwd_step_to_bl,
+                               ymwd_step_from_tx,
+                               nbr_steps){
+  if(!is.null(ymwd_step_to_bl)){
+    sp_data_sf <- gen_age_sex_estimates_tx(profiled_sf = sp_data_sf,
+                                           ymwd_step = ymwd_step_to_bl,
+                                           record_as_bl = TRUE)
+  }
+  if(!is.null(ymwd_step_from_tx)){
+    sp_data_sf <- purrr::reduce(rep(list(ymwd_step_from_tx),nbr_steps),
+                                ~ gen_age_sex_estimates_tx(profiled_sf = .x,
+                                                           ymwd_step = .y),
+                                .init = sp_data_sf)
+  }
+  return(sp_data_sf)
+}
+sim_environment <- function(sp_data_list,
+                            age0,
+                            age1,
+                            at_time,
+                            to_time,
+                            ymwd_step_to_bl = NULL,
+                            ymwd_step_from_tx = c(1,0,0,0),
+                            nbr_steps = 1,
+                            param_tb,
+                            it_nbr){
+  sp_data_sf <- make_sp_sf(sp_data_list = sp_data_list,
+                           age0 = age0,
+                           age1 = age1,
+                           at_time = at_time,
+                           to_time = to_time,
+                           param_tb = param_tb,
+                           it_nbr = it_nbr)
+  sp_data_sf <- project_future_pop(sp_data_sf = sp_data_sf,
+                                   ymwd_step_to_bl = Nymwd_step_to_bl,
+                                   ymwd_step_from_tx = ymwd_step_from_tx,
+                                   nbr_steps = nbr_steps)
+  return(sp_data_sf)
+}
 ###
 
-gen_age_sex_estimates_tx(profiled_sf = vic_merged_attr_by_age_sf,
-                         ymwd_step = c(22,5,2,1))
 ##
-#vic_pop_growth_by_age_lga_2016_2031_sf <- dplyr::in
+# vic_land_boundary_sf <- create_australia_land_boundary(state_territories = c("Victoria"))
+# attributes_to_import <- c("aus_sa2_vic_att_erp_2016",
+#                           "aus_sa2_nat_att_seifa_2016",
+#                           "aus_sa1_nat_att_erp_2017",
+#                           "aus_lga_vic_att_ppr_2016")
+# attribute_list <- purrr::map(attributes_to_import,
+#                              ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+#                                                    lookup_reference = .,
+#                                                    lookup_variable = "name",
+#                                                    target_variable = "source_reference")) %>%
+#   stats::setNames(attributes_to_import)
+# boundaries_to_import <- c("aus_lga_nat_shp_bound_2016",
+#                           "aus_sa1_nat_shp_bound_2016",
+#                           "aus_sa2_nat_shp_bound_2016")
+# boundary_list <- purrr::map(boundaries_to_import,
+#                             ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+#                                                    lookup_reference = .,
+#                                                    lookup_variable = "name",
+#                                                    target_variable = "source_reference"))
+# boundary_list <- purrr::map(boundary_list,
+#                             ~ .x %>% dplyr::filter(STE_NAME16=="Victoria")) %>%
+#   stats::setNames(boundaries_to_import)
+# ##
+# vic_age_sex_seifa_sa2s_2006_2016_sf <- recur_add_attr_to_sf(country = "Australia",
+#                                                             state = "Victoria",
+#                                                             area_unit = "SA2",
+#                                                             boundary_year = "2016",
+#                                                             attribute_data = c("aus_pop_age_sex_sa2_2006_tb",
+#                                                                                "aus_sa2_vic_att_erp_2016",
+#                                                                                "aus_sa2_nat_att_seifa_2016"))
+#
+#
+# vic_pop_growth_projs_sf <- recur_add_attr_to_sf(country = "Australia",
+#                                                             state = "Victoria",
+#                                                             area_unit = "LGA",
+#                                                             boundary_year = "2016",
+#                                                             attribute_data = c("aus_lga_vic_att_ppr_2016",
+#                                                                                "aus_lga_vic_att_ppr_2021",
+#                                                                                "aus_lga_vic_att_ppr_2026",
+#                                                                                "aus_lga_vic_att_ppr_2031"))
+# vic_age_sex_acgr_lga_2016_31_sf <- gen_demog_features(profiled_sf = vic_pop_growth_projs_sf,
+#                                            years = c(2016,2019,2031,2025),
+#                                            age0 = 12,
+#                                            age1 = 18,
+#                                            #age_by_year = FALSE,
+#                                            #drop_projs = TRUE,
+#                                            param_tb = test_par_val_master,
+#                                            it_nbr = 1)
+# ##
+#
+# vic_merged_attr_sf <- intersect_sf_drop_cols(main_sf = vic_age_sex_seifa_sa2s_2006_2016_sf,
+#                        adjunct_sf = vic_age_sex_acgr_lga_2016_31_sf)
+# vic_merged_attr_by_age_sf <- gen_demog_features(profiled_sf = vic_merged_attr_sf,
+#                                                            years = c(2016,2019,2031,2025),
+#                                                            age0 = 12,
+#                                                            age1 = 18,
+#                                                            acgr = FALSE,
+#                                                            age_by_year = TRUE,
+#                                                            drop_bands = TRUE,
+#                                                            param_tb = test_par_val_master,
+#                                                            it_nbr = 1)
+# ###
+# gen_age_sex_estimates_tx(profiled_sf = vic_merged_attr_by_age_sf,
+#                          ymwd_step = c(22,5,2,1))
+##

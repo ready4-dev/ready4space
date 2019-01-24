@@ -32,7 +32,7 @@ recur_add_attr_to_sf <- function(country,
   data_lookup_tb <- data_lookup_tb %>%
     dplyr::filter(area_type == area_unit) %>%
     dplyr::filter(year == boundary_year)
-  boundary_file = ready.data::data_get(data_lookup_tb = data_lookup_tb,
+  boundary_file <- ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference")
@@ -86,26 +86,34 @@ add_attr_to_sf <- function(area_unit,
                            attr_data_year,
                            boundary_year = "2016"){
   if(attr_data_desc == "Population projections"){
-    pop_preds_data <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
+    attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
                                              attr_data_year = attr_data_year,
                                              area_unit = area_unit,
                                              boundary_year = boundary_year)
     merged_units <- dplyr::inner_join(area_sf,
-                                      pop_preds_data) %>%
+                                      attr_data_tb) %>%
       sf::st_as_sf()
   }
   if(stringr::str_detect(attr_data_desc, "ERP by age and sex")){
-    child_youth_pop_data <- prepare_child_youth_data(child_youth_data = attr_data_tb,
+    attr_data_tb <- prepare_child_youth_data(child_youth_data = attr_data_tb,
                                                      area_unit = area_unit,
                                                      #attr_data_year = attr_data_year,
                                                      boundary_year = boundary_year)
       merged_units <- dplyr::inner_join(area_sf,
-                                       child_youth_pop_data) %>%
+                                        attr_data_tb) %>%
         sf::st_as_sf()
+  }
+  if(attr_data_desc == "ERP"){
+    attr_data_tb <- prepare_erp_data(erp_data = attr_data_tb,
+                                 area_unit = area_unit,
+                                 boundary_year = boundary_year)
+    merged_units <- dplyr::inner_join(area_sf,
+                                      attr_data_tb) %>%
+      sf::st_as_sf()
   }
   if(attr_data_desc == "SEIFA"){
     t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
-    seifa_deciles_by_unit <- prepare_seifa_data(seifa_data = attr_data_tb,
+    attr_data_tb <- prepare_seifa_data(seifa_data = attr_data_tb,
                                                area_unit = area_unit,
                                                #attr_data_year = attr_data_year,
                                                t1_stub = t1_stub)
@@ -118,7 +126,7 @@ add_attr_to_sf <- function(area_unit,
       unitname <- paste0("SA2_NAME",t1_stub)
     }
     merged_units <- dplyr::left_join(area_sf,
-                                     seifa_deciles_by_unit)
+                                     attr_data_tb)
     merged_units <- dplyr::inner_join(merged_units,
                                       merged_units %>%
                                         dplyr::group_by(!!groupvar) %>%
@@ -171,6 +179,17 @@ prepare_pop_preds_data <- function(attr_data_tb,
   return(pop_preds_data)
 }
 #
+prepare_erp_data <- function(erp_data,
+                             area_unit,
+                             boundary_year){
+  t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
+  if(area_unit =="SA1"){
+    erp_data[["SA1"]] <- factor(as.character(erp_data[["SA1"]]))
+    erp_data <- erp_data %>%
+      dplyr::rename(!!rlang::sym(paste0("SA1_7DIG",t1_stub)) := "SA1")
+  }
+  return(erp_data)
+}
 prepare_child_youth_data <- function(child_youth_data,
                                      area_unit,
                                      #attr_data_year,
