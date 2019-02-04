@@ -186,7 +186,7 @@ get_resolution_hierarchy <- function(data_year,
 get_highest_res <- function(options_vec,
                             year){
   if(!is.na(options_vec[1])){
-    res_hierarchy <- get_resolution_hierarchy(as.numeric(at_time))
+    res_hierarchy <- get_resolution_hierarchy(as.numeric(year))
     res_hierarchy[min(which(res_hierarchy %in% options_vec))]
   }else
     NA
