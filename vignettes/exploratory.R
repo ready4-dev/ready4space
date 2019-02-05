@@ -1,13 +1,29 @@
 devtools::load_all(".")
 library(magrittr)
 ## Step 0: User Input
+state_territory = "Victoria"
+profiled_area = "Service cluster - Orygen headspaces"
+age_lower = 12
+age_upper = 20
+disorder = "Anxiety"
+sexes = c("Female","Male")
+project_for_year = 2023
 # if(state_territory != "Victoria")
 #   project_for_year = 2016
-sim_epi_for_profiled_area(state_territory = "Victoria",
-                          profiled_area = "Service cluster - Orygen headspaces",
-                          age_lower = 12,
-                          age_upper = 18,
-                          project_for_year = 2023)
+
+sim_data <- project_epi_for_area(state_territory = state_territory,
+                                 profiled_area = profiled_area,
+                          age_lower = age_lower,
+                          age_upper = age_upper,
+                          project_for_year = project_for_year)
+estimate_prevalence(disorder = disorder,
+                    period = "Year",
+                    ages = age_lower:age_upper,
+                    sexes = sexes,
+                    pop_data = env_sf(st_envir(sim_data)) %>%
+                      dplyr::group_by(SA2_MAIN16) %>%
+                      dplyr::summarise_at(dplyr::vars(dplyr::starts_with("tx_")),
+                                          funs(mean)))
 ##
 
 #
