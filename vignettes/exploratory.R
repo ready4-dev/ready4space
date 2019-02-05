@@ -6,22 +6,12 @@ library(magrittr)
 # is.rfwn_dist_pert(abc)
 ##
 ## 1. GET PARAMETER MATRICES
-make_master_param_tb <- function(nbr_its,
-                                 env_str_par_tb,
-                                 mape_str_par_tb,
-                                 jt_dist){
-  par_val_mape <- ready.agents::gen_par_vals(x = mape_str_par_tb,
-                                             nbr_its = nbr_its,
-                                             jt_dist = jt_dist)
-  par_val_env <- ready.agents::gen_par_vals(x = env_str_par_tb,
-                                            nbr_its = nbr_its)
-  dplyr::bind_rows(par_val_env,
-                   par_val_mape)
-}
-test_par_val_master <- make_master_param_tb(nbr_its = 5,
+
+env_param_tb <- make_env_param_tb(nbr_its = 5,
                      env_str_par_tb = ready.agents::par_str_environment_tb,
                      mape_str_par_tb = ready.aus.data::params_struc_mape_tb,
                      jt_dist = FALSE)
+class(env_param_tb) <- class(env_param_tb)[2:4]
 # test_par_val_mape <- ready.agents::gen_par_vals(ready.aus.data::params_struc_mape_tb,
 #                                                 nbr_its = 5,
 #                                                 jt_dist = FALSE)
@@ -54,33 +44,70 @@ orygen_headspace_cluster_long_lat_10k_tb =  tibble::tibble(lat = c(-37.704890, -
 orygen_headspace_cluster_boundary_10k_sf <- rfwn.space.time::spatial_area_within_xkm_of_points(point_locations = orygen_headspace_cluster_long_lat_10k_tb,
                                                                                                land_sf = vic_st_boundary_sf,
                                                                                                distance = 10000)
-rfwn.plot::plot_area_within_xkm_from_services(service_centre_locations_sf = orygen_headspace_cluster_boundary_10k_sf,
-                                                  distance = 10000,
-                                                  titlestring = "Orygen Headspace Centres")
-sp_data_list_list_2 <- sp_data_list
-sp_data_list_list_2[[2]] <- spatial_profile_by_resolution_and_update_counts(profiled_sf = orygen_headspace_cluster_boundary_10k_sf,
-                                                                             resolution_sf = sp_data_list_list_2[[2]],
-                                                                             resolution_sa1s_sf = sp_data_list_list_2[[4]],
-                                                                             resolution_sa2s_sf = sp_data_list_list_2[[2]],
+# rfwn.plot::plot_area_within_xkm_from_services(service_centre_locations_sf = orygen_headspace_cluster_boundary_10k_sf,
+#                                                   distance = 10000,
+#                                                   titlestring = "Orygen Headspace Centres")
+##sp_data_list_list_2 <- sp_data_list
+sp_data_list[[2]] <- spatial_profile_by_resolution_and_update_counts(profiled_sf = orygen_headspace_cluster_boundary_10k_sf,
+                                                                             resolution_sf = sp_data_list[[2]],
+                                                                             resolution_sa1s_sf = sp_data_list[[4]],
+                                                                             resolution_sa2s_sf = sp_data_list[[2]],
                                                                              return_resolution = "SA2")
-ready.plot::plot_seifa_by_SA2_SA1(profiled_sf = sp_data_list_list_2[[2]],
-                                     profiled_unit_name = "Area <10km from Orygen Headspaces",
-                                     resolution_unit_name = "sa2",
-                                     year = "2016")
+# ready.plot::plot_seifa_by_SA2_SA1(profiled_sf = sp_data_list[[2]],
+#                                      profiled_unit_name = "Area <10km from Orygen Headspaces",
+#                                      resolution_unit_name = "sa2",
+#                                      year = "2016")
+library(ready.sim)
+st_envir <- ready_env(st_data = sp_data_list,
+                      par_vals = env_param_tb)
+sim_data <- ready_sim_data(st_envir = st_envir,
+                           pre_model_date = "2016",
+                           model_start_date = "2019",
+                           model_end_date = "2031",
+                           age_lower = 12,
+                           age_upper = 18,
+                           time_steps = c(1,0,2,1),
+                           nbr_steps = 20)
+# `nbr_steps<-`(sim_data,3)
+# sim_data <- ready_sim_data(list(sp_data_list,
+#                                 "2016"))
+sim_data <- runSimulation(sim_data)
+## 5. SIMULATE EVOLUTION OF ENVIRONMENT OVER TIME
+# sp_data_sf <- ready.sim::sim_environment(sp_data_list = sp_data_list,
+#                               age0 = 12,
+#                               age1 = 18,
+#                               at_time = "2016",
+#                               to_time = "2031",
+#                               param_tb = env_param_tb,
+#                               it_nbr = 1,
+#                               #sp_data_sf = sp_data_sf,
+#                               ymwd_step_to_bl = NULL,
+#                               ymwd_step_from_tx = c(1,0,2,1),
+#                               nbr_steps = 2)
 
-## 4. SIMULATE EVOLUTION OF ENVIRONMENT OVER TIME
-sp_data_sf <- ready.sim::sim_environment(sp_data_list = sp_data_list_list_2,
-                              age0 = 12,
-                              age1 = 18,
-                              at_time = "2016",
-                              to_time = "2031",
-                              param_tb = test_par_val_master,
-                              it_nbr = 1,
-                              #sp_data_sf = sp_data_sf,
-                              ymwd_step_to_bl = NULL,
-                              ymwd_step_from_tx = c(1,0,2,1),
-                              nbr_steps = 2)
+sp_data_sf <- ready.sim::sim_environment(sp_data_list = st_data(st_envir(sim_data)),
+                                         age0 = age_lower(sim_data),
+                                         age1 = age_upper(sim_data),
+                                         at_time = pre_model_date(sim_data),
+                                         to_time = model_end_date(sim_data),
+                                         param_tb = par_vals(st_envir(sim_data)),
+                                         it_nbr = 1,
+                                         #sp_data_sf = sp_data_sf,
+                                         ymwd_step_to_bl = NULL,#,
+                                         ymwd_step_from_tx = time_steps(sim_data),
+                                         nbr_steps = nbr_steps(sim_data))
 
+env_sf(st_envir(sim_data)) <- ready.sim::sim_environment(sp_data_list = st_data(st_envir(sim_data)),
+                                                         age0 = age_lower(sim_data),
+                                                         age1 = age_upper(sim_data),
+                                                         at_time = pre_model_date(sim_data),
+                                                         to_time = model_end_date(sim_data),
+                                                         param_tb = par_vals(st_envir(sim_data)),
+                                                         it_nbr = 1,
+                                                         #sp_data_sf = sp_data_sf,
+                                                         ymwd_step_to_bl = NULL,#,
+                                                         ymwd_step_from_tx = time_steps(sim_data),
+                                                         nbr_steps = nbr_steps(sim_data))
 ##
 ##
 # vic_land_boundary_sf <- create_australia_land_boundary(state_territories = c("Victoria"))

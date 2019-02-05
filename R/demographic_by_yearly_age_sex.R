@@ -285,7 +285,7 @@ adjust_pop_proj_for_pe <- function(t0_pop,
                            "_yr_",
                            stringr::str_sub(age_sex_band,1,1),
                            stringr::str_sub(age_sex_band,-6))
-  ape <- ready.data::data_get(data_lookup_tb = test_par_val_master,
+  ape <- ready.data::data_get(data_lookup_tb = param_tb,
                        lookup_reference = age_sex_lookup,
                        lookup_variable = "param_name",
                        target_variable = paste0("v_it_",it_nbr),
