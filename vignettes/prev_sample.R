@@ -40,14 +40,14 @@ pick_source <- function(disorder,
 }
 sel_source <- pick_source("Anxiety", "Year", age=12, sex="Female")
 pick_rate_from_source("Anxiety", "Year", source=sel_source, age=12, sex="Female")
-disorder <- "Anxiety"
-period <- "Year"
-ages <- 13:19
-sexes <- c("Female", "Male")
+# disorder <- "Anxiety"
+# period <- "Year"
+# ages <- 13:19
+# sexes <- c("Female", "Male")
 pref_sources_for_age_range <- function(disorder,
                                      period,
                                      ages,
-                                     sex,
+                                     sexes,
                                      pref_source = ymh.epi::pref_source,
                                      prev_rates = ymh.epi::prev_rates){
   base_tib <- pref_source %>% dplyr::select(Disorder, Period) %>% dplyr::filter(Disorder == disorder,
@@ -67,5 +67,39 @@ pref_sources_for_age_range <- function(disorder,
                                                                         age = stringr::str_sub(y,-2),
                                                                         sex = stringr::str_sub(y,1,-4))))
 }
+age_sex_source_tb <- pref_sources_for_age_range("Anxiety","Year",13:19,sexes="Female")
+# %>%
+#   dplyr::rename_at(dplyr::vars(dplyr::contains("Female")),
+#                    dplyr::funs(gsub("Female","f",.))) %>%
+#   dplyr::rename_at(dplyr::vars(dplyr::contains("Male")),
+#                    dplyr::funs(gsub("Male","m",.)))
+
+age_sex_source_tb <- age_sex_source_tb %>%
+  dplyr::select(dplyr::starts_with("Female_"),
+                dplyr::starts_with(("Male_")))
+age_sex_vec  <- age_sex_source_tb %>%
+  names()
+source_vec <- age_sex_source_tb %>%
+   unlist() %>%
+  as.vector()
+
+prev_rates_vec <- purrr::map2_dbl(age_sex_vec,
+                source_vec,
+                ~ pick_rate_from_source("Anxiety",
+                                        "Year",
+                                        source=.y,
+                                        age=.x %>%
+                                          stringr::str_sub(start=-2) %>%
+                                          as.numeric(),
+                                        sex=.x %>%
+                                          stringr::str_sub(end=-4))) %>%
+  stats::setNames(age_sex_vec %>%
+                    gsub("Female","f",.)%>%
+                    gsub("Male","m",.))
+
+pop_totals_vec <- env_sf(st_envir(sim_data)) %>% names()
+pop_totals_vec <- pop_totals_vec[pop_totals_vec%>% startsWith(prefix="tx_")]
+pop_totals_vec <-pop_totals_vec[purrr::map_lgl(pop_totals_vec,
+               ~ .x %>% stringr::str_sub(start = -4) %in% names(prev_rates_vec))]
 #ann_prev_rates <- prev_rates %>% dplyr::filter(Period=="Year")
 #rates_to_apply <-
