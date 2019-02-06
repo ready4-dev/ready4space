@@ -69,10 +69,10 @@ aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
                 year = ifelse(name=="aus_pop_age_sex_sa2_2006_tb", "2006", year))
 ###
 aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
-  dplyr::mutate(name = ifelse(name =="aus_lga_vic_att_ppr_2016", "aus_lga_vic_att_ppr_2016_31",naaus_spatial_lookup_tb me))
+  dplyr::mutate(name = ifelse(name =="aus_lga_vic_att_ppr_2016", "aus_lga_vic_att_ppr_2016_31",name))
 aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
   dplyr::mutate(year = ifelse(name =="aus_lga_vic_att_ppr_2016_31", "2016_31",year))
-aus_spatial_lookup_tb <- %>%
+aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
   dplyr::mutate(country = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "Australia",country),
                 area_type = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "LGA",area_type),
                 region = ifelse(name=="vic_pop_growth_by_age_lga_2016_tb", "VIC",region),
@@ -114,6 +114,9 @@ aus_data_resolution_tb <- tibble::tibble(area_type = c("SA1","SA2","SA3","SA4","
 aus_state_short_tb <- tibble::tibble(state_territory = c("Australian Capital Territory", "New South Wales", "Northern Territory", "Queensland",
                                                          "South Australia", "Tasmania", "Victoria", "Western Australia"),
                                      short_name = c("ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"))
+
+par_str_environment_tb = ready.agents::par_str_environment_tb
+params_struc_mape_tb = ready.aus.data::params_struc_mape_tb
 #aus_spatial_lookup_tb <- aus_spatial_lookup_tb %>%
 #  dplyr::add_row(name = "aus_lga_vic_att_ppr_2021",
 #                 country = "Australia",
@@ -143,7 +146,7 @@ aus_state_short_tb <- tibble::tibble(state_territory = c("Australian Capital Ter
 #                                          "ready.aus.data::aus_lga_vic_att_ppr_2016[[1]]",
 #                                          source_reference)) %>%
 #  dplyr::arrange(name)
-
+aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 
 usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE)
@@ -154,3 +157,13 @@ usethis::use_data(aus_data_resolution_tb,
                   overwrite = TRUE)
 usethis::use_data(aus_state_short_tb,
                   overwrite = TRUE)
+# usethis::use_data(par_str_environment_tb,
+#                   overwrite = TRUE,
+#                   internal = TRUE)
+# usethis::use_data(params_struc_mape_tb,
+#                   overwrite = TRUE,
+#                   internal = TRUE)
+# usethis::use_data(aus_boundary_phns_sf,
+#                   overwrite = TRUE,
+#                   internal = TRUE)
+

@@ -1,5 +1,5 @@
-#' @title project_epi_for_area
-#' @description Project epidemiology for area at specified point in time
+#' project_epi_for_area
+#' Project epidemiology for area at specified point in time
 #' @param state_territory PARAM_DESCRIPTION, Default: 'Victoria'
 #' @param profiled_area PARAM_DESCRIPTION, Default: 'Service cluster - Orygen headspaces'
 #' @param age_lower PARAM_DESCRIPTION, Default: 12
@@ -7,27 +7,7 @@
 #' @param project_for_year PARAM_DESCRIPTION, Default: 2023
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[ready.agents]{character(0)}}
-#'  \code{\link[ready.aus.data]{character(0)}},\code{\link[ready.aus.data]{aus_boundary_phns_sf}}
-#'  \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{filter}}
-#'  \code{\link[sf]{geos_combine}}
-#'  \code{\link[tibble]{tibble}}
-#'  \code{\link[ready.sim]{ready_env}},\code{\link[ready.sim]{ready_sim_data}},\code{\link[ready.sim]{runSimulation}},\code{\link[ready.sim]{env_sf}},\code{\link[ready.sim]{st_envir}}
-#' @rdname project_epi_for_area
-#' @export
-#' @importFrom ready.agents par_str_environment_tb
-#' @importFrom ready.aus.data params_struc_mape_tb aus_boundary_phns_sf
-#' @importFrom dplyr mutate_if funs filter
-#' @importFrom sf st_union
-#' @importFrom tibble tibble
-#' @importFrom ready.sim ready_env ready_sim_data runSimulation env_sf st_envir
+
 
 project_epi_for_area <- function(state_territory = "Victoria",
                                       profiled_area = "Service cluster - Orygen headspaces",
@@ -38,7 +18,7 @@ project_epi_for_area <- function(state_territory = "Victoria",
   ## 1. GET PARAMETER MATRICES
   env_param_tb <- make_env_param_tb(nbr_its = 5,
                                     env_str_par_tb = ready.agents::par_str_environment_tb,
-                                    mape_str_par_tb = ready.aus.data::params_struc_mape_tb,
+                                    mape_str_par_tb = ready.agents::params_struc_mape_tb,
                                     jt_dist = FALSE)
   ## Can use below to eliminate uncertainty from population predictions:
   env_param_tb <- env_param_tb %>%

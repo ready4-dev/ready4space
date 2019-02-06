@@ -20,10 +20,10 @@ estimate_prevalence(disorder = disorder,
                     period = "Year",
                     ages = age_lower:age_upper,
                     sexes = sexes,
-                    pop_data = env_sf(st_envir(sim_data)) %>%
+                    pop_data = ready.sim::env_sf(ready.sim::st_envir(sim_data)) %>%
                       dplyr::group_by(SA2_MAIN16) %>%
                       dplyr::summarise_at(dplyr::vars(dplyr::starts_with("tx_")),
-                                          funs(mean)))
+                                          dplyr::funs(mean)))
 ##
 
 #

@@ -2,7 +2,8 @@
 % Please edit documentation in R/project_epi_for_area.R
 \name{project_epi_for_area}
 \alias{project_epi_for_area}
-\title{project_epi_for_area}
+\title{project_epi_for_area
+Project epidemiology for area at specified point in time}
 \usage{
 project_epi_for_area(state_territory = "Victoria",
   profiled_area = "Service cluster - Orygen headspaces",
@@ -23,23 +24,9 @@ project_epi_for_area(state_territory = "Victoria",
 OUTPUT_DESCRIPTION
 }
 \description{
+project_epi_for_area
 Project epidemiology for area at specified point in time
 }
 \details{
 DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-}
-\seealso{
-\code{\link[ready.agents]{character(0)}}
- \code{\link[ready.aus.data]{character(0)}},\code{\link[ready.aus.data]{aus_boundary_phns_sf}}
- \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{filter}}
- \code{\link[sf]{geos_combine}}
- \code{\link[tibble]{tibble}}
- \code{\link[ready.sim]{ready_env}},\code{\link[ready.sim]{ready_sim_data}},\code{\link[ready.sim]{runSimulation}},\code{\link[ready.sim]{env_sf}},\code{\link[ready.sim]{st_envir}}
 }
