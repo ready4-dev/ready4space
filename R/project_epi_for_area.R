@@ -7,6 +7,7 @@
 #' @param project_for_year PARAM_DESCRIPTION, Default: 2023
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
+#' @export
 
 
 project_epi_for_area <- function(state_territory = "Victoria",
