@@ -78,6 +78,34 @@ estimate_prevalence <- function(pop_data,
   return(summ_tb)
 }
 
+#' make_prev_struc_par_tb
+#' FUNCTION_DESCRIPTION
+#' @param disorder PARAM_DESCRIPTION
+#' @param period PARAM_DESCRIPTION
+#' @param ages PARAM_DESCRIPTION
+#' @param sexes PARAM_DESCRIPTION
+#' @param pref_source PARAM_DESCRIPTION
+#' @param prev_rates PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}}
+#'  \code{\link[purrr]{map2}}
+#'  \code{\link[stringr]{str_sub}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname make_prev_struc_par_tb
+#' @export
+#' @importFrom dplyr select starts_with
+#' @importFrom purrr map2_dbl
+#' @importFrom stringr str_sub
+#' @importFrom stats setNames
+
 make_prev_struc_par_tb <- function(disorder,
                                    period,
                                    ages,
