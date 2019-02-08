@@ -1,13 +1,8 @@
 #' estimate_prevalence
 #' Function to estimate the prevalence of a specified condition, for a specified disorder for a specified area / year.
-#' @param disorder PARAM_DESCRIPTION
-#' @param period PARAM_DESCRIPTION
-#' @param ages PARAM_DESCRIPTION
-#' @param sexes PARAM_DESCRIPTION
 #' @param pop_data PARAM_DESCRIPTION
-#' @param pref_source PARAM_DESCRIPTION
-#' @param prev_rates PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @param prev_rates_vec PARAM_DESCRIPTION
+##' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
 #' \dontrun{
@@ -31,13 +26,64 @@
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
 
-estimate_prevalence <- function(disorder,
-                                period,
-                                ages,
-                                sexes,
-                                pop_data,
-                                pref_source,
-                                prev_rates){
+estimate_prevalence <- function(pop_data,
+                                prev_rates_vec){
+  # age_sex_source_tb <- pref_sources_for_age_range(disorder = disorder,
+  #                                                 period = period,
+  #                                                 ages =  ages,
+  #                                                 sexes = sexes,
+  #                                                 pref_source = pref_source)
+  # age_sex_source_tb <- age_sex_source_tb %>%
+  #   dplyr::select(dplyr::starts_with("Female_"),
+  #                 dplyr::starts_with(("Male_")))
+  # age_sex_vec  <- age_sex_source_tb %>%
+  #   names()
+  # source_vec <- age_sex_source_tb %>%
+  #   unlist() %>%
+  #   as.vector()
+  # prev_rates_vec <- purrr::map2_dbl(age_sex_vec,
+  #                                   source_vec,
+  #                                   ~ pick_rate_from_source(disorder,
+  #                                                           period,
+  #                                                           source=.y,
+  #                                                           age=.x %>%
+  #                                                             stringr::str_sub(start=-2) %>%
+  #                                                             as.numeric(),
+  #                                                           sex=.x %>%
+  #                                                             stringr::str_sub(end=-4),
+  #                                                           prev_rates = prev_rates)) %>%
+  #   stats::setNames(age_sex_vec %>%
+  #                     gsub("Female","f",.)%>%
+  #                     gsub("Male","m",.))
+  pop_totals_vec <- pop_data %>% names()
+  pop_totals_vec <- pop_totals_vec[pop_totals_vec %>% startsWith(prefix="tx_")]
+  pop_totals_vec <- pop_totals_vec[purrr::map_lgl(pop_totals_vec,
+                                                 ~ .x %>% stringr::str_sub(start = -4) %in% names(prev_rates_vec))]
+  prev_summary <- purrr::reduce(1:length(pop_totals_vec),
+                                .init = pop_data,
+                                ~ .x %>%
+                                  dplyr::mutate(!!rlang::sym(paste0(names(prev_rates_vec)[.y],"_prev")) := !!rlang::sym(pop_totals_vec[.y]) * prev_rates_vec[.y]))
+  prev_area_summary <- prev_summary %>%
+    dplyr::summarise_at(dplyr::vars(dplyr::contains("_prev")),
+                        dplyr::funs(sum))
+  st_geometry(prev_area_summary) <- NULL
+  prev_area_sum_vec <- prev_area_summary %>%
+    unlist()
+  female_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"f_")]
+  male_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"m_")]
+  summ_tb <- tibble::tibble(age = ages,
+                            Females = female_prev_vec,
+                            Males = male_prev_vec) %>%
+    dplyr::mutate(Total = Females + Males)
+  return(summ_tb)
+}
+
+make_prev_struc_par_tb <- function(disorder,
+                                   period,
+                                   ages,
+                                   sexes,
+                                   pref_source,
+                                   prev_rates){
   age_sex_source_tb <- pref_sources_for_age_range(disorder = disorder,
                                                   period = period,
                                                   ages =  ages,
@@ -65,27 +111,7 @@ estimate_prevalence <- function(disorder,
     stats::setNames(age_sex_vec %>%
                       gsub("Female","f",.)%>%
                       gsub("Male","m",.))
-  pop_totals_vec <- pop_data %>% names()
-  pop_totals_vec <- pop_totals_vec[pop_totals_vec%>% startsWith(prefix="tx_")]
-  pop_totals_vec <- pop_totals_vec[purrr::map_lgl(pop_totals_vec,
-                                                 ~ .x %>% stringr::str_sub(start = -4) %in% names(prev_rates_vec))]
-  prev_summary <- purrr::reduce(1:length(pop_totals_vec),
-                                .init = pop_data,
-                                ~ .x %>%
-                                  dplyr::mutate(!!rlang::sym(paste0(names(prev_rates_vec)[.y],"_prev")) := !!rlang::sym(pop_totals_vec[.y]) * prev_rates_vec[.y]))
-  prev_area_summary <- prev_summary %>%
-    dplyr::summarise_at(dplyr::vars(dplyr::contains("_prev")),
-                        dplyr::funs(sum))
-  st_geometry(prev_area_summary) <- NULL
-  prev_area_sum_vec <- prev_area_summary %>%
-    unlist()
-  female_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"f_")]
-  male_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"m_")]
-  summ_tb <- tibble::tibble(age = ages,
-                            Females = female_prev_vec,
-                            Males = male_prev_vec) %>%
-    dplyr::mutate(Total = Females + Males)
-  return(summ_tb)
+  return(prev_rates_vec)
 }
 
 #' pick_rate_from_source
@@ -116,7 +142,9 @@ pick_rate_from_source <-function(disorder,
                                  prev_rates){
   look_up <- paste0(sex,"_",age)
   sel_rate <- prev_rates  %>%
-    dplyr::filter(Disorder==disorder, Period==period, Source==source) %>%
+    dplyr::filter(Disorder==disorder,
+                  Period==period,
+                  Source==source) %>%
     dplyr::select(look_up) %>%
     dplyr::pull()
   return(sel_rate)
