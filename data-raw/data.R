@@ -146,6 +146,15 @@ params_struc_mape_tb = ready.aus.data::params_struc_mape_tb
 #                                          "ready.aus.data::aus_lga_vic_att_ppr_2016[[1]]",
 #                                          source_reference)) %>%
 #  dplyr::arrange(name)
+##
+##
+##
+safety_pref_source <- ymh.epi.lit::pref_source
+safety_prev_rates <- ymh.epi.lit::prev_rates
+usethis::use_data(safety_pref_source,
+                  overwrite = TRUE)
+usethis::use_data(safety_prev_rates,
+                  overwrite = TRUE)
 aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 
 usethis::use_data(aus_spatial_lookup_tb,
@@ -154,9 +163,11 @@ usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE,
                    internal = TRUE)
 usethis::use_data(aus_data_resolution_tb,
-                  overwrite = TRUE)
+                  overwrite = TRUE,
+                  internal = TRUE)
 usethis::use_data(aus_state_short_tb,
-                  overwrite = TRUE)
+                  overwrite = TRUE,
+                  internal = TRUE)
 # usethis::use_data(par_str_environment_tb,
 #                   overwrite = TRUE,
 #                   internal = TRUE)

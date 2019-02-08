@@ -1,5 +1,6 @@
 devtools::load_all(".")
 library(magrittr)
+library(ready.sim)
 ## Step 0: User Input
 state_territory = "Victoria"
 profiled_area = "Service cluster - Orygen headspaces"
@@ -8,14 +9,24 @@ age_upper = 20
 disorder = "Anxiety"
 sexes = c("Female","Male")
 project_for_year = 2023
+nbr_its = 4
+env_str_par_tb = ready.aus.prev::par_str_environment_tb
+deterministic = FALSE
 # if(state_territory != "Victoria")
 #   project_for_year = 2016
-
+## 1. Create Simulate Object
 sim_data <- project_epi_for_area(state_territory = state_territory,
                                  profiled_area = profiled_area,
                           age_lower = age_lower,
                           age_upper = age_upper,
-                          project_for_year = project_for_year)
+                          project_for_year = project_for_year,
+                          nbr_its = nbr_its,
+                          env_str_par_tb = env_str_par_tb,
+                          deterministic = deterministic)
+## 2. Simulate
+# sim_data <- ready.sim::runSimulation(sim_data)
+# ready.sim::env_sf(ready.sim::st_envir(sim_data))
+## 3. Estimate Prevalence
 estimate_prevalence(disorder = disorder,
                     period = "Year",
                     ages = age_lower:age_upper,

@@ -59,9 +59,9 @@ estimate_prevalence <- function(disorder,
     stats::setNames(age_sex_vec %>%
                       gsub("Female","f",.)%>%
                       gsub("Male","m",.))
-  pop_totals_vec <- env_sf(st_envir(sim_data)) %>% names()
+  pop_totals_vec <- pop_data %>% names()
   pop_totals_vec <- pop_totals_vec[pop_totals_vec%>% startsWith(prefix="tx_")]
-  pop_totals_vec <-pop_totals_vec[purrr::map_lgl(pop_totals_vec,
+  pop_totals_vec <- pop_totals_vec[purrr::map_lgl(pop_totals_vec,
                                                  ~ .x %>% stringr::str_sub(start = -4) %in% names(prev_rates_vec))]
   prev_summary <- purrr::reduce(1:length(pop_totals_vec),
                                 .init = pop_data,
@@ -81,12 +81,33 @@ estimate_prevalence <- function(disorder,
     dplyr::mutate(Total = Females + Males)
   return(summ_tb)
 }
+
+#' pick_rate_from_source
+#' FUNCTION_DESCRIPTION
+#' @param disorder PARAM_DESCRIPTION
+#' @param period PARAM_DESCRIPTION
+#' @param source PARAM_DESCRIPTION
+#' @param age PARAM_DESCRIPTION
+#' @param sex PARAM_DESCRIPTION
+#' @param prev_rates PARAM_DESCRIPTION, Default: safety_prev_rates
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname pick_rate_from_source
+#' @export
+#' @importFrom dplyr filter select pull
+
 pick_rate_from_source <-function(disorder,
                                  period,
                                  source,
                                  age,
                                  sex,
-                                 prev_rates = ymh.epi::prev_rates){
+                                 prev_rates = safety_prev_rates){
   look_up <- paste0(sex,"_",age)
   sel_rate <- prev_rates  %>%
     dplyr::filter(Disorder==disorder, Period==period, Source==source) %>%
@@ -94,11 +115,32 @@ pick_rate_from_source <-function(disorder,
     dplyr::pull()
   return(sel_rate)
 }
+
+#' pick_source
+#' FUNCTION_DESCRIPTION
+#' @param disorder PARAM_DESCRIPTION
+#' @param period PARAM_DESCRIPTION
+#' @param age PARAM_DESCRIPTION
+#' @param sex PARAM_DESCRIPTION
+#' @param pref_source PARAM_DESCRIPTION, Default: safety_pref_source
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname pick_source
+#' @export
+#' @importFrom dplyr filter select pull
+#' @importFrom purrr pluck
+
 pick_source <- function(disorder,
                         period,
                         age,
                         sex,
-                        pref_source = ymh.epi::pref_source){
+                        pref_source = safety_pref_source){
   look_up <- paste0(sex,"_",age)
   sel_source <- pref_source  %>%
     dplyr::filter(Disorder==disorder, Period==period) %>%
@@ -107,12 +149,35 @@ pick_source <- function(disorder,
     purrr::pluck(1)
   return(sel_source)
 }
+
+#' pref_sources_for_age_rang
+#' FUNCTION_DESCRIPTION
+#' @param disorder PARAM_DESCRIPTION
+#' @param period PARAM_DESCRIPTION
+#' @param ages PARAM_DESCRIPTION
+#' @param sexes PARAM_DESCRIPTION
+#' @param pref_source PARAM_DESCRIPTION, Default: safety_pref_source
+#' @param prev_rates PARAM_DESCRIPTION, Default: safety_prev_rates
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname pref_sources_for_age_range
+#' @export
+#' @importFrom dplyr select filter mutate
+#' @importFrom purrr map_chr map flatten_chr reduce prepend
+#' @importFrom stringr str_sub
+
 pref_sources_for_age_range <- function(disorder,
                                        period,
                                        ages,
                                        sexes,
-                                       pref_source = ymh.epi::pref_source,
-                                       prev_rates = ymh.epi::prev_rates){
+                                       pref_source = safety_pref_source,
+                                       prev_rates = safety_prev_rates){
   base_tib <- pref_source %>% dplyr::select(Disorder, Period) %>% dplyr::filter(Disorder == disorder,
                                                                                 Period == period)
   add_each_age <- function(ages,

@@ -39,17 +39,27 @@ gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 
 \item{age1}{Numeric, end of included age range.}
 
+\item{param_tb}{PARAM_DESCRIPTION}
+
+\item{it_nbr}{PARAM_DESCRIPTION}
+
 \item{intervals}{Numeric, the years included in each age group in the source sf, Default: 5}
 
-\item{age}{Numeric, ...}
+\item{age}{PARAM_DESCRIPTION}
 
-\item{included_age_bands_num_all}{A list ....}
+\item{t0_date}{PARAM_DESCRIPTION}
+
+\item{age_bands_ref}{PARAM_DESCRIPTION}
+
+\item{included_age_bands_num_all}{PARAM_DESCRIPTION}
 
 \item{t0_pop}{A numeric vector of population counts in the baseline year.}
 
 \item{t1_pop}{A numeric vector of population counts in the follow-up year.}
 
 \item{n_periods}{Number of years between baseline and follow-up.}
+
+\item{age_sex_band}{PARAM_DESCRIPTION}
 
 \item{list_element}{Numeric, index value for look-up.}
 
@@ -63,25 +73,69 @@ gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 
 \item{nyears}{Number of years between baseline and follow-up.}
 
-\item{year}{Numeric, ....}
+\item{ymwd_step}{PARAM_DESCRIPTION}
 
-\item{year}{Numeric, ....}
+\item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{included_age_bands_num_all}{A list ....}
+\item{age0}{PARAM_DESCRIPTION}
 
-\item{year}{Numeric, ....}
+\item{age1}{PARAM_DESCRIPTION}
 
-\item{included_cols_pairs}{A list, ....}
+\item{intervals}{PARAM_DESCRIPTION}
 
-\item{included_time_intervals}{A list, ....}
+\item{profiled_sf}{PARAM_DESCRIPTION}
+
+\item{age0}{PARAM_DESCRIPTION}
+
+\item{age1}{PARAM_DESCRIPTION}
+
+\item{t0_date}{PARAM_DESCRIPTION}
+
+\item{age_bands_ref}{PARAM_DESCRIPTION}
+
+\item{intervals}{PARAM_DESCRIPTION}
+
+\item{included_age_bands_num_all}{PARAM_DESCRIPTION}
+
+\item{profiled_sf}{PARAM_DESCRIPTION}
+
+\item{param_tb}{PARAM_DESCRIPTION}
+
+\item{it_nbr}{PARAM_DESCRIPTION}
+
+\item{profiled_sf}{PARAM_DESCRIPTION}
 }
 \value{
+OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
+
 OUTPUT_DESCRIPTION
 }
 \description{
 FUNCTION_DESCRIPTION
 }
 \details{
+DETAILS
+
+DETAILS
+
+DETAILS
+
+DETAILS
+
+DETAILS
+
+DETAILS
+
 DETAILS
 }
 \section{Functions}{
@@ -112,8 +166,55 @@ if(interactive()){
  age1 = 18)
  }
 }
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
 }
 \seealso{
 \code{\link[purrr]{map}},\code{\link[purrr]{flatten}},\code{\link[purrr]{modify}},\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
  \code{\link[stringr]{str_subset}},\code{\link[stringr]{str_sub}}
+
+\code{\link[stringr]{str_sub}},\code{\link[stringr]{case}}
+ \code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}},\code{\link[purrr]{pluck}}
+ \code{\link[dplyr]{mutate}}
+ \code{\link[rlang]{sym}}
+
+\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
+
+\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}},\code{\link[purrr]{pluck}}
+ \code{\link[dplyr]{mutate}}
+ \code{\link[rlang]{sym}}
+ \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_replace}},\code{\link[stringr]{case}}
+
+\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{pull}}
+ \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_replace}}
+ \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
+ \code{\link[lubridate]{ymd}},\code{\link[lubridate]{period}},\code{\link[lubridate]{interval}}
 }

@@ -25,15 +25,15 @@ setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 ##
 setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 #setwd("/Users/Alejandra/Desktop/R_Projects/ready.space")
-usethis::use_package("sf")
-usethis:use_package("ready.data")
+#usethis::use_package("sf")
+#usethis:use_package("ready.data")
 devtools::document()
 ##
-devtools::use_vignette()
-# Next bit implements: http://www.davekleinschmidt.com/r-packages/
-devtools::use_data_raw()
-# Now create a data.R file in data-raw directory to import and process data,
-devtools::use_testthat()
+# devtools::use_vignette()
+# # Next bit implements: http://www.davekleinschmidt.com/r-packages/
+# devtools::use_data_raw()
+# # Now create a data.R file in data-raw directory to import and process data,
+# devtools::use_testthat()
 ## RStudio: Created test scripts and saved them in testthat folder in tests folder.
 #testthat::test()
 #devtools::test()

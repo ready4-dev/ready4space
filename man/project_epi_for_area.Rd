@@ -5,20 +5,23 @@
 \title{project_epi_for_area
 Project epidemiology for area at specified point in time}
 \usage{
-project_epi_for_area(state_territory = "Victoria",
-  profiled_area = "Service cluster - Orygen headspaces",
-  age_lower = 12, age_upper = 18, project_for_year = 2023)
+project_epi_for_area(state_territory, profiled_area, age_lower, age_upper,
+  project_for_year, env_str_par_tb, nbr_its, deterministic)
 }
 \arguments{
-\item{state_territory}{PARAM_DESCRIPTION, Default: 'Victoria'}
+\item{state_territory}{PARAM_DESCRIPTION}
 
-\item{profiled_area}{PARAM_DESCRIPTION, Default: 'Service cluster - Orygen headspaces'}
+\item{profiled_area}{PARAM_DESCRIPTION}
 
-\item{age_lower}{PARAM_DESCRIPTION, Default: 12}
+\item{age_lower}{PARAM_DESCRIPTION}
 
-\item{age_upper}{PARAM_DESCRIPTION, Default: 18}
+\item{age_upper}{PARAM_DESCRIPTION}
 
-\item{project_for_year}{PARAM_DESCRIPTION, Default: 2023}
+\item{env_str_par_tb}{PARAM_DESCRIPTION}
+
+\item{nbr_its}{PARAM_DESCRIPTION}
+
+\item{age_upper}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
