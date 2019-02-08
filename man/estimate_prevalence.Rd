@@ -5,7 +5,8 @@
 \title{estimate_prevalence
 Function to estimate the prevalence of a specified condition, for a specified disorder for a specified area / year.}
 \usage{
-estimate_prevalence(disorder, period, ages, sexes, pop_data)
+estimate_prevalence(disorder, period, ages, sexes, pop_data, pref_source,
+  prev_rates)
 }
 \arguments{
 \item{disorder}{PARAM_DESCRIPTION}
@@ -17,6 +18,10 @@ estimate_prevalence(disorder, period, ages, sexes, pop_data)
 \item{sexes}{PARAM_DESCRIPTION}
 
 \item{pop_data}{PARAM_DESCRIPTION}
+
+\item{pref_source}{PARAM_DESCRIPTION}
+
+\item{prev_rates}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

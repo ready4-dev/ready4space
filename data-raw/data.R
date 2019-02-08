@@ -149,12 +149,12 @@ params_struc_mape_tb = ready.aus.data::params_struc_mape_tb
 ##
 ##
 ##
-safety_pref_source <- ymh.epi.lit::pref_source
-safety_prev_rates <- ymh.epi.lit::prev_rates
-usethis::use_data(safety_pref_source,
-                  overwrite = TRUE)
-usethis::use_data(safety_prev_rates,
-                  overwrite = TRUE)
+# safety_pref_source <- ymh.epi.lit::pref_source
+# safety_prev_rates <- ymh.epi.lit::prev_rates
+# usethis::use_data(safety_pref_source,
+#                   overwrite = TRUE)
+# usethis::use_data(safety_prev_rates,
+#                   overwrite = TRUE)
 aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 
 usethis::use_data(aus_spatial_lookup_tb,

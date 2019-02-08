@@ -5,7 +5,7 @@
 \title{pick_source
 FUNCTION_DESCRIPTION}
 \usage{
-pick_source(disorder, period, age, sex, pref_source = safety_pref_source)
+pick_source(disorder, period, age, sex, pref_source)
 }
 \arguments{
 \item{disorder}{PARAM_DESCRIPTION}
@@ -16,7 +16,7 @@ pick_source(disorder, period, age, sex, pref_source = safety_pref_source)
 
 \item{sex}{PARAM_DESCRIPTION}
 
-\item{pref_source}{PARAM_DESCRIPTION, Default: safety_pref_source}
+\item{pref_source}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

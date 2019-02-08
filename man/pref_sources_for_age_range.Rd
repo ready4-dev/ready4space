@@ -5,8 +5,7 @@
 \title{pref_sources_for_age_rang
 FUNCTION_DESCRIPTION}
 \usage{
-pref_sources_for_age_range(disorder, period, ages, sexes,
-  pref_source = safety_pref_source, prev_rates = safety_prev_rates)
+pref_sources_for_age_range(disorder, period, ages, sexes, pref_source)
 }
 \arguments{
 \item{disorder}{PARAM_DESCRIPTION}
@@ -17,9 +16,7 @@ pref_sources_for_age_range(disorder, period, ages, sexes,
 
 \item{sexes}{PARAM_DESCRIPTION}
 
-\item{pref_source}{PARAM_DESCRIPTION, Default: safety_pref_source}
-
-\item{prev_rates}{PARAM_DESCRIPTION, Default: safety_prev_rates}
+\item{pref_source}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

@@ -5,6 +5,8 @@
 #' @param ages PARAM_DESCRIPTION
 #' @param sexes PARAM_DESCRIPTION
 #' @param pop_data PARAM_DESCRIPTION
+#' @param pref_source PARAM_DESCRIPTION
+#' @param prev_rates PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -33,11 +35,14 @@ estimate_prevalence <- function(disorder,
                                 period,
                                 ages,
                                 sexes,
-                                pop_data){
+                                pop_data,
+                                pref_source,
+                                prev_rates){
   age_sex_source_tb <- pref_sources_for_age_range(disorder = disorder,
                                                   period = period,
                                                   ages =  ages,
-                                                  sexes = sexes)
+                                                  sexes = sexes,
+                                                  pref_source = pref_source)
   age_sex_source_tb <- age_sex_source_tb %>%
     dplyr::select(dplyr::starts_with("Female_"),
                   dplyr::starts_with(("Male_")))
@@ -55,7 +60,8 @@ estimate_prevalence <- function(disorder,
                                                               stringr::str_sub(start=-2) %>%
                                                               as.numeric(),
                                                             sex=.x %>%
-                                                              stringr::str_sub(end=-4))) %>%
+                                                              stringr::str_sub(end=-4),
+                                                            prev_rates = prev_rates)) %>%
     stats::setNames(age_sex_vec %>%
                       gsub("Female","f",.)%>%
                       gsub("Male","m",.))
@@ -89,7 +95,7 @@ estimate_prevalence <- function(disorder,
 #' @param source PARAM_DESCRIPTION
 #' @param age PARAM_DESCRIPTION
 #' @param sex PARAM_DESCRIPTION
-#' @param prev_rates PARAM_DESCRIPTION, Default: safety_prev_rates
+#' @param prev_rates PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -107,7 +113,7 @@ pick_rate_from_source <-function(disorder,
                                  source,
                                  age,
                                  sex,
-                                 prev_rates = safety_prev_rates){
+                                 prev_rates){
   look_up <- paste0(sex,"_",age)
   sel_rate <- prev_rates  %>%
     dplyr::filter(Disorder==disorder, Period==period, Source==source) %>%
@@ -122,7 +128,7 @@ pick_rate_from_source <-function(disorder,
 #' @param period PARAM_DESCRIPTION
 #' @param age PARAM_DESCRIPTION
 #' @param sex PARAM_DESCRIPTION
-#' @param pref_source PARAM_DESCRIPTION, Default: safety_pref_source
+#' @param pref_source PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -140,7 +146,7 @@ pick_source <- function(disorder,
                         period,
                         age,
                         sex,
-                        pref_source = safety_pref_source){
+                        pref_source){
   look_up <- paste0(sex,"_",age)
   sel_source <- pref_source  %>%
     dplyr::filter(Disorder==disorder, Period==period) %>%
@@ -156,8 +162,7 @@ pick_source <- function(disorder,
 #' @param period PARAM_DESCRIPTION
 #' @param ages PARAM_DESCRIPTION
 #' @param sexes PARAM_DESCRIPTION
-#' @param pref_source PARAM_DESCRIPTION, Default: safety_pref_source
-#' @param prev_rates PARAM_DESCRIPTION, Default: safety_prev_rates
+#' @param pref_source PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -176,8 +181,7 @@ pref_sources_for_age_range <- function(disorder,
                                        period,
                                        ages,
                                        sexes,
-                                       pref_source = safety_pref_source,
-                                       prev_rates = safety_prev_rates){
+                                       pref_source){
   base_tib <- pref_source %>% dplyr::select(Disorder, Period) %>% dplyr::filter(Disorder == disorder,
                                                                                 Period == period)
   add_each_age <- function(ages,
@@ -192,5 +196,6 @@ pref_sources_for_age_range <- function(disorder,
                   dplyr::mutate(!!y := pick_source(disorder = disorder,
                                                    period = period,
                                                    age = stringr::str_sub(y,-2),
-                                                   sex = stringr::str_sub(y,1,-4))))
+                                                   sex = stringr::str_sub(y,1,-4),
+                                                   pref_source = pref_source)))
 }

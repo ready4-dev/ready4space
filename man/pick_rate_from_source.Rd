@@ -5,8 +5,7 @@
 \title{pick_rate_from_source
 FUNCTION_DESCRIPTION}
 \usage{
-pick_rate_from_source(disorder, period, source, age, sex,
-  prev_rates = safety_prev_rates)
+pick_rate_from_source(disorder, period, source, age, sex, prev_rates)
 }
 \arguments{
 \item{disorder}{PARAM_DESCRIPTION}
@@ -19,7 +18,7 @@ pick_rate_from_source(disorder, period, source, age, sex,
 
 \item{sex}{PARAM_DESCRIPTION}
 
-\item{prev_rates}{PARAM_DESCRIPTION, Default: safety_prev_rates}
+\item{prev_rates}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
