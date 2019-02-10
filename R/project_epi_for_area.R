@@ -1,5 +1,5 @@
-#' project_epi_for_area
-#' Project epidemiology for area at specified point in time
+#' make_sim_data_env
+#' Make a simulation data input for the environment.
 #' @param state_territory PARAM_DESCRIPTION
 #' @param profiled_area PARAM_DESCRIPTION
 #' @param age_lower PARAM_DESCRIPTION
@@ -12,7 +12,7 @@
 #' @export
 
 
-project_epi_for_area <- function(state_territory,
+make_sim_data_env <- function(state_territory,
                                  profiled_area,
                                  age_lower,
                                  age_upper,

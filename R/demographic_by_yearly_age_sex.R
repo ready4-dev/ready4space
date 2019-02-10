@@ -157,9 +157,9 @@ gen_demog_fun_par_vals <- function(profiled_sf,
                                    acgr,
                                    age_by_year){
   first_age_band <- c(floor(age0 / intervals) * intervals,
-                      ceiling(age0 / intervals) * intervals - 1)
+                      ifelse(age0 %% intervals == 0, age0/intervals + 1, ceiling(age0/intervals)) * intervals - 1)
   last_age_band <- c(floor(age1 / intervals) * intervals,
-                     ceiling(age1 / intervals) * intervals - 1)
+                     ifelse(age1 %% intervals == 0, age1/intervals + 1, ceiling(age1/intervals)) * intervals - 1)
   n_age_bands <- (last_age_band[1] - first_age_band[1]) / intervals + 1
   included_age_bands_num_all <- purrr::map(1:n_age_bands, ~ c(intervals * (. - 1) + first_age_band[1],
                                                               intervals * (. - 1) + first_age_band[2]))
