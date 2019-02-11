@@ -71,6 +71,7 @@ estimate_prevalence <- function(pop_data,
     unlist()
   female_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"f_")]
   male_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"m_")]
+  ages <- names(female_prev_vec) %>% stringr::str_sub(start=-2)
   summ_tb <- tibble::tibble(age = ages,
                             Females = female_prev_vec,
                             Males = male_prev_vec) %>%
