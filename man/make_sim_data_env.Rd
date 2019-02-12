@@ -5,11 +5,11 @@
 \title{make_sim_data_env
 Make a simulation data input for the environment.}
 \usage{
-make_sim_data_env(state_territory, profiled_area, age_lower, age_upper,
+make_sim_data_env(profiled_area_type, profiled_area, age_lower, age_upper,
   project_for_year, env_str_par_tb, nbr_its, deterministic)
 }
 \arguments{
-\item{state_territory}{PARAM_DESCRIPTION}
+\item{profiled_area_type}{PARAM_DESCRIPTION}
 
 \item{profiled_area}{PARAM_DESCRIPTION}
 

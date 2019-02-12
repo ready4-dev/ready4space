@@ -28,33 +28,6 @@
 
 estimate_prevalence <- function(pop_data,
                                 prev_rates_vec){
-  # age_sex_source_tb <- pref_sources_for_age_range(disorder = disorder,
-  #                                                 period = period,
-  #                                                 ages =  ages,
-  #                                                 sexes = sexes,
-  #                                                 pref_source = pref_source)
-  # age_sex_source_tb <- age_sex_source_tb %>%
-  #   dplyr::select(dplyr::starts_with("Female_"),
-  #                 dplyr::starts_with(("Male_")))
-  # age_sex_vec  <- age_sex_source_tb %>%
-  #   names()
-  # source_vec <- age_sex_source_tb %>%
-  #   unlist() %>%
-  #   as.vector()
-  # prev_rates_vec <- purrr::map2_dbl(age_sex_vec,
-  #                                   source_vec,
-  #                                   ~ pick_rate_from_source(disorder,
-  #                                                           period,
-  #                                                           source=.y,
-  #                                                           age=.x %>%
-  #                                                             stringr::str_sub(start=-2) %>%
-  #                                                             as.numeric(),
-  #                                                           sex=.x %>%
-  #                                                             stringr::str_sub(end=-4),
-  #                                                           prev_rates = prev_rates)) %>%
-  #   stats::setNames(age_sex_vec %>%
-  #                     gsub("Female","f",.)%>%
-  #                     gsub("Male","m",.))
   pop_totals_vec <- pop_data %>% names()
   pop_totals_vec <- pop_totals_vec[pop_totals_vec %>% startsWith(prefix="tx_")]
   pop_totals_vec <- pop_totals_vec[purrr::map_lgl(pop_totals_vec,
@@ -71,7 +44,7 @@ estimate_prevalence <- function(pop_data,
     unlist()
   female_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"f_")]
   male_prev_vec <- prev_area_sum_vec[startsWith(names(prev_area_sum_vec),"m_")]
-  ages <- names(female_prev_vec) %>% stringr::str_sub(start=-2)
+  ages <- names(female_prev_vec) %>% stringr::str_sub(start=-7,end=-6)
   summ_tb <- tibble::tibble(age = ages,
                             Females = female_prev_vec,
                             Males = male_prev_vec) %>%
@@ -132,10 +105,10 @@ make_prev_struc_par_tb <- function(disorder,
                                                             period,
                                                             source=.y,
                                                             age=.x %>%
-                                                              stringr::str_sub(start=-2) %>%
+                                                              stringr::str_sub(start=-2) %>% #### HUH?
                                                               as.numeric(),
                                                             sex=.x %>%
-                                                              stringr::str_sub(end=-4),
+                                                              stringr::str_sub(end=-4), #### HUH?
                                                             prev_rates = prev_rates)) %>%
     stats::setNames(age_sex_vec %>%
                       gsub("Female","f",.)%>%
