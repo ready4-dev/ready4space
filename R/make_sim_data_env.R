@@ -1,6 +1,8 @@
 #' make_sim_data_env
 #' Make a simulation data input for the environment.
 #' @param profiled_area_type PARAM_DESCRIPTION
+#' @param distance_km PARAM_DESCRIPTION
+#' @param travel_time_mins PARAM_DESCRIPTION
 #' @param profiled_area PARAM_DESCRIPTION
 #' @param age_lower PARAM_DESCRIPTION
 #' @param age_upper PARAM_DESCRIPTION
@@ -13,6 +15,8 @@
 
 make_sim_data_env <- function(profiled_area_type,
                               profiled_area,
+                              distance_km = NULL,
+                              travel_time_mins = NULL,
                               age_lower,
                               age_upper,
                               project_for_year,
@@ -29,7 +33,7 @@ make_sim_data_env <- function(profiled_area_type,
     profiled_area_sf <- ready.aus.data::aus_boundary_phns_sf %>%
       dplyr::filter(PHN_NAME %in% profiled_area)
     state_territory <- profiled_area_sf %>%
-      dplyr::pull("FIRST_STE1") %>% 
+      dplyr::pull("FIRST_STE1") %>%
       as.character() %>%
       unique()
   }else{
@@ -37,12 +41,16 @@ make_sim_data_env <- function(profiled_area_type,
       dplyr::group_by(FIRST_STE1) %>%
       dplyr::summarise(FIRST_STE_ = dplyr::first(FIRST_STE_),
                        SUM_AREASQ = sum(SUM_AREASQ))
-    if(profiled_area == "Service cluster - Orygen headspaces"){
-      orygen_headspace_cluster_tb =  tibble::tibble(lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
-                                                    long = c(144.918099,144.831070,144.914055,144.662196))
-      profiled_area_sf <- ready.space::spatial_area_within_xkm_of_points(point_locations = orygen_headspace_cluster_tb,
-                                                                         land_sf = aus_stt_sf ,
-                                                                         distance = 10000)
+    if(profiled_area_type == "Headspace"){
+      headspace_cluster_tb =  tibble::tibble(centre = c("Glenroy", "Sunshine", "Craigieburn","Werribee"),
+                                                    lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
+                                                    long = c(144.918099,144.831070,144.914055,144.662196)) %>%
+        dplyr::filter(centre %in% profiled_area)
+      if(!is.null(distance_km)){
+        profiled_area_sf <- ready.space::spatial_area_within_xkm_of_points(point_locations = headspace_cluster_tb,
+                                                                           land_sf = aus_stt_sf,
+                                                                           distance = distance_km*1000)
+      }
     }
     state_territory <- sf::st_intersection(aus_stt_sf,
                                            profiled_area_sf) %>%
@@ -71,7 +79,7 @@ make_sim_data_env <- function(profiled_area_type,
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))
   names_ppr <- purrr::map_chr(lists_to_merge[[1]],
-                              ~ ifelse(length(.x[1])==0,NA_character_,names(.x[1]))) 
+                              ~ ifelse(length(.x[1])==0,NA_character_,names(.x[1])))
   ppr_ref <- purrr::map_dbl(lists_to_merge[[1]],
                             ~ ifelse(length(.x[1])==0,NA_real_,.x[1])) %>%
     stats::setNames(names_ppr)
@@ -107,7 +115,7 @@ make_sim_data_env <- function(profiled_area_type,
                                                                        resolution_sa1s_sf = sp_data_list[[4]],
                                                                        resolution_sa2s_sf = sp_data_list[[2]],
                                                                        return_resolution = "SA2")
-  
+
   ## 5. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)

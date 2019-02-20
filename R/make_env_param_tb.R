@@ -21,10 +21,10 @@
 #' @importFrom dplyr bind_rows
 
 make_env_param_tb <- function(nbr_its,
-                                 env_str_par_tb,
-                                 mape_str_par_tb,
-                                 jt_dist
-                              ){
+                              env_str_par_tb,
+                              mape_str_par_tb,
+                              jt_dist
+){
   par_val_mape <- ready.agents::gen_par_vals(x = mape_str_par_tb,
                                              nbr_its = nbr_its,
                                              jt_dist = jt_dist)

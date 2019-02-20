@@ -5,13 +5,18 @@
 \title{make_sim_data_env
 Make a simulation data input for the environment.}
 \usage{
-make_sim_data_env(profiled_area_type, profiled_area, age_lower, age_upper,
-  project_for_year, env_str_par_tb, nbr_its, deterministic)
+make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
+  travel_time_mins = NULL, age_lower, age_upper, project_for_year,
+  env_str_par_tb, nbr_its, deterministic)
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}
 
 \item{profiled_area}{PARAM_DESCRIPTION}
+
+\item{distance_km}{PARAM_DESCRIPTION}
+
+\item{travel_time_mins}{PARAM_DESCRIPTION}
 
 \item{age_lower}{PARAM_DESCRIPTION}
 
