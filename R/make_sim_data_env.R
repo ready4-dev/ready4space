@@ -37,20 +37,30 @@ make_sim_data_env <- function(profiled_area_type,
       as.character() %>%
       unique()
   }else{
-    aus_stt_sf <- ready.aus.phn::aus_phn_nat_shp_bound_2017 %>%
-      dplyr::group_by(FIRST_STE1) %>%
-      dplyr::summarise(FIRST_STE_ = dplyr::first(FIRST_STE_),
-                       SUM_AREASQ = sum(SUM_AREASQ))
+    aus_stt_sf <- ready.pp.phn::aus_stt_sf %>%
+      sf::`st_crs<-`(4283)
     if(profiled_area_type == "Headspace"){
-      headspace_cluster_tb =  tibble::tibble(centre = c("Glenroy", "Sunshine", "Craigieburn","Werribee"),
+      cluster_tb =  tibble::tibble(service_name = c("Glenroy", "Sunshine", "Craigieburn","Werribee"),
                                                     lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
                                                     long = c(144.918099,144.831070,144.914055,144.662196)) %>%
-        dplyr::filter(centre %in% profiled_area)
+        dplyr::filter(service_name %in% profiled_area)
+    }
+    if(profiled_area_type == "Custom"){
+      cluster_tb =  tibble::tibble(service_name = profiled_area$service_vec,
+                                   lat = profiled_area$lat_vec,
+                                   long = profiled_area$lon_vec)
+    }
       if(!is.null(distance_km)){
-        profiled_area_sf <- ready.space::spatial_area_within_xkm_of_points(point_locations = headspace_cluster_tb,
+        profiled_area_sf <- ready.space::spatial_area_within_xkm_of_points(point_locations = cluster_tb,
                                                                            land_sf = aus_stt_sf,
                                                                            distance = distance_km*1000)
       }
+    if(!is.null(travel_time_mins)){
+      tt_from_cluster_isochrones <- ready.space::cluster_isochrones(cluster_tbs_list = list(cluster_tb),
+                                                                    look_up_ref = 1)
+
+      profiled_area_sf <- do.call(rbind,tt_from_cluster_isochrones) %>%
+        sf::st_transform(4283)
     }
     state_territory <- sf::st_intersection(aus_stt_sf,
                                            profiled_area_sf) %>%
@@ -84,31 +94,6 @@ make_sim_data_env <- function(profiled_area_type,
                             ~ ifelse(length(.x[1])==0,NA_real_,.x[1])) %>%
     stats::setNames(names_ppr)
   sp_data_list <- purrr::prepend(merged_list,list(ppr_ref))
-  # sp_data_list <- get_spatial_data_list(at_highest_res = at_highest_res,
-  #                                       at_time = "2016",
-  #                                       to_time = to_time,
-  #                                       at_specified_res = list(a=c("SEIFA","SA2")),
-  #                                       country = "Australia",
-  #                                       state = state_territory,
-  #                                       require_year_match = FALSE,
-  #                                       excl_diff_bound_yr = TRUE)
-  ## 3. CHOOSE PROFILED AREA
-  # phns_in_state <- ready.aus.data::aus_boundary_phns_sf %>%
-  #   dplyr::filter(FIRST_STE1 == state_territory)
-  # land_boundary_sf <- phns_in_state %>%
-  #   sf::st_union()
-  # if(profiled_area %in% (phns_in_state %>%
-  #    dplyr::pull("PHN_NAME") %>% as.character())){
-  #   profiled_area_sf <- phns_in_state %>%
-  #     dplyr::filter(PHN_NAME == profiled_area)
-  # }
-  # if(profiled_area == "Service cluster - Orygen headspaces"){
-  #   orygen_headspace_cluster_tb =  tibble::tibble(lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
-  #                                                 long = c(144.918099,144.831070,144.914055,144.662196))
-  #   profiled_area_sf <- spatial_area_within_xkm_of_points(point_locations = orygen_headspace_cluster_tb,
-  #                                                         land_sf = land_boundary_sf ,
-  #                                                         distance = 10000)
-  # }
   ## 4. APPLY PROFILED AREA FILTER
   sp_data_list[[2]] <- spatial_profile_by_resolution_and_update_counts(profiled_sf = profiled_area_sf,
                                                                        resolution_sf = sp_data_list[[2]],
