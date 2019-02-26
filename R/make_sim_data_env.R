@@ -95,11 +95,89 @@ make_sim_data_env <- function(profiled_area_type,
     stats::setNames(names_ppr)
   sp_data_list <- purrr::prepend(merged_list,list(ppr_ref))
   ## 4. APPLY PROFILED AREA FILTER
-  sp_data_list[[2]] <- spatial_profile_by_resolution_and_update_counts(profiled_sf = profiled_area_sf,
+  profiled_pop_counts_sf <- spatial_profile_by_resolution_and_update_counts(profiled_sf = profiled_area_sf,
                                                                        resolution_sf = sp_data_list[[2]],
                                                                        resolution_sa1s_sf = sp_data_list[[4]],
                                                                        resolution_sa2s_sf = sp_data_list[[2]],
                                                                        return_resolution = "SA2")
+  ## WIP START
+  if(profiled_area_type=="PHN"){
+    sp_data_list[[2]] <- profiled_pop_counts_sf
+    }else{
+    all_bands_pop_counts_sf <- profiled_pop_counts_sf
+    centres_with_pop_whole_area_tb <- all_bands_pop_counts_sf
+    sf::st_geometry(centres_with_pop_whole_area_tb) <- NULL
+    ## https://github.com/tidyverse/dplyr/issues/3101
+    centres_with_pop_whole_area_tb <- sum_at_diff_funs(data_tb = centres_with_pop_whole_area_tb,
+                                                       var_list = list(c("id",
+                                                                         "min",
+                                                                         "max",
+                                                                         "center",
+                                                                         "AREASQKM16",
+                                                                         names(all_bands_pop_counts_sf)[names(all_bands_pop_counts_sf) %>%
+                                                                                                          startsWith("sa2_included")]),
+                                                                       c("SA2_NAME16",
+                                                                         "SA3_CODE16",
+                                                                         names(all_bands_pop_counts_sf)[names(all_bands_pop_counts_sf) %>%
+                                                                                                          endsWith("_CODE16")],
+                                                                         names(all_bands_pop_counts_sf)[names(all_bands_pop_counts_sf) %>%
+                                                                                                          endsWith("_NAME16")]
+                                                                       )),
+                                                       funs_list = tibble::lst(mean=mean,
+                                                                               first=dplyr::first),
+                                                       group_by = "SA2_MAIN16")
+    centres_with_pop_whole_area_sf <- dplyr::inner_join(all_bands_pop_counts_sf %>%
+                                                          dplyr::group_by(SA2_MAIN16) %>%
+                                                          dplyr::select(SA2_MAIN16),
+                                                        centres_with_pop_whole_area_tb) %>%
+      sf::st_as_sf()
+    pop_totals_tb <- centres_with_pop_whole_area_tb %>%
+      dplyr::summarise_at(dplyr::vars(dplyr::starts_with("sa2_included")),
+                          dplyr::funs(sum))
+    
+    if(!is.null(travel_time_mins)){
+      by_band_pop_counts_sf_ls <- purrr::map(tt_from_cluster_isochrones,
+                                             ~ spatial_profile_by_resolution_and_update_counts(profiled_sf = .x %>%
+                                                                                                 sf::st_transform(4283),
+                                                                                               resolution_sf = sp_data_list[[2]],
+                                                                                               resolution_sa1s_sf = sp_data_list[[4]],
+                                                                                               resolution_sa2s_sf = sp_data_list[[2]],
+                                                                                               return_resolution = "SA2"))
+      by_band_pop_counts_tb_ls <- purrr::map(by_band_pop_counts_sf_ls,
+                                             ~ .x %>%
+                                               sf::st_set_geometry(NULL) %>%
+                                               sum_at_diff_funs(var_list = list(c("id","min","max", "center"),
+                                                                                names(.x)[names(.x) %>% startsWith("sa2_included")]),
+                                                                funs_list = tibble::lst(first = dplyr::first,
+                                                                                        sum = sum),
+                                                                group_by = "drive_times")
+      )
+      by_band_unioned_sf_ls <- purrr::map(by_band_pop_counts_sf_ls,
+                                          ~ .x %>%
+                                            sf::st_union() %>% 
+                                            sf::st_sf())
+      centres_with_pop_by_band_sf_list <- purrr::map2(by_band_unioned_sf_ls,
+                                                      by_band_pop_counts_tb_ls,
+                                                      ~ sf::st_bind_cols(.x,.y))
+      centres_with_pop_by_band_sf <- do.call(rbind,centres_with_pop_by_band_sf_list)
+      centres_with_pop_by_band_sf <- centres_with_pop_by_band_sf %>%
+        dplyr::rename_at(dplyr::vars(dplyr::starts_with("sa2_included_")),
+                         dplyr::funs(paste0("dtm_",stringr::str_sub(.,start=5) )))
+      # pop_totals_tb_2 <- centres_with_pop_by_band_sf %>%
+      #   dplyr::summarise_at(dplyr::vars(dplyr::starts_with("sa2_included")),
+      #                       dplyr::funs(sum))
+    }
+    sp_data_list[[2]] <- centres_with_pop_whole_area_sf
+    #temp_copy <- sp_data_list[[2]] 
+    # sp_data_list[[2]] <- sf::st_union(centres_with_pop_whole_area_sf,
+    #                                   centres_with_pop_by_band_sf) # COULD WRITE CODE TO GET RID OF COLUMN DUPLICTES
+    #sp_data_list[[2]] <- centres_with_pop_by_band_sf
+    
+    #append(sp_data_list,list(centres_with_pop_by_band_sf))
+    ## WIP END
+  }
+  
+  
 
   ## 5. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
@@ -114,4 +192,39 @@ make_sim_data_env <- function(profiled_area_type,
                                         time_steps = c(1,0,0,0),
                                         nbr_steps = project_for_year-2016)
   return(sim_data)
+}
+#' sum_at_diff_funs
+#' FUNCTION_DESCRIPTION
+#' @param data_tb PARAM_DESCRIPTION
+#' @param var_list PARAM_DESCRIPTION
+#' @param funs_list PARAM_DESCRIPTION
+#' @param group_by PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
+#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{join}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname sum_at_diff_funs
+#' @export
+#' @importFrom purrr map2 reduce
+#' @importFrom dplyr group_by summarise_at inner_join
+#' @importFrom rlang sym
+sum_at_diff_funs <- function(data_tb,
+                             var_list,
+                             funs_list,
+                             group_by){
+  ## https://github.com/tidyverse/dplyr/issues/3101
+  purrr::map2(var_list,
+              funs_list,
+              ~ data_tb %>%
+                dplyr::group_by(!!rlang::sym(group_by)) %>%
+                dplyr::summarise_at(.x, .y)) %>%
+    purrr::reduce(dplyr::inner_join)
 }
