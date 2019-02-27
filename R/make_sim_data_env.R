@@ -116,7 +116,8 @@ make_sim_data_env <- function(profiled_area_type,
                                                                          "AREASQKM16",
                                                                          names(all_bands_pop_counts_sf)[names(all_bands_pop_counts_sf) %>%
                                                                                                           startsWith("sa2_included")]),
-                                                                       c("SA2_NAME16",
+                                                                       c("drive_times",
+                                                                         "SA2_NAME16",
                                                                          "SA3_CODE16",
                                                                          names(all_bands_pop_counts_sf)[names(all_bands_pop_counts_sf) %>%
                                                                                                           endsWith("_CODE16")],
@@ -167,7 +168,7 @@ make_sim_data_env <- function(profiled_area_type,
       #   dplyr::summarise_at(dplyr::vars(dplyr::starts_with("sa2_included")),
       #                       dplyr::funs(sum))
     }
-    sp_data_list[[2]] <- centres_with_pop_whole_area_sf
+    sp_data_list[[2]] <- centres_with_pop_by_band_sf#centres_with_pop_whole_area_sf
     #temp_copy <- sp_data_list[[2]] 
     # sp_data_list[[2]] <- sf::st_union(centres_with_pop_whole_area_sf,
     #                                   centres_with_pop_by_band_sf) # COULD WRITE CODE TO GET RID OF COLUMN DUPLICTES

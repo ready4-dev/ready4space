@@ -5,6 +5,7 @@
 #' @param age0 Numeric, start of included age range.
 #' @param age1 Numeric, end of included age range.
 #' @param intervals Numeric, the years included in each age group in the source sf, Default: 5
+#' @param included_features
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -32,17 +33,18 @@
 #' @importFrom rlang sym
 
 gen_demog_features <- function(profiled_sf,
-                                years,
-                                age0,
-                                age1,
-                                param_tb,
-                                it_nbr,
-                                acgr = TRUE,
-                                age_by_year = FALSE,
-                                drop_bands = TRUE,
-                                intervals = 5,
-                                month = "07",
-                                day = "01"){
+                               years,
+                               age0,
+                               age1,
+                               param_tb,
+                               it_nbr,
+                               acgr = TRUE,
+                               age_by_year = FALSE,
+                               drop_bands = TRUE,
+                               intervals = 5,
+                               month = "07",
+                               day = "01",
+                               included_prefix = ""){
   fn_pars <- gen_demog_fun_par_vals(profiled_sf,
                                     years,
                                     age0,
@@ -63,11 +65,13 @@ gen_demog_features <- function(profiled_sf,
                                             included_age_bands_num_all = fn_pars$included_age_bands_num_all,
                                             age0 = age0,
                                             age1 = age1,
-                                            intervals = intervals)
+                                            intervals = intervals,
+                                            included_prefix = included_prefix)
   }
   if(drop_bands){
     profiled_sf <- profiled_sf %>%
-      dplyr::select(-dplyr::starts_with("y20"))
+      dplyr::select(-dplyr::starts_with("y20")) %>%
+      dplyr::select(-dplyr::starts_with(paste0(included_prefix,"y20")))
   }
   return(profiled_sf)
 }
@@ -244,7 +248,8 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
                                      included_age_bands_num_all,
                                      age0,
                                      age1,
-                                     intervals){
+                                     intervals,
+                                     included_prefix){
   age_bands_vect <- included_age_bands_num %>% purrr::flatten_dbl()
   age_bands_ref <- purrr::map_dbl(age0:age1,
                                   ~ ceiling(max(which(age_bands_vect <= .)/2)))
@@ -254,7 +259,8 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
                                        t0_date =  t0_date,
                                        age_bands_ref = age_bands_ref,
                                        intervals = intervals,
-                                       included_age_bands_num_all = included_age_bands_num_all)
+                                       included_age_bands_num_all = included_age_bands_num_all,
+                                       included_prefix = included_prefix)
   return(profiled_sf)
 }
 
@@ -295,7 +301,8 @@ by_sex_for_an_age <- function(profiled_sf,
                               t0_date,
                               age_bands_ref,
                               intervals,
-                              included_age_bands_num_all){
+                              included_age_bands_num_all,
+                              included_prefix){
   year <- t0_date %>% stringr::str_sub(1,4)
   profiled_sf <- purrr::reduce(purrr::prepend(c("Females","Males"),
                                               list(a=profiled_sf)),
@@ -305,7 +312,8 @@ by_sex_for_an_age <- function(profiled_sf,
                                                                                stringr::str_sub(y,1,1) %>%
                                                                                  stringr::str_to_lower(),
                                                                                "_",
-                                                                               age) := !!rlang::sym(paste0("y",
+                                                                               age) := !!rlang::sym(paste0(included_prefix,
+                                                                                                           "y",
                                                                                                            year,
                                                                                                            ".",
                                                                                                            y,
@@ -348,7 +356,8 @@ by_age_sex_for_a_year <- function(profiled_sf,
                                   t0_date,
                                   age_bands_ref,
                                   intervals,
-                                  included_age_bands_num_all){
+                                  included_age_bands_num_all,
+                                  included_prefix){
   profiled_sf <- purrr::reduce(purrr::prepend(age0:age1,
                                               list(a=profiled_sf)),
                                .f = function(x,y) x %>% by_sex_for_an_age(age = y,
@@ -357,7 +366,8 @@ by_age_sex_for_a_year <- function(profiled_sf,
                                                                           t0_date = t0_date,
                                                                           age_bands_ref = age_bands_ref,
                                                                           intervals = intervals,
-                                                                          included_age_bands_num_all = included_age_bands_num_all))
+                                                                          included_age_bands_num_all = included_age_bands_num_all,
+                                                                          included_prefix = included_prefix))
 }
 
 #' demographic_compound_growth_rate

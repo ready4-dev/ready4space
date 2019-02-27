@@ -6,7 +6,7 @@
 FUNCTION_DESCRIPTION}
 \usage{
 gen_age_sex_estimates_t0(profiled_sf, t0_date, included_age_bands_num,
-  included_age_bands_num_all, age0, age1, intervals)
+  included_age_bands_num_all, age0, age1, intervals, included_prefix)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

@@ -12,13 +12,13 @@
 \usage{
 gen_demog_features(profiled_sf, years, age0, age1, param_tb, it_nbr,
   acgr = TRUE, age_by_year = FALSE, drop_bands = TRUE,
-  intervals = 5, month = "07", day = "01")
+  intervals = 5, month = "07", day = "01", included_prefix = "")
 
 by_sex_for_an_age(profiled_sf, age, age0, age1, t0_date, age_bands_ref,
-  intervals, included_age_bands_num_all)
+  intervals, included_age_bands_num_all, included_prefix)
 
 by_age_sex_for_a_year(profiled_sf, age0, age1, t0_date, age_bands_ref,
-  intervals, included_age_bands_num_all)
+  intervals, included_age_bands_num_all, included_prefix)
 
 demographic_compound_growth_rate(t0_pop, t1_pop, n_periods, age_sex_band,
   param_tb, it_nbr)
