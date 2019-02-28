@@ -17,6 +17,9 @@ make_sim_data_env <- function(profiled_area_type,
                               profiled_area,
                               distance_km = NULL,
                               travel_time_mins = NULL,
+                              time_min = 0,
+                              time_max = 60,
+                              nbr_time_steps = 5,
                               age_lower,
                               age_upper,
                               project_for_year,
@@ -57,7 +60,10 @@ make_sim_data_env <- function(profiled_area_type,
       }
     if(!is.null(travel_time_mins)){
       tt_from_cluster_isochrones <- ready.space::cluster_isochrones(cluster_tbs_list = list(cluster_tb),
-                                                                    look_up_ref = 1)
+                                                                    look_up_ref = 1,
+                                                                    time_min = time_min,
+                                                                    time_max = time_max,
+                                                                    nbr_time_steps = nbr_time_steps)
 
       profiled_area_sf <- do.call(rbind,tt_from_cluster_isochrones) %>%
         sf::st_transform(4283)
