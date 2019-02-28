@@ -16,10 +16,13 @@
 make_sim_data_env <- function(profiled_area_type,
                               profiled_area,
                               distance_km = NULL,
-                              travel_time_mins = NULL,
-                              time_min = 0,
-                              time_max = 60,
+                              #distance_min = 0,
+                              #distance_max = 50,
+                              nbr_distance_steps = 5,
                               nbr_time_steps = 5,
+                              travel_time_mins = NULL,
+                              #time_min = 0,
+                              #time_max = 60,
                               age_lower,
                               age_upper,
                               project_for_year,
@@ -54,15 +57,19 @@ make_sim_data_env <- function(profiled_area_type,
                                    long = profiled_area$lon_vec)
     }
       if(!is.null(distance_km)){
-        profiled_area_sf <- ready.space::spatial_area_within_xkm_of_points(point_locations = cluster_tb,
-                                                                           land_sf = aus_stt_sf,
-                                                                           distance = distance_km*1000)
+        profiled_area_sf <- gen_distance_based_bands(distance_km,
+                                                     nbr_time_steps,
+                                                     cluster_tb,
+                                                     aus_stt_sf)[[1]]
+        # profiled_area_sf <- spatial_area_within_xkm_of_points(point_locations = cluster_tb,
+        #                                                                    land_sf = aus_stt_sf,
+        #                                                                    distance = distance_km*1000)
       }
     if(!is.null(travel_time_mins)){
-      tt_from_cluster_isochrones <- ready.space::cluster_isochrones(cluster_tbs_list = list(cluster_tb),
+      tt_from_cluster_isochrones <- cluster_isochrones(cluster_tbs_list = list(cluster_tb),
                                                                     look_up_ref = 1,
-                                                                    time_min = time_min,
-                                                                    time_max = time_max,
+                                                                    time_min = 0,
+                                                                    time_max = travel_time_mins,
                                                                     nbr_time_steps = nbr_time_steps)
 
       profiled_area_sf <- do.call(rbind,tt_from_cluster_isochrones) %>%
@@ -141,7 +148,7 @@ make_sim_data_env <- function(profiled_area_type,
     pop_totals_tb <- centres_with_pop_whole_area_tb %>%
       dplyr::summarise_at(dplyr::vars(dplyr::starts_with("sa2_included")),
                           dplyr::funs(sum))
-    
+
     if(!is.null(travel_time_mins)){
       by_band_pop_counts_sf_ls <- purrr::map(tt_from_cluster_isochrones,
                                              ~ spatial_profile_by_resolution_and_update_counts(profiled_sf = .x %>%
@@ -161,7 +168,7 @@ make_sim_data_env <- function(profiled_area_type,
       )
       by_band_unioned_sf_ls <- purrr::map(by_band_pop_counts_sf_ls,
                                           ~ .x %>%
-                                            sf::st_union() %>% 
+                                            sf::st_union() %>%
                                             sf::st_sf())
       centres_with_pop_by_band_sf_list <- purrr::map2(by_band_unioned_sf_ls,
                                                       by_band_pop_counts_tb_ls,
@@ -175,16 +182,16 @@ make_sim_data_env <- function(profiled_area_type,
       #                       dplyr::funs(sum))
     }
     sp_data_list[[2]] <- centres_with_pop_by_band_sf#centres_with_pop_whole_area_sf
-    #temp_copy <- sp_data_list[[2]] 
+    #temp_copy <- sp_data_list[[2]]
     # sp_data_list[[2]] <- sf::st_union(centres_with_pop_whole_area_sf,
     #                                   centres_with_pop_by_band_sf) # COULD WRITE CODE TO GET RID OF COLUMN DUPLICTES
     #sp_data_list[[2]] <- centres_with_pop_by_band_sf
-    
+
     #append(sp_data_list,list(centres_with_pop_by_band_sf))
     ## WIP END
   }
-  
-  
+
+
 
   ## 5. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,

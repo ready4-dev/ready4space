@@ -6,8 +6,8 @@
 Make a simulation data input for the environment.}
 \usage{
 make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
-  travel_time_mins = NULL, time_min = 0, time_max = 60,
-  nbr_time_steps = 5, age_lower, age_upper, project_for_year,
+  nbr_distance_steps = 5, nbr_time_steps = 5,
+  travel_time_mins = NULL, age_lower, age_upper, project_for_year,
   env_str_par_tb, nbr_its, deterministic)
 }
 \arguments{
