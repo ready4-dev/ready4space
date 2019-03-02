@@ -82,7 +82,7 @@ gen_distance_based_bands <- function(distance_km_outer,
                        by = distance_km_outer/nbr_distance_bands)
 
   service_clusters_vec <- service_cluster_tb %>% dplyr::pull(cluster_name) %>% unique()
-  state_territories_vec <- service_cluster_tb %>% dplyr::pull(state_territory) %>% unique()
+  #state_territories_vec <- service_cluster_tb %>% dplyr::pull(state_territory) %>% unique()
   ## 1.2.2 Get distance / travel time based boundaries
   service_clusters_tbs_list <- purrr::map(service_clusters_vec,
                                           ~ service_cluster_tb %>%
