@@ -7,8 +7,15 @@ Make a simulation data input for the environment.}
 \usage{
 make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
   nbr_distance_steps = 5, nbr_time_steps = 5,
-  travel_time_mins = NULL, age_lower, age_upper, project_for_year,
-  env_str_par_tb, nbr_its, deterministic)
+  travel_time_mins = NULL, age_lower, age_upper, env_str_par_tb, nbr_its,
+  deterministic, report_by_band = TRUE, at_time = "2016",
+  model_start_date = "2019", project_for_year,
+  at_highest_res_extra = NULL, at_specified_res = list(a = c("SEIFA",
+  "SA2")), age_sex_pop_str = "ERP by age and sex", tot_pop_str = "ERP",
+  pop_projs_str = "Population projections", country = "Australia",
+  var_name_lookup_tb = tibble::tibble(resolution = c("SA1", "SA2", "SA3",
+  "SA4"), year = c("2016", "2016", "2016", "2016"), var_name =
+  c("SA1_MAIN16", "SA2_MAIN16", "SA3_MAIN16", "SA4_MAIN16")))
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}

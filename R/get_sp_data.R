@@ -33,8 +33,8 @@ get_spatial_data_list <- function(at_highest_res,
                                   country = "Australia",
                                   state = NULL,
                                   require_year_match = TRUE,
-                                  excl_diff_bound_yr = TRUE){
-
+                                  excl_diff_bound_yr = TRUE,
+                                  pop_projs_str){
   attributes_to_import <- get_spatial_data_names(at_highest_res = at_highest_res,
                                                  at_time = at_time,
                                                  to_time = to_time,
@@ -42,7 +42,8 @@ get_spatial_data_list <- function(at_highest_res,
                                                  country = country,
                                                  state = state,
                                                  require_year_match = require_year_match,
-                                                 excl_diff_bound_yr = excl_diff_bound_yr)
+                                                 excl_diff_bound_yr = excl_diff_bound_yr,
+                                                 pop_projs_str = pop_projs_str)
 
   boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper()
   data_names_list <- purrr::map(boundary_res,
@@ -58,7 +59,8 @@ get_spatial_data_list <- function(at_highest_res,
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
-                                             data_lookup_tb = aus_spatial_lookup_tb)) %>%
+                                             data_lookup_tb = aus_spatial_lookup_tb,
+                                             pop_projs_str = pop_projs_str)) %>%
     which() + 1
   data_sf_list <- purrr::prepend(data_sf_list,
                                  list(index_ppr=index_ppr))
@@ -72,17 +74,26 @@ get_spatial_data_names <- function(at_highest_res,
                                    country = "Australia",
                                    state = NULL,
                                    require_year_match = TRUE,
-                                   excl_diff_bound_yr = TRUE){ #### NEED TO WORK ON SECOND HALF
+                                   excl_diff_bound_yr = TRUE,
+                                   pop_projs_str){ #### NEED TO WORK ON SECOND HALF
   if(excl_diff_bound_yr){
     spatial_lookup_tb <- aus_spatial_lookup_tb %>%
       dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
   }else
     spatial_lookup_tb <- aus_spatial_lookup_tb
+  year_opts <- spatial_lookup_tb %>%
+    dplyr::filter(main_feature == pop_projs_str) %>%
+    dplyr::pull(year)
+  year_opts_ref <- year_opts[stringr::str_length(year_opts)==4] %>%
+    as.numeric() %>%
+    sort() %>%
+    min(which(. >= as.numeric(to_time)))
+  to_time <- year_opts[year_opts_ref]
   year_vec <- as.character(as.numeric(at_time):as.numeric(to_time))
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
-                                 dplyr::filter(year %in% year_vec[if(.x=="Population projections") 1:length(year_vec) else 1]))
+                                 dplyr::filter(year %in% year_vec[if(.x==pop_projs_str) 1:length(year_vec) else 1]))
   data_res_vec <- purrr::map_chr(lookup_tb_list,
                                  ~ .x %>%
                                    dplyr::pull(area_type) %>%
@@ -118,15 +129,24 @@ get_spatial_data_names <- function(at_highest_res,
   if(!identical(non_matched_year_vec,character(0))){
     closest_years <- get_closest_year(incl_main_ft_vec = non_matched_year_vec,
                                       target_year = at_time)
-    extra_names <- purrr::map2_chr(non_matched_year_vec,closest_years,
+    extra_names <- purrr::map2_chr(non_matched_year_vec,
+                                   closest_years,
                                    ~     ready.data::data_get(data_lookup_tb = spatial_lookup_tb %>%
                                                                 dplyr::filter(year == .y),
                                                               lookup_reference = .x,
                                                               lookup_variable = "main_feature",
                                                               target_variable = "name",
                                                               evaluate = FALSE))
+    non_matched_positions <- purrr::map_dbl(non_matched_year_vec,
+                                            ~ which(at_highest_res==.x))
+    names_of_data_vec <- purrr::reduce(1:length(non_matched_positions),
+                                       .init = names_of_data_vec,
+                                        ~ append(.x,
+                                                 extra_names[.y],
+                                                 after=non_matched_positions[.y]-1))
+      #c(names_of_data_vec,extra_names)
   }
-  names_of_data_vec <- c(names_of_data_vec,extra_names)
+  
   extra_names <- purrr::map_chr(at_specified_res,
                                 ~ spatial_lookup_tb %>%
                                   dplyr::filter(year %in% year_vec) %>%
@@ -195,14 +215,15 @@ get_highest_res <- function(options_vec,
 ##
 
 check_if_ppr <- function(data_name_item,
-                         data_lookup_tb){
+                         data_lookup_tb,
+                         pop_projs_str){
   purrr::map_chr(data_name_item,
                  ~ ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                         lookup_reference = .x,
                                         lookup_variable = "name",
                                         target_variable = "main_feature",
                                         evaluate = FALSE)) %>%
-    stringr::str_detect("Population projections") %>%
+    stringr::str_detect(pop_projs_str) %>%
     sum() %>%
     magrittr::is_greater_than(0)
 }

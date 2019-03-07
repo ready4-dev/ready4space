@@ -36,6 +36,30 @@ estimate_prevalence <- function(pop_data,
                                 .init = pop_data,
                                 ~ .x %>%
                                   dplyr::mutate(!!rlang::sym(paste0(names(prev_rates_vec)[.y],"_prev")) := !!rlang::sym(pop_totals_vec[.y]) * prev_rates_vec[.y]))
+  return(prev_summary)
+}
+
+#' make_prev_summ_tb
+#' FUNCTION_DESCRIPTION
+#' @param prev_summary PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso 
+#'  \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{mutate}}
+#'  \code{\link[stringr]{str_sub}}
+#'  \code{\link[tibble]{tibble}}
+#' @rdname make_prev_summ_tb
+#' @export 
+#' @importFrom dplyr summarise_at vars contains funs mutate
+#' @importFrom stringr str_sub
+#' @importFrom tibble tibble
+make_prev_summ_tb <- function(prev_summary){
   prev_area_summary <- prev_summary %>%
     dplyr::summarise_at(dplyr::vars(dplyr::contains("_prev")),
                         dplyr::funs(sum))
@@ -48,7 +72,7 @@ estimate_prevalence <- function(pop_data,
   summ_tb <- tibble::tibble(age = ages,
                             Females = female_prev_vec,
                             Males = male_prev_vec) %>%
-    dplyr::mutate(Total = Females + Males)
+    dplyr::mutate(Persons = Females + Males)
   return(summ_tb)
 }
 

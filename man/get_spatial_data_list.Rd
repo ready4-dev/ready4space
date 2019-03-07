@@ -6,7 +6,7 @@
 \usage{
 get_spatial_data_list(at_highest_res, at_time, to_time = NULL,
   at_specified_res = NULL, country = "Australia", state = NULL,
-  require_year_match = TRUE, excl_diff_bound_yr = TRUE)
+  require_year_match = TRUE, excl_diff_bound_yr = TRUE, pop_projs_str)
 }
 \arguments{
 \item{at_highest_res}{PARAM_DESCRIPTION}
