@@ -64,7 +64,8 @@ make_sim_data_env <- function(profiled_area_type,
                                     at_time = at_time,
                                     to_time = project_for_year,
                                     country = country,
-                                    state_territory = profiled_area_objs_ls$state_territory)
+                                    state_territory = profiled_area_objs_ls$state_territory,
+                                    pop_projs_str = pop_projs_str)
 
     ## 4. APPLY PROFILED AREA FILTER
   sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
@@ -74,7 +75,7 @@ make_sim_data_env <- function(profiled_area_type,
                                       at_highest_res = at_highest_res,
                                       distance_km = distance_km,
                                       travel_time_mins = travel_time_mins,
-                                      profiled_area_bands_list = profiled_area_bands_list,
+                                      profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list,
                                       report_by_band = report_by_band,
                                       var_name_lookup_tb = var_name_lookup_tb)
     ## 5. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
@@ -88,7 +89,7 @@ make_sim_data_env <- function(profiled_area_type,
                                         age_lower = age_lower,
                                         age_upper = age_upper,
                                         time_steps = c(1,0,0,0),
-                                        nbr_steps = project_for_year-as.numeric(at_time))
+                                        nbr_steps = as.numeric(project_for_year)-as.numeric(at_time))
   return(sim_data)
 }
 
@@ -186,7 +187,8 @@ make_sp_data_list <- function(at_highest_res,
                               at_time,
                               to_time,
                               country,
-                              state_territory){
+                              state_territory,
+                              pop_projs_str){
   if(!"Victoria" %in% state_territory){
     at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
     to_time <- at_time
@@ -199,7 +201,8 @@ make_sp_data_list <- function(at_highest_res,
                                                        country = country,
                                                        state = .x,
                                                        require_year_match = FALSE,
-                                                       excl_diff_bound_yr = TRUE))
+                                                       excl_diff_bound_yr = TRUE,
+                                                       pop_projs_str = pop_projs_str))
   lists_to_merge <- purrr::transpose(lists_to_merge)
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))

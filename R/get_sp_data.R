@@ -84,7 +84,8 @@ get_spatial_data_names <- function(at_highest_res,
   year_opts <- spatial_lookup_tb %>%
     dplyr::filter(main_feature == pop_projs_str) %>%
     dplyr::pull(year)
-  year_opts_ref <- year_opts[stringr::str_length(year_opts)==4] %>%
+  year_opts <- year_opts[stringr::str_length(year_opts)==4]
+  year_opts_ref <- year_opts %>%
     as.numeric() %>%
     sort() %>%
     min(which(. >= as.numeric(to_time)))
