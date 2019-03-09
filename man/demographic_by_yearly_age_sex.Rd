@@ -75,6 +75,8 @@ gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 
 \item{ymwd_step}{PARAM_DESCRIPTION}
 
+\item{included_features}{XXXXXXXXXXXXX}
+
 \item{profiled_sf}{PARAM_DESCRIPTION}
 
 \item{age0}{PARAM_DESCRIPTION}

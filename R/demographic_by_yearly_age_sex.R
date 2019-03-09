@@ -5,7 +5,7 @@
 #' @param age0 Numeric, start of included age range.
 #' @param age1 Numeric, end of included age range.
 #' @param intervals Numeric, the years included in each age group in the source sf, Default: 5
-#' @param included_features
+#' @param included_features XXXXXXXXXXXXX
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples

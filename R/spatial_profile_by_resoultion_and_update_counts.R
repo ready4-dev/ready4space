@@ -1,13 +1,6 @@
-#' @title
+#' intersect_sfs_update_counts
 #' Create a simple features object of two intersecting areas and adjust population counts by
 #' fraction of spatial unit included in a profiled area.
-#'
-#' @description
-#' This function:
-#'  -
-#'  -
-#'
-#' @family spatial functions.
 #'
 #' @details
 #'
@@ -41,26 +34,29 @@
 #' @rdname spatial_profile_by_resolution_and_update_counts
 #' @export
 
-spatial_profile_by_resolution_and_update_counts <- function(profiled_sf,
-                                                            profiled_colref = NA,
-                                                            profiled_rowref = NA,
-                                                            resolution_sf,
-                                                            resolution_sa1s_sf,
-                                                            resolution_sa2s_sf,
-                                                            return_resolution){
-
-  profiled_object <- spatial_intersect_profiled_resolution_units(profiled_sf = profiled_sf,
-                                                                              profiled_colref = profiled_colref,
-                                                                              profiled_rowref = profiled_rowref,
-                                                                              resolution_sf = resolution_sf
-  )
-  if(!"SA2_MAIN16" %in% names(profiled_object)){
-    profiled_object <-  spatial_intersect_profiled_resolution_units(profiled_sf = profiled_object,
-                                                                                resolution_sf = resolution_sa2s_sf
-    )
+intersect_sfs_update_counts <- function(profiled_sf,
+                                    profiled_colref = NA,
+                                    profiled_rowref = NA,
+                                    sp_data_list,
+                                    tot_pop_resolution,
+                                    age_sex_pop_resolution,
+                                    return_resolution,
+                                    var_name_lookup_tb){
+  res_var_name <- ready.data::data_get(data_lookup_tb = var_name_lookup_tb,
+                                       lookup_variable = "resolution",
+                                       lookup_reference = return_resolution,
+                                       target_variable = "var_name",
+                                       evaluate = FALSE)
+  profiled_object <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
+                                               profiled_colref = profiled_colref,
+                                               profiled_rowref = profiled_rowref,
+                                               attributes_sf = sp_data_list[[return_resolution]])
+  if(!res_var_name %in% names(profiled_object)){
+    profiled_object <-  intersect_sfs_keep_counts(profiled_sf = profiled_object,
+                                                  attributes_sf = sp_data_list[[age_sex_pop_resolution]])
   }
-  profiled_object <- spatial_adjust_population_by_included_fraction(resolution_sa1s_sf = resolution_sa1s_sf,
-                                                                                profiled_by_sa2_sf = profiled_object,
-                                                                                return_resolution = return_resolution)
+  profiled_object <- spatial_adjust_population_by_included_fraction(resolution_sa1s_sf = sp_data_list[[tot_pop_resolution]],
+                                                                    profiled_by_sa2_sf = profiled_object,
+                                                                    return_resolution = return_resolution)
   return(profiled_object)
 }

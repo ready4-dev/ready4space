@@ -13,9 +13,9 @@ make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
   at_highest_res_extra = NULL, at_specified_res = list(a = c("SEIFA",
   "SA2")), age_sex_pop_str = "ERP by age and sex", tot_pop_str = "ERP",
   pop_projs_str = "Population projections", country = "Australia",
-  var_name_lookup_tb = tibble::tibble(resolution = c("SA1", "SA2", "SA3",
-  "SA4"), year = c("2016", "2016", "2016", "2016"), var_name =
-  c("SA1_MAIN16", "SA2_MAIN16", "SA3_MAIN16", "SA4_MAIN16")))
+  crs_nbr = 4283, var_name_lookup_tb = tibble::tibble(resolution =
+  c("SA1", "SA2", "SA3", "SA4"), year = c("2016", "2016", "2016", "2016"),
+  var_name = c("SA1_MAIN16", "SA2_MAIN16", "SA3_MAIN16", "SA4_MAIN16")))
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}
