@@ -4,14 +4,14 @@
 \alias{get_spatial_data_list}
 \title{get_spatial_data_list}
 \usage{
-get_spatial_data_list(at_highest_res, at_time, to_time = NULL,
+get_spatial_data_list(at_highest_res, data_year, to_time = NULL,
   at_specified_res = NULL, country = "Australia", state = NULL,
   require_year_match = TRUE, excl_diff_bound_yr = TRUE, pop_projs_str)
 }
 \arguments{
 \item{at_highest_res}{PARAM_DESCRIPTION}
 
-\item{at_time}{PARAM_DESCRIPTION}
+\item{data_year}{PARAM_DESCRIPTION}
 
 \item{to_time}{PARAM_DESCRIPTION, Default: NULL}
 

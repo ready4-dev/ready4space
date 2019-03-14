@@ -42,7 +42,6 @@ if(interactive()){
 
 Other spatial functions.: \code{\link{pop_sum_15.24}},
   \code{\link{spatial_adjust_partial_in_custom_area}},
-  \code{\link{spatial_adjust_population_by_included_fraction}},
   \code{\link{spatial_cases_coordinates}},
   \code{\link{spatial_create_agent_coordinates_tb}},
   \code{\link{spatial_merge_areas_attributes}},

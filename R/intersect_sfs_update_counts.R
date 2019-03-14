@@ -66,11 +66,12 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                              attribute_sf = tot_pop_sf,
                                              attribute_unit = tot_pop_resolution)
   }
-  profiled_sf <- spatial_adjust_population_by_included_fraction(profiled_sf = profiled_sf,
-                                                                group_by_var = group_by_var,
-                                                                age_sex_var_name = age_sex_var_name,
-                                                                data_year = data_year,
-                                                                age_sex_pop_resolution = age_sex_pop_resolution,
-                                                                tot_pop_resolution = tot_pop_resolution)
-  return(profiled_object)
+  profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
+                                           group_by_var = group_by_var,
+                                           age_sex_var_name = age_sex_var_name,
+                                           data_year = data_year,
+                                           age_sex_pop_resolution = age_sex_pop_resolution,
+                                           tot_pop_resolution = tot_pop_resolution)
+
+  return(profiled_sf)
 }

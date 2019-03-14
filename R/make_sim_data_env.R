@@ -180,7 +180,7 @@ extend_sp_data_list <- function(sp_data_list,
     #                               lookup_reference = age_sex_pop_resolution,
     #                               target_variable = "var_name",
     #                               evaluate = FALSE))
-    pop_cols_prefix <- paste0(tolower(age_sex_pop_resolution),"_included")
+    pop_cols_prefix <- paste0("popl_inc_",age_sex_pop_resolution) #paste0(tolower(age_sex_pop_resolution),"_included")
     profiled_pop_counts_sf_list <- purrr::map(by_band_pop_counts_sf_ls,
                                                    ~ .x %>%
                                                      sum_at_diff_funs(var_list = list(var_names_first_bit,

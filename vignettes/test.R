@@ -26,15 +26,15 @@ deterministic = FALSE
 period = "Year"
 uncertainty_int <- c(0.025,0.975)
 ## DATA INPUT: PREVALENCE
-prev_rates_vec = ready.space::make_prev_struc_par_tb(disorder = disorder,
+prev_rates_vec = make_prev_struc_par_tb(disorder = disorder,
                                                      period = "Year",
                                                      ages = age_range[1]:age_range[2],
                                                      sexes = c("Female","Male"),
                                                      pref_source = ymh.epi.lit::pref_source,
                                                      prev_rates = ymh.epi.lit::prev_rates)
-prev_sum_tb <- ready.space::make_prev_rates_sum_tb(prev_rates_vec)
+prev_sum_tb <- make_prev_rates_sum_tb(prev_rates_vec)
 ## DATA INPUT: SPATIAL
-sim_data <- ready.space::make_sim_data_env(profiled_area_type = profiled_area_type,
+sim_data <- make_sim_data_env(profiled_area_type = profiled_area_type,
                                            profiled_area =  profiled_area,
                                            distance_km = NULL,#30,
                                            # nbr_distance_steps = 3,
