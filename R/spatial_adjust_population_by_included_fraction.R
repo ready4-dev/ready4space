@@ -38,10 +38,12 @@ update_pop_count_by_areas <-function(profiled_sf,
                                      age_sex_pop_resolution,
                                      tot_pop_resolution){
   profiled_sf <- update_pop_by_inc_area(profiled_sf = profiled_sf,
-                                        sp_unit = age_sex_pop_resolution)
+                                        sp_unit = age_sex_pop_resolution,
+                                        data_year = data_year)
   if(!is.null(tot_pop_resolution)){
     profiled_sf <- update_pop_by_inc_area(profiled_sf = profiled_sf,
                                           sp_unit = tot_pop_resolution,
+                                          data_year = data_year,
                                           tot_pop_col = paste0("year_",
                                                                data_year,
                                                                "pr"),
@@ -79,6 +81,7 @@ suffix_to_prefix <- function(data_tb,
 }
 update_pop_by_inc_area <- function(profiled_sf,
                                    sp_unit,
+                                   data_year,
                                    age_sex_var_name = NULL,
                                    age_sex_pop_resolution = NULL,
                                    tot_pop_col = NULL){

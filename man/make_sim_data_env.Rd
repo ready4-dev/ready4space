@@ -15,7 +15,7 @@ make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
   at_highest_res_extra = NULL, at_specified_res = list(a = c("SEIFA",
   "SA2")), age_sex_pop_str = "ERP by age and sex", tot_pop_str = "ERP",
   pop_projs_str = "Population projections", country = "Australia",
-  crs_nbr = 4283, group_by_lookup_tb = group_by_lookup_tb)
+  crs_nbr = 4283, group_by_lookup_tb = group_by_var_lookup_tb)
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}

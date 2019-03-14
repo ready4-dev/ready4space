@@ -35,7 +35,7 @@ make_sim_data_env <- function(profiled_area_type,
                               pop_projs_str = "Population projections",
                               country = "Australia",
                               crs_nbr = 4283,
-                              group_by_lookup_tb = group_by_lookup_tb){
+                              group_by_lookup_tb = group_by_var_lookup_tb){
   ## 1. CONVERT DATES
   data_year <- data_ymdhms %>% lubridate::year() %>% as.character()
   model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
