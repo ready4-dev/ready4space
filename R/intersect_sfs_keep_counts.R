@@ -36,25 +36,28 @@
 intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_colref = NA,
                                       profiled_rowref = NA,
-                                      attribute_sf){
+                                      attribute_sf,
+                                      attribute_unit){
   if(!is.na(profiled_colref)){
     if(!is.na(profiled_rowref)){
-      firstbit <- profiled_sf %>%
+      profiled_sf <- profiled_sf %>%
         dplyr::select(!!profiled_colref)
-      index.nbr <- firstbit %>%
+      index.nbr <- profiled_sf %>%
         dplyr::pull(profiled_colref) %>%
         stringr::str_which(profiled_rowref)
-      firstbit <- firstbit %>%
+      profiled_sf <- profiled_sf %>%
         dplyr::slice(index.nbr)
     }else
-      firstbit <- profiled_sf %>%
+      profiled_sf <- profiled_sf %>%
         dplyr::select(!!profiled_colref)
-    profiled_by_resolution <- sf::st_intersection(firstbit,
-                                                  attribute_sf)
-  }else
-    profiled_by_resolution <- sf::st_intersection(profiled_sf,
-                                                  attribute_sf)
-  return(profiled_by_resolution)
+  }
+  attribute_sf <- attribute_sf %>%
+    dplyr::mutate(!!rlang::sym(paste0("area_whl_",attribute_unit)) := sf::st_area(.) %>% units::set_units(km^2))
+  profiled_sf <- sf::st_intersection(profiled_sf,
+                                     attribute_sf) %>%
+    dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
+    dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
+  return(profiled_sf)
 }
 #' @describeIn intersect_sfs_keep_counts  Function to intesect two sfs and drop extra columns.
 #' @export

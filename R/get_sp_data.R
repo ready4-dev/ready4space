@@ -1,7 +1,7 @@
 #' @title get_spatial_data_list
 #' @description Create a list of SF objects constructed from specified data types at highest or requested level of resolution.
 #' @param at_highest_res PARAM_DESCRIPTION
-#' @param at_time PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
 #' @param to_time PARAM_DESCRIPTION, Default: NULL
 #' @param at_specified_res PARAM_DESCRIPTION, Default: NULL
 #' @param country PARAM_DESCRIPTION, Default: 'Australia'
@@ -27,7 +27,7 @@
 #' @importFrom stats setNames
 
 get_spatial_data_list <- function(at_highest_res,
-                                  at_time,
+                                  data_year,
                                   to_time = NULL,
                                   at_specified_res = NULL,
                                   country = "Australia",
@@ -36,7 +36,7 @@ get_spatial_data_list <- function(at_highest_res,
                                   excl_diff_bound_yr = TRUE,
                                   pop_projs_str){
   attributes_to_import <- get_spatial_data_names(at_highest_res = at_highest_res,
-                                                 at_time = at_time,
+                                                 data_year = data_year,
                                                  to_time = to_time,
                                                  at_specified_res = at_specified_res,
                                                  country = country,
@@ -54,7 +54,7 @@ get_spatial_data_list <- function(at_highest_res,
                               ~ recur_add_attr_to_sf(country = country,
                                                      state = state,
                                                      area_unit = .x,
-                                                     boundary_year = at_time,
+                                                     boundary_year = data_year,
                                                      attribute_data = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
@@ -68,7 +68,7 @@ get_spatial_data_list <- function(at_highest_res,
 }
 
 get_spatial_data_names <- function(at_highest_res,
-                                   at_time,
+                                   data_year,
                                    to_time = NULL,
                                    at_specified_res = NULL,
                                    country = "Australia",
@@ -90,7 +90,7 @@ get_spatial_data_names <- function(at_highest_res,
     sort() %>%
     min(which(. >= as.numeric(to_time)))
   to_time <- year_opts[year_opts_ref]
-  year_vec <- as.character(as.numeric(at_time):as.numeric(to_time))
+  year_vec <- as.character(as.numeric(data_year):as.numeric(to_time))
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
@@ -99,7 +99,7 @@ get_spatial_data_names <- function(at_highest_res,
                                  ~ .x %>%
                                    dplyr::pull(area_type) %>%
                                    unique() %>%
-                                   get_highest_res(year = at_time))
+                                   get_highest_res(year = data_year))
   data_unavail_for_year <-  is.na(data_res_vec)
   if(require_year_match & sum(data_unavail_for_year) > 0)
     stop("Data not available for specified year for all data requested")
@@ -129,7 +129,7 @@ get_spatial_data_names <- function(at_highest_res,
 
   if(!identical(non_matched_year_vec,character(0))){
     closest_years <- get_closest_year(incl_main_ft_vec = non_matched_year_vec,
-                                      target_year = at_time)
+                                      target_year = data_year)
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
                                    ~     ready.data::data_get(data_lookup_tb = spatial_lookup_tb %>%
@@ -147,7 +147,7 @@ get_spatial_data_names <- function(at_highest_res,
                                                  after=non_matched_positions[.y]-1))
       #c(names_of_data_vec,extra_names)
   }
-  
+
   extra_names <- purrr::map_chr(at_specified_res,
                                 ~ spatial_lookup_tb %>%
                                   dplyr::filter(year %in% year_vec) %>%

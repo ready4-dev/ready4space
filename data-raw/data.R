@@ -155,6 +155,10 @@ params_struc_mape_tb = ready.aus.data::params_struc_mape_tb
 #                   overwrite = TRUE)
 # usethis::use_data(safety_prev_rates,
 #                   overwrite = TRUE)
+group_by_lookup_tb <- tibble::tibble(resolution = c("SA1","SA2","SA3", "SA4","PHN","DRIVE_TIME", "GEOMETRIC_DISTANCE"),
+                                    year = c("2016", "2016","2016","2016", "2016","2016","2016"),
+                                    var_name = c("SA1_MAIN16","SA2_MAIN16","SA3_MAIN16","SA4_MAIN16", "PHN_NAME", "drive_times", "distance_km"))
+
 aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 
 usethis::use_data(aus_spatial_lookup_tb,
@@ -166,6 +170,9 @@ usethis::use_data(aus_data_resolution_tb,
                   overwrite = TRUE,
                   internal = TRUE)
 usethis::use_data(aus_state_short_tb,
+                  overwrite = TRUE,
+                  internal = TRUE)
+usethis::use_data(group_by_lookup_tb,
                   overwrite = TRUE,
                   internal = TRUE)
 # usethis::use_data(par_str_environment_tb,

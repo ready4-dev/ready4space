@@ -24,11 +24,10 @@ make_sim_data_env <- function(profiled_area_type,
                               env_str_par_tb,
                               nbr_its,
                               deterministic,
-                              report_by_band = TRUE,
-                              at_time = "2016",
-                              model_start_date = "2019",
-                              project_for_year,
-                              #to_time = "2031",
+                              group_at_profile_unit = TRUE,
+                              data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
+                              model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
+                              model_end_ymdhms = lubridate::ymd_hms("2031_07_01 12:00:00"),
                               at_highest_res_extra = NULL,
                               at_specified_res = list(a=c("SEIFA","SA2")),
                               age_sex_pop_str = "ERP by age and sex",
@@ -36,14 +35,15 @@ make_sim_data_env <- function(profiled_area_type,
                               pop_projs_str = "Population projections",
                               country = "Australia",
                               crs_nbr = 4283,
-                              var_name_lookup_tb = tibble::tibble(resolution = c("SA1","SA2","SA3", "SA4"),
-                                                                   year = c("2016", "2016","2016","2016"),
-                                                                   var_name = c("SA1_MAIN16","SA2_MAIN16","SA3_MAIN16","SA4_MAIN16"))){
-  ## 1. GET PARAMETER MATRICES
+                              group_by_lookup_tb = group_by_lookup_tb){
+  ## 1. CONVERT DATES
+  data_year <- data_ymdhms %>% lubridate::year() %>% as.character()
+  model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
+  ## 2. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
                                   ~ genValueFromDist(par_str_list[[.x]], nbr_its))
-  ## 2. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
+  ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
   profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = profiled_area_type,
                                                    profiled_area = profiled_area,
                                                    crs_nbr = crs_nbr,
@@ -51,21 +51,21 @@ make_sim_data_env <- function(profiled_area_type,
                                                    nbr_distance_steps = nbr_distance_steps,
                                                    travel_time_mins = travel_time_mins,
                                                    nbr_time_steps = nbr_time_steps)
-  ## 3. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
+  ## 4. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
   at_highest_res <- c(age_sex_pop_str,
                       tot_pop_str,
-                      pop_projs_str)
+                      pop_projs_str) %>% purrr::compact()
   if(!is.null(at_highest_res_extra))
     at_highest_res <- c(at_highest_res,at_highest_res_extra)
   sp_data_list <- make_sp_data_list(at_highest_res = at_highest_res,
                                     at_specified_res = at_specified_res,
-                                    at_time = at_time,
-                                    to_time = project_for_year,
+                                    data_year = data_year,
+                                    to_time = model_end_year,
                                     country = country,
                                     state_territory = profiled_area_objs_ls$state_territory,
                                     pop_projs_str = pop_projs_str)
 
-  ## 4. APPLY PROFILED AREA FILTER
+  ## 5. APPLY PROFILED AREA FILTER
   sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
                                       profiled_area_type = profiled_area_type,
                                       age_sex_pop_str = age_sex_pop_str,
@@ -74,22 +74,24 @@ make_sim_data_env <- function(profiled_area_type,
                                       distance_km = distance_km,
                                       travel_time_mins = travel_time_mins,
                                       profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list,
-                                      report_by_band = report_by_band,
-                                      var_name_lookup_tb = var_name_lookup_tb,
+                                      group_at_profile_unit = group_at_profile_unit,
+                                      group_by_lookup_tb = group_by_lookup_tb,
                                       crs_nbr = crs_nbr,
-                                      at_time = at_time)
-  ## 5. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
+                                      data_year = data_year)
+  ## 6. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)
-  ## 6. CREATE SIMULATION DATA INPUT OBJECT
+  ## 7. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
-                                        pre_model_date = at_time,
-                                        model_start_date = model_start_date,
-                                        model_end_date = project_for_year,
+                                        pre_model_date = data_year,
+                                        model_start_date = model_start_ymdhms %>%
+                                          lubridate::year() %>%
+                                          as.character(),
+                                        model_end_date = model_end_year,
                                         age_lower = age_lower,
                                         age_upper = age_upper,
                                         time_steps = c(1,0,0,0),
-                                        nbr_steps = as.numeric(project_for_year)-as.numeric(at_time))
+                                        nbr_steps = as.numeric(model_end_year)-as.numeric(data_year))
   return(sim_data)
 }
 
@@ -101,13 +103,22 @@ extend_sp_data_list <- function(sp_data_list,
                                 distance_km = NULL,
                                 travel_time_mins = NULL,
                                 profiled_area_bands_list,
-                                report_by_band,
-                                var_name_lookup_tb,
+                                group_at_profile_unit,
+                                group_by_lookup_tb,
                                 crs_nbr,
-                                at_time
+                                data_year
                                 ){
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == age_sex_pop_str) + 1]
-  tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == tot_pop_str) + 1]
+  tot_pop_resolution <- NULL
+  if(!is.null(tot_pop_str))
+    tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == tot_pop_str) + 1]
+  group_by_var <- get_group_by_var(profile_unit = ifelse(profiled_area_type=="PHN",
+                                                              "PHN",
+                                                              ifelse(!is.null(travel_time_mins),"DRIVE_TIME","GEOMETRIC_DISTANCE")),
+                                   data_unit = age_sex_pop_resolution,
+                                   group_at_profile_unit = group_at_profile_unit,
+                                   group_by_lookup_tb = group_by_lookup_tb %>%
+                                     dplyr::filter(year == data_year)) ####
   ###
   if(profiled_area_type=="PHN"){
     profiled_pop_counts_sf <-  intersect_sfs_update_counts(profiled_sf = profiled_area_sf,
@@ -116,9 +127,9 @@ extend_sp_data_list <- function(sp_data_list,
                                                            sp_data_list = sp_data_list,
                                                            tot_pop_resolution = tot_pop_resolution,
                                                            age_sex_pop_resolution = age_sex_pop_resolution,
-                                                           return_resolution = age_sex_pop_resolution,
-                                                           var_name_lookup_tb = var_name_lookup_tb %>%
-                                                             dplyr::filter(year == at_time)) 
+                                                           group_by_var = group_by_var,
+                                                           group_by_lookup_tb = group_by_lookup_tb,
+                                                           data_year = data_year)
     extended_sp_data_list <- append(sp_data_list,list(profiled_pop_counts_sf))
   }else{
     by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
@@ -129,9 +140,9 @@ extend_sp_data_list <- function(sp_data_list,
                                                                          sp_data_list = sp_data_list,
                                                                          tot_pop_resolution = tot_pop_resolution,
                                                                          age_sex_pop_resolution = age_sex_pop_resolution,
-                                                                         return_resolution = age_sex_pop_resolution,
-                                                                         var_name_lookup_tb = var_name_lookup_tb %>%
-                                                                           dplyr::filter(year == at_time)))
+                                                                         group_by_var = group_by_var,
+                                                                         group_by_lookup_tb = group_by_lookup_tb,
+                                                                         data_year = data_year))
     by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
                                               names(by_band_pop_counts_sf_ls),
                                              ~ .x %>%
@@ -146,49 +157,29 @@ extend_sp_data_list <- function(sp_data_list,
                                                                                  "_area_km")) := AREASQKM16))
       if(!is.null(travel_time_mins)){
       var_names_first_bit <- c("id","min","max", "center")
-      group_by_band <- "drive_times"
-      if(!report_by_band)
-        var_names_first_bit <- c(var_names_first_bit,"drive_times") 
-      
+      # group_at_profiled_unit <- "drive_times"
+      if(!group_at_profile_unit)
+        var_names_first_bit <- c(var_names_first_bit,"drive_times")
       funs_list <- tibble::lst(first = dplyr::first,
                                sum = sum)
       pop_prefix <- "dtm_"
     }
     if(!is.null(distance_km)){
-      # by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
-      #                                        ~ spatial_profile_by_resolution_and_update_counts(profiled_sf = .x,
-      #                                                                                          sp_data_list = sp_data_list,
-      #                                                                                          var_name_lookup_tb = var_name_lookup_tb,
-      #                                                                                          return_resolution = age_sex_pop_resolution,
-      #                                                                                          age_sex_pop_resolution = age_sex_pop_resolution,
-      #                                                                                          tot_pop_resolution = tot_pop_resolution
-      #                                                                                          #resolution_sf = sp_data_list[[age_sex_pop_resolution]],
-      #                                                                                          #resolution_sa1s_sf = sp_data_list[[tot_pop_resolution]],
-      #                                                                                          #resolution_sa2s_sf = sp_data_list[[age_sex_pop_resolution]],
-      #                                                                                          ))
       var_names_first_bit <- NULL
-      group_by_band <- "distance_km"
-      if(!report_by_band)
-        var_names_first_bit <- c("distance_km") 
-      # group_by <- ifelse(report_by_band,
-      #                    "distance_km",
-      #                    data_get(data_lookup_tb = var_name_lookup_tb %>%
-      #                               dplyr::filter(year == at_time),
-      #                             lookup_variable = "resolution",
-      #                             lookup_reference = age_sex_pop_resolution,
-      #                             target_variable = "var_name",
-      #                             evaluate = FALSE))
+      # group_at_profiled_unit <- "distance_km"
+      if(!group_at_profile_unit)
+        var_names_first_bit <- c("distance_km")
       funs_list <- tibble::lst(sum = sum)
       pop_prefix <- "gds_"
     }
-      group_by <- ifelse(report_by_band,
-                         group_by_band,
-                         data_get(data_lookup_tb = var_name_lookup_tb %>%
-                                    dplyr::filter(year == at_time),
-                                  lookup_variable = "resolution",
-                                  lookup_reference = age_sex_pop_resolution,
-                                  target_variable = "var_name",
-                                  evaluate = FALSE))
+    #   group_by <- ifelse(group_at_profile_unit,
+    #                      group_at_profiled_unit,
+    #                      data_get(data_lookup_tb = var_name_lookup_tb %>%
+    #                                 dplyr::filter(year == data_year),
+    #                               lookup_variable = "resolution",
+    #                               lookup_reference = age_sex_pop_resolution,
+    #                               target_variable = "var_name",
+    #                               evaluate = FALSE))
     pop_cols_prefix <- paste0(tolower(age_sex_pop_resolution),"_included")
     profiled_pop_counts_sf_list <- purrr::map(by_band_pop_counts_sf_ls,
                                                    ~ .x %>%
@@ -197,10 +188,10 @@ extend_sp_data_list <- function(sp_data_list,
                                                                         purrr::compact()
                                                                       ,
                                                                       funs_list = funs_list,
-                                                                      group_by = group_by))
-    if(!report_by_band)
+                                                                      group_by = group_by_var)) ## CHECK
+    if(!group_at_profile_unit)
       profiled_pop_counts_sf_list <- list(do.call(rbind,profiled_pop_counts_sf_list))
-    # if(report_by_band){
+    # if(group_at_profile_unit){
     #   centres_with_pop_by_band_sf <- centres_with_pop_by_band_sf %>%
     #     dplyr::rename_at(dplyr::vars(dplyr::starts_with(pop_cols_prefix)),
     #                      dplyr::funs(paste0(pop_prefix,stringr::str_sub(.,start=5) ))) ## AREA CODE PART OF pop_cols_prefix must be 3 characters
@@ -210,21 +201,37 @@ extend_sp_data_list <- function(sp_data_list,
   } #
   return(extended_sp_data_list)
 }
-
+get_group_by_var <- function(profile_unit,
+                             data_unit,
+                             group_at_profile_unit,
+                             group_by_lookup_tb){
+  group_by <- ifelse(group_at_profile_unit,
+                     ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
+                                          lookup_variable = "resolution",
+                                          lookup_reference = profile_unit,
+                                          target_variable = "var_name",
+                                          evaluate = FALSE),
+                     ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
+                                          lookup_variable = "resolution",
+                                          lookup_reference = data_unit,
+                                          target_variable = "var_name",
+                                          evaluate = FALSE))
+  return(group_by)
+}
 make_sp_data_list <- function(at_highest_res,
                               at_specified_res,
-                              at_time,
+                              data_year,
                               to_time,
                               country,
                               state_territory,
                               pop_projs_str){
   if(!"Victoria" %in% state_territory){
     at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
-    to_time <- at_time
+    to_time <- data_year
   }
   lists_to_merge <- purrr::map(state_territory,
                                ~ get_spatial_data_list(at_highest_res = at_highest_res,
-                                                       at_time = at_time,
+                                                       data_year = data_year,
                                                        to_time = to_time,
                                                        at_specified_res = at_specified_res,
                                                        country = country,
@@ -259,7 +266,7 @@ make_profiled_area_objs <- function(profiled_area_type,
                                     travel_time_mins = NULL,
                                     nbr_time_steps
                                     ){
-  
+
   if(profiled_area_type=="PHN"){
     profiled_area_sf <- ready.aus.data::aus_boundary_phns_sf %>%
       dplyr::filter(PHN_NAME %in% profiled_area)
