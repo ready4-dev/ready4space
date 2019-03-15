@@ -36,6 +36,6 @@ Some text.
 }
 
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au}
 
 }

@@ -27,7 +27,9 @@ make_sim_data_env <- function(profiled_area_type,
                               group_at_profile_unit = TRUE,
                               data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
                               model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
-                              model_end_ymdhms = lubridate::ymd_hms("2031_07_01 12:00:00"),
+                              simulation_steps_ymwd = c(1,0,0,0),
+                              nbr_steps_start_to_end = 1,
+                              #model_end_ymdhms = lubridate::ymd_hms("2031_07_01 12:00:00"),
                               at_highest_res_extra = NULL,
                               at_specified_res = list(a=c("SEIFA","SA2")),
                               age_sex_pop_str = "ERP by age and sex",
@@ -37,12 +39,19 @@ make_sim_data_env <- function(profiled_area_type,
                               crs_nbr = 4283,
                               group_by_lookup_tb = group_by_var_lookup_tb){
   ## 1. CONVERT DATES
-  data_year <- data_ymdhms %>% lubridate::year() %>% as.character()
+  data_year <- data_ymdhms %>%
+    lubridate::year() %>%
+    as.character()
+  model_end_ymdhms <- model_start_ymdhms +
+    lubridate::years(simulation_steps_ymwd[1]) +
+    months(simulation_steps_ymwd[2]) +
+    lubridate::weeks(simulation_steps_ymwd[3]) +
+    lubridate::days(simulation_steps_ymwd[4]) #lubridate::ymd_hms("2031_07_01 12:00:00")
   model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
   ## 2. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
-                                  ~ genValueFromDist(par_str_list[[.x]], nbr_its))
+                                  ~ ready.sim::genValueFromDist(par_str_list[[.x]], nbr_its))
   ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
   profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = profiled_area_type,
                                                    profiled_area = profiled_area,
@@ -83,15 +92,15 @@ make_sim_data_env <- function(profiled_area_type,
                                    par_vals = env_param_tb)
   ## 7. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
-                                        pre_model_date = data_year,
-                                        model_start_date = model_start_ymdhms %>%
-                                          lubridate::year() %>%
-                                          as.character(),
-                                        model_end_date = model_end_year,
+                                        pre_model_date = data_ymdhms,
+                                        model_start_date = model_start_ymdhms,# %>%
+                                          #lubridate::year() %>%
+                                          #as.character(),
+                                        model_end_date = model_end_ymdhms,# model_end_year,
                                         age_lower = age_lower,
                                         age_upper = age_upper,
-                                        time_steps = c(1,0,0,0),
-                                        nbr_steps = as.numeric(model_end_year)-as.numeric(data_year))
+                                        time_steps = simulation_steps_ymwd,
+                                        nbr_steps = nbr_steps_start_to_end)
   return(sim_data)
 }
 
