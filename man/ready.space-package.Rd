@@ -19,16 +19,21 @@ To learn more about ready.space, start with the vignettes:
 `browseVignettes(package = "ready.space")`
 }
 \section{First section}{
+
 \describe{
 \item{firstitem}
 }
 }
+
 \section{Second section}{
+
 Some text.
 \describe{
 \item{moretext}
 }
 }
+
 \author{
 \strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au}
+
 }

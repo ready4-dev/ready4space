@@ -8,15 +8,12 @@
 #' \item Goal 2
 #' \item Goal 3.
 #' }
-#'
 #' To learn more about ready.space, start with the vignettes:
 #' `browseVignettes(package = "ready.space")`
-#'
 #' @section First section:
 #' \describe{
 #' \item{firstitem}
 #' }
-#'
 #' @section Second section:
 #' Some text.
 #' \describe{

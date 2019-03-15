@@ -228,3 +228,9 @@ check_if_ppr <- function(data_name_item,
     sum() %>%
     magrittr::is_greater_than(0)
 }
+get_sys_data_tbs_ls <- function(){
+  list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
+       aus_data_resolution_tb = aus_data_resolution_tb,
+       aus_state_short_tb = aus_state_short_tb,
+       group_by_var_lookup_tb = group_by_var_lookup_tb)
+}
