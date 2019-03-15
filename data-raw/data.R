@@ -160,9 +160,11 @@ group_by_var_lookup_tb <- tibble::tibble(resolution = c("SA1","SA2","SA3", "SA4"
                                     var_name = c("SA1_MAIN16","SA2_MAIN16","SA3_MAIN16","SA4_MAIN16", "PHN_NAME", "drive_times", "distance_km"))
 
 aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
-
-usethis::use_data(aus_spatial_lookup_tb,
-                   overwrite = TRUE)
+# aus_spatial_lookup_tb <- ready.space::aus_spatial_lookup_tb
+# aus_data_resolution_tb <- ready.space:aus_data_resolution_tb
+# aus_state_short_tb <- ready.space::aus_state_short_tb
+# usethis::use_data(aus_spatial_lookup_tb,
+#                    overwrite = TRUE)
 usethis::use_data(aus_spatial_lookup_tb,
                    overwrite = TRUE,
                    internal = TRUE)
