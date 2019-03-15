@@ -2,7 +2,7 @@ context("Victorian Growth")
 test_that("Victorian growth tibble has correct dimensions, columns and cases",{
   require(readxl)
   require(tidyverse)
-  vic.pop.growth.by.age.lga < spatial_vic_pop_growth_lga()
+  vic.pop.growth.by.age.lga <- spatial_vic_pop_growth_lga()
   expect_equal(length(names(vic.pop.growth.by.age.lga)),26)
   expect_equal(sum(names(vic.pop.growth.by.age.lga)==c("LGA.Code",
                                                         "LGA_NAME16",

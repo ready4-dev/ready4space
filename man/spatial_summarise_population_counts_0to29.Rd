@@ -40,7 +40,6 @@ Other spatial functions.: \code{\link{pop_sum_15.24}},
   \code{\link{spatial_one_year_projections_15_24}},
   \code{\link{spatial_population_growth}},
   \code{\link{spatial_profile_by_sa2}},
-  \code{\link{spatial_select_rename_age_sex}},
-  \code{\link{spatial_vic_pop_growth_lga}}
+  \code{\link{spatial_select_rename_age_sex}}
 }
 \concept{spatial functions.}

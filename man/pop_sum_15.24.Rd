@@ -41,7 +41,6 @@ Other spatial functions.: \code{\link{spatial_adjust_partial_in_custom_area}},
   \code{\link{spatial_population_growth}},
   \code{\link{spatial_profile_by_sa2}},
   \code{\link{spatial_select_rename_age_sex}},
-  \code{\link{spatial_summarise_population_counts_0to29}},
-  \code{\link{spatial_vic_pop_growth_lga}}
+  \code{\link{spatial_summarise_population_counts_0to29}}
 }
 \concept{spatial functions.}

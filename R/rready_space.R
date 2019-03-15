@@ -3,7 +3,6 @@
 #' ready.space is a package of functions that creates the spatial and temporal environment for the readyforwhatsnext simulation toolkit.
 #'
 #' It has three main goals:
-#'
 #' \itemize{
 #' \item Goal 1.
 #' \item Goal 2

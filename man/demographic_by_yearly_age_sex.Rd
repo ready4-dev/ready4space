@@ -159,13 +159,6 @@ DETAILS
 \dontrun{
 if(interactive()){
  #EXAMPLE1
- demographic_by_yearly_age_sex(profiled_sf = spatial_vic_pop_growth_lga(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb, lookup_reference = "vic_pop_growth_by_age_lga_2016_tb"),
- vic_pop_growth_by_age_lga_t1 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb, lookup_reference = "vic_pop_growth_by_age_lga_2031_tb"),
- t0 ="2016",
- t1 ="2031"),
- years = c(2016,2019, 2031, 2025),
- age0 = 4,
- age1 = 18)
  }
 }
 \dontrun{
