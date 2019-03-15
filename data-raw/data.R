@@ -166,17 +166,20 @@ aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 # usethis::use_data(aus_spatial_lookup_tb,
 #                    overwrite = TRUE)
 usethis::use_data(aus_spatial_lookup_tb,
-                   overwrite = TRUE,
-                   internal = TRUE)
-usethis::use_data(aus_data_resolution_tb,
+                  aus_data_resolution_tb,
+                  aus_state_short_tb,
+                  group_by_var_lookup_tb,
                   overwrite = TRUE,
                   internal = TRUE)
-usethis::use_data(aus_state_short_tb,
-                  overwrite = TRUE,
-                  internal = TRUE)
-usethis::use_data(group_by_var_lookup_tb,
-                  overwrite = TRUE,
-                  internal = TRUE)
+# usethis::use_data(aus_data_resolution_tb,
+#                   overwrite = TRUE,
+#                   internal = TRUE)
+# usethis::use_data(aus_state_short_tb,
+#                   overwrite = TRUE,
+#                   internal = TRUE)
+# usethis::use_data(group_by_var_lookup_tb,
+#                   overwrite = TRUE,
+                  # internal = TRUE)
 # usethis::use_data(par_str_environment_tb,
 #                   overwrite = TRUE,
 #                   internal = TRUE)
