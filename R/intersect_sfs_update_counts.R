@@ -53,18 +53,26 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                            profiled_colref = profiled_colref,
                                            profiled_rowref = profiled_rowref,
                                            attribute_sf = sp_data_list[[age_sex_pop_resolution]],
-                                           attribute_unit = age_sex_pop_resolution)
+                                           attribute_unit = age_sex_pop_resolution,
+                                           data_type = "age_sex")
   tot_pop_sf <- NULL
   if(!is.null(tot_pop_resolution)){
     tot_pop_sf <- sp_data_list[[tot_pop_resolution]]
-    tot_pop_sf <- tot_pop_sf %>%
-      dplyr::rename_at(dplyr::vars(dplyr::one_of(names(tot_pop_sf)[names(tot_pop_sf) %in% names(profiled_sf)[names(profiled_sf)!="geometry"]])),
-                       dplyr::funs(paste0("pre_merge_",.)))
+    duplicate_names <- names(tot_pop_sf)[names(tot_pop_sf) %in% names(profiled_sf)[names(profiled_sf)!="geometry"]]
+    if(!identical(duplicate_names,character(0))){
+      tot_pop_sf <- tot_pop_sf %>%
+        dplyr::rename_at(dplyr::vars(dplyr::one_of(duplicate_names)),
+                         dplyr::funs(paste0("dupl_",
+                                            tot_pop_resolution,
+                                            "_",
+                                            .)))
+    }
     profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                              profiled_colref = profiled_colref,
                                              profiled_rowref = profiled_rowref,
                                              attribute_sf = tot_pop_sf,
-                                             attribute_unit = tot_pop_resolution)
+                                             attribute_unit = tot_pop_resolution,
+                                             data_type = "tot_pop")
   }
   profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
                                            group_by_var = group_by_var,
@@ -75,3 +83,5 @@ intersect_sfs_update_counts <- function(profiled_sf,
 
   return(profiled_sf)
 }
+
+

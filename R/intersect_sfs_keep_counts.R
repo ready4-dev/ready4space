@@ -37,7 +37,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_colref = NA,
                                       profiled_rowref = NA,
                                       attribute_sf,
-                                      attribute_unit){
+                                      attribute_unit,
+                                      data_type){
   if(!is.na(profiled_colref)){
     if(!is.na(profiled_rowref)){
       profiled_sf <- profiled_sf %>%
@@ -51,12 +52,23 @@ intersect_sfs_keep_counts <- function(profiled_sf,
       profiled_sf <- profiled_sf %>%
         dplyr::select(!!profiled_colref)
   }
+  attrib_res_level_vars <- get_res_specific_vars(var_names = names(attribute_sf),
+                                                 data_type = data_type)
   attribute_sf <- attribute_sf %>%
-    dplyr::mutate(!!rlang::sym(paste0("area_whl_",attribute_unit)) := sf::st_area(.) %>% units::set_units(km^2))
+    dplyr::mutate(!!rlang::sym(paste0("whl_",
+                                      attribute_unit,
+                                      "_area")) := sf::st_area(.) %>%
+                    units::set_units(km^2)) %>%
+    dplyr::rename_at(dplyr::vars(attrib_res_level_vars),
+                     dplyr::funs(paste0("whl_",
+                                 attribute_unit,
+                                 "_",
+                                 .)))
   profiled_sf <- sf::st_intersection(profiled_sf,
                                      attribute_sf) %>%
     dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
     dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
+
   return(profiled_sf)
 }
 #' @describeIn intersect_sfs_keep_counts  Function to intesect two sfs and drop extra columns.
@@ -64,10 +76,40 @@ intersect_sfs_keep_counts <- function(profiled_sf,
 
 intersect_sf_drop_cols <- function(main_sf,
                                    adjunct_sf){
-
   drop_names <- names(main_sf)[names(main_sf) %in% names(adjunct_sf)]
   drop_names <- drop_names[-stringr::str_which(drop_names,"geometry")]
   sf::st_intersection(main_sf,
                       adjunct_sf %>%
                         dplyr::select(-drop_names))
+}
+
+## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
+get_res_specific_vars <- function(var_names,
+                                  data_type){
+  if(data_type == "age_sex"){
+    res_sp_vars <- var_names[var_names %>%
+                               startsWith("AREASQKM") |
+                               var_names %>%
+                               startsWith(paste0("y",
+                                                 data_year,
+                                                 ".Females.")) |
+                               var_names %>%
+                               startsWith(paste0("y",
+                                                 data_year,
+                                                 ".Males.")) |
+                               var_names %>%
+                               startsWith(paste0("y",
+                                                 data_year,
+                                                 ".total")) |
+                               var_names %>%
+                               startsWith("seifa.percentile")]
+  }
+  if(data_type == "tot_pop"){
+    res_sp_vars <-  var_names[var_names %>%
+                                startsWith("AREASQKM") |
+                                var_names %>%
+                                startsWith("year_")]
+
+  }
+  return(res_sp_vars)
 }

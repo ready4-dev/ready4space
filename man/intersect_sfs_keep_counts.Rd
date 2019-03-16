@@ -8,7 +8,7 @@ This function:
   -}
 \usage{
 intersect_sfs_keep_counts(profiled_sf, profiled_colref = NA,
-  profiled_rowref = NA, attribute_sf, attribute_unit)
+  profiled_rowref = NA, attribute_sf, attribute_unit, data_type)
 
 intersect_sf_drop_cols(main_sf, adjunct_sf)
 }

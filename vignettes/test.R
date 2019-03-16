@@ -1,6 +1,6 @@
-library(ready.sim)
-#library(ready.space)
-library(ready.plot)
+# library(ready.sim)
+# #library(ready.space)
+# library(ready.plot)
 library(magrittr)
 devtools::load_all()
 ###
