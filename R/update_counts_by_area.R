@@ -91,10 +91,10 @@ update_pop_by_inc_area <- function(profiled_sf,
   nse_objs_ls <- gen_objs_for_nse_upd_pop(sp_unit = sp_unit,
                                           concept = concept,
                                           tot_pop_col = tot_pop_col,
-                                          grouping_1 = age_sex_pop_resolution
-                                          )
+                                          grouping_1 = age_sex_pop_resolution)
   profiled_sf <- profiled_sf %>%
-    dplyr::mutate(!!rlang::sym(nse_objs_ls$area_inc_unit) := sf::st_area(.) %>% units::set_units(km^2))
+    dplyr::mutate(!!rlang::sym(nse_objs_ls$area_inc_unit) := sf::st_area(.) %>%
+                    units::set_units(km^2))
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(nse_objs_ls$prop_inc_unit) := as.numeric(!!rlang::sym(nse_objs_ls$area_inc_unit)/!!rlang::sym(nse_objs_ls$area_whl_unit)))
   # %>%
@@ -108,22 +108,28 @@ update_pop_by_inc_area <- function(profiled_sf,
     #popl_inc_unit <- paste0(nse_objs_ls$popl_inc_unit,"_",tot_pop_col)
     #grpd_by_asu_tot_pop <- paste0("grpd_by_",age_sex_pop_resolution,"_",popl_inc_unit)
     profiled_sf <- profiled_sf %>%
-      dplyr::mutate(!!rlang::sym(nse_objs_ls$popl_inc_starts_with_1) := !!rlang::sym(nse_objs_ls$popl_whl_unit) * !!rlang::sym(nse_objs_ls$prop_inc_unit))
+      dplyr::mutate(!!rlang::sym(nse_objs_ls$popl_inc_unit) := !!rlang::sym(nse_objs_ls$popl_whl_unit) * !!rlang::sym(nse_objs_ls$prop_inc_unit))
 ## NEED TO GROUP BY MAIN FEATURE BEFORE GROUPING BY AGE_SEX UNIT
 
     profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
                                           nse_objs_ls = nse_objs_ls,
+                                          #group_by_res = age_sex_pop_resolution,
                                           grp_var_name = age_sex_var_name)
     profiled_sf <- profiled_sf %>%
-      dplyr::mutate(pop_prop_multiplier_tot_pop = !!rlang::sym(nse_objs_ls$popl_inc_starts_with_1) / !!rlang::sym(paste0("grpd_",age_sex_var_name,
-                                                                                            "_",
-                                                                                            "grpd_",age_sex_var_name))) ## UPDATE
+      dplyr::mutate(pop_prop_multiplier_tot_pop = !!rlang::sym(nse_objs_ls$popl_inc_unit) / !!rlang::sym(nse_objs_ls$grouping_1_concept_tot))  %>%
+      dplyr::mutate(pop_prop_multiplier_tot_pop = ifelse(is.nan(pop_prop_multiplier_tot_pop),
+                                                         0,
+                                                         pop_prop_multiplier_tot_pop))
   }
   profiled_sf <- profiled_sf %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with(paste0(nse_objs_ls$popl_whl_unit,"y",data_year,".Females.")),
-                                 dplyr::starts_with(paste0(nse_objs_ls$popl_whl_unit,"y",data_year,".Males."))),
+    dplyr::mutate_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$popl_whl_starts_with_1),
+                                 dplyr::starts_with(nse_objs_ls$popl_whl_starts_with_2)),
                      dplyr::funs(!!rlang::sym(nse_objs_ls$popl_inc_unit) := .*!!rlang::sym(nse_objs_ls$popl_multiplier))) %>%
-    suffix_to_prefix(suffix = nse_objs_ls$popl_inc_unit)
+    suffix_to_prefix(suffix = nse_objs_ls$popl_inc_unit) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$popl_inc_unit)),
+                     dplyr::funs(gsub(nse_objs_ls$popl_whl_unit,
+                                      paste0(tot_pop_col,""),
+                                      .)))
   return(profiled_sf)
 }
 gen_objs_for_nse_upd_pop <- function(sp_unit,
@@ -134,15 +140,15 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
                                      grouping_1 = NULL){
   if(concept == "age_sex"){
     popl_multiplier <- paste0("inc_",sp_unit,"_prop")
-    inc_pop_str_1 <- paste0("y",data_year,".Females.")
-    inc_pop_str_2 <- paste0("y",data_year,".Males.")
+    whl_pop_str_1 <- paste0("y",data_year,".Females.")
+    whl_pop_str_2 <- paste0("y",data_year,".Males.")
     # popl_inc_starts_with_1 <- popl_inc_starts_with_1
     # popl_inc_starts_with_2 <- popl_inc_starts_with_2
     }
   if(concept == "tot_pop"){
     popl_multiplier <- "pop_prop_multiplier_tot_pop"
-    inc_pop_str_1 <- tot_pop_col
-    inc_pop_str_2 <- NULL
+    whl_pop_str_1 <- tot_pop_col
+    whl_pop_str_2 <- NULL
     # popl_inc_starts_with_1 <- paste0("inc_",sp_unit,"_popl","_",inc_pop_str_1)
     }
   list(area_whl_unit = paste0("whl_",sp_unit,"_area"),
@@ -151,21 +157,22 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
        popl_inc_unit = paste0("inc_",sp_unit,"_popl"),
        popl_whl_unit = paste0("whl_",sp_unit,"_",tot_pop_col),
        popl_multiplier = popl_multiplier,
-       popl_inc_starts_with_1 = ifelse(is.null(inc_pop_str_1),NA,paste0("inc_",sp_unit,"_popl","_",inc_pop_str_1)),
-       popl_inc_starts_with_2 = ifelse(is.null(inc_pop_str_2),NA,paste0("inc_",sp_unit,"_popl","_",inc_pop_str_2)),
-       grouping_1_concept_tot = ifelse(is.null(grouping_1),NA,paste0("grp_by_",grouping_1,"_",concept)))
+       popl_whl_starts_with_1 = ifelse(is.null(whl_pop_str_1),NA_character_,paste0("whl_",sp_unit,"_",whl_pop_str_1)),
+       popl_whl_starts_with_2 = ifelse(is.null(whl_pop_str_2),NA_character_,paste0("whl_",sp_unit,"_",whl_pop_str_2)),
+       grouping_1_concept_tot = ifelse(is.null(grouping_1),NA_character_,paste0("grp_by_",grouping_1,"_inc_",concept)))
 }
 sum_updated_pop_by_grp <- function(profiled_sf,
+                                   #group_by_res,
                                    grp_var_name,
                                    nse_objs_ls,
                                    top_level = FALSE){
-  group_prefix <- paste0("grpd_",grp_var_name)
+  #group_prefix <- paste0("grp_by_",group_by_res)
   group_totals <- profiled_sf %>%
     sf::st_set_geometry(NULL) %>%
     dplyr::group_by(!!rlang::sym(grp_var_name)) %>%
     dplyr::summarise_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$popl_inc_unit)),
-                        dplyr::funs(!!rlang::sym(group_prefix) := sum(.))) %>% # REMOVED NA.RM ARG
-    suffix_to_prefix(suffix = group_prefix) %>%
+                        dplyr::funs(!!rlang::sym(nse_objs_ls$grouping_1_concept_tot) := sum(.))) %>% # REMOVED NA.RM ARG
+    #suffix_to_prefix(suffix = group_prefix) %>%
     dplyr::ungroup()
   if(top_level){
     dplyr::bind_cols(profiled_sf,

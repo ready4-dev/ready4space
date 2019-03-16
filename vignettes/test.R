@@ -46,9 +46,9 @@ env_str_par_tb <- env_str_par_tb %>%
                  dist_param_2 = rep(0, times = length(prev_rates_vec)),
                  transformation = "max(x,0)")
 
-distance_km = NULL#30,
-nbr_distance_steps = NULL
-travel_time_mins = 60
+distance_km = 30
+nbr_distance_steps = 3
+travel_time_mins = NULL#60
 nbr_time_steps = 3
 age_lower = age_range[1]
 age_upper = age_range[2]
