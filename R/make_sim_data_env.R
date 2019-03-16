@@ -43,10 +43,10 @@ make_sim_data_env <- function(profiled_area_type,
     lubridate::year() %>%
     as.character()
   model_end_ymdhms <- model_start_ymdhms +
-    lubridate::years(simulation_steps_ymwd[1]) +
-    months(simulation_steps_ymwd[2]) +
-    lubridate::weeks(simulation_steps_ymwd[3]) +
-    lubridate::days(simulation_steps_ymwd[4]) #lubridate::ymd_hms("2031_07_01 12:00:00")
+    lubridate::years(simulation_steps_ymwd[1]) * nbr_steps_start_to_end +
+    months(simulation_steps_ymwd[2]) * nbr_steps_start_to_end +
+    lubridate::weeks(simulation_steps_ymwd[3]) * nbr_steps_start_to_end +
+    lubridate::days(simulation_steps_ymwd[4]) * nbr_steps_start_to_end #lubridate::ymd_hms("2031_07_01 12:00:00")
   model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
   ## 2. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(env_str_par_tb)
