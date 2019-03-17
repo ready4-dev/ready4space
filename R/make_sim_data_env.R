@@ -129,8 +129,7 @@ extend_sp_data_list <- function(sp_data_list,
                                                               ifelse(!is.null(travel_time_mins),"DRIVE_TIME","GEOMETRIC_DISTANCE")),
                                    data_unit = age_sex_pop_resolution,
                                    group_at_profile_unit = group_at_profile_unit,
-                                   group_by_lookup_tb = group_by_lookup_tb) ####
-  ###
+                                   group_by_lookup_tb = group_by_lookup_tb)
   if(profiled_area_type != "PHN")
     profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
                                            ~ .x %>%
@@ -145,85 +144,18 @@ extend_sp_data_list <- function(sp_data_list,
                                                                        group_by_var = group_by_var,
                                                                        group_by_lookup_tb = group_by_lookup_tb,
                                                                        data_year = data_year))
-  if(profiled_area_type != "PHN"){
-    by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
-                                            names(by_band_pop_counts_sf_ls),
-                                            ~ .x %>%
-                                              dplyr::mutate(pop_sp_unit_id = paste0(.y,
-                                                                                    "_",
-                                                                                    tolower(age_sex_pop_resolution),
-                                                                                    "_",
-                                                                                    rownames(.x))) %>%
-                                              dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
-  }
-
-  # if(profiled_area_type=="PHN"){
-  #   profiled_pop_counts_sf <-  intersect_sfs_update_counts(profiled_sf = profiled_area_sf, ###UPDATE
-  #                                                          profiled_colref = NA,
-  #                                                          profiled_rowref = NA,
-  #                                                          sp_data_list = sp_data_list,
-  #                                                          tot_pop_resolution = tot_pop_resolution,
-  #                                                          age_sex_pop_resolution = age_sex_pop_resolution,
-  #                                                          group_by_var = group_by_var,
-  #                                                          group_by_lookup_tb = group_by_lookup_tb,
-  #                                                          data_year = data_year)
-    # extended_sp_data_list <- append(sp_data_list, profiled_pop_counts_sf
-                                    #list(profiled_pop_counts_sf)
-                                    # )
-  # }else{
-  #   by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
-  #                                          ~ intersect_sfs_update_counts(profiled_sf = .x %>%
-  #                                                                          sf::st_transform(crs_nbr),
-  #                                                                        profiled_colref = NA,
-  #                                                                        profiled_rowref = NA,
-  #                                                                        sp_data_list = sp_data_list,
-  #                                                                        tot_pop_resolution = tot_pop_resolution,
-  #                                                                        age_sex_pop_resolution = age_sex_pop_resolution,
-  #                                                                        group_by_var = group_by_var,
-  #                                                                        group_by_lookup_tb = group_by_lookup_tb,
-  #                                                                        data_year = data_year))
-
-                                            ## DROP AREA IN PREVIOUS FUNCTION
-                                            # %>%
-                                            #    dplyr::rename(!!rlang::sym(paste0("whole_",
-                                            #                                      tolower(age_sex_pop_resolution),
-                                            #                                      "_area_km")) := AREASQKM16)
-                                            # )
-    #   if(!is.null(travel_time_mins)){
-    #   var_names_first_bit <- c("id","min","max", "center")
-    #   # group_at_profiled_unit <- "drive_times"
-    #   if(!group_at_profile_unit)
-    #     var_names_first_bit <- c(var_names_first_bit,"drive_times")
-    #   funs_list <- tibble::lst(first = dplyr::first,
-    #                            sum = sum)
-    #   pop_prefix <- "dtm_"
-    # }
-    # if(!is.null(distance_km)){
-    #   var_names_first_bit <- NULL
-    #   # group_at_profiled_unit <- "distance_km"
-    #   if(!group_at_profile_unit)
-    #     var_names_first_bit <- c("distance_km")
-    #   funs_list <- tibble::lst(sum = sum)
-    #   pop_prefix <- "gds_"
-    # }
-    # pop_cols_prefix <- paste0("popl_inc_",age_sex_pop_resolution)
-    # profiled_pop_counts_sf_list <- purrr::map(by_band_pop_counts_sf_ls,
-    #                                                ~ .x %>%
-    #                                                  sum_at_diff_funs(var_list = list(var_names_first_bit,
-    #                                                                                   names(.x)[names(.x) %>% startsWith(pop_cols_prefix)]) %>%
-    #                                                                     purrr::compact()
-    #                                                                   ,
-    #                                                                   funs_list = funs_list,
-    #                                                                   group_by = group_by_var)
-    #                                           ) ## CHECK
-    # if(!group_at_profile_unit)
-    #   profiled_pop_counts_sf_list <- list(do.call(rbind,profiled_pop_counts_sf_list))
-  profiled_pop_counts_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
+  by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
+                                          names(by_band_pop_counts_sf_ls),
+                                          ~ .x %>%
+                                            dplyr::mutate(pop_sp_unit_id = paste0(.y,
+                                                                                  "_",
+                                                                                  tolower(age_sex_pop_resolution),
+                                                                                  "_",
+                                                                                  rownames(.x))) %>%
+                                            dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
+  profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
   extended_sp_data_list <- append(sp_data_list,
-                                  profiled_pop_counts_sf
-                                  #list(profiled_pop_counts_sf_list = profiled_pop_counts_sf_list)
-  )
-  # } #
+                                  list(profiled_sf=profiled_sf))
   return(extended_sp_data_list)
 }
 get_group_by_var <- function(profile_unit,
