@@ -45,7 +45,8 @@ update_pop_count_by_areas <-function(profiled_sf,
                                         grp_var_name = age_sex_var_name,
                                         nse_objs_ls = gen_objs_for_nse_upd_pop(sp_unit = age_sex_pop_resolution,
                                                                                concept = "age_sex",
-                                                                               grouping_1 = age_sex_pop_resolution),
+                                                                               grouping_1 = age_sex_pop_resolution,
+                                                                               data_year = data_year),
                                         suff_to_pref = TRUE)
   if(!is.null(tot_pop_resolution)){
     profiled_sf <- update_pop_by_inc_area(profiled_sf = profiled_sf,
@@ -73,14 +74,16 @@ update_pop_count_by_areas <-function(profiled_sf,
                                                                                  tot_pop_col = paste0("year_",
                                                                                                       data_year,
                                                                                                       "pr"),
-                                                                                 grouping_1 = age_sex_pop_resolution),
+                                                                                 grouping_1 = age_sex_pop_resolution,
+                                                                                 data_year = data_year),
                                           suff_to_pref = TRUE)
   }
   profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
                          grp_var_name = group_by_var,
                          nse_objs_ls = gen_objs_for_nse_upd_pop(age_sex_pop_resolution,
                                                                 concept = "age_sex",
-                                                                grouping_1 = age_sex_pop_resolution),
+                                                                grouping_1 = age_sex_pop_resolution,
+                                                                data_year = data_year),
                          suff_to_pref = TRUE,
                          top_level = TRUE)
   if(!is.null(tot_pop_resolution)){
@@ -91,7 +94,8 @@ update_pop_count_by_areas <-function(profiled_sf,
                                                                                  tot_pop_col = paste0("year_",
                                                                                                       data_year,
                                                                                                       "pr"),
-                                                                                 grouping_1 = age_sex_pop_resolution),
+                                                                                 grouping_1 = age_sex_pop_resolution,
+                                                                                 data_year = data_year),
                                           suff_to_pref = TRUE,
                                           top_level = TRUE)
   }
@@ -116,7 +120,8 @@ update_pop_by_inc_area <- function(profiled_sf,
   nse_objs_ls <- gen_objs_for_nse_upd_pop(sp_unit = sp_unit,
                                           concept = concept,
                                           tot_pop_col = tot_pop_col,
-                                          grouping_1 = age_sex_pop_resolution)
+                                          grouping_1 = age_sex_pop_resolution,
+                                          data_year = data_year)
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(nse_objs_ls$area_inc_unit) := sf::st_area(.) %>%
                     units::set_units(km^2))
@@ -152,7 +157,8 @@ update_pop_by_inc_area <- function(profiled_sf,
 gen_objs_for_nse_upd_pop <- function(sp_unit,
                                      concept,
                                      tot_pop_col = NULL,
-                                     grouping_1 = NULL){
+                                     grouping_1 = NULL,
+                                     data_year){
   if(concept == "age_sex"){
     popl_multiplier <- paste0("inc_",sp_unit,"_prop")
     whl_pop_str_1 <- paste0("whl_",sp_unit,"_","y",data_year,".Females.")

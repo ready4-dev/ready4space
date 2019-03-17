@@ -17,7 +17,7 @@ profiled_area = list(cluster_vec = custom_tb %>% dplyr::pull(cluster_name),
                      lat_vec = custom_tb %>% dplyr::pull(lat),
                      lon_vec = custom_tb %>% dplyr::pull(long))
 
-disorder = "MDD"
+#disorder = "MDD"
 sexes = c("Female","Male")
 #project_for_year = "2023" ## Now a character.
 data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00")
@@ -31,13 +31,23 @@ deterministic = FALSE
 period = "Year"
 uncertainty_int <- c(0.025,0.975)
 ## DATA INPUT: PREVALENCE
-prev_rates_vec = make_prev_struc_par_tb(disorder = disorder,
-                                        period = "Year",
-                                        ages = age_range[1]:age_range[2],
-                                        sexes = c("Female","Male"),
-                                        pref_source = ymh.epi.lit::pref_source,
-                                        prev_rates = ymh.epi.lit::prev_rates)
-prev_sum_tb <- make_prev_rates_sum_tb(prev_rates_vec)
+pref_source <- ymh.epi.lit::pref_source %>%
+  dplyr::filter(Period == "Year") %>%
+  dplyr::mutate(nbr_refs = rowSums(!is.na(.[startsWith(names(.), "Female") |
+                                              startsWith(names(.), "Male")]))) %>%
+  dplyr::filter(nbr_refs == 28)
+disorder_options <- pref_source  %>%
+  dplyr::pull(Disorder)
+prev_rates <- ymh.epi.lit::prev_rates %>%
+  dplyr::filter(Period == "Year")
+disorder <- disorder_options[1]
+prev_rates_vec = ready.space::make_prev_struc_par_tb(disorder = disorder,
+                                                     period = "Year",
+                                                     ages = age_range[1]:age_range[2],
+                                                     sexes = c("Female","Male"),
+                                                     pref_source = pref_source ,
+                                                     prev_rates = prev_rates)
+prev_sum_tb <- ready.space::make_prev_rates_sum_tb(prev_rates_vec)
 env_str_par_tb <- env_str_par_tb %>%
   dplyr::add_row(param_name = paste0("prev_",
                                      tolower(disorder),
@@ -48,6 +58,7 @@ env_str_par_tb <- env_str_par_tb %>%
                  dist_param_1 = prev_rates_vec,
                  dist_param_2 = rep(0, times = length(prev_rates_vec)),
                  transformation = "max(x,0)")
+##
 
 distance_km = 30
 nbr_distance_steps = 3

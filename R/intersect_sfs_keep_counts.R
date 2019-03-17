@@ -38,7 +38,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_rowref = NA,
                                       attribute_sf,
                                       attribute_unit,
-                                      data_type){
+                                      data_type,
+                                      data_year){
   if(!is.na(profiled_colref)){
     if(!is.na(profiled_rowref)){
       profiled_sf <- profiled_sf %>%
@@ -53,7 +54,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
         dplyr::select(!!profiled_colref)
   }
   attrib_res_level_vars <- get_res_specific_vars(var_names = names(attribute_sf),
-                                                 data_type = data_type)
+                                                 data_type = data_type,
+                                                 data_year = data_year)
   attribute_sf <- attribute_sf %>%
     dplyr::mutate(!!rlang::sym(paste0("whl_",
                                       attribute_unit,
@@ -85,7 +87,8 @@ intersect_sf_drop_cols <- function(main_sf,
 
 ## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
 get_res_specific_vars <- function(var_names,
-                                  data_type){
+                                  data_type,
+                                  data_year){
   if(data_type == "age_sex"){
     res_sp_vars <- var_names[var_names %>%
                                startsWith("AREASQKM") |

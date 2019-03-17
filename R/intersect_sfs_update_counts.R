@@ -54,7 +54,8 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                            profiled_rowref = profiled_rowref,
                                            attribute_sf = sp_data_list[[age_sex_pop_resolution]],
                                            attribute_unit = age_sex_pop_resolution,
-                                           data_type = "age_sex")
+                                           data_type = "age_sex",
+                                           data_year = data_year)
   tot_pop_sf <- NULL
   if(!is.null(tot_pop_resolution)){
     tot_pop_sf <- sp_data_list[[tot_pop_resolution]]
