@@ -1,3 +1,6 @@
+
+
+
 # library(ready.sim)
 # #library(ready.space)
 # library(ready.plot)
@@ -91,6 +94,11 @@ sim_results = ready.sim::runSimulation(x = sim_data,
 
 ###
 ###
-profiled_sf %>% dplyr::summarise_at(dplyr::vars(dplyr::starts_with("inc_SA2_popl_"),
-                                                dplyr::starts_with("grp_by_SA2_inc_tot_pop_y")),# data_year
-                                    list(sum = sum))
+ready.data:::data_import_make_sp_lookup_tb()
+test1<-ready.data::data_import_show_menu_of_type_detail("Attribute")
+ready.data::data_import_show_menu_of_type_detail("Attribute")
+attributes_to_import <- ready.data::data_import_show_menu_of_type_names("Attribute")
+ready.data::data_import_selected_downloads(required_data = attributes_to_import,
+                                           destination_directory = "data-raw")
+attribute_list <- ready.data::data_import_items(included_items_names = attributes_to_import,
+                                                item_data_type = "Attribute")
