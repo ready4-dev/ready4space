@@ -88,3 +88,9 @@ sim_data <- make_sim_data_env(profiled_area_type = profiled_area_type,
 sim_results = ready.sim::runSimulation(x = sim_data,
                             nbr_its = nbr_its,
                             prev_rates_vec = prev_rates_vec)
+
+###
+###
+profiled_sf %>% dplyr::summarise_at(dplyr::vars(dplyr::starts_with("inc_SA2_popl_"),
+                                                dplyr::starts_with("grp_by_SA2_inc_tot_pop_y")),# data_year
+                                    list(sum = sum))
