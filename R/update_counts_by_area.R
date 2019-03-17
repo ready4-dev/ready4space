@@ -165,7 +165,7 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
     whl_pop_str_1 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Females.")#paste0("inc_",grouping_1,"_popl_","y",data_year,".Females.")
     whl_pop_str_2 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Males.")#paste0("inc_",grouping_1,"_popl_","y",data_year,".Males.")
-    inc_str_to_delete <- paste0("inc_",grouping_1,"_popl_")
+    inc_str_to_delete <- grouping_1_age_sex_pop_str#paste0("inc_",grouping_1,"_popl_")
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
     # popl_inc_starts_with_1 <- paste0("inc_",sp_unit,"_popl","_",inc_pop_str_1)
     }
