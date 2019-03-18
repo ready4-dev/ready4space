@@ -5,16 +5,16 @@
 \title{sum_at_diff_funs
 FUNCTION_DESCRIPTION}
 \usage{
-sum_at_diff_funs(data_tb, var_list, funs_list, group_by)
+sum_at_diff_funs(data_sf, var_list, funs_list, group_by)
 }
 \arguments{
-\item{data_tb}{PARAM_DESCRIPTION}
-
 \item{var_list}{PARAM_DESCRIPTION}
 
 \item{funs_list}{PARAM_DESCRIPTION}
 
 \item{group_by}{PARAM_DESCRIPTION}
+
+\item{data_tb}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

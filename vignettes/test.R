@@ -102,7 +102,8 @@ sim_data <- make_sim_data_env(profiled_area_type = profiled_area_type,
 sim_results = ready.sim::runSimulation(x = sim_data,
                             nbr_its = nbr_its,
                             prev_rates_vec = prev_rates_vec)
-
+##runSimulation :: DONT group_by: pop_sp_unit_id
+## group_by <- "distance_km2"
 ###
 ###
 ready.data:::data_import_make_sp_lookup_tb()

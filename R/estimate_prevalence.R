@@ -27,35 +27,86 @@
 #' @importFrom tibble tibble
 
 estimate_prevalence <- function(pop_data,
-                                prev_rates_vec){
-  pop_totals_vec <- pop_data %>% names()
-  pop_totals_vec <- pop_totals_vec[pop_totals_vec %>% startsWith(prefix="tx_")]
-  pop_totals_vec <- pop_totals_vec[purrr::map_lgl(pop_totals_vec,
-                                                 ~ .x %>% stringr::str_sub(start = -4) %in% names(prev_rates_vec))]
-  prev_summary <- purrr::reduce(1:length(pop_totals_vec),
-                                .init = pop_data,
-                                ~ .x %>%
-                                  dplyr::mutate(!!rlang::sym(paste0(names(prev_rates_vec)[.y],"_prev")) := !!rlang::sym(pop_totals_vec[.y]) * prev_rates_vec[.y]))
-  return(prev_summary)
+                                #prev_rates_vec,
+                                param_tb,
+                                it_nbr){
+  param_tb_slimmed <- param_tb %>%
+    dplyr::filter(startsWith(parameter_name,"prev")) %>%
+    dplyr::select(parameter_name,
+                  paste0("v_it_", it_nbr))
+  prefix <- param_tb_slimmed[1,1] %>% as.vector() %>% stringr::str_sub(end=10)
+  col_names <- names(pop_data)[names(pop_data)%>% startsWith(prefix="tx_") |
+                                 names(pop_data)%>% startsWith(prefix="t0_")]
+  add_prev_col <- function(pop_sf,
+                           col_name){
+    age_sex_pair <- col_name %>% stringr::str_sub(start = -4)
+    prev_pair <- param_tb_slimmed %>%
+      dplyr::pull(parameter_name)
+    prev_pair <- prev_pair[endsWith(prev_pair,age_sex_pair)]
+
+    pop_sf %>%
+      dplyr::mutate(!!rlang::sym(paste0(col_name %>% stringr::str_sub(end=2),
+                                        "_",
+                                        prev_pair)) := !!rlang::sym(col_name) * ready.data::data_get(data_lookup_tb = param_tb_slimmed,
+                                                                                                     lookup_variable = "parameter_name",
+                                                                                                     lookup_reference = prev_pair,
+                                                                                                     target_variable = paste0("v_it_", it_nbr),
+                                                                                                     evaluate = FALSE))
+  }
+  pop_data <- purrr::reduce(col_names,
+                            ~ add_prev_col(pop_sf = .x,
+                                           col_name = .y),
+                            .init = pop_data)
+  t0_prev <- names(pop_data)[names(pop_data) %>% startsWith("t0_prev")]
+  tx_prev <- names(pop_data)[names(pop_data) %>% startsWith("tx_prev")]
+  t0_prev_pref <- t0_prev[1] %>% stringr::str_sub(end=-5)
+  tx_prev_pref <- tx_prev[1] %>% stringr::str_sub(end=-5)
+  t0_ind <- which(names(pop_data) %in% t0_prev)
+  tx_ind <- which(names(pop_data) %in% tx_prev)
+  t0_totals <-  pop_data %>%
+    dplyr::select(t0_prev) %>%
+    sf::st_set_geometry(NULL) %>%
+    dplyr::mutate(!!rlang::sym(paste0(t0_prev_pref,"all")) := Reduce(`+`,.)) %>%
+    dplyr::pull(!!rlang::sym(paste0(t0_prev_pref,"all")))
+  tx_totals <-   tx_totals <-  pop_data %>%
+    dplyr::select(tx_prev) %>%
+    sf::st_set_geometry(NULL) %>%
+    dplyr::mutate(!!rlang::sym(paste0(tx_prev_pref,"all")) := Reduce(`+`,.)) %>%
+    dplyr::pull(!!rlang::sym(paste0(tx_prev_pref,"all")))
+  pop_data <- cbind(pop_data,t0_totals,tx_totals)
+  index_vec <- 1:length(t0_prev)
+  calc_delta_prev <- function(pop_sf,
+                              col_ind){
+    pop_sf %>%
+      dplyr::mutate(!!rlang::sym(paste0("delta",
+                                        t0_prev[col_ind] %>% stringr::str_sub(start = 3))) :=
+                      !!rlang::sym(tx_prev[col_ind]) - !!rlang::sym(t0_prev[col_ind]))
+  }
+  purrr::reduce(index_vec,
+                ~ calc_delta_prev(pop_sf = .x,
+                                  col_ind = .y),
+                .init = pop_data)
 }
+
+
 
 #' make_prev_summ_tb
 #' FUNCTION_DESCRIPTION
 #' @param prev_summary PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
-#' @examples 
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
+#' @seealso
 #'  \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{mutate}}
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[tibble]{tibble}}
 #' @rdname make_prev_summ_tb
-#' @export 
+#' @export
 #' @importFrom dplyr summarise_at vars contains funs mutate
 #' @importFrom stringr str_sub
 #' @importFrom tibble tibble

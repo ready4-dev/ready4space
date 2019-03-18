@@ -316,14 +316,14 @@ subset_sf_by_feature <- function(profiled_sf,
 #' @importFrom purrr map2 reduce
 #' @importFrom dplyr group_by summarise_at inner_join
 #' @importFrom rlang sym
-sum_at_diff_funs <- function(data_tb,
+sum_at_diff_funs <- function(data_sf,
                              var_list,
                              funs_list,
                              group_by){
   ## https://github.com/tidyverse/dplyr/issues/3101
   purrr::map2(var_list,
               funs_list,
-              ~ data_tb %>%
+              ~ data_sf %>%
                 dplyr::group_by(!!rlang::sym(group_by)) %>%
                 dplyr::summarise_at(.x, .y)) %>%
     #purrr::reduce(dplyr::inner_join)

@@ -82,7 +82,9 @@ intersect_sf_drop_cols <- function(main_sf,
   drop_names <- drop_names[-stringr::str_which(drop_names,"geometry")]
   sf::st_intersection(main_sf,
                       adjunct_sf %>%
-                        dplyr::select(-drop_names))
+                        dplyr::select(-drop_names)) %>%
+    dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
+    dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
 }
 
 ## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
