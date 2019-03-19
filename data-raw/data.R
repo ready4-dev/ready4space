@@ -165,10 +165,15 @@ aus_boundary_phns_sf <- ready.aus.data::aus_boundary_phns_sf
 # aus_state_short_tb <- ready.space::aus_state_short_tb
 # usethis::use_data(aus_spatial_lookup_tb,
 #                    overwrite = TRUE)
+example_headspace_tb <- ymh.headspace::headspace_tb %>%
+  dplyr::mutate(cluster_name = "Headspace") %>%
+  dplyr::rename(lat = long,
+                long = lat)
 usethis::use_data(aus_spatial_lookup_tb,
                   aus_data_resolution_tb,
                   aus_state_short_tb,
                   group_by_var_lookup_tb,
+                  example_headspace_tb,
                   overwrite = TRUE,
                   internal = TRUE)
 # usethis::use_data(aus_data_resolution_tb,

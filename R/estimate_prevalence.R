@@ -73,8 +73,6 @@ estimate_prevalence <- function(pop_data,
     sf::st_set_geometry(NULL) %>%
     dplyr::mutate(!!rlang::sym(paste0(tx_prev_pref,"all")) := Reduce(`+`,.)) %>%
     dplyr::pull(!!rlang::sym(paste0(tx_prev_pref,"all")))
-  pop_data <- cbind(pop_data,t0_totals,tx_totals)
-  index_vec <- 1:length(t0_prev)
   calc_delta_prev <- function(pop_sf,
                               col_ind){
     pop_sf %>%
@@ -82,6 +80,10 @@ estimate_prevalence <- function(pop_data,
                                         t0_prev[col_ind] %>% stringr::str_sub(start = 3))) :=
                       !!rlang::sym(tx_prev[col_ind]) - !!rlang::sym(t0_prev[col_ind]))
   }
+  pop_data <- cbind(pop_data,t0_totals,tx_totals)
+  t0_prev <- c(t0_prev,"t0_totals")
+  tx_prev <- c(tx_prev,"tx_totals")
+  index_vec <- 1:(length(t0_prev))
   purrr::reduce(index_vec,
                 ~ calc_delta_prev(pop_sf = .x,
                                   col_ind = .y),

@@ -215,7 +215,7 @@ make_sp_data_list <- function(at_highest_res,
 make_profiled_area_objs <- function(profiled_area_type,
                                     profiled_area,
                                     crs_nbr,
-                                    headspace_tb = ymh.headspace::headspace_tb,#tibble::tibble(service_name = c("Glenroy", "Sunshine", "Craigieburn","Werribee"),
+                                    #headspace_tb = example_headspace_tb,#ymh.headspace::headspace_tb,#tibble::tibble(service_name = c("Glenroy", "Sunshine", "Craigieburn","Werribee"),
                                                     #              lat = c(-37.704890, -37.783314, -37.593766, -37.901473),
                                                     #              long = c(144.918099,144.831070,144.914055,144.662196)),
                                     distance_km = NULL,
@@ -240,7 +240,7 @@ make_profiled_area_objs <- function(profiled_area_type,
     aus_stt_sf <- ready.pp.phn::aus_stt_sf %>%
       sf::`st_crs<-`(crs_nbr)
     if(profiled_area_type == "Headspace"){
-      cluster_tb =  headspace_tb %>%
+      cluster_tb =  example_headspace_tb %>% #headspace_tb %>%
         dplyr::filter(service_name %in% profiled_area)
     }
     if(profiled_area_type == "Custom"){
