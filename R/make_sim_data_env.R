@@ -91,10 +91,18 @@ make_sim_data_env <- function(input_data,
                                       group_by_lookup_tb = group_by_lookup_tb,
                                       crs_nbr = input_data$crs_nbr,
                                       data_year = data_year)
-  ## 6. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
+
+  ## 6. REFORMAT LIST
+  sp_data_list <- list(input_bl_profiled_sf = sp_data_list[names(sp_data_list)[!names(sp_data_list)
+                                                                         %in% c("ppr_ref",
+                                                                                names(sp_data_list)[sp_data_list$ppr_ref],
+                                                                                "profiled_sf")]],
+                         input_dynamic_sp_pars = sp_data_list[[sp_data_list$ppr_ref]],
+                         profiled_sf = sp_data_list$profiled_sf)
+  ## 7. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)
-  ## 7. CREATE SIMULATION DATA INPUT OBJECT
+  ## 8. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
                                         pre_model_date = input_data$data_ymdhms,
                                         model_start_date = input_data$model_start_ymdhms,# %>%
@@ -209,7 +217,7 @@ make_sp_data_list <- function(at_highest_res,
                                      NA_real_,
                                      .x[1])) %>%
     stats::setNames(names_ppr)
-  sp_data_list <- purrr::prepend(merged_list,list(ppr_ref))
+  sp_data_list <- purrr::prepend(merged_list,list(ppr_ref = ppr_ref))
   return(sp_data_list)
 }
 

@@ -4,9 +4,7 @@
 library(magrittr)
 devtools::load_all()
 ###
-
 #disorder = "MDD"
-
 # custom_tb <- ymh.epsos::hyepp_coordinates_tb %>%
 #   dplyr::filter(cluster_name == "South East Melbourne")#"Eastern Melbourne" # profSfInput()
 # profiled_area = list(cluster_vec = custom_tb %>% dplyr::pull(cluster_name),
@@ -47,7 +45,7 @@ input_data <- list(
   ## UNCERTAINTY INPUTS
   deterministic = FALSE,
   nbr_its = 2,
-  uncertainty_int <- c(0.025,0.975),
+  uncertainty_int = c(0.025,0.975),
   ## PARAMETER MATRIX
   env_str_par_tb = ready.sim::add_prev_to_env_str_par_tb(pref_source = ymh.epi.lit::pref_source,
                                                           prev_rates = ymh.epi.lit::prev_rates,

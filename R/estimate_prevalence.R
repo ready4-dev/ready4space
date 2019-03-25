@@ -44,7 +44,8 @@ estimate_prevalence <- function(sp_data_sf,
                               ~ add_prevalence_col(sp_data_sf = .x,
                                                    col_name = .y,
                                                    param_tb_slimmed = param_tb_slimmed,
-                                                   par_name_var = par_name_var))
+                                                   par_name_var = par_name_var,
+                                                   it_nbr = it_nbr))
   t0_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("t0_prev")]
   tx_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("tx_prev")]
   t0_prev_pref <- t0_prev[1] %>% stringr::str_sub(end=-5)
@@ -99,7 +100,8 @@ estimate_prevalence <- function(sp_data_sf,
 add_prevalence_col <- function(sp_data_sf,
                                col_name,
                                param_tb_slimmed,
-                               par_name_var = "parameter_name"){
+                               par_name_var = "parameter_name",
+                               it_nbr){
   age_sex_pair <- col_name %>% stringr::str_sub(start = -4)
   prev_pair <- param_tb_slimmed %>%
     dplyr::pull(!!par_name_var)
