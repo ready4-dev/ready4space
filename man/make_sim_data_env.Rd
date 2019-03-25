@@ -5,36 +5,27 @@
 \title{make_sim_data_env
 Make a simulation data input for the environment.}
 \usage{
-make_sim_data_env(profiled_area_type, profiled_area, distance_km = NULL,
-  nbr_distance_steps = 5, nbr_time_steps = 5,
-  travel_time_mins = NULL, age_lower, age_upper, env_str_par_tb, nbr_its,
-  deterministic, group_at_profile_unit = TRUE,
-  data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
-  model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
-  simulation_steps_ymwd = c(1, 0, 0, 0), nbr_steps_start_to_end = 1,
-  at_highest_res_extra = NULL, at_specified_res = list(a = c("SEIFA",
-  "SA2")), age_sex_pop_str = "ERP by age and sex", tot_pop_str = "ERP",
-  pop_projs_str = "Population projections", country = "Australia",
-  crs_nbr = 4283, group_by_lookup_tb = group_by_var_lookup_tb)
+make_sim_data_env(input_data,
+  group_by_lookup_tb = group_by_var_lookup_tb)
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}
-
-\item{profiled_area}{PARAM_DESCRIPTION}
 
 \item{distance_km}{PARAM_DESCRIPTION}
 
 \item{travel_time_mins}{PARAM_DESCRIPTION}
 
+\item{profiled_area}{PARAM_DESCRIPTION}
+
 \item{age_lower}{PARAM_DESCRIPTION}
+
+\item{age_upper}{PARAM_DESCRIPTION}
 
 \item{age_upper}{PARAM_DESCRIPTION}
 
 \item{env_str_par_tb}{PARAM_DESCRIPTION}
 
 \item{nbr_its}{PARAM_DESCRIPTION}
-
-\item{age_upper}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

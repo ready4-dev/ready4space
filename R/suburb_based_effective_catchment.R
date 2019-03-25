@@ -74,7 +74,7 @@ suburb_based_effective_catchment <- function(aus_state_suburbs_sf = ready.data::
                                 matched_with_state_ext,
                                 matched_manual_changes) %>%
     stringr::str_sort()
-  updated_client_locations <- client_suburbs_one_cluster_one_year  %>%
+  updated_client_locations <- client_suburbs_one_cluster_one_year  %>% ################# CHECK IF ROWWISE APPROPRIATE
     dplyr::rowwise() %>%
     dplyr::mutate(Suburb = apply_naming_convention(Suburb,
                                                    updated_included_suburbs,

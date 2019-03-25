@@ -5,10 +5,11 @@
 \title{estimate_prevalence
 Function to estimate the prevalence of a specified condition, for a specified disorder for a specified area / year.}
 \usage{
-estimate_prevalence(pop_data, param_tb, it_nbr)
+estimate_prevalence(sp_data_sf, sp_unit_id = "pop_sp_unit_id", param_tb,
+  par_name_var = "parameter_name", it_nbr)
 }
 \arguments{
-\item{pop_data}{PARAM_DESCRIPTION}
+\item{sp_data_sf}{PARAM_DESCRIPTION}
 
 \item{prev_rates_vec}{PARAM_DESCRIPTION}
 }

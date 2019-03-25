@@ -13,97 +13,98 @@
 #' @details DETAILS
 #' @export
 
-make_sim_data_env <- function(profiled_area_type,
-                              profiled_area,
-                              distance_km = NULL,
-                              nbr_distance_steps = 5,
-                              nbr_time_steps = 5,
-                              travel_time_mins = NULL,
-                              age_lower,
-                              age_upper,
-                              env_str_par_tb,
-                              nbr_its,
-                              deterministic,
-                              group_at_profile_unit = TRUE,
-                              data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
-                              model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
-                              simulation_steps_ymwd = c(1,0,0,0),
-                              nbr_steps_start_to_end = 1,
-                              #model_end_ymdhms = lubridate::ymd_hms("2031_07_01 12:00:00"),
-                              at_highest_res_extra = NULL,
-                              at_specified_res = list(a=c("SEIFA","SA2")),
-                              age_sex_pop_str = "ERP by age and sex",
-                              tot_pop_str = "ERP",
-                              pop_projs_str = "Population projections",
-                              country = "Australia",
-                              crs_nbr = 4283,
+make_sim_data_env <- function(input_data,
+  # profiled_area_type,
+  #                             profiled_area,
+  #                             distance_km = NULL,
+  #                             nbr_distance_steps = 5,
+  #                             nbr_time_steps = 5,
+  #                             travel_time_mins = NULL,
+  #                             age_lower,
+  #                             age_upper,
+  #                             env_str_par_tb,
+  #                             nbr_its,
+  #                             deterministic,
+  #                             group_at_profile_unit = TRUE,
+  #                             data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
+  #                             model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
+  #                             simulation_steps_ymwd = c(1,0,0,0),
+  #                             nbr_steps_start_to_end = 1,
+  #                             at_highest_res_extra = NULL,
+  #                             at_specified_res = list(a=c("SEIFA","SA2")),
+  #                             age_sex_pop_str = "ERP by age and sex",
+  #                             tot_pop_str = "ERP",
+  #                             pop_projs_str = "Population projections",
+  #                             country = "Australia",
+  #                             crs_nbr = 4283,
                               group_by_lookup_tb = group_by_var_lookup_tb){
+
   ## 1. CONVERT DATES
-  data_year <- data_ymdhms %>%
+  data_year <- input_data$data_ymdhms %>%
     lubridate::year() %>%
     as.character()
-  model_end_ymdhms <- model_start_ymdhms +
-    lubridate::years(simulation_steps_ymwd[1]) * nbr_steps_start_to_end +
-    months(simulation_steps_ymwd[2]) * nbr_steps_start_to_end +
-    lubridate::weeks(simulation_steps_ymwd[3]) * nbr_steps_start_to_end +
-    lubridate::days(simulation_steps_ymwd[4]) * nbr_steps_start_to_end #lubridate::ymd_hms("2031_07_01 12:00:00")
+  model_end_ymdhms <- input_data$model_start_ymdhms +
+    lubridate::years(input_data$simulation_steps_ymwd[1]) * input_data$nbr_steps_start_to_end +
+    months(input_data$simulation_steps_ymwd[2]) * input_data$nbr_steps_start_to_end +
+    lubridate::weeks(input_data$simulation_steps_ymwd[3]) * input_data$nbr_steps_start_to_end +
+    lubridate::days(input_data$simulation_steps_ymwd[4]) * input_data$nbr_steps_start_to_end #lubridate::ymd_hms("2031_07_01 12:00:00")
   model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
   group_by_lookup_tb <- group_by_lookup_tb %>%
     dplyr::filter(year == data_year)
   ## 2. GET PARAMETER MATRICES
-  par_str_list <- ready.sim::instantiate_env_struc_par_all(env_str_par_tb)
+  par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
-                                  ~ ready.sim::genValueFromDist(par_str_list[[.x]], nbr_its))
+                                  ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
   ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
-  profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = profiled_area_type,
-                                                   profiled_area = profiled_area,
-                                                   crs_nbr = crs_nbr,
-                                                   distance_km = distance_km,
-                                                   nbr_distance_steps = nbr_distance_steps,
-                                                   travel_time_mins = travel_time_mins,
-                                                   nbr_time_steps = nbr_time_steps,
+  profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = input_data$profiled_area_type,
+                                                   profiled_area = input_data$profiled_area,
+                                                   crs_nbr = input_data$crs_nbr,
+                                                   distance_km = input_data$distance_km,
+                                                   nbr_distance_steps = input_data$nbr_distance_steps,
+                                                   travel_time_mins = input_data$travel_time_mins,
+                                                   nbr_time_steps = input_data$nbr_time_steps,
                                                    group_by_lookup_tb = group_by_lookup_tb)
   ## 4. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
-  at_highest_res <- c(age_sex_pop_str,
-                      tot_pop_str,
-                      pop_projs_str) %>% purrr::compact()
-  if(!is.null(at_highest_res_extra))
-    at_highest_res <- c(at_highest_res,at_highest_res_extra)
-  sp_data_list <- make_sp_data_list(at_highest_res = at_highest_res,
-                                    at_specified_res = at_specified_res,
+  # at_highest_res <- c(input_data$age_sex_pop_str,
+  #                     input_data$tot_pop_str,
+  #                     input_data$pop_projs_str) %>% purrr::compact()
+  # if(!is.null(input_data$at_highest_res_extra))
+  #   at_highest_res <- c(at_highest_res,input_data$at_highest_res_extra)
+  sp_data_list <- make_sp_data_list(at_highest_res = input_data$at_highest_res,
+                                    at_specified_res = input_data$at_specified_res,
                                     data_year = data_year,
                                     to_time = model_end_year,
-                                    country = country,
+                                    country = input_data$country,
                                     state_territory = profiled_area_objs_ls$state_territory,
-                                    pop_projs_str = pop_projs_str)
+                                    pop_projs_str = input_data$pop_projs_str)
 
   ## 5. APPLY PROFILED AREA FILTER
   sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
-                                      profiled_area_type = profiled_area_type,
-                                      age_sex_pop_str = age_sex_pop_str,
-                                      tot_pop_str = tot_pop_str,
-                                      at_highest_res = at_highest_res,
-                                      distance_km = distance_km,
-                                      travel_time_mins = travel_time_mins,
+                                      profiled_area_type = input_data$profiled_area_type,
+                                      age_sex_pop_str = input_data$age_sex_pop_str,
+                                      tot_pop_str = input_data$tot_pop_str,
+                                      at_highest_res = input_data$at_highest_res,
+                                      distance_km = input_data$distance_km,
+                                      travel_time_mins = input_data$travel_time_mins,
                                       profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list,
-                                      group_at_profile_unit = group_at_profile_unit,
+                                      group_at_profile_unit = input_data$group_at_profile_unit,
                                       group_by_lookup_tb = group_by_lookup_tb,
-                                      crs_nbr = crs_nbr,
+                                      crs_nbr = input_data$crs_nbr,
                                       data_year = data_year)
   ## 6. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)
   ## 7. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
-                                        pre_model_date = data_ymdhms,
-                                        model_start_date = model_start_ymdhms,# %>%
+                                        pre_model_date = input_data$data_ymdhms,
+                                        model_start_date = input_data$model_start_ymdhms,# %>%
                                           #lubridate::year() %>%
                                           #as.character(),
                                         model_end_date = model_end_ymdhms,# model_end_year,
-                                        age_lower = age_lower,
-                                        age_upper = age_upper,
-                                        time_steps = simulation_steps_ymwd,
-                                        nbr_steps = nbr_steps_start_to_end)
+                                        age_lower = input_data$age_lower,
+                                        age_upper = input_data$age_upper,
+                                        time_steps = input_data$simulation_steps_ymwd,
+                                        nbr_steps = input_data$nbr_steps_start_to_end)
   return(sim_data)
 }
 

@@ -1,6 +1,6 @@
 #' estimate_prevalence
 #' Function to estimate the prevalence of a specified condition, for a specified disorder for a specified area / year.
-#' @param pop_data PARAM_DESCRIPTION
+#' @param sp_data_sf PARAM_DESCRIPTION
 #' @param prev_rates_vec PARAM_DESCRIPTION
 ##' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -26,71 +26,125 @@
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
 
-estimate_prevalence <- function(pop_data,
+estimate_prevalence <- function(sp_data_sf,
+                                sp_unit_id = "pop_sp_unit_id",
                                 #prev_rates_vec,
                                 param_tb,
+                                par_name_var = "parameter_name",
                                 it_nbr){
   param_tb_slimmed <- param_tb %>%
     dplyr::filter(startsWith(parameter_name,"prev")) %>%
-    dplyr::select(parameter_name,
+    dplyr::select(!!par_name_var,
                   paste0("v_it_", it_nbr))
-  prefix <- param_tb_slimmed[1,1] %>% as.vector() %>% stringr::str_sub(end=10)
-  col_names <- names(pop_data)[names(pop_data)%>% startsWith(prefix="tx_") |
-                                 names(pop_data)%>% startsWith(prefix="t0_")]
-  add_prev_col <- function(pop_sf,
-                           col_name){
-    age_sex_pair <- col_name %>% stringr::str_sub(start = -4)
-    prev_pair <- param_tb_slimmed %>%
-      dplyr::pull(parameter_name)
-    prev_pair <- prev_pair[endsWith(prev_pair,age_sex_pair)]
-
-    pop_sf %>%
-      dplyr::mutate(!!rlang::sym(paste0(col_name %>% stringr::str_sub(end=2),
-                                        "_",
-                                        prev_pair)) := !!rlang::sym(col_name) * ready.data::data_get(data_lookup_tb = param_tb_slimmed,
-                                                                                                     lookup_variable = "parameter_name",
-                                                                                                     lookup_reference = prev_pair,
-                                                                                                     target_variable = paste0("v_it_", it_nbr),
-                                                                                                     evaluate = FALSE))
-  }
-  pop_data <- purrr::reduce(col_names,
-                            ~ add_prev_col(pop_sf = .x,
-                                           col_name = .y),
-                            .init = pop_data)
-  t0_prev <- names(pop_data)[names(pop_data) %>% startsWith("t0_prev")]
-  tx_prev <- names(pop_data)[names(pop_data) %>% startsWith("tx_prev")]
+  #prefix <- param_tb_slimmed[1,1] %>% as.vector() %>% stringr::str_sub(end=10)
+  col_names <- names(sp_data_sf)[names(sp_data_sf)%>% startsWith(prefix = "tx_") |
+                                   names(sp_data_sf)%>% startsWith(prefix = "t0_")]
+  sp_data_sf <- purrr::reduce(col_names,
+                              .init = sp_data_sf,
+                              ~ add_prevalence_col(sp_data_sf = .x,
+                                                   col_name = .y,
+                                                   param_tb_slimmed = param_tb_slimmed,
+                                                   par_name_var = par_name_var))
+  t0_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("t0_prev")]
+  tx_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("tx_prev")]
   t0_prev_pref <- t0_prev[1] %>% stringr::str_sub(end=-5)
   tx_prev_pref <- tx_prev[1] %>% stringr::str_sub(end=-5)
-  t0_ind <- which(names(pop_data) %in% t0_prev)
-  tx_ind <- which(names(pop_data) %in% tx_prev)
-  t0_totals <-  pop_data %>%
+  t0_ind <- which(names(sp_data_sf) %in% t0_prev)
+  tx_ind <- which(names(sp_data_sf) %in% tx_prev)
+  t0_totals <-  sp_data_sf %>%
     dplyr::select(t0_prev) %>%
     sf::st_set_geometry(NULL) %>%
     dplyr::mutate(!!rlang::sym(paste0(t0_prev_pref,"all")) := Reduce(`+`,.)) %>%
-    dplyr::pull(!!rlang::sym(paste0(t0_prev_pref,"all")))
-  tx_totals <-   tx_totals <-  pop_data %>%
+    dplyr::select(!!rlang::sym(paste0(t0_prev_pref,"all")))
+  tx_totals <-   tx_totals <-  sp_data_sf %>%
     dplyr::select(tx_prev) %>%
     sf::st_set_geometry(NULL) %>%
     dplyr::mutate(!!rlang::sym(paste0(tx_prev_pref,"all")) := Reduce(`+`,.)) %>%
-    dplyr::pull(!!rlang::sym(paste0(tx_prev_pref,"all")))
-  calc_delta_prev <- function(pop_sf,
-                              col_ind){
-    pop_sf %>%
-      dplyr::mutate(!!rlang::sym(paste0("delta",
-                                        t0_prev[col_ind] %>% stringr::str_sub(start = 3))) :=
-                      !!rlang::sym(tx_prev[col_ind]) - !!rlang::sym(t0_prev[col_ind]))
-  }
-  pop_data <- cbind(pop_data,t0_totals,tx_totals)
-  t0_prev <- c(t0_prev,"t0_totals")
-  tx_prev <- c(tx_prev,"tx_totals")
+    dplyr::select(!!rlang::sym(paste0(tx_prev_pref,"all")))
+  sp_data_sf <-   dplyr::bind_cols(sp_data_sf,t0_totals,tx_totals)
+  t0_prev <- c(t0_prev,paste0(t0_prev_pref,"all"))
+  tx_prev <- c(tx_prev,paste0(tx_prev_pref,"all"))
   index_vec <- 1:(length(t0_prev))
   purrr::reduce(index_vec,
-                ~ calc_delta_prev(pop_sf = .x,
-                                  col_ind = .y),
-                .init = pop_data)
+                ~ calc_change_in_prevalence(sp_data_sf = .x,
+                                            col_ind = .y,
+                                            t0_prev = t0_prev,
+                                            tx_prev = tx_prev),
+                .init = sp_data_sf)
 }
+#' @title add_prevalence_col
+#' @description FUNCTION_DESCRIPTION
+#' @param sp_data_sf PARAM_DESCRIPTION
+#' @param col_name PARAM_DESCRIPTION
+#' @param param_tb_slimmed PARAM_DESCRIPTION
+#' @param par_name_var PARAM_DESCRIPTION, Default: 'parameter_name'
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[stringr]{str_sub}}
+#'  \code{\link[dplyr]{pull}},\code{\link[dplyr]{mutate}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[ready.data]{data_get}}
+#' @rdname add_prevalence_col
+#' @importFrom stringr str_sub
+#' @importFrom dplyr pull mutate
+#' @importFrom rlang sym
+#' @importFrom ready.data data_get
+add_prevalence_col <- function(sp_data_sf,
+                               col_name,
+                               param_tb_slimmed,
+                               par_name_var = "parameter_name"){
+  age_sex_pair <- col_name %>% stringr::str_sub(start = -4)
+  prev_pair <- param_tb_slimmed %>%
+    dplyr::pull(!!par_name_var)
+  prev_pair <- prev_pair[endsWith(prev_pair,age_sex_pair)]
 
-
+  sp_data_sf %>%
+    dplyr::mutate(!!rlang::sym(paste0(col_name %>% stringr::str_sub(end=2),
+                                      "_",
+                                      prev_pair)) := !!rlang::sym(col_name) * ready.data::data_get(data_lookup_tb = param_tb_slimmed,
+                                                                                                   lookup_variable = !!par_name_var,
+                                                                                                   lookup_reference = prev_pair,
+                                                                                                   target_variable = paste0("v_it_", it_nbr),
+                                                                                                   evaluate = FALSE))
+}
+#' @title calc_change_in_prevalence
+#' @description FUNCTION_DESCRIPTION
+#' @param sp_data_sf PARAM_DESCRIPTION
+#' @param col_ind PARAM_DESCRIPTION
+#' @param t0_prev PARAM_DESCRIPTION
+#' @param tx_prev PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{mutate}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[stringr]{str_sub}}
+#' @rdname calc_change_in_prevalence
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+#' @importFrom stringr str_sub
+calc_change_in_prevalence <- function(sp_data_sf,
+                                      col_ind,
+                                      t0_prev,
+                                      tx_prev){
+  sp_data_sf %>%
+    dplyr::mutate(!!rlang::sym(paste0("delta",
+                                      t0_prev[col_ind] %>% stringr::str_sub(start = 3))) :=
+                    !!rlang::sym(tx_prev[col_ind]) - !!rlang::sym(t0_prev[col_ind]))
+}
 
 #' make_prev_summ_tb
 #' FUNCTION_DESCRIPTION
