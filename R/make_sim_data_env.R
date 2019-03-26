@@ -94,11 +94,12 @@ make_sim_data_env <- function(input_data,
 
   ## 6. REFORMAT LIST
   sp_data_list <- list(input_bl_profiled_sf = sp_data_list[names(sp_data_list)[!names(sp_data_list)
-                                                                         %in% c("ppr_ref",
-                                                                                names(sp_data_list)[sp_data_list$ppr_ref],
-                                                                                "profiled_sf")]],
-                         input_dynamic_sp_pars = sp_data_list[[sp_data_list$ppr_ref]],
-                         profiled_sf = sp_data_list$profiled_sf)
+                                                                               %in% c("ppr_ref",
+                                                                                      names(sp_data_list)[sp_data_list$ppr_ref],
+                                                                                      "profiled_sf")]],
+                       input_dynamic_sp_pars = sp_data_list[[sp_data_list$ppr_ref]],
+                       profiled_sf = sp_data_list$profiled_sf,
+                       popl_var_prefix = sp_data_list$popl_var_prefix)
   ## 7. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)
@@ -163,8 +164,12 @@ extend_sp_data_list <- function(sp_data_list,
                                                                                   rownames(.x))) %>%
                                             dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
+  popl_var_prefix <- get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
+                                         tot_pop_resolution = tot_pop_resolution,
+                                         data_year = data_year)
   extended_sp_data_list <- append(sp_data_list,
-                                  list(profiled_sf=profiled_sf))
+                                  list(profiled_sf = profiled_sf,
+                                       popl_var_prefix = popl_var_prefix))
   return(extended_sp_data_list)
 }
 get_group_by_var <- function(profile_unit,

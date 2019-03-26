@@ -2,8 +2,8 @@
 #' @description FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param years Numeric vector of the years for which age / sex counts should be estimated.
-#' @param age0 Numeric, start of included age range.
-#' @param age1 Numeric, end of included age range.
+#' @param age_lower Numeric, start of included age range.
+#' @param age_upper Numeric, end of included age range.
 #' @param intervals Numeric, the years included in each age group in the source sf, Default: 5
 #' @param included_features XXXXXXXXXXXXX
 #' @return OUTPUT_DESCRIPTION
@@ -27,8 +27,8 @@
 
 gen_demog_features <- function(profiled_sf,
                                years,
-                               age0,
-                               age1,
+                               age_lower,
+                               age_upper,
                                param_tb,
                                it_nbr,
                                acgr = TRUE,
@@ -40,8 +40,8 @@ gen_demog_features <- function(profiled_sf,
                                included_prefix = ""){
   fn_pars <- gen_demog_fun_par_vals(profiled_sf,
                                     years,
-                                    age0,
-                                    age1,
+                                    age_lower,
+                                    age_upper,
                                     intervals,
                                     acgr,
                                     age_by_year)
@@ -56,8 +56,8 @@ gen_demog_features <- function(profiled_sf,
                                             t0_date = paste0(fn_pars$t0_year,month,day),
                                             included_age_bands_num = fn_pars$included_age_bands_num,
                                             included_age_bands_num_all = fn_pars$included_age_bands_num_all,
-                                            age0 = age0,
-                                            age1 = age1,
+                                            age_lower = age_lower,
+                                            age_upper = age_upper,
                                             intervals = intervals,
                                             included_prefix = included_prefix)
   }
@@ -125,8 +125,8 @@ gen_demog_acgr <- function(profiled_sf,
 #' FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param years PARAM_DESCRIPTION
-#' @param age0 PARAM_DESCRIPTION
-#' @param age1 PARAM_DESCRIPTION
+#' @param age_lower PARAM_DESCRIPTION
+#' @param age_upper PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
 #' @param acgr PARAM_DESCRIPTION
 #' @param age_by_year PARAM_DESCRIPTION
@@ -148,15 +148,15 @@ gen_demog_acgr <- function(profiled_sf,
 
 gen_demog_fun_par_vals <- function(profiled_sf,
                                    years,
-                                   age0,
-                                   age1,
+                                   age_lower,
+                                   age_upper,
                                    intervals,
                                    acgr,
                                    age_by_year){
-  first_age_band <- c(floor(age0 / intervals) * intervals,
-                      ifelse(age0 %% intervals == 0, age0/intervals + 1, ceiling(age0/intervals)) * intervals - 1)
-  last_age_band <- c(floor(age1 / intervals) * intervals,
-                     ifelse(age1 %% intervals == 0, age1/intervals + 1, ceiling(age1/intervals)) * intervals - 1)
+  first_age_band <- c(floor(age_lower / intervals) * intervals,
+                      ifelse(age_lower %% intervals == 0, age_lower/intervals + 1, ceiling(age_lower/intervals)) * intervals - 1)
+  last_age_band <- c(floor(age_upper / intervals) * intervals,
+                     ifelse(age_upper %% intervals == 0, age_upper/intervals + 1, ceiling(age_upper/intervals)) * intervals - 1)
   n_age_bands <- (last_age_band[1] - first_age_band[1]) / intervals + 1
   included_age_bands_num_all <- purrr::map(1:n_age_bands, ~ c(intervals * (. - 1) + first_age_band[1],
                                                               intervals * (. - 1) + first_age_band[2]))
@@ -172,10 +172,10 @@ gen_demog_fun_par_vals <- function(profiled_sf,
     purrr::flatten_chr() %>%
     sort()
   included_age_bands_num <- included_age_bands_num %>% purrr::modify_at(1,
-                                                                        ~ c(age0,.[2])) %>%
+                                                                        ~ c(age_lower,.[2])) %>%
     purrr::modify_at(length(included_age_bands_num),
                      ~ c(.[1],
-                         age1))
+                         age_upper))
   if(!acgr & age_by_year){
     included_time_intervals <- names(profiled_sf)[startsWith(names(profiled_sf),"acgr_y20")] %>%
       stringr::str_sub(7, 10)
@@ -218,8 +218,8 @@ gen_demog_fun_par_vals <- function(profiled_sf,
 #' @param t0_date PARAM_DESCRIPTION
 #' @param included_age_bands_num PARAM_DESCRIPTION
 #' @param included_age_bands_num_all PARAM_DESCRIPTION
-#' @param age0 PARAM_DESCRIPTION
-#' @param age1 PARAM_DESCRIPTION
+#' @param age_lower PARAM_DESCRIPTION
+#' @param age_upper PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -239,16 +239,16 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
                                      t0_date,
                                      included_age_bands_num,
                                      included_age_bands_num_all,
-                                     age0,
-                                     age1,
+                                     age_lower,
+                                     age_upper,
                                      intervals,
                                      included_prefix){
   age_bands_vect <- included_age_bands_num %>% purrr::flatten_dbl()
-  age_bands_ref <- purrr::map_dbl(age0:age1,
+  age_bands_ref <- purrr::map_dbl(age_lower:age_upper,
                                   ~ ceiling(max(which(age_bands_vect <= .)/2)))
   profiled_sf <- by_age_sex_for_a_year(profiled_sf = profiled_sf,
-                                       age0 = age0,
-                                       age1 = age1,
+                                       age_lower = age_lower,
+                                       age_upper = age_upper,
                                        t0_date =  t0_date,
                                        age_bands_ref = age_bands_ref,
                                        intervals = intervals,
@@ -261,8 +261,8 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
 #' FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param age PARAM_DESCRIPTION
-#' @param age0 PARAM_DESCRIPTION
-#' @param age1 PARAM_DESCRIPTION
+#' @param age_lower PARAM_DESCRIPTION
+#' @param age_upper PARAM_DESCRIPTION
 #' @param t0_date PARAM_DESCRIPTION
 #' @param age_bands_ref PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
@@ -289,8 +289,8 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
 
 by_sex_for_an_age <- function(profiled_sf,
                               age,
-                              age0,
-                              age1,
+                              age_lower,
+                              age_upper,
                               t0_date,
                               age_bands_ref,
                               intervals,
@@ -312,19 +312,19 @@ by_sex_for_an_age <- function(profiled_sf,
                                                                                                            y,
                                                                                                            ".",
                                                                                                            included_age_bands_num_all  %>%
-                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
+                                                                                                             purrr::pluck(age_bands_ref[which(age_lower:age_upper == age)]) %>%
                                                                                                              purrr::pluck(1),
                                                                                                            ".",
                                                                                                            included_age_bands_num_all  %>%
-                                                                                                             purrr::pluck(age_bands_ref[which(age0:age1 == age)]) %>%
+                                                                                                             purrr::pluck(age_bands_ref[which(age_lower:age_upper == age)]) %>%
                                                                                                              purrr::pluck(2))) / intervals))
   return(profiled_sf)
 }
 #' by_age_sex_for_a_year
 #' FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
-#' @param age0 PARAM_DESCRIPTION
-#' @param age1 PARAM_DESCRIPTION
+#' @param age_lower PARAM_DESCRIPTION
+#' @param age_upper PARAM_DESCRIPTION
 #' @param t0_date PARAM_DESCRIPTION
 #' @param age_bands_ref PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
@@ -344,18 +344,18 @@ by_sex_for_an_age <- function(profiled_sf,
 #' @describeIn demographic_by_yearly_age_sex Calculates age and sex populations for a specific year.
 
 by_age_sex_for_a_year <- function(profiled_sf,
-                                  age0,
-                                  age1,
+                                  age_lower,
+                                  age_upper,
                                   t0_date,
                                   age_bands_ref,
                                   intervals,
                                   included_age_bands_num_all,
                                   included_prefix){
-  profiled_sf <- purrr::reduce(purrr::prepend(age0:age1,
+  profiled_sf <- purrr::reduce(purrr::prepend(age_lower:age_upper,
                                               list(a=profiled_sf)),
                                .f = function(x,y) x %>% by_sex_for_an_age(age = y,
-                                                                          age0 = age0,
-                                                                          age1 = age1,
+                                                                          age_lower = age_lower,
+                                                                          age_upper = age_upper,
                                                                           t0_date = t0_date,
                                                                           age_bands_ref = age_bands_ref,
                                                                           intervals = intervals,

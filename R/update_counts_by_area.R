@@ -196,6 +196,26 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
        grouping_1_age_sex_pop = grouping_1_age_sex_pop_str,
        inc_str_to_delete = inc_str_to_delete)
 }
+get_popl_var_prefix <- function(age_sex_pop_resolution,
+                                tot_pop_resolution = NULL,
+                                data_year){
+  if(!is.null(tot_pop_resolution)){
+    nse_names_ls <- gen_objs_for_nse_upd_pop(sp_unit = tot_pop_resolution,
+                                             concept = "tot_pop",
+                                             tot_pop_col = paste0("year_",
+                                                                  data_year,
+                                                                  "pr"),
+                                             grouping_1 = age_sex_pop_resolution,
+                                             data_year = data_year)
+  }else{
+    nse_names_ls <- gen_objs_for_nse_upd_pop(sp_unit = age_sex_pop_resolution,
+
+                                             concept = "age_sex",
+                                             grouping_1 = age_sex_pop_resolution,
+                                             data_year = data_year)
+  }
+  paste0(nse_names_ls$popl_inc_unit,"_")
+}
 sum_updated_pop_by_grp <- function(profiled_sf,
                                    #group_by_res,
                                    grp_var_name,
