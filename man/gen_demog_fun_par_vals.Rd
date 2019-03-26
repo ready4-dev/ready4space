@@ -5,17 +5,17 @@
 \title{gen_demog_fun_par_vals
 FUNCTION_DESCRIPTION}
 \usage{
-gen_demog_fun_par_vals(profiled_sf, years, age0, age1, intervals, acgr,
-  age_by_year)
+gen_demog_fun_par_vals(profiled_sf, years, age_lower, age_upper, intervals,
+  acgr, age_by_year)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}
 
 \item{years}{PARAM_DESCRIPTION}
 
-\item{age0}{PARAM_DESCRIPTION}
+\item{age_lower}{PARAM_DESCRIPTION}
 
-\item{age1}{PARAM_DESCRIPTION}
+\item{age_upper}{PARAM_DESCRIPTION}
 
 \item{intervals}{PARAM_DESCRIPTION}
 

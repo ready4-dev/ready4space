@@ -5,7 +5,7 @@
 \title{add_prevalence_col}
 \usage{
 add_prevalence_col(sp_data_sf, col_name, param_tb_slimmed,
-  par_name_var = "parameter_name")
+  par_name_var = "parameter_name", it_nbr)
 }
 \arguments{
 \item{sp_data_sf}{PARAM_DESCRIPTION}

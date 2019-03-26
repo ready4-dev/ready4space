@@ -10,15 +10,15 @@
 \alias{gen_age_sex_estimates_tx}
 \title{Calculate age/sex populations for each year / age of interest.}
 \usage{
-gen_demog_features(profiled_sf, years, age0, age1, param_tb, it_nbr,
-  acgr = TRUE, age_by_year = FALSE, drop_bands = TRUE,
+gen_demog_features(profiled_sf, years, age_lower, age_upper, param_tb,
+  it_nbr, acgr = TRUE, age_by_year = FALSE, drop_bands = TRUE,
   intervals = 5, month = "07", day = "01", included_prefix = "")
 
-by_sex_for_an_age(profiled_sf, age, age0, age1, t0_date, age_bands_ref,
-  intervals, included_age_bands_num_all, included_prefix)
+by_sex_for_an_age(profiled_sf, age, age_lower, age_upper, t0_date,
+  age_bands_ref, intervals, included_age_bands_num_all, included_prefix)
 
-by_age_sex_for_a_year(profiled_sf, age0, age1, t0_date, age_bands_ref,
-  intervals, included_age_bands_num_all, included_prefix)
+by_age_sex_for_a_year(profiled_sf, age_lower, age_upper, t0_date,
+  age_bands_ref, intervals, included_age_bands_num_all, included_prefix)
 
 demographic_compound_growth_rate(t0_pop, t1_pop, n_periods, age_sex_band,
   param_tb, it_nbr)
@@ -35,9 +35,9 @@ gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 
 \item{years}{Numeric vector of the years for which age / sex counts should be estimated.}
 
-\item{age0}{Numeric, start of included age range.}
+\item{age_lower}{Numeric, start of included age range.}
 
-\item{age1}{Numeric, end of included age range.}
+\item{age_upper}{Numeric, end of included age range.}
 
 \item{param_tb}{PARAM_DESCRIPTION}
 
@@ -79,17 +79,17 @@ gen_age_sex_estimates_tx(profiled_sf, ymwd_step)
 
 \item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{age0}{PARAM_DESCRIPTION}
+\item{age_lower}{PARAM_DESCRIPTION}
 
-\item{age1}{PARAM_DESCRIPTION}
+\item{age_upper}{PARAM_DESCRIPTION}
 
 \item{intervals}{PARAM_DESCRIPTION}
 
 \item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{age0}{PARAM_DESCRIPTION}
+\item{age_lower}{PARAM_DESCRIPTION}
 
-\item{age1}{PARAM_DESCRIPTION}
+\item{age_upper}{PARAM_DESCRIPTION}
 
 \item{t0_date}{PARAM_DESCRIPTION}
 
