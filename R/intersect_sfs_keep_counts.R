@@ -116,5 +116,11 @@ get_res_specific_vars <- function(var_names,
                                 startsWith("year_")]
 
   }
+  if(data_type == "processed_age_sex"){
+    res_sp_vars <-  var_names[var_names %>%
+                                startsWith("AREASQKM") |
+                                var_names %>%
+                                startsWith("inc_SA1_popl_")]
+  }
   return(res_sp_vars)
 }

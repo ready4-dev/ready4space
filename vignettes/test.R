@@ -59,7 +59,7 @@ sim_data <- make_sim_data_env(input_data = input_data)
 grouping_for_sim <- ifelse(!is.null(input_data$distance_km),
                            "distance_km",
                            ifelse(!is.null(input_data$travel_time_mins),
-                                  "drive_times", "PHN_NAME"))
+                                  "drive_times", "SA2_MAIN16"))
 sim_results_ls <- ready.sim::runSimulation(x = sim_data,#simDataInput(),
                                            nbr_its = input_data$nbr_its, #nbrItsInput(),
                                            group_by = grouping_for_sim)
