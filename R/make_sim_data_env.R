@@ -37,33 +37,35 @@ make_sim_data_env <- function(input_data,
   #                             pop_projs_str = "Population projections",
   #                             country = "Australia",
   #                             crs_nbr = 4283,
-                              group_by_lookup_tb = group_by_var_lookup_tb){
+  lookup_tb_r4
+
+                              #group_by_lookup_tb = group_by_var_lookup_tb
+                              ){
+  #group_by_lookup_tb = ready.s4::sp_data_uid_lup(lookup_tb_r4)
 
   ## 1. CONVERT DATES
-  data_year <- input_data$data_ymdhms %>%
-    lubridate::year() %>%
-    as.character()
+  data_year <- get_data_year_chr(input_data$data_ymdhm)
   model_end_ymdhms <- input_data$model_start_ymdhms +
     lubridate::years(input_data$simulation_steps_ymwd[1]) * input_data$nbr_steps_start_to_end +
     months(input_data$simulation_steps_ymwd[2]) * input_data$nbr_steps_start_to_end +
     lubridate::weeks(input_data$simulation_steps_ymwd[3]) * input_data$nbr_steps_start_to_end +
     lubridate::days(input_data$simulation_steps_ymwd[4]) * input_data$nbr_steps_start_to_end #lubridate::ymd_hms("2031_07_01 12:00:00")
   model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
-  group_by_lookup_tb <- group_by_lookup_tb %>%
-    dplyr::filter(year == data_year)
   ## 2. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
                                   ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
   ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
-  profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = input_data$profiled_area_type,
-                                                   profiled_area = input_data$profiled_area,
-                                                   crs_nbr = input_data$crs_nbr,
-                                                   distance_km = input_data$distance_km,
-                                                   nbr_distance_steps = input_data$nbr_distance_steps,
-                                                   travel_time_mins = input_data$travel_time_mins,
-                                                   nbr_time_steps = input_data$nbr_time_steps,
-                                                   group_by_lookup_tb = group_by_lookup_tb)
+  # group_by_lookup_tb <- ready.s4::sp_data_uid_lup(lookup_tb_r4) %>%
+  #   dplyr::filter(year == data_year)
+  # profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = input_data$profiled_area_type,
+  #                                                  profiled_area = input_data$profiled_area,
+  #                                                  crs_nbr = input_data$crs_nbr,
+  #                                                  distance_km = input_data$distance_km,
+  #                                                  nbr_distance_steps = input_data$nbr_distance_steps,
+  #                                                  travel_time_mins = input_data$travel_time_mins,
+  #                                                  nbr_time_steps = input_data$nbr_time_steps,
+  #                                                  group_by_lookup_tb = group_by_lookup_tb)
   ## 4. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
   # at_highest_res <- c(input_data$age_sex_pop_str,
   #                     input_data$tot_pop_str,
@@ -116,7 +118,11 @@ make_sim_data_env <- function(input_data,
                                         nbr_steps = input_data$nbr_steps_start_to_end)
   return(sim_data)
 }
-
+get_data_year_chr <- function(data_ymdhms){
+  data_ymdhms %>%
+    lubridate::year() %>%
+    as.character()
+}
 extend_sp_data_list <- function(sp_data_list,
                                 profiled_area_type,
                                 age_sex_pop_str,
@@ -178,12 +184,12 @@ get_group_by_var <- function(profile_unit,
                              group_by_lookup_tb){
   group_by <- ifelse(group_at_profile_unit,
                      ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
-                                          lookup_variable = "resolution",
+                                          lookup_variable = "spatial_unit",
                                           lookup_reference = profile_unit,
                                           target_variable = "var_name",
                                           evaluate = FALSE),
                      ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
-                                          lookup_variable = "resolution",
+                                          lookup_variable = "spatial_unit",
                                           lookup_reference = data_unit,
                                           target_variable = "var_name",
                                           evaluate = FALSE))
@@ -236,9 +242,13 @@ make_profiled_area_objs <- function(profiled_area_type,
                                     nbr_distance_steps,
                                     travel_time_mins = NULL,
                                     nbr_time_steps,
-                                    group_by_lookup_tb
+                                    data_year,
+                                    lookup_tb_r4
+                                    #group_by_lookup_tb
                                     ){
 ## BAND BY var_name ....
+  group_by_lookup_tb = ready.s4::sp_data_uid_lup(lookup_tb_r4) %>%
+    dplyr::filter(year == data_year)
   if(profiled_area_type=="PHN"){
     group_by_var <- get_group_by_var(profile_unit = "PHN",
                                      group_by_lookup_tb = group_by_lookup_tb)
@@ -254,11 +264,13 @@ make_profiled_area_objs <- function(profiled_area_type,
     aus_stt_sf <- ready.pp.phn::aus_stt_sf %>%
       sf::`st_crs<-`(crs_nbr)
     if(profiled_area_type == "Headspace"){
-      cluster_tb =  example_headspace_tb %>% #headspace_tb %>%
+      cluster_tb =  lookup_tb_r4 %>% ready.s4::sp_site_coord_lup()  %>%
+        #example_headspace_tb %>% #headspace_tb %>%
         dplyr::filter(service_name %in% profiled_area)
     }
     if(profiled_area_type == "Custom"){
-      cluster_tb =  tibble::tibble(cluster_name = profiled_area$cluster_vec,
+      cluster_tb =  tibble::tibble(service_type = profiled_area$cluster_vec,
+                                   cluster_name = profiled_area$cluster_vec,
                                    service_name = profiled_area$service_vec,
                                    lat = profiled_area$lat_vec,
                                    long = profiled_area$lon_vec)
