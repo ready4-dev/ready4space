@@ -37,13 +37,13 @@ spatial_area_within_xkm_of_points<-function(point_locations,
                                             crs_nbr){
   distance_from_pts_sf <- sf::st_as_sf(point_locations,
                                        coords = c("long", "lat"),
-                                       crs = crs_nbr)#%>% #4326
-    #sf::st_transform(3577)
+                                       crs = crs_nbr) %>% #4326)
+    sf::st_transform(3577)
   distance_from_pts_on_land_sf <- sf::st_buffer(distance_from_pts_sf,
                                                 dist = distance) %>%
     sf::st_union() %>%
-    sf::st_intersection(land_sf #%>%
-                          #sf::st_transform(crs_nbr)
+    sf::st_intersection(land_sf %>%
+                          sf::st_transform(3577)
                         ) %>% #3577
     sf::st_transform(crs_nbr) %>%
     sf::st_sf()
