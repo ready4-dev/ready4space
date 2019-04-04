@@ -38,7 +38,7 @@ spatial_area_within_xkm_of_points<-function(point_locations,
   distance_from_pts_sf <- sf::st_as_sf(point_locations,
                                        coords = c("long", "lat"),
                                        crs = crs_nbr) %>% #4326)
-    sf::st_transform(3577)
+    sf::st_transform(3577) ## Update once crs_nbr is made into length two vector
   distance_from_pts_on_land_sf <- sf::st_buffer(distance_from_pts_sf,
                                                 dist = distance) %>%
     sf::st_union() %>%
