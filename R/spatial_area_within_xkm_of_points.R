@@ -33,17 +33,19 @@
 #' @importFrom sf st_as_sf st_transform st_buffer st_union st_intersection st_sf
 spatial_area_within_xkm_of_points<-function(point_locations,
                                             land_sf,
-                                            distance){
+                                            distance,
+                                            crs_nbr){
   distance_from_pts_sf <- sf::st_as_sf(point_locations,
                                        coords = c("long", "lat"),
-                                       crs = 4326) %>%
-    sf::st_transform(3577)
+                                       crs = crs_nbr)#%>% #4326
+    #sf::st_transform(3577)
   distance_from_pts_on_land_sf <- sf::st_buffer(distance_from_pts_sf,
                                                 dist = distance) %>%
     sf::st_union() %>%
-    sf::st_intersection(land_sf %>%
-                          sf::st_transform(3577)) %>%
-    sf::st_transform(4283) %>%
+    sf::st_intersection(land_sf #%>%
+                          #sf::st_transform(crs_nbr)
+                        ) %>% #3577
+    sf::st_transform(crs_nbr) %>%
     sf::st_sf()
   return(distance_from_pts_on_land_sf)
 
@@ -54,7 +56,7 @@ spatial_area_within_xkm_of_points<-function(point_locations,
 #' @param distance_km_outer PARAM_DESCRIPTION
 #' @param nbr_distance_bands PARAM_DESCRIPTION
 #' @param service_cluster_tb PARAM_DESCRIPTION
-#' @param aus_stt_sf PARAM_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -76,7 +78,8 @@ spatial_area_within_xkm_of_points<-function(point_locations,
 gen_distance_based_bands <- function(distance_km_outer,
                                      nbr_distance_bands,
                                      service_cluster_tb,
-                                     aus_stt_sf){
+                                     profiled_sf,
+                                     crs_nbr){
   distances_vec <- seq(from = distance_km_outer/nbr_distance_bands,
                        to = distance_km_outer,
                        by = distance_km_outer/nbr_distance_bands)
@@ -93,7 +96,8 @@ gen_distance_based_bands <- function(distance_km_outer,
                                                   ~ spatial_area_within_xkm_of_cluster(distance_km = .x,
                                                                                        clusters_vec = service_clusters_vec,
                                                                                        clusters_tbs_list = service_clusters_tbs_list,
-                                                                                       land_boundary_sf = aus_stt_sf)) %>%
+                                                                                       land_boundary_sf = profiled_sf,
+                                                                                       crs_nbr = crs_nbr)) %>%
     stats::setNames(., paste0("km_",
                               distances_vec,
                               "from_service"))

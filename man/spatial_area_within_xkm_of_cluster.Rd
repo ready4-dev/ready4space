@@ -7,7 +7,7 @@
 \title{Calculate area within a specified distance of a cluster of points.}
 \usage{
 spatial_area_within_xkm_of_cluster(distance_km, clusters_vec,
-  clusters_tbs_list, land_boundary_sf)
+  clusters_tbs_list, land_boundary_sf, crs_nbr)
 
 reorder_distance_list_by_cluster(look_up_ref, clusters_by_distance_list,
   distances_vec)

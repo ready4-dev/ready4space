@@ -23,12 +23,14 @@
 spatial_area_within_xkm_of_cluster <- function(distance_km,
                                                clusters_vec,
                                                clusters_tbs_list,
-                                               land_boundary_sf){
+                                               land_boundary_sf,
+                                               crs_nbr){
   purrr::map(1:length(clusters_vec),
              ~ spatial_area_within_xkm_of_points(point_locations = clusters_tbs_list %>%
                                                    purrr::pluck(.x),
                                                  land_sf = land_boundary_sf,
-                                                 distance = distance_km *1000)) %>%
+                                                 distance = distance_km *1000,
+                                                 crs_nbr = crs_nbr)) %>%
     stats::setNames(., clusters_tbs_list %>% names())
 
 }

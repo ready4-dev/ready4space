@@ -6,7 +6,7 @@
 FUNCTION_DESCRIPTION}
 \usage{
 gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
-  service_cluster_tb, aus_stt_sf)
+  service_cluster_tb, profiled_sf, crs_nbr)
 }
 \arguments{
 \item{distance_km_outer}{PARAM_DESCRIPTION}
@@ -15,7 +15,7 @@ gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
 
 \item{service_cluster_tb}{PARAM_DESCRIPTION}
 
-\item{aus_stt_sf}{PARAM_DESCRIPTION}
+\item{profiled_sf}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

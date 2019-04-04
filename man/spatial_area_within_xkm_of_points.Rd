@@ -4,7 +4,8 @@
 \alias{spatial_area_within_xkm_of_points}
 \title{Plots a profiled geographic unit based on distancw from service location.}
 \usage{
-spatial_area_within_xkm_of_points(point_locations, land_sf, distance)
+spatial_area_within_xkm_of_points(point_locations, land_sf, distance,
+  crs_nbr)
 }
 \arguments{
 \item{point_locations}{A tibble...}

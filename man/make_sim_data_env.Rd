@@ -5,8 +5,7 @@
 \title{make_sim_data_env
 Make a simulation data input for the environment.}
 \usage{
-make_sim_data_env(input_data,
-  group_by_lookup_tb = group_by_var_lookup_tb)
+make_sim_data_env(input_data)
 }
 \arguments{
 \item{profiled_area_type}{PARAM_DESCRIPTION}
