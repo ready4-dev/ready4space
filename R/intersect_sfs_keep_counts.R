@@ -88,6 +88,7 @@ intersect_sf_drop_cols <- function(main_sf,
 }
 
 ## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
+## NOT CURRENTLY CALLED
 get_res_specific_vars <- function(var_names,
                                   data_type,
                                   data_year){

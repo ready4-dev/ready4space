@@ -41,14 +41,15 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                         tot_pop_resolution,
                                         age_sex_pop_resolution,
                                         group_by_var,
-                                        group_by_lookup_tb,
+                                        age_sex_counts_grouped_by,
+                                        #group_by_lookup_tb,
                                         data_year){
-  age_sex_var_name <- ready.data::data_get(data_lookup_tb = group_by_lookup_tb %>%
-                                         dplyr::filter(year == data_year),
-                                       lookup_variable = "resolution",
-                                       lookup_reference = age_sex_pop_resolution,
-                                       target_variable = "var_name",
-                                       evaluate = FALSE)
+  # age_sex_var_name <- ready.data::data_get(data_lookup_tb = group_by_lookup_tb %>%
+  #                                        dplyr::filter(year == data_year),
+  #                                      lookup_variable = "resolution",
+  #                                      lookup_reference = age_sex_pop_resolution,
+  #                                      target_variable = "var_name",
+  #                                      evaluate = FALSE)
   profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                            profiled_colref = profiled_colref,
                                            profiled_rowref = profiled_rowref,
@@ -77,7 +78,7 @@ intersect_sfs_update_counts <- function(profiled_sf,
   }
   profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
                                            group_by_var = group_by_var,
-                                           age_sex_var_name = age_sex_var_name,
+                                           age_sex_var_name = age_sex_counts_grouped_by,
                                            data_year = data_year,
                                            age_sex_pop_resolution = age_sex_pop_resolution,
                                            tot_pop_resolution = tot_pop_resolution)

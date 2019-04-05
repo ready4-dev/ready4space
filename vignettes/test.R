@@ -40,7 +40,7 @@ make_profiled_area_input_spine_exmpl <- function(profiled_area_type,
 transform_profiled_area_inputs <- function(profiled_area_input,
                                            lookup_tb_r4){
   country <- "Australia"
-  crs_nbr <- 4283
+  crs_nbr <- c(4283,3577)
   data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00")
   data_year <- "2016"
   nbr_bands <- 5

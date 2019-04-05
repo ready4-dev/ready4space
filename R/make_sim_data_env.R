@@ -13,79 +13,23 @@
 #' @details DETAILS
 #' @export
 
-make_sim_data_env <- function(input_data#,
-  # profiled_area_type,
-  #                             profiled_area,
-  #                             distance_km = NULL,
-  #                             nbr_distance_steps = 5,
-  #                             nbr_time_steps = 5,
-  #                             travel_time_mins = NULL,
-  #                             age_lower,
-  #                             age_upper,
-  #                             env_str_par_tb,
-  #                             nbr_its,
-  #                             deterministic,
-  #                             group_at_profile_unit = TRUE,
-  #                             data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00"),
-  #                             model_start_ymdhms = lubridate::ymd_hms("2019_07_01 12:00:00"),
-  #                             simulation_steps_ymwd = c(1,0,0,0),
-  #                             nbr_steps_start_to_end = 1,
-  #                             at_highest_res_extra = NULL,
-  #                             at_specified_res = list(a=c("SEIFA","SA2")),
-  #                             age_sex_pop_str = "ERP by age and sex",
-  #                             tot_pop_str = "ERP",
-  #                             pop_projs_str = "Population projections",
-  #                             country = "Australia",
-  #                             crs_nbr = 4283,
-  #lookup_tb_r4
-
-                              #group_by_lookup_tb = group_by_var_lookup_tb
-                              ){
-  #group_by_lookup_tb = ready.s4::sp_data_uid_lup(lookup_tb_r4)
-
+make_sim_data_env <- function(input_data){
   ## 1. CONVERT DATES
-  data_year <- ready.s4::data_year(input_data$profiled_area_input)#get_data_year_chr(input_data$data_ymdhm)
-  model_end_ymdhms <- input_data$model_start_ymdhms +
-    lubridate::years(input_data$simulation_steps_ymwd[1]) * input_data$nbr_steps_start_to_end +
-    months(input_data$simulation_steps_ymwd[2]) * input_data$nbr_steps_start_to_end +
-    lubridate::weeks(input_data$simulation_steps_ymwd[3]) * input_data$nbr_steps_start_to_end +
-    lubridate::days(input_data$simulation_steps_ymwd[4]) * input_data$nbr_steps_start_to_end #lubridate::ymd_hms("2031_07_01 12:00:00")
-  model_end_year <- model_end_ymdhms %>% lubridate::year() %>% as.character()
+  #data_year <- ready.s4::data_year(input_data$profiled_area_input)
   ## 2. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
                                   ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
   ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
-  # group_by_lookup_tb <- ready.s4::sp_data_uid_lup(lookup_tb_r4) %>%
-  #   dplyr::filter(year == data_year)
   profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_input = input_data$profiled_area_input)
   ## 4. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
-  # at_highest_res <- c(input_data$age_sex_pop_str,
-  #                     input_data$tot_pop_str,
-  #                     input_data$pop_projs_str) %>% purrr::compact()
-  # if(!is.null(input_data$at_highest_res_extra))
-  #   at_highest_res <- c(at_highest_res,input_data$at_highest_res_extra)
-  sp_data_list <- make_sp_data_list(at_highest_res = input_data$at_highest_res,
-                                    at_specified_res = input_data$at_specified_res,
-                                    data_year = data_year,
-                                    to_time = model_end_year,
-                                    country = input_data$country,
-                                    state_territory = profiled_area_objs_ls$state_territory, ### CHANGE VAR NAME
-                                    pop_projs_str = input_data$pop_projs_str)
+  sp_data_list <- make_sp_data_list(input_data,
+                                    sub_div_units_vec = profiled_area_objs_ls$sub_div_units_vec)
 
   ## 5. APPLY PROFILED AREA FILTER
   sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
-                                      profiled_area_type = input_data$profiled_area_type,
-                                      age_sex_pop_str = input_data$age_sex_pop_str,
-                                      tot_pop_str = input_data$tot_pop_str,
-                                      at_highest_res = input_data$at_highest_res,
-                                      distance_km = input_data$distance_km,
-                                      travel_time_mins = input_data$travel_time_mins,
-                                      profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list,
-                                      group_at_profile_unit = input_data$group_at_profile_unit,
-                                      group_by_lookup_tb = group_by_lookup_tb,
-                                      crs_nbr = input_data$crs_nbr,
-                                      data_year = data_year)
+                                      input_data = input_data,
+                                      profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list)
 
   ## 6. REFORMAT LIST
   sp_data_list <- list(input_bl_profiled_sf = sp_data_list[names(sp_data_list)[!names(sp_data_list)
@@ -100,11 +44,9 @@ make_sim_data_env <- function(input_data#,
                                    par_vals = env_param_tb)
   ## 8. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
-                                        pre_model_date = input_data$data_ymdhms,
-                                        model_start_date = input_data$model_start_ymdhms,# %>%
-                                          #lubridate::year() %>%
-                                          #as.character(),
-                                        model_end_date = model_end_ymdhms,# model_end_year,
+                                        pre_model_date = ready.s4::data_ymds(input_data$profiled_area_input),
+                                        model_start_date = input_data$model_start_ymdhms,
+                                        model_end_date = get_model_end_ymdhs(input_data = input_data),
                                         age_lower = input_data$age_lower,
                                         age_upper = input_data$age_upper,
                                         time_steps = input_data$simulation_steps_ymwd,
@@ -116,33 +58,37 @@ get_data_year_chr <- function(data_ymdhms){
     lubridate::year() %>%
     as.character()
 }
+get_model_end_ymdhs <- function(input_data){
+  input_data$model_start_ymdhms +
+    lubridate::years(input_data$simulation_steps_ymwd[1]) * input_data$nbr_steps_start_to_end +
+    months(input_data$simulation_steps_ymwd[2]) * input_data$nbr_steps_start_to_end +
+    lubridate::weeks(input_data$simulation_steps_ymwd[3]) * input_data$nbr_steps_start_to_end +
+    lubridate::days(input_data$simulation_steps_ymwd[4]) * input_data$nbr_steps_start_to_end
+}
 extend_sp_data_list <- function(sp_data_list,
-                                profiled_area_type,
-                                age_sex_pop_str,
-                                tot_pop_str,
-                                at_highest_res,
-                                distance_km = NULL,
-                                travel_time_mins = NULL,
-                                profiled_area_bands_list,
-                                group_at_profile_unit,
-                                group_by_lookup_tb,
-                                crs_nbr,
-                                data_year
-                                ){
-  age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == age_sex_pop_str) + 1]
+                                input_data,
+                                profiled_area_bands_list){
+  at_highest_res = input_data$at_highest_res
+  distance_km = ready.s4::geom_dist_limit_km(input_data$profiled_area_input)
+  travel_time_mins = ready.s4::drive_time_limmit_mins(input_data$profiled_area_input)
+  group_by_var <- get_group_by_var_from_pai(input_data$profiled_area_input)
+  age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$age_sex_pop_str) + 1]
+  ready.s4::sp_uid_lup(ready.s4::lookup_tb(input_data$profiled_area_input))
+  age_sex_counts_grouped_by <- ready.data::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                      ready.s4::sp_uid_lup() %>%
+                                                      dplyr::filter(year %in% c(ready.s4::data_year(input_data$profiled_area_input),
+                                                                                "All")),
+                                                    lookup_variable = "spatial_unit",
+                                                    lookup_reference = age_sex_pop_resolution,
+                                                    target_variable = "var_name",
+                                                    evaluate = FALSE)
   tot_pop_resolution <- NULL
-  if(!is.null(tot_pop_str))
-    tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == tot_pop_str) + 1]
-  group_by_var <- get_group_by_var(profile_unit = ifelse(profiled_area_type=="PHN",
-                                                              "PHN",
-                                                              ifelse(!is.null(travel_time_mins),"DRIVE_TIME","GEOMETRIC_DISTANCE")),
-                                   data_unit = age_sex_pop_resolution,
-                                   group_at_profile_unit = group_at_profile_unit,
-                                   group_by_lookup_tb = group_by_lookup_tb)
-  if(profiled_area_type != "PHN")
+  if(!is.null(input_data$tot_pop_str))
+    tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$tot_pop_str) + 1]
+  if(ready.s4::use_coord_lup(input_data$profiled_area_input))
     profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
                                            ~ .x %>%
-                                             sf::st_transform(crs_nbr))
+                                             sf::st_transform(ready.s4::crs_nbr(input_data$profiled_area_input)[1]))
   by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
                                          ~ intersect_sfs_update_counts(profiled_sf = .x,
                                                                        profiled_colref = NA,
@@ -151,8 +97,9 @@ extend_sp_data_list <- function(sp_data_list,
                                                                        tot_pop_resolution = tot_pop_resolution,
                                                                        age_sex_pop_resolution = age_sex_pop_resolution,
                                                                        group_by_var = group_by_var,
-                                                                       group_by_lookup_tb = group_by_lookup_tb,
-                                                                       data_year = data_year))
+                                                                       age_sex_counts_grouped_by = age_sex_counts_grouped_by,
+                                                                       data_year = ready.s4::data_year(input_data$profiled_area_input)
+                                         ))
   by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
                                           names(by_band_pop_counts_sf_ls),
                                           ~ .x %>%
@@ -165,7 +112,7 @@ extend_sp_data_list <- function(sp_data_list,
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
   popl_var_prefix <- get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
                                          tot_pop_resolution = tot_pop_resolution,
-                                         data_year = data_year)
+                                         data_year = ready.s4::data_year(input_data$profiled_area_input))
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,
                                        popl_var_prefix = popl_var_prefix))
@@ -204,27 +151,24 @@ get_group_by_var_from_pai <- function(profiled_area_input){
   }
   return(group_by_var)
 }
-make_sp_data_list <- function(at_highest_res,
-                              at_specified_res,
-                              data_year,
-                              to_time,
-                              country,
-                              state_territory,
-                              pop_projs_str){
-  if(!"Victoria" %in% state_territory){
+make_sp_data_list <- function(input_data,
+                              sub_div_units_vec){
+  at_specified_res <- input_data$at_specified_res
+  if(!"Victoria" %in% sub_div_units_vec){
     at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
-    to_time <- data_year
+    model_end_year <- ready.s4::data_year(input_data$profiled_area_input)
   }
-  lists_to_merge <- purrr::map(state_territory,
-                               ~ get_spatial_data_list(at_highest_res = at_highest_res,
-                                                       data_year = data_year,
-                                                       to_time = to_time,
+  lists_to_merge <- purrr::map(sub_div_units_vec,
+                               ~ get_spatial_data_list(at_highest_res = input_data$at_highest_res,
+                                                       data_year = ready.s4::data_year(input_data$profiled_area_input),
+                                                       model_end_year = get_model_end_ymdhs(input_data = input_data) %>%
+                                                         lubridate::year(),
                                                        at_specified_res = at_specified_res,
-                                                       country = country,
+                                                       country =  ready.s4::country(input_data$profiled_area_input),
                                                        state = .x,
                                                        require_year_match = FALSE,
                                                        excl_diff_bound_yr = TRUE,
-                                                       pop_projs_str = pop_projs_str))
+                                                       pop_projs_str = input_data$pop_projs_str))
   lists_to_merge <- purrr::transpose(lists_to_merge)
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))
@@ -309,7 +253,7 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
                                      evaluate = TRUE)
   if(ready.s4::use_coord_lup(profiled_area_input))
     starter_sf <- starter_sf %>%
-      sf::`st_crs<-`(ready.s4::crs_nbr(profiled_area_input))
+      sf::`st_crs<-`(ready.s4::crs_nbr(profiled_area_input)[1])
   else
     starter_sf <-  starter_sf %>%
       dplyr::filter(!!rlang::sym(group_by_var) %in% ready.s4::features(profiled_area_input))

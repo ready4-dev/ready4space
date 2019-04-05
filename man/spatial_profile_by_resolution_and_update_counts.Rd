@@ -8,7 +8,8 @@ fraction of spatial unit included in a profiled area.}
 \usage{
 intersect_sfs_update_counts(profiled_sf, profiled_colref = NA,
   profiled_rowref = NA, sp_data_list, tot_pop_resolution,
-  age_sex_pop_resolution, group_by_var, group_by_lookup_tb, data_year)
+  age_sex_pop_resolution, group_by_var, age_sex_counts_grouped_by,
+  data_year)
 }
 \arguments{
 \item{profiled_sf}{A SF object corresponding to the geographic unit that is to be profiled.}

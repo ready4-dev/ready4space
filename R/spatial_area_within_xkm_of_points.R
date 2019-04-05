@@ -37,18 +37,17 @@ spatial_area_within_xkm_of_points<-function(point_locations,
                                             crs_nbr){
   distance_from_pts_sf <- sf::st_as_sf(point_locations,
                                        coords = c("long", "lat"),
-                                       crs = crs_nbr) %>% #4326)
-    sf::st_transform(3577) ## Update once crs_nbr is made into length two vector
+                                       crs = crs_nbr[1]) %>% #4326)
+    sf::st_transform(crs_nbr[2]) ##3577
   distance_from_pts_on_land_sf <- sf::st_buffer(distance_from_pts_sf,
                                                 dist = distance) %>%
     sf::st_union() %>%
     sf::st_intersection(land_sf %>%
-                          sf::st_transform(3577)
+                          sf::st_transform(crs_nbr[2])
                         ) %>% #3577
-    sf::st_transform(crs_nbr) %>%
+    sf::st_transform(crs_nbr[1]) %>%
     sf::st_sf()
   return(distance_from_pts_on_land_sf)
-
 }
 
 #' gen_distance_based_bands
@@ -104,8 +103,8 @@ gen_distance_based_bands <- function(distance_km_outer,
   ##
   geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_vec),
                                                       ~ reorder_distance_list_by_cluster(look_up_ref = .x,
-                                                                                                       clusters_by_distance_list = service_clusters_by_distance_list,
-                                                                                                       distances_vec = distances_vec)) %>%
+                                                                                         clusters_by_distance_list = service_clusters_by_distance_list,
+                                                                                         distances_vec = distances_vec)) %>%
     stats::setNames(., service_clusters_tbs_list %>% names())
   ##
   geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles,

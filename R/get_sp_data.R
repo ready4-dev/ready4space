@@ -2,7 +2,7 @@
 #' @description Create a list of SF objects constructed from specified data types at highest or requested level of resolution.
 #' @param at_highest_res PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
-#' @param to_time PARAM_DESCRIPTION, Default: NULL
+#' @param model_end_year PARAM_DESCRIPTION, Default: NULL
 #' @param at_specified_res PARAM_DESCRIPTION, Default: NULL
 #' @param country PARAM_DESCRIPTION, Default: 'Australia'
 #' @param state PARAM_DESCRIPTION, Default: NULL
@@ -28,7 +28,7 @@
 
 get_spatial_data_list <- function(at_highest_res,
                                   data_year,
-                                  to_time = NULL,
+                                  model_end_year = NULL,
                                   at_specified_res = NULL,
                                   country = "Australia",
                                   state = NULL,
@@ -37,7 +37,7 @@ get_spatial_data_list <- function(at_highest_res,
                                   pop_projs_str){
   attributes_to_import <- get_spatial_data_names(at_highest_res = at_highest_res,
                                                  data_year = data_year,
-                                                 to_time = to_time,
+                                                 model_end_year = model_end_year,
                                                  at_specified_res = at_specified_res,
                                                  country = country,
                                                  state = state,
@@ -69,7 +69,7 @@ get_spatial_data_list <- function(at_highest_res,
 
 get_spatial_data_names <- function(at_highest_res,
                                    data_year,
-                                   to_time = NULL,
+                                   model_end_year = NULL,
                                    at_specified_res = NULL,
                                    country = "Australia",
                                    state = NULL,
@@ -88,9 +88,9 @@ get_spatial_data_names <- function(at_highest_res,
   year_opts_ref <- year_opts %>%
     as.numeric() %>%
     sort() %>%
-    min(which(. >= as.numeric(to_time)))
-  to_time <- year_opts[year_opts_ref]
-  year_vec <- as.character(as.numeric(data_year):as.numeric(to_time))
+    min(which(. >= as.numeric(model_end_year)))
+  model_end_year <- year_opts[year_opts_ref]
+  year_vec <- as.character(as.numeric(data_year):as.numeric(model_end_year))
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
