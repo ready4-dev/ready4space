@@ -150,15 +150,44 @@ input_data <- list(
 #                                                  data_year = get_data_year_chr(input_data$data_ymdhm))
 
 sim_data <- make_sim_data_env(input_data = input_data)
+## PLOT TEMPLATE
+ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) +
+  ggplot2::geom_sf(ggplot2::aes(fill=grp_by_SA2_inc_age_sex_y2016.Males.15.19),colour=NA) +
+  ggplot2::ggtitle("TITLE") +
+  viridis::scale_fill_viridis("Persons") + #TRUE) +
+  ggplot2::theme_bw()
+# age_sex_prefix <- ready.sim::st_data(ready.sim::st_envir(sim_data))$popl_var_prefix
+# var_names_vec <- ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
+# keep_vars_vec <- var_names_vec[!var_names_vec  %>% startsWith("whl_") & !var_names_vec  %>% startsWith("grp_by_") & !var_names_vec  %>% startsWith("dupl_")]
+# keep_vars_vec <- keep_vars_vec[!keep_vars_vec %>% startsWith("inc_") | keep_vars_vec %>% startsWith(age_sex_prefix)]
+#
+# dplyr::select(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf,
+#               keep_vars_vec)
+# drop_grouped_popl_vars <- function(profiled_sf,
+#                                    age_sex_prefix){
+#   var_names_vec <- profiled_sf %>% names()
+#   keep_vars_vec <- var_names_vec[!var_names_vec  %>% startsWith("whl_") & !var_names_vec  %>% startsWith("grp_by_") & !var_names_vec  %>% startsWith("dupl_")]
+#   keep_vars_vec <- keep_vars_vec[!keep_vars_vec %>% startsWith("inc_") | keep_vars_vec %>% startsWith(age_sex_prefix)]
+#   dplyr::select(profiled_sf,
+#                 keep_vars_vec)
+#
+# }
+# drop_grouped_popl_vars(profiled_sf = ready.sim::st_envir(sim_data) %>%
+#                          ready.sim::st_data() %>%
+#                          purrr::pluck("profiled_sf"),
+#                        age_sex_prefix = ready.sim::st_envir(sim_data) %>%
+#                          ready.sim::st_data() %>%
+#                          purrr::pluck("popl_var_prefix"))
 grouping_for_sim <- ifelse(!is.null(input_data$distance_km),
                            "distance_km",
                            ifelse(!is.null(input_data$travel_time_mins),
                                   "drive_times", "SA2_MAIN16"))
+ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
 sim_results_ls <- ready.sim::runSimulation(x = sim_data,#simDataInput(),
                                            nbr_its = input_data$nbr_its, #nbrItsInput(),
                                            group_by = grouping_for_sim)
-ready.plot::plot_pop(profiled_sf = sim_results_ls[[1]],
-                     plot_variable = "tx_prev_adhd_all",
+ready.plot::plot_pop(profiled_sf = sim_results_ls[[1]], #ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf
+                     plot_variable = "tx_prev_adhd_all",#inc_SA1_popl_y2016.Males.15.19
                      population_string = "bbb",
                      year = "aaa")
 # sim_results = ready.sim::runSimulation(x = sim_data,
