@@ -205,6 +205,25 @@ update_pop_by_inc_area <- function(profiled_sf,
                                       .)))
   return(profiled_sf)
 }
+#' @title gen_objs_for_nse_upd_pop
+#' @description FUNCTION_DESCRIPTION
+#' @param sp_unit PARAM_DESCRIPTION
+#' @param concept PARAM_DESCRIPTION
+#' @param tot_pop_col PARAM_DESCRIPTION, Default: NULL
+#' @param grouping_1 PARAM_DESCRIPTION, Default: NULL
+#' @param data_year PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname gen_objs_for_nse_upd_pop
+#' @export
+
 gen_objs_for_nse_upd_pop <- function(sp_unit,
                                      concept,
                                      tot_pop_col = NULL,
