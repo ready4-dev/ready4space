@@ -39,7 +39,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
                                       attribute_sf,
                                       attribute_unit,
                                       data_type,
-                                      data_year){
+                                      data_year,
+                                      popl_var_prefix = NULL){
   if(!is.na(profiled_colref)){
     if(!is.na(profiled_rowref)){
       profiled_sf <- profiled_sf %>%
@@ -55,7 +56,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
   }
   attrib_res_level_vars <- get_res_specific_vars(var_names = names(attribute_sf),
                                                  data_type = data_type,
-                                                 data_year = data_year)
+                                                 data_year = data_year,
+                                                 popl_var_prefix = popl_var_prefix)
   attribute_sf <- attribute_sf %>%
     dplyr::mutate(!!rlang::sym(paste0("whl_",
                                       attribute_unit,
@@ -67,10 +69,15 @@ intersect_sfs_keep_counts <- function(profiled_sf,
                                  "_",
                                  .)))
   profiled_sf <- sf::st_intersection(profiled_sf,
-                                     attribute_sf) %>%
-    dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
-    dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
-
+                                     attribute_sf)
+  profiled_sf <- profiled_sf %>%
+    dplyr::mutate(new_unit_area = sf::st_area(.)) %>%
+    dplyr::filter(new_unit_area != units::set_units(0,m^2))
+  # if(data_type != "processed_age_sex"){
+  #   profiled_sf <- profiled_sf %>%
+  #     dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
+  #     dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
+  # }
   return(profiled_sf)
 }
 #' @describeIn intersect_sfs_keep_counts  Function to intesect two sfs and drop extra columns.
@@ -88,10 +95,10 @@ intersect_sf_drop_cols <- function(main_sf,
 }
 
 ## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
-## NOT CURRENTLY CALLED
 get_res_specific_vars <- function(var_names,
                                   data_type,
-                                  data_year){
+                                  data_year,
+                                  popl_var_prefix){
   if(data_type == "age_sex"){
     res_sp_vars <- var_names[var_names %>%
                                startsWith("AREASQKM") |
@@ -118,10 +125,11 @@ get_res_specific_vars <- function(var_names,
 
   }
   if(data_type == "processed_age_sex"){
-    res_sp_vars <-  var_names[var_names %>%
-                                startsWith("AREASQKM") |
+    res_sp_vars <-  var_names[
+      var_names %>%
+                                startsWith("pop_sp_unit_area") |
                                 var_names %>%
-                                startsWith("inc_SA1_popl_")]
+                                startsWith(popl_var_prefix)]
   }
   return(res_sp_vars)
 }

@@ -36,52 +36,8 @@ make_profiled_area_input_spine_exmpl <- function(profiled_area_type,
   }
   return(profiled_area_input)
 }
-## BELONGS IN AUS SPECIFIC PACKAGE
-transform_profiled_area_inputs <- function(profiled_area_input,
-                                           lookup_tb_r4){
-  country <- "Australia"
-  crs_nbr <- c(4283,3577)
-  data_ymdhms = lubridate::ymd_hms("2016-07-01 12:00:00")
-  data_year <- "2016"
-  nbr_bands <- 5
-  if(profiled_area_input$profiled_area_type == "PHN")
-    use_coords_lup_val <- FALSE
-  else
-    use_coords_lup_val <- TRUE
-  if(profiled_area_input$profiled_area_type == "Custom"){
-    cluster_tb =  tibble::tibble(service_type = "Custom",
-                                 cluster_name = profiled_area_input$profiled_area$cluster_vec,
-                                 service_name = profiled_area_input$profiled_area$service_vec,
-                                 lat = profiled_area_input$profiled_area$lat_vec,
-                                 long = profiled_area_input$profiled_area$lon_vec)
-    lookup_tb_r4 <- ready.s4::`sp_site_coord_lup<-`(lookup_tb_r4,
-                                                    dplyr::bind_rows(cluster_tb,ready.s4::sp_site_coord_lup(lookup_tb_r4)) %>%
-                                                      ready.s3::rfwn_sp_site_coord_lup())
-    profiled_area <- profiled_area_input$profiled_area$service_vec
-  }else{
-    profiled_area = profiled_area_input$profiled_area
-  }
-  ready.s4::ready_profiled_area(country = country,
-                                area_type = profiled_area_input$profiled_area_type,
-                                features = profiled_area,
-                                use_coord_lup = use_coords_lup_val,
-                                lookup_tb = lookup_tb_r4,
-                                crs_nbr = crs_nbr,
-                                geom_dist_limit_km = profiled_area_input$geom_dist_limit_km,
-                                drive_time_limmit_mins = profiled_area_input$drive_time_limit_mins,
-                                nbr_bands = nbr_bands,
-                                data_year = data_year,
-                                data_ymds = data_ymdhms)
-}
-
-###
-#disorder = "MDD"
-# profiled_area = "Gippsland",#"Glenroy"
-# profiled_area_type = "PHN",#"Headspace"#"Custom"#"PHN"#"Headspace"
-# profiled_area_type = "Custom" # "Headspace" # "PHN" ### SIMULATES UInput
-profiled_area_input <- make_profiled_area_input_spine_exmpl(profiled_area_type = "Custom",
-                                                            bands_based_on_drive_time = FALSE) ### SIMULATES UInput
-profiled_area_input <- transform_profiled_area_inputs(profiled_area_input = profiled_area_input,
+profiled_area_input <- vic.resilience::transform_profiled_area_inputs(profiled_area_input = make_profiled_area_input_spine_exmpl(profiled_area_type = "Custom",
+                                                                                                                                  bands_based_on_drive_time = FALSE),
                                                    lookup_tb_r4 = vic.resilience::ready_lookup_tbs)
 # ready.s4::ready_profiled_area(area_type = profiled_area_input$profiled_area_type,
 #                               features = profiled_area_input$profiled_area,
@@ -134,21 +90,6 @@ input_data <- list(
                                                           age_range = c(13,17),
                                                           sexes = c("Female","Male"))
 )
-
-
-## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
-# group_by_lookup_tb <- ready.s4::sp_data_uid_lup(lookup_tb_r4) %>%
-#   dplyr::filter(year == get_data_year_chr(input_data$data_ymdhm))
-# profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_type = input_data$profiled_area_type,
-#                                                  profiled_area = input_data$profiled_area,
-#                                                  crs_nbr = input_data$crs_nbr,
-#                                                  distance_km = input_data$distance_km,
-#                                                  nbr_distance_steps = input_data$nbr_distance_steps,
-#                                                  travel_time_mins = input_data$travel_time_mins,
-#                                                  nbr_time_steps = input_data$nbr_time_steps,
-#                                                  lookup_tb_r4 = lookup_tb_r4,
-#                                                  data_year = get_data_year_chr(input_data$data_ymdhm))
-
 sim_data <- make_sim_data_env(input_data = input_data)
 ## PLOT TEMPLATE
 ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) +
@@ -156,33 +97,21 @@ ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) 
   ggplot2::ggtitle("TITLE") +
   viridis::scale_fill_viridis("Persons") + #TRUE) +
   ggplot2::theme_bw()
-# age_sex_prefix <- ready.sim::st_data(ready.sim::st_envir(sim_data))$popl_var_prefix
-# var_names_vec <- ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
-# keep_vars_vec <- var_names_vec[!var_names_vec  %>% startsWith("whl_") & !var_names_vec  %>% startsWith("grp_by_") & !var_names_vec  %>% startsWith("dupl_")]
-# keep_vars_vec <- keep_vars_vec[!keep_vars_vec %>% startsWith("inc_") | keep_vars_vec %>% startsWith(age_sex_prefix)]
-#
-# dplyr::select(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf,
-#               keep_vars_vec)
-# drop_grouped_popl_vars <- function(profiled_sf,
-#                                    age_sex_prefix){
-#   var_names_vec <- profiled_sf %>% names()
-#   keep_vars_vec <- var_names_vec[!var_names_vec  %>% startsWith("whl_") & !var_names_vec  %>% startsWith("grp_by_") & !var_names_vec  %>% startsWith("dupl_")]
-#   keep_vars_vec <- keep_vars_vec[!keep_vars_vec %>% startsWith("inc_") | keep_vars_vec %>% startsWith(age_sex_prefix)]
-#   dplyr::select(profiled_sf,
-#                 keep_vars_vec)
-#
-# }
+ggplot2::ggplot(sp_data_sf) +
+  ggplot2::geom_sf(ggplot2::aes(fill=pop_sp_unit_id),colour=NA)
 # drop_grouped_popl_vars(profiled_sf = ready.sim::st_envir(sim_data) %>%
 #                          ready.sim::st_data() %>%
 #                          purrr::pluck("profiled_sf"),
 #                        age_sex_prefix = ready.sim::st_envir(sim_data) %>%
 #                          ready.sim::st_data() %>%
 #                          purrr::pluck("popl_var_prefix"))
-grouping_for_sim <- ifelse(!is.null(input_data$distance_km),
+grouping_for_sim <- ifelse(!is.na(input_data$profiled_area_input %>%
+                                    ready.s4::geom_dist_limit_km()),
                            "distance_km",
-                           ifelse(!is.null(input_data$travel_time_mins),
+                           ifelse(!is.na(input_data$profiled_area_input %>%
+                                           ready.s4::drive_time_limmit_mins()),
                                   "drive_times", "SA2_MAIN16"))
-ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
+#ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
 sim_results_ls <- ready.sim::runSimulation(x = sim_data,#simDataInput(),
                                            nbr_its = input_data$nbr_its, #nbrItsInput(),
                                            group_by = grouping_for_sim)
@@ -190,6 +119,11 @@ ready.plot::plot_pop(profiled_sf = sim_results_ls[[1]], #ready.sim::st_data(read
                      plot_variable = "tx_prev_adhd_all",#inc_SA1_popl_y2016.Males.15.19
                      population_string = "bbb",
                      year = "aaa")
+ggplot2::ggplot(sim_results_ls[[1]]) +
+  ggplot2::geom_sf(ggplot2::aes(fill=tx_prev_adhd_all),colour=NA) +
+  ggplot2::ggtitle("TITLE") +
+  viridis::scale_fill_viridis("Persons") + #TRUE) +
+  ggplot2::theme_bw()
 # sim_results = ready.sim::runSimulation(x = sim_data,
 #                             nbr_its = nbr_its,
 #                             group_by = "distance_km"

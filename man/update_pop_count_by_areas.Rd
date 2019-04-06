@@ -5,7 +5,8 @@
 \title{Adjust population counts by fraction of spatial unit included in a profiled area.}
 \usage{
 update_pop_count_by_areas(profiled_sf, group_by_var, age_sex_var_name,
-  data_year, age_sex_pop_resolution, tot_pop_resolution)
+  data_year, age_sex_pop_resolution, tot_pop_resolution,
+  popl_var_prefix = "")
 }
 \arguments{
 \item{profiled_sf}{A simple features object comprised of SA2s.}
