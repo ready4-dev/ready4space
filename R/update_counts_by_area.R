@@ -124,6 +124,23 @@ sum_pop_by_multiple_groups_sf <- function(profiled_sf,
                                           top_level = TRUE)
   }
 }
+#' @title drop_grouped_popl_vars
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{select}}
+#' @rdname drop_grouped_popl_vars
+#' @export
+#' @importFrom dplyr select
 drop_grouped_popl_vars <- function(profiled_sf,
                                    popl_var_prefix){
   var_names_vec <- profiled_sf %>% names()
