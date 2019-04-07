@@ -227,7 +227,7 @@ make_profiled_area_objs <- function(profiled_area_input){
                                                      nbr_time_steps = ready.s4::nbr_bands(profiled_area_input))
       names(profiled_area_bands_list) <- paste0("dt_band_",1:length(profiled_area_bands_list))
       profiled_sf <- do.call(rbind,profiled_area_bands_list) %>%
-        sf::st_transform(crs_nbr)
+        sf::st_transform(ready.s4::crs_nbr(profiled_area_input)[1])
     }
     sub_div_units_vec <- sf::st_intersection(st_profiled_sf,
                                              profiled_sf) %>%
