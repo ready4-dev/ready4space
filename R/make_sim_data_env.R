@@ -14,24 +14,22 @@
 #' @export
 
 make_sim_data_env <- function(input_data){
-  ## 1. CONVERT DATES
-  #data_year <- ready.s4::data_year(input_data$profiled_area_input)
-  ## 2. GET PARAMETER MATRICES
+  ## 1. GET PARAMETER MATRICES
   par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
                                   ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
-  ## 3. DEFINE PROFILED AREA AND INCLUDED STATEs / TERRITORIES
+  ## 2. DEFINE PROFILED AREA 
   profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_input = input_data$profiled_area_input)
-  ## 4. GET SPATIAL DATA FOR INCLUDED STATES / TERRITORIES
+  ## 3. GET SPATIAL DATA
   sp_data_list <- make_sp_data_list(input_data,
                                     sub_div_units_vec = profiled_area_objs_ls$sub_div_units_vec)
 
-  ## 5. APPLY PROFILED AREA FILTER
+  ## 4. APPLY PROFILED AREA FILTER
   sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
                                       input_data = input_data,
                                       profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list)
 
-  ## 6. REFORMAT LIST
+  ## 5. REFORMAT LIST
   sp_data_list <- list(input_bl_profiled_sf = sp_data_list[names(sp_data_list)[!names(sp_data_list)
                                                                                %in% c("ppr_ref",
                                                                                       names(sp_data_list)[sp_data_list$ppr_ref],
@@ -39,10 +37,10 @@ make_sim_data_env <- function(input_data){
                        input_dynamic_sp_pars = sp_data_list[[sp_data_list$ppr_ref]],
                        profiled_sf = sp_data_list$profiled_sf,
                        popl_var_prefix = sp_data_list$popl_var_prefix)
-  ## 7. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
+  ## 6. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
   st_envir <- ready.sim::ready_env(st_data = sp_data_list,
                                    par_vals = env_param_tb)
-  ## 8. CREATE SIMULATION DATA INPUT OBJECT
+  ## 7. CREATE SIMULATION DATA INPUT OBJECT
   sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
                                         pre_model_date = ready.s4::data_ymds(input_data$profiled_area_input),
                                         model_start_date = input_data$model_start_ymdhms,

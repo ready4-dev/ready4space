@@ -37,8 +37,8 @@ estimate_prevalence <- function(sp_data_sf,
     dplyr::select(!!par_name_var,
                   paste0("v_it_", it_nbr))
   #prefix <- param_tb_slimmed[1,1] %>% as.vector() %>% stringr::str_sub(end=10)
-  col_names <- names(sp_data_sf)[names(sp_data_sf)%>% startsWith(prefix = "tx_") |
-                                   names(sp_data_sf)%>% startsWith(prefix = "t0_")]
+  col_names <- names(sp_data_sf)[(names(sp_data_sf)%>% startsWith(prefix = "tx_") |
+                                   names(sp_data_sf)%>% startsWith(prefix = "t0_")) & !names(sp_data_sf)%>% endsWith("tl")]
   sp_data_sf <- purrr::reduce(col_names,
                               .init = sp_data_sf,
                               ~ add_prevalence_col(sp_data_sf = .x,
@@ -46,25 +46,28 @@ estimate_prevalence <- function(sp_data_sf,
                                                    param_tb_slimmed = param_tb_slimmed,
                                                    par_name_var = par_name_var,
                                                    it_nbr = it_nbr))
+  
+
+  # t0_prev_pref <- t0_prev[1] %>% stringr::str_sub(end=-5)
+  # tx_prev_pref <- tx_prev[1] %>% stringr::str_sub(end=-5)
+  sp_data_sf <- ready.sim::total_and_delta_t0_tx(sp_data_sf = sp_data_sf, stat = "prev")
+  # t0_totals <-  sp_data_sf %>%
+  #   dplyr::select(t0_prev) %>%
+  #   sf::st_set_geometry(NULL) %>%
+  #   dplyr::mutate(!!rlang::sym(paste0(t0_prev_pref,"all")) := Reduce(`+`,.)) %>%
+  #   dplyr::select(!!rlang::sym(paste0(t0_prev_pref,"all")))
+  # tx_totals <-  sp_data_sf %>%
+  #   dplyr::select(tx_prev) %>%
+  #   sf::st_set_geometry(NULL) %>%
+  #   dplyr::mutate(!!rlang::sym(paste0(tx_prev_pref,"all")) := Reduce(`+`,.)) %>%
+  #   dplyr::select(!!rlang::sym(paste0(tx_prev_pref,"all")))
+  # sp_data_sf <-   dplyr::bind_cols(sp_data_sf,t0_totals,tx_totals)
+  # t0_prev <- c(t0_prev,paste0(t0_prev_pref,"all"))
+  # tx_prev <- c(tx_prev,paste0(tx_prev_pref,"all"))
   t0_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("t0_prev")]
   tx_prev <- names(sp_data_sf)[names(sp_data_sf) %>% startsWith("tx_prev")]
-  t0_prev_pref <- t0_prev[1] %>% stringr::str_sub(end=-5)
-  tx_prev_pref <- tx_prev[1] %>% stringr::str_sub(end=-5)
   t0_ind <- which(names(sp_data_sf) %in% t0_prev)
   tx_ind <- which(names(sp_data_sf) %in% tx_prev)
-  t0_totals <-  sp_data_sf %>%
-    dplyr::select(t0_prev) %>%
-    sf::st_set_geometry(NULL) %>%
-    dplyr::mutate(!!rlang::sym(paste0(t0_prev_pref,"all")) := Reduce(`+`,.)) %>%
-    dplyr::select(!!rlang::sym(paste0(t0_prev_pref,"all")))
-  tx_totals <-   tx_totals <-  sp_data_sf %>%
-    dplyr::select(tx_prev) %>%
-    sf::st_set_geometry(NULL) %>%
-    dplyr::mutate(!!rlang::sym(paste0(tx_prev_pref,"all")) := Reduce(`+`,.)) %>%
-    dplyr::select(!!rlang::sym(paste0(tx_prev_pref,"all")))
-  sp_data_sf <-   dplyr::bind_cols(sp_data_sf,t0_totals,tx_totals)
-  t0_prev <- c(t0_prev,paste0(t0_prev_pref,"all"))
-  tx_prev <- c(tx_prev,paste0(tx_prev_pref,"all"))
   index_vec <- 1:(length(t0_prev))
   purrr::reduce(index_vec,
                 ~ calc_change_in_prevalence(sp_data_sf = .x,
