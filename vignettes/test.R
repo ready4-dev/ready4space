@@ -7,7 +7,7 @@ make_profiled_area_input_spine_exmpl <- function(profiled_area_type,
                                                  bands_based_on_drive_time = FALSE){
   profiled_area_input <- list(profiled_area_type = profiled_area_type,
                               geom_dist_limit_km = NA_real_,
-                              drive_time_imit_mins  = NA_real_)
+                              drive_time_limit_mins  = NA_real_)
   if(profiled_area_type == "Custom"){
     custom_tb <- ymh.epsos::hyepp_coordinates_tb %>%
       dplyr::filter(cluster_name == "South East Melbourne")#"Eastern Melbourne" # profSfInput()
@@ -36,7 +36,7 @@ make_profiled_area_input_spine_exmpl <- function(profiled_area_type,
   }
   return(profiled_area_input)
 }
-profiled_area_input <- vic.resilience::transform_profiled_area_inputs(profiled_area_input = make_profiled_area_input_spine_exmpl(profiled_area_type = "Custom",
+profiled_area_input <- vic.resilience::transform_profiled_area_inputs(profiled_area_input = make_profiled_area_input_spine_exmpl(profiled_area_type = "PHN",
                                                                                                                                   bands_based_on_drive_time = FALSE),
                                                    lookup_tb_r4 = vic.resilience::ready_lookup_tbs)
 # ready.s4::ready_profiled_area(area_type = profiled_area_input$profiled_area_type,
@@ -50,11 +50,11 @@ profiled_area_input <- vic.resilience::transform_profiled_area_inputs(profiled_a
 # "Substance_Use"
 input_data <- list(
   ## DEMOGRAPHIC INPUTS
-  age_lower = 13,
-  age_upper = 17,
+  age_lower = 12,
+  age_upper = 25,
   sexes = c("Female","Male"),
   ## EPIDEMIOLOGICAL INPUTS
-  disorder = "ADHD",
+  disorder = "Any_Common",
   period = "Year",
   ## SPATIAL INPUTS
   at_highest_res = c("Population projections", "ERP", "ERP by age and sex"),
@@ -86,11 +86,11 @@ input_data <- list(
                                                           prev_rates = ymh.epi.lit::prev_rates,
                                                           env_str_par_tb = ready.aus.prev::par_str_environment_tb,
                                                           Period = "Year",
-                                                          disorder = "ADHD",
-                                                          age_range = c(13,17),
+                                                          disorder = "Any_Common",
+                                                          age_range = c(12,25),
                                                           sexes = c("Female","Male"))
 )
-sim_data <- make_sim_data_env(input_data = input_data)
+sim_data <- ready.space::make_sim_data_env(input_data = input_data)
 ## PLOT TEMPLATE
 ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) +
   ggplot2::geom_sf(ggplot2::aes(fill=grp_by_SA2_inc_age_sex_y2016.Males.15.19),colour=NA) +

@@ -18,10 +18,10 @@ make_sim_data_env <- function(input_data){
   par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
   env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
                                   ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
-  ## 2. DEFINE PROFILED AREA 
+  ## 2. DEFINE PROFILED AREA
   profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_input = input_data$profiled_area_input)
   ## 3. GET SPATIAL DATA
-  sp_data_list <- make_sp_data_list(input_data,
+  sp_data_list <- make_sp_data_list(input_data = input_data,
                                     sub_div_units_vec = profiled_area_objs_ls$sub_div_units_vec)
 
   ## 4. APPLY PROFILED AREA FILTER
@@ -151,22 +151,26 @@ get_group_by_var_from_pai <- function(profiled_area_input){
 }
 make_sp_data_list <- function(input_data,
                               sub_div_units_vec){
-  at_specified_res <- input_data$at_specified_res
-  if(!"Victoria" %in% sub_div_units_vec){
-    at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
-    model_end_year <- ready.s4::data_year(input_data$profiled_area_input)
-  }
+  # at_specified_res <- input_data$at_specified_res
+  # if(!"Victoria" %in% sub_div_units_vec){
+  #   at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
+  #   model_end_year <- ready.s4::data_year(input_data$profiled_area_input)
+  # }
   lists_to_merge <- purrr::map(sub_div_units_vec,
-                               ~ get_spatial_data_list(at_highest_res = input_data$at_highest_res,
-                                                       data_year = ready.s4::data_year(input_data$profiled_area_input),
-                                                       model_end_year = get_model_end_ymdhs(input_data = input_data) %>%
-                                                         lubridate::year(),
-                                                       at_specified_res = at_specified_res,
-                                                       country =  ready.s4::country(input_data$profiled_area_input),
-                                                       state = .x,
+                               ~ get_spatial_data_list(input_data = input_data,
+                                                       #at_highest_res = input_data$at_highest_res,
+                                                       #data_year = ready.s4::data_year(input_data$profiled_area_input),
+
+                                                       #model_end_year = get_model_end_ymdhs(input_data = input_data) %>%
+                                                       #lubridate::year(),
+                                                       #at_specified_res = at_specified_res,
+                                                       #country =  ready.s4::country(input_data$profiled_area_input),
+                                                       sub_div_unit = .x,
                                                        require_year_match = FALSE,
-                                                       excl_diff_bound_yr = TRUE,
-                                                       pop_projs_str = input_data$pop_projs_str))
+                                                       excl_diff_bound_yr = TRUE
+                                                       #,
+                                                       #pop_projs_str = input_data$pop_projs_str
+                               ))
   lists_to_merge <- purrr::transpose(lists_to_merge)
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))

@@ -23,24 +23,31 @@
 #'
 #' @examples
 #'
-recur_add_attr_to_sf <- function(country,
-                                 state = NULL,
+recur_add_attr_to_sf <- function(input_data,
+  # country,
+                                 sub_div_unit = NULL,
                                  area_unit,
                                  boundary_year,
-                                 attribute_data,
-                                 data_lookup_tb = aus_spatial_lookup_tb){
-  data_lookup_tb <- data_lookup_tb %>%
-    dplyr::filter(area_type == area_unit) %>%
-    dplyr::filter(year == boundary_year)
+                                 attribute_data
+                                 #,
+                                 # data_lookup_tb = aus_spatial_lookup_tb
+  ){
+ lookup_tb_r4 <- ready.s4::lookup_tb(input_data$profiled_area_input)
+  data_lookup_tb <- ready.s4::sp_data_pack_lup(lookup_tb_r4) %>%
+    dplyr::filter(area_type == area_unit)
+  # if(!is.na(boundary_year))
+  #   data_lookup_tb <- data_lookup_tb %>%
+  #   dplyr::filter(year == boundary_year)
   boundary_file <- ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference")
-  if(!is.null(state)){
+  country <- ready.s4::country(input_data$profiled_area_input)
+  if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
     if(country=="Australia")
-      state_var_name <- paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
+      sub_div_unit_var_name <- paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
     boundary_file <- boundary_file %>%
-      dplyr::filter(!!rlang::sym(state_var_name) == state)
+      dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
   }
   boundary_file_as_list <- list(sf = boundary_file)
 
@@ -53,30 +60,48 @@ recur_add_attr_to_sf <- function(country,
                 ~ add_attr_list_to_sf(.x,
                                       .y,
                                       area_unit = area_unit,
-                                      boundary_year = boundary_year))
+                                      boundary_year = boundary_year,
+                                      data_lookup_tb = data_lookup_tb))
 }
 ##
 add_attr_list_to_sf <- function(x,
                                 y,
                                 area_unit,
-                                boundary_year){
+                                boundary_year,
+                                data_lookup_tb){
+  # ppr_item_name <- NULL
+  # ppr_obj <- y %>% stringr::str_sub(start = -8, end=-6) == "ppr"
+  # if(ppr_obj){
+  #   ppr_name_stub <- ( y %>% stringr::str_sub(end=-5))
+  #   all_names <- data_lookup_tb %>% dplyr::pull(name)
+  #   all_names_stub <- all_names %>% stringr::str_sub(end = -5)
+  #   ppr_objects <- all_names[all_names_stub == ppr_name_stub]
+  #   ppr_objects_years <- ppr_objects %>% stringr::str_sub(start = -4) %>% as.numeric()
+  #   this_ppr_year <- y %>% stringr::str_sub(start = -4) %>% as.numeric()
+  #   distances <- abs(ppr_objects_years - this_ppr_year)
+  #   ppr_object_closest <- ppr_objects[which.min(distances)]
+  #   ppr_item_name <- paste0("y",this_ppr_year)
+  # }
   add_attr_to_sf(area_unit = area_unit,
                  area_sf = x,
-                 attr_data_tb = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                     lookup_reference = y,
+                 attr_data_tb = ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                                                     lookup_reference = y, # ifelse(ppr_obj,ppr_object_closest,y),
                                                      lookup_variable = "name",
                                                      target_variable = "source_reference"),
-                 attr_data_desc = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                       lookup_reference = y,
+                 attr_data_desc = ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                                                       lookup_reference = y, #ifelse(ppr_obj,ppr_object_closest,y),
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
                                                        evaluate = FALSE),
-                 attr_data_year = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                       lookup_reference = y,
+                 attr_data_year = ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                                                       lookup_reference = y, #ifelse(ppr_obj,ppr_object_closest,y),
                                                        lookup_variable = "name",
                                                        target_variable = "year",
                                                        evaluate = FALSE),
-                 boundary_year = boundary_year)
+                 boundary_year = boundary_year
+                 # ,
+                 # ppr_item_name = ppr_item_name
+                 )
 }
 ##
 add_attr_to_sf <- function(area_unit,
@@ -84,12 +109,18 @@ add_attr_to_sf <- function(area_unit,
                            attr_data_tb,
                            attr_data_desc,
                            attr_data_year,
-                           boundary_year = "2016"){
-  if(attr_data_desc == "Population projections"){
+                           boundary_year
+                           # ,
+                           # ppr_item_name
+                           ){
+  if(attr_data_desc == "Population projections"
+    # !is.null(ppr_item_name)
+     ){
     attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
                                              attr_data_year = attr_data_year,
                                              area_unit = area_unit,
-                                             boundary_year = boundary_year)
+                                           boundary_year = boundary_year
+                                           )
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb) %>%
       sf::st_as_sf()
@@ -98,7 +129,8 @@ add_attr_to_sf <- function(area_unit,
     attr_data_tb <- prepare_child_youth_data(child_youth_data = attr_data_tb,
                                                      area_unit = area_unit,
                                                      #attr_data_year = attr_data_year,
-                                                     boundary_year = boundary_year)
+                                                     boundary_year = boundary_year
+                                             )
       merged_units <- dplyr::inner_join(area_sf,
                                         attr_data_tb) %>%
         sf::st_as_sf()
@@ -106,7 +138,8 @@ add_attr_to_sf <- function(area_unit,
   if(attr_data_desc == "ERP"){
     attr_data_tb <- prepare_erp_data(erp_data = attr_data_tb,
                                  area_unit = area_unit,
-                                 boundary_year = boundary_year)
+                                 boundary_year = boundary_year
+                                 )
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb) %>%
       sf::st_as_sf()
@@ -157,7 +190,8 @@ add_attr_to_sf <- function(area_unit,
 prepare_pop_preds_data <- function(attr_data_tb,
                                    attr_data_year,
                                    area_unit,
-                                   boundary_year){
+                                   boundary_year
+                                   ){
   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
   pop_preds_data <- attr_data_tb
   if(area_unit=="LGA"){
@@ -181,7 +215,8 @@ prepare_pop_preds_data <- function(attr_data_tb,
 #
 prepare_erp_data <- function(erp_data,
                              area_unit,
-                             boundary_year){
+                             boundary_year
+                             ){
   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
   if(area_unit =="SA1"){
     erp_data[["SA1"]] <- factor(as.character(erp_data[["SA1"]]))
@@ -193,7 +228,8 @@ prepare_erp_data <- function(erp_data,
 prepare_child_youth_data <- function(child_youth_data,
                                      area_unit,
                                      #attr_data_year,
-                                     boundary_year){
+                                     boundary_year
+                                     ){
   #t0 <- attr_data_year
   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
   child_youth_pop_data <- child_youth_data
