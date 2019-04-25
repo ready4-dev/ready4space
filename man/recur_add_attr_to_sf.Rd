@@ -4,20 +4,20 @@
 \alias{recur_add_attr_to_sf}
 \title{Adds area attributes to a spatial object.}
 \usage{
-recur_add_attr_to_sf(country, state = NULL, area_unit, boundary_year,
-  attribute_data, data_lookup_tb = aus_spatial_lookup_tb)
+recur_add_attr_to_sf(input_data, sub_div_unit = NULL, area_unit,
+  boundary_year, attribute_data)
 }
 \arguments{
-\item{country}{A String naming the country to which data applies}
-
-\item{state}{A String naming the State to which data applies}
-
 \item{area_unit}{A String specifying that the area type is either "LGA" or "SA2".}
 
 \item{boundary_year}{A String specifying the year to which boundary data applies}
 
 \item{attribute_data}{A String vector, specifying the names of the files from which attribute data will
 be taken.}
+
+\item{country}{A String naming the country to which data applies}
+
+\item{state}{A String naming the State to which data applies}
 
 \item{data_lookup_tb}{A tibble, with lookup values for all data input files.}
 }

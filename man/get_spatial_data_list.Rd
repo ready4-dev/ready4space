@@ -4,11 +4,14 @@
 \alias{get_spatial_data_list}
 \title{get_spatial_data_list}
 \usage{
-get_spatial_data_list(at_highest_res, data_year, model_end_year = NULL,
-  at_specified_res = NULL, country = "Australia", state = NULL,
-  require_year_match = TRUE, excl_diff_bound_yr = TRUE, pop_projs_str)
+get_spatial_data_list(input_data, sub_div_unit = NULL,
+  require_year_match = TRUE, excl_diff_bound_yr = TRUE)
 }
 \arguments{
+\item{require_year_match}{PARAM_DESCRIPTION, Default: TRUE}
+
+\item{excl_diff_bound_yr}{PARAM_DESCRIPTION, Default: TRUE}
+
 \item{at_highest_res}{PARAM_DESCRIPTION}
 
 \item{data_year}{PARAM_DESCRIPTION}
@@ -20,10 +23,6 @@ get_spatial_data_list(at_highest_res, data_year, model_end_year = NULL,
 \item{country}{PARAM_DESCRIPTION, Default: 'Australia'}
 
 \item{state}{PARAM_DESCRIPTION, Default: NULL}
-
-\item{require_year_match}{PARAM_DESCRIPTION, Default: TRUE}
-
-\item{excl_diff_bound_yr}{PARAM_DESCRIPTION, Default: TRUE}
 }
 \value{
 OUTPUT_DESCRIPTION
