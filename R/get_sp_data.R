@@ -61,14 +61,14 @@ get_spatial_data_list <- function(input_data,
                                 #country = country,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = data_year,#ifelse(require_year_match,data_year,NA_character_),
+                                                     boundary_year = ready.s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
                                                      attribute_data = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
                                              data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
                                                ready.s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
-                                             pop_projs_str = pop_projs_str)) %>%
+                                             pop_projs_str = input_data$pop_projs_str)) %>%
     which() + 1
   data_sf_list <- purrr::prepend(data_sf_list,
                                  list(index_ppr=index_ppr))
