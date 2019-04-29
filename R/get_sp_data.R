@@ -39,17 +39,9 @@ get_spatial_data_list <- function(input_data,
                                   # pop_projs_str
   ){
   attributes_to_import <- get_spatial_data_names(input_data = input_data,
-    # at_highest_res = at_highest_res,
-    #                                              data_year = data_year,
-    #                                              model_end_year = model_end_year,
-    #                                              at_specified_res = at_specified_res,
-    #                                              country = country,
                                                  sub_div_unit = sub_div_unit,
                                                  require_year_match = require_year_match,
-                                                 excl_diff_bound_yr = excl_diff_bound_yr
-    #,
-                                                 # pop_projs_str = pop_projs_str
-    )
+                                                 excl_diff_bound_yr = excl_diff_bound_yr)
 
   boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper()
   data_names_list <- purrr::map(boundary_res,
@@ -58,7 +50,6 @@ get_spatial_data_list <- function(input_data,
   data_sf_list <- purrr::map2(boundary_res,
                               data_names_list,
                               ~ recur_add_attr_to_sf(input_data = input_data,
-                                #country = country,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
                                                      boundary_year = ready.s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),

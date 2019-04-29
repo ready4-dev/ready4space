@@ -4,7 +4,8 @@
 \alias{spatial_select_rename_age_sex}
 \title{Select and rename variables for 0-29 year old males and females in a population tibble.}
 \usage{
-spatial_select_rename_age_sex(population_tib, year, also_include)
+spatial_select_rename_age_sex(population_tib, year, also_include,
+  sub_div_unit)
 }
 \arguments{
 \item{population_tib}{A tibble of population projection data for a profiled region

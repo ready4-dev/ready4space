@@ -61,14 +61,16 @@ recur_add_attr_to_sf <- function(input_data,
                                       .y,
                                       area_unit = area_unit,
                                       boundary_year = boundary_year,
-                                      data_lookup_tb = data_lookup_tb))
+                                      data_lookup_tb = data_lookup_tb,
+                                      sub_div_unit = sub_div_unit))
 }
 ##
 add_attr_list_to_sf <- function(x,
                                 y,
                                 area_unit,
                                 boundary_year,
-                                data_lookup_tb){
+                                data_lookup_tb,
+                                sub_div_unit){
   # ppr_item_name <- NULL
   # ppr_obj <- y %>% stringr::str_sub(start = -8, end=-6) == "ppr"
   # if(ppr_obj){
@@ -98,7 +100,8 @@ add_attr_list_to_sf <- function(x,
                                                        lookup_variable = "name",
                                                        target_variable = "year",
                                                        evaluate = FALSE),
-                 boundary_year = boundary_year
+                 boundary_year = boundary_year,
+                 sub_div_unit = sub_div_unit
                  # ,
                  # ppr_item_name = ppr_item_name
                  )
@@ -109,21 +112,26 @@ add_attr_to_sf <- function(area_unit,
                            attr_data_tb,
                            attr_data_desc,
                            attr_data_year,
-                           boundary_year
+                           boundary_year,
+                           sub_div_unit
                            # ,
                            # ppr_item_name
                            ){
   if(attr_data_desc == "Population projections"
     # !is.null(ppr_item_name)
      ){
-    attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
-                                             attr_data_year = attr_data_year,
-                                             area_unit = area_unit,
-                                           boundary_year = boundary_year
-                                           )
+    # if(!is.null(sub_div_unit)){
+    #   if(sub_div_unit == "Victoria")
+        attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
+                                               attr_data_year = attr_data_year,
+                                               area_unit = area_unit,
+                                               boundary_year = boundary_year,
+                                               sub_div_unit = sub_div_unit)
+    # }
     merged_units <- dplyr::inner_join(area_sf,
-                                      attr_data_tb) %>%
-      sf::st_as_sf()
+                                      attr_data_tb)
+    # %>%
+    #   sf::st_as_sf()
   }
   if(stringr::str_detect(attr_data_desc, "ERP by age and sex")){
     attr_data_tb <- prepare_child_youth_data(child_youth_data = attr_data_tb,
@@ -190,26 +198,35 @@ add_attr_to_sf <- function(area_unit,
 prepare_pop_preds_data <- function(attr_data_tb,
                                    attr_data_year,
                                    area_unit,
-                                   boundary_year
+                                   boundary_year,
+                                   sub_div_unit
                                    ){
   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
   pop_preds_data <- attr_data_tb
-  if(area_unit=="LGA"){
-    pop_preds_data <- pop_preds_data %>%
-      dplyr::mutate(`Local Government Area` = ifelse(`Local Government Area` =="Kingston (C)","Kingston (C) (Vic.)",`Local Government Area`),
-                    `Local Government Area` = ifelse(`Local Government Area` =="Latrobe (C)","Latrobe (C) (Vic.)",`Local Government Area`),
-                    `Local Government Area` = ifelse(`Local Government Area` =="Wodonga (RC)","Wodonga (C)",`Local Government Area`))
+  if(!is.null(sub_div_unit)){
+    if(sub_div_unit == "Victoria"){
 
-    pop_preds_data[["LGA Code"]] <- factor(pop_preds_data[["LGA Code"]])
-    pop_preds_data[["Local Government Area"]] <- factor(pop_preds_data[["Local Government Area"]])
-    pop_preds_data <- pop_preds_data %>%
-      dplyr::rename(!!rlang::sym(paste0("LGA_CODE",t1_stub)) := "LGA Code") %>%
-      dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
-    pop_preds_data <- spatial_select_rename_age_sex(pop_preds_data,
-                                                    attr_data_year,
-                                                    also_include = c(paste0("LGA_CODE",t1_stub),
-                                                                     paste0("LGA_NAME",t1_stub)))
+      if(area_unit=="LGA"){
+        pop_preds_data <- pop_preds_data %>%
+          dplyr::mutate(`Local Government Area` = ifelse(`Local Government Area` =="Kingston (C)","Kingston (C) (Vic.)",`Local Government Area`),
+                        `Local Government Area` = ifelse(`Local Government Area` =="Latrobe (C)","Latrobe (C) (Vic.)",`Local Government Area`),
+                        `Local Government Area` = ifelse(`Local Government Area` =="Wodonga (RC)","Wodonga (C)",`Local Government Area`))
+
+        pop_preds_data[["LGA Code"]] <- factor(pop_preds_data[["LGA Code"]])
+        pop_preds_data[["Local Government Area"]] <- factor(pop_preds_data[["Local Government Area"]])
+        pop_preds_data <- pop_preds_data %>%
+          dplyr::rename(!!rlang::sym(paste0("LGA_CODE",t1_stub)) := "LGA Code") %>%
+          dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
+
+    }
   }
+  }
+  pop_preds_data <- spatial_select_rename_age_sex(population_tib = pop_preds_data,
+                                                  year = attr_data_year,
+                                                  also_include = c(paste0("LGA_CODE",t1_stub), ## LGA Specific - Needs to change
+                                                                   paste0("LGA_NAME",t1_stub)),
+                                                  sub_div_unit
+                                                  )
   return(pop_preds_data)
 }
 #

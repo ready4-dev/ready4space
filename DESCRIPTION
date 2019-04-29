@@ -7,10 +7,7 @@ Depends: R (>= 3.5.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports: sf,
-    ready.utils
+Imports: 
 RoxygenNote: 6.1.1
-Suggests: knitr,
-    rmarkdown,
-    testthat
+Suggests: 
 VignetteBuilder: knitr
