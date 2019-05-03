@@ -152,7 +152,10 @@ get_spatial_data_names <- function(input_data,
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
                                    ~     ready.data::data_get(data_lookup_tb = spatial_lookup_tb %>%
-                                                                dplyr::filter(year == .y),
+                                                                dplyr::filter(year == .y)
+                                                              # %>%
+                                                              #   dplyr::filter(region == region_lookup)
+                                                              ,
                                                               lookup_reference = .x,
                                                               lookup_variable = "main_feature",
                                                               target_variable = "name",
@@ -166,16 +169,16 @@ get_spatial_data_names <- function(input_data,
                                                 after=non_matched_positions[.y]-1))
     #c(names_of_data_vec,extra_names)
   }
-
-  extra_names <- purrr::map_chr(at_specified_res,
-                                ~ spatial_lookup_tb %>%
-                                  dplyr::filter(year %in% year_vec) %>%
-                                  dplyr::filter(area_type == .x[2]) %>%
-                                  ready.data::data_get(lookup_reference = .x[1],
-                                                       lookup_variable = "main_feature",
-                                                       target_variable = "name",
-                                                       evaluate = FALSE)) %>%
-    unname()
+  extra_names <- purrr::map(at_specified_res,
+                            ~ spatial_lookup_tb %>%
+                              dplyr::filter(year %in% year_vec) %>%
+                              dplyr::filter(area_type == .x[2]) %>%
+                              dplyr::filter(region %in% region_lookup) %>%
+                              ready.data::data_get(lookup_reference = .x[1],
+                                                   lookup_variable = "main_feature",
+                                                   target_variable = "name",
+                                                   evaluate = FALSE)) %>% purrr::flatten_chr()
+    # unname()
   c(names_of_data_vec,extra_names)
 }
 

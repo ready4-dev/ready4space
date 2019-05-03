@@ -38,6 +38,7 @@ recur_add_attr_to_sf <- function(input_data,
   # if(!is.na(boundary_year))
   #   data_lookup_tb <- data_lookup_tb %>%
   #   dplyr::filter(year == boundary_year)
+  ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
@@ -45,7 +46,8 @@ recur_add_attr_to_sf <- function(input_data,
   country <- ready.s4::country(input_data$profiled_area_input)
   if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
     if(country=="Australia")
-      sub_div_unit_var_name <- paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
+      sub_div_unit_var_name <- names(boundary_file)[names(boundary_file) %>% stringr::str_detect("STE_NAME")]
+    # paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
     boundary_file <- boundary_file %>%
       dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
   }
@@ -219,14 +221,22 @@ prepare_pop_preds_data <- function(attr_data_tb,
           dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
 
     }
+    }
+    if(sub_div_unit %in% c("New South Wales","Victoria")){
+      pop_preds_data <- spatial_select_rename_age_sex(population_tib = pop_preds_data,
+                                                      year = attr_data_year,
+                                                      also_include = c(paste0("LGA_CODE",t1_stub), ## LGA Specific - Needs to change
+                                                                       paste0("LGA_NAME",t1_stub)),
+                                                      sub_div_unit)
+    }else{
+      pop_preds_data <- pop_preds_data %>% dplyr::rename_at(dplyr::vars(dplyr::starts_with("Male"),
+                                                                        dplyr::starts_with("Female")),
+                                                            dplyr::funs(paste0("y",attr_data_year,".",.)))
+      if(sub_div_unit %in% c("Australian Capital Territory"))
+         pop_preds_data <- pop_preds_data %>%
+           dplyr::select(-year)
+    }
   }
-  }
-  pop_preds_data <- spatial_select_rename_age_sex(population_tib = pop_preds_data,
-                                                  year = attr_data_year,
-                                                  also_include = c(paste0("LGA_CODE",t1_stub), ## LGA Specific - Needs to change
-                                                                   paste0("LGA_NAME",t1_stub)),
-                                                  sub_div_unit
-                                                  )
   return(pop_preds_data)
 }
 #
