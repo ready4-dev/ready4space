@@ -124,11 +124,11 @@ add_attr_to_sf <- function(area_unit,
      ){
     # if(!is.null(sub_div_unit)){
     #   if(sub_div_unit == "Victoria")
-        attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
-                                               attr_data_year = attr_data_year,
-                                               area_unit = area_unit,
-                                               boundary_year = boundary_year,
-                                               sub_div_unit = sub_div_unit)
+        # attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
+        #                                        attr_data_year = attr_data_year,
+        #                                        area_unit = area_unit,
+        #                                        boundary_year = boundary_year,
+        #                                        sub_div_unit = sub_div_unit)
     # }
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb)
@@ -197,48 +197,49 @@ add_attr_to_sf <- function(area_unit,
   }##
   return(merged_units)
 }
-prepare_pop_preds_data <- function(attr_data_tb,
-                                   attr_data_year,
-                                   area_unit,
-                                   boundary_year,
-                                   sub_div_unit
-                                   ){
-  t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
-  pop_preds_data <- attr_data_tb
-  if(!is.null(sub_div_unit)){
-    if(sub_div_unit == "Victoria"){
-
-      if(area_unit=="LGA"){
-        pop_preds_data <- pop_preds_data %>%
-          dplyr::mutate(`Local Government Area` = ifelse(`Local Government Area` =="Kingston (C)","Kingston (C) (Vic.)",`Local Government Area`),
-                        `Local Government Area` = ifelse(`Local Government Area` =="Latrobe (C)","Latrobe (C) (Vic.)",`Local Government Area`),
-                        `Local Government Area` = ifelse(`Local Government Area` =="Wodonga (RC)","Wodonga (C)",`Local Government Area`))
-
-        pop_preds_data[["LGA Code"]] <- factor(pop_preds_data[["LGA Code"]])
-        pop_preds_data[["Local Government Area"]] <- factor(pop_preds_data[["Local Government Area"]])
-        pop_preds_data <- pop_preds_data %>%
-          dplyr::rename(!!rlang::sym(paste0("LGA_CODE",t1_stub)) := "LGA Code") %>%
-          dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
-
-    }
-    }
-    if(sub_div_unit %in% c("New South Wales","Victoria")){
-      pop_preds_data <- spatial_select_rename_age_sex(population_tib = pop_preds_data,
-                                                      year = attr_data_year,
-                                                      also_include = c(paste0("LGA_CODE",t1_stub), ## LGA Specific - Needs to change
-                                                                       paste0("LGA_NAME",t1_stub)),
-                                                      sub_div_unit)
-    }else{
-      pop_preds_data <- pop_preds_data %>% dplyr::rename_at(dplyr::vars(dplyr::starts_with("Male"),
-                                                                        dplyr::starts_with("Female")),
-                                                            dplyr::funs(paste0("y",attr_data_year,".",.)))
-      if(sub_div_unit %in% c("Australian Capital Territory"))
-         pop_preds_data <- pop_preds_data %>%
-           dplyr::select(-year)
-    }
-  }
-  return(pop_preds_data)
-}
+# prepare_pop_preds_data <- function(attr_data_tb,
+#                                    attr_data_year,
+#                                    area_unit,
+#                                    boundary_year,
+#                                    sub_div_unit
+#                                    ){
+#   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
+#   pop_preds_data <- attr_data_tb
+#   if(!is.null(sub_div_unit)){
+#     # if(sub_div_unit == "Victoria"){
+#     #   # pop_preds_data
+#     #
+#     #   # if(area_unit=="LGA"){
+#     #   #   # pop_preds_data <- pop_preds_data %>%
+#     #   #   #   dplyr::mutate(`Local Government Area` = ifelse(`Local Government Area` =="Kingston (C)","Kingston (C) (Vic.)",`Local Government Area`),
+#     #   #   #                 `Local Government Area` = ifelse(`Local Government Area` =="Latrobe (C)","Latrobe (C) (Vic.)",`Local Government Area`),
+#     #   #   #                 `Local Government Area` = ifelse(`Local Government Area` =="Wodonga (RC)","Wodonga (C)",`Local Government Area`))
+#     #   #
+#     #   #   pop_preds_data[["LGA Code"]] <- factor(pop_preds_data[["LGA Code"]])
+#     #   #   pop_preds_data[["Local Government Area"]] <- factor(pop_preds_data[["Local Government Area"]])
+#     #   #   pop_preds_data <- pop_preds_data %>%
+#     #   #     dplyr::rename(!!rlang::sym(paste0("LGA_CODE",t1_stub)) := "LGA Code") %>%
+#     #   #     dplyr::rename(!!rlang::sym(paste0("LGA_NAME",t1_stub)) := "Local Government Area")
+#     #
+#     # }
+#     # }
+#     if(sub_div_unit %in% c("New South Wales","Victoria")){
+#       pop_preds_data <- spatial_select_rename_age_sex(population_tib = pop_preds_data,
+#                                                       year = attr_data_year,
+#                                                       also_include = c(paste0("LGA_CODE",t1_stub), ## LGA Specific - Needs to change
+#                                                                        paste0("LGA_NAME",t1_stub)),
+#                                                       sub_div_unit)
+#     }else{
+#       pop_preds_data <- pop_preds_data %>% dplyr::rename_at(dplyr::vars(dplyr::starts_with("Male"),
+#                                                                         dplyr::starts_with("Female")),
+#                                                             dplyr::funs(paste0("y",attr_data_year,".",.)))
+#       if(sub_div_unit %in% c("Australian Capital Territory"))
+#          pop_preds_data <- pop_preds_data %>%
+#            dplyr::select(-year)
+#     }
+#   }
+#   return(pop_preds_data)
+# }
 #
 prepare_erp_data <- function(erp_data,
                              area_unit,

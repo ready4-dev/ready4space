@@ -40,7 +40,6 @@ Other spatial functions.: \code{\link{spatial_adjust_partial_in_custom_area}},
   \code{\link{spatial_one_year_projections_15_24}},
   \code{\link{spatial_population_growth}},
   \code{\link{spatial_profile_by_sa2}},
-  \code{\link{spatial_select_rename_age_sex}},
   \code{\link{spatial_summarise_population_counts_0to29}}
 }
 \concept{spatial functions.}
