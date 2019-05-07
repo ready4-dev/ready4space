@@ -103,7 +103,10 @@ get_spatial_data_names <- function(input_data,
       as.numeric() %>%
       sort() %>%
       min(which(. >= as.numeric(model_end_year)))
-    model_end_year <- year_opts[year_opts_ref]
+    model_end_year <- year_opts %>%
+      as.numeric() %>%
+      sort() %>% purrr::pluck(year_opts_ref) %>%
+      as.character()
   # }else{
   #   model_end_year <- data_year
   # }
