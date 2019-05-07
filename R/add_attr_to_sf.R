@@ -91,7 +91,7 @@ add_attr_list_to_sf <- function(x,
                  attr_data_tb = ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                                      lookup_reference = y, # ifelse(ppr_obj,ppr_object_closest,y),
                                                      lookup_variable = "name",
-                                                     target_variable = "source_reference"),
+                                                     target_variable = "transformation"),
                  attr_data_desc = ready.data::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y, #ifelse(ppr_obj,ppr_object_closest,y),
                                                        lookup_variable = "name",
@@ -116,12 +116,8 @@ add_attr_to_sf <- function(area_unit,
                            attr_data_year,
                            boundary_year,
                            sub_div_unit
-                           # ,
-                           # ppr_item_name
                            ){
-  if(attr_data_desc == "Population projections"
-    # !is.null(ppr_item_name)
-     ){
+  if(attr_data_desc == "Population projections"){
     # if(!is.null(sub_div_unit)){
     #   if(sub_div_unit == "Victoria")
         # attr_data_tb <- prepare_pop_preds_data(attr_data_tb = attr_data_tb,
@@ -136,63 +132,67 @@ add_attr_to_sf <- function(area_unit,
     #   sf::st_as_sf()
   }
   if(stringr::str_detect(attr_data_desc, "ERP by age and sex")){
-    attr_data_tb <- australia.r4ext::prepare_child_youth_data(child_youth_data = attr_data_tb,
-                                                     area_unit = area_unit,
-                                                     #attr_data_year = attr_data_year,
-                                                     boundary_year = boundary_year)
+    # attr_data_tb <- australia.r4ext::prepare_child_youth_data(child_youth_data = attr_data_tb,
+    #                                                  area_unit = area_unit,
+    #                                                  #attr_data_year = attr_data_year,
+    #                                                  boundary_year = boundary_year)
       merged_units <- dplyr::inner_join(area_sf,
                                         attr_data_tb) %>%
         sf::st_as_sf()
   }
   if(attr_data_desc == "ERP"){
-    attr_data_tb <- australia.r4ext::prepare_erp_data(erp_data = attr_data_tb,
-                                 area_unit = area_unit,
-                                 boundary_year = boundary_year)
+    # attr_data_tb <- australia.r4ext::prepare_erp_data(erp_data = attr_data_tb,
+    #                              area_unit = area_unit,
+    #                              boundary_year = boundary_year)
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb) %>%
       sf::st_as_sf()
   }
-  if(attr_data_desc == "SEIFA"){
-    t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
-    attr_data_tb <- australia.r4ext::prepare_seifa_data(seifa_data = attr_data_tb,
-                                               area_unit = area_unit,
-                                               #attr_data_year = attr_data_year,
-                                               t1_stub = t1_stub)
-    if(area_unit == "LGA"){
-      groupvar <- rlang::sym(paste0("LGA_CODE",t1_stub))
-      unitname <- paste0("LGA_NAME",t1_stub)
-    }
-    if(area_unit=="SA2"){
-      groupvar <- rlang::sym(paste0("SA2_MAIN",t1_stub))
-      unitname <- paste0("SA2_NAME",t1_stub)
-    }
-    merged_units <- dplyr::left_join(area_sf,
-                                     attr_data_tb)
-    merged_units <- dplyr::inner_join(merged_units,
-                                      merged_units %>%
-                                        dplyr::group_by(!!groupvar) %>%
-                                        dplyr::summarise(resident.pop.all.parts=sum(Usual.Res.Pop)) %>%
-                                        dplyr::ungroup() %>%
-                                        sf::st_set_geometry(NULL))
-    merged_units <- dplyr::inner_join(merged_units,
-                                      australia.r4ext::summarise_seifa(seifa_sf = merged_units,
-                                                      groupvar = groupvar,
-                                                      unitname = unitname) %>%
-                                        sf::st_set_geometry(NULL)) %>%
-      dplyr::select(-c("Usual.Res.Pop",
-                        "Score",
-                        "Rank.Australia",
-                        "Decile.Australia",
-                        "Percentile.Australia",
-                        "State",
-                        "Rank.ST",
-                        "Decile.ST",
-                        "Percentile.ST",
-                        "Minimum score for SA1s in area",
-                        "Maximum score for SA1s in area",
-                        "% Usual Resident Population without an SA1 level score",
-                        "resident.pop.all.parts"))
-  }##
+  ##
+  ## DON'T DELETE THE FOLLOWING SECTION UNTIL HAVE IMPLEMENTED PROCESSING OF SEIFA IN australia.r4ext
+  ##
+  ##
+  # if(attr_data_desc == "SEIFA"){
+  #   t1_stub <- stringr::str_sub(boundary_year,start=3,end=4)
+  #   attr_data_tb <- australia.r4ext::prepare_seifa_data(seifa_data = attr_data_tb,
+  #                                              area_unit = area_unit,
+  #                                              #attr_data_year = attr_data_year,
+  #                                              t1_stub = t1_stub)
+  #   if(area_unit == "LGA"){
+  #     groupvar <- rlang::sym(paste0("LGA_CODE",t1_stub))
+  #     unitname <- paste0("LGA_NAME",t1_stub)
+  #   }
+  #   if(area_unit=="SA2"){
+  #     groupvar <- rlang::sym(paste0("SA2_MAIN",t1_stub))
+  #     unitname <- paste0("SA2_NAME",t1_stub)
+  #   }
+  #   merged_units <- dplyr::left_join(area_sf,
+  #                                    attr_data_tb)
+  #   merged_units <- dplyr::inner_join(merged_units,
+  #                                     merged_units %>%
+  #                                       dplyr::group_by(!!groupvar) %>%
+  #                                       dplyr::summarise(resident.pop.all.parts=sum(Usual.Res.Pop)) %>%
+  #                                       dplyr::ungroup() %>%
+  #                                       sf::st_set_geometry(NULL))
+  #   merged_units <- dplyr::inner_join(merged_units,
+  #                                     australia.r4ext::summarise_seifa(seifa_sf = merged_units,
+  #                                                     groupvar = groupvar,
+  #                                                     unitname = unitname) %>%
+  #                                       sf::st_set_geometry(NULL)) %>%
+  #     dplyr::select(-c("Usual.Res.Pop",
+  #                       "Score",
+  #                       "Rank.Australia",
+  #                       "Decile.Australia",
+  #                       "Percentile.Australia",
+  #                       "State",
+  #                       "Rank.ST",
+  #                       "Decile.ST",
+  #                       "Percentile.ST",
+  #                       "Minimum score for SA1s in area",
+  #                       "Maximum score for SA1s in area",
+  #                       "% Usual Resident Population without an SA1 level score",
+  #                       "resident.pop.all.parts"))
+  # }##
   return(merged_units)
 }
 # prepare_pop_preds_data <- function(attr_data_tb,
