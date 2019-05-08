@@ -2,7 +2,6 @@ library(roxygen2)
 library(magrittr)
 setwd("C:/Users/mahamilton/Desktop/R_Projects")
 devtools::create("ready.space")
-setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 ## At this point a number of additional set-up tasks were undertaken:
 ## RStudio: Save this script in the newly created ready.space folder.
 ## RStudio: Open the newly created ready.space Project file in the ready.space folder.
@@ -23,8 +22,6 @@ setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
 ##               git lfs track "*.rda"
 ##               git add .gitattributes
 ##
-setwd("C:/Users/mahamilton/Desktop/R_Projects/ready.space")
-#setwd("/Users/Alejandra/Desktop/R_Projects/ready.space")
 #usethis::use_package("sf")
 #usethis:use_package("ready.data")
 devtools::document()

@@ -52,7 +52,13 @@ get_spatial_data_list <- function(input_data,
                               ~ recur_add_attr_to_sf(input_data = input_data,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready.s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
+                                                     boundary_year = ready.data::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                                                            ready.s4::sp_data_pack_lup(),
+                                                                                          target_variable = "boundary_year",
+                                                                                          lookup_variable = "name",
+                                                                                          lookup_reference = .y[1],
+                                                                                          evaluate = FALSE),
+                                                     #boundary_year = ready.s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
                                                      attribute_data = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,

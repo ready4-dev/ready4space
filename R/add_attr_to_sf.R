@@ -35,11 +35,10 @@ recur_add_attr_to_sf <- function(input_data,
  lookup_tb_r4 <- ready.s4::lookup_tb(input_data$profiled_area_input)
   data_lookup_tb <- ready.s4::sp_data_pack_lup(lookup_tb_r4) %>%
     dplyr::filter(area_type == area_unit)
-  # if(!is.na(boundary_year))
-  #   data_lookup_tb <- data_lookup_tb %>%
-  #   dplyr::filter(year == boundary_year)
+  b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
-  boundary_file <- ready.data::data_get(data_lookup_tb = data_lookup_tb,
+  boundary_file <- ready.data::data_get(data_lookup_tb = data_lookup_tb %>%
+                                          dplyr::filter(boundary_year == b_yr),
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference")

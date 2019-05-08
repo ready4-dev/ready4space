@@ -71,7 +71,7 @@ extend_sp_data_list <- function(sp_data_list,
   travel_time_mins = ready.s4::drive_time_limmit_mins(input_data$profiled_area_input)
   group_by_var <- get_group_by_var_from_pai(input_data$profiled_area_input)
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$age_sex_pop_str) + 1]
-  ready.s4::sp_uid_lup(ready.s4::lookup_tb(input_data$profiled_area_input))
+  #ready.s4::sp_uid_lup(ready.s4::lookup_tb(input_data$profiled_area_input))
   age_sex_counts_grouped_by <- ready.data::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
                                                       ready.s4::sp_uid_lup() %>%
                                                       dplyr::filter(year %in% c(ready.s4::data_year(input_data$profiled_area_input),
