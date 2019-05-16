@@ -24,6 +24,8 @@ devtools::create("ready.space")
 ##
 #usethis::use_package("sf")
 #usethis:use_package("ready.data")
+usethis::use_dev_package("ready.agents")
+usethis::use_dev_package("ready.data")
 devtools::document()
 ##
 # devtools::use_vignette()
