@@ -1,17 +1,17 @@
 Package: ready.space
 Title: What the Package Does (one line, title case)
 Version: 0.0.0.9003
-Authors@R: person("Matthew", "Hamilton", email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),person("Alexandra", "Parker", email = "Alex.Parker@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-2398-6306")),person("Cathrine", "Mihalopoulos", email = "cathy.mihalopoulos@deakin.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-7127-9462")),person("Jonathan", "Karnon", email = "Jonathan.Karnon@flinders.edu.au", role = c("rev"), comment = c(ORCID = "0000-0003-3220-2099")),person("Petra", "Plencnerova", email = "Petra.Plencnerova@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0001-9698-9084")),person("Orygen", role = c("cph", "fnd")),person("VicHealth", role = c("fnd")),person("Victoria University", role = c("fnd")))
+Description: Functions to process spatial datato create instances of readyforwhatsnext classes.
 Depends: R (>= 3.5.1)
-License: What license is it under?
+License: GPL-3 | file LICENSEEncoding: UTF-8
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    ready.agents (>= 0.0.0.9001),
-    ready.data (>= 0.0.0.9101)
+    ready.agents (>= 0.0.0.9002),
+    ready.data (>= 0.0.0.9102)
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-Remotes:  
+Remotes: 
     matthewphamilton/ready.agents,
     matthewphamilton/ready.data

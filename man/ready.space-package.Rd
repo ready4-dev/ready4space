@@ -34,6 +34,18 @@ Some text.
 }
 
 \author{
-\strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au}
+\strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (0000-0001-7407-9194)
+
+Other contributors:
+\itemize{
+  \item Glen Wiesner \email{Glen.Wiesner@vu.edu.au} (0000-0002-0071-130X) [reviewer]
+  \item Alexandra Parker \email{Alex.Parker@vu.edu.au} (0000-0002-2398-6306) [reviewer]
+  \item Cathrine Mihalopoulos \email{cathy.mihalopoulos@deakin.edu.au} (0000-0002-7127-9462) [reviewer]
+  \item Jonathan Karnon \email{Jonathan.Karnon@flinders.edu.au} (0000-0003-3220-2099) [reviewer]
+  \item Petra Plencnerova \email{Petra.Plencnerova@vu.edu.au} (0000-0001-9698-9084) [reviewer]
+  \item Orygen [copyright holder, funder]
+  \item VicHealth [funder]
+  \item Victoria University [funder]
+}
 
 }
