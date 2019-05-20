@@ -252,7 +252,8 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
                                      lookup_variable = "area_type",
                                      lookup_reference = ready.s4::area_type(profiled_area_input),
                                      target_variable = "starter_sf",
-                                     evaluate = TRUE)
+                                     evaluate = FALSE) %>% parse(file="",n=NULL,text = .) %>% 
+    eval()
   if(ready.s4::use_coord_lup(profiled_area_input))
     starter_sf <- starter_sf %>%
       sf::`st_crs<-`(ready.s4::crs_nbr(profiled_area_input)[1])
