@@ -36,7 +36,6 @@ if(interactive()){
 Other spatial functions.: \code{\link{spatial_adjust_partial_in_custom_area}},
   \code{\link{spatial_cases_coordinates}},
   \code{\link{spatial_create_agent_coordinates_tb}},
-  \code{\link{spatial_merge_areas_attributes}},
   \code{\link{spatial_one_year_projections_15_24}},
   \code{\link{spatial_population_growth}},
   \code{\link{spatial_profile_by_sa2}},

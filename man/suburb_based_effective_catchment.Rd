@@ -42,7 +42,6 @@ if(interactive()){
 \seealso{
 \code{\link[ready.utils]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{rowwise}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
- \code{\link[base]{character}},\code{\link[base]{sets}}
  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_length}},\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_order}}
  \code{\link[purrr]{map}}
 }

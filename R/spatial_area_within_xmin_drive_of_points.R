@@ -1,5 +1,6 @@
-#' @title Calculate area within specified drives timeof a cluster of points.
-#' @description FUNCTION_DESCRIPTION
+## Implements: https://rpubs.com/maiae/drivetime
+#' @title spatial_area_within_xmin_drive_of_points
+#' @description Calculate area within specified drives timeof a cluster of points.
 #' @param long PARAM_DESCRIPTION
 #' @param lat PARAM_DESCRIPTION
 #' @param time_min PARAM_DESCRIPTION
@@ -22,8 +23,6 @@
 #' @importFrom osrm osrmIsochrone
 #' @importFrom sf st_as_sf
 #' @importFrom dplyr mutate arrange
-
-## Implements: https://rpubs.com/maiae/drivetime
 spatial_area_within_xmin_drive_of_points <- function(long,
                                                      lat,
                                                      time_min,
@@ -44,9 +43,26 @@ spatial_area_within_xmin_drive_of_points <- function(long,
   return(iso_sf)
 }
 
-#' @describeIn spatial_area_within_xmin_drive_of_points Calculates the .....
+#' @title one_cluster_one_service_travel_time
+#' @description FUNCTION_DESCRIPTION
 #' @param cluster_tb PARAM_DESCRIPTION
 #' @param service PARAM_DESCRIPTION
+#' @param time_min PARAM_DESCRIPTION
+#' @param time_max PARAM_DESCRIPTION
+#' @param nbr_time_steps PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{select}},\code{\link[dplyr]{pull}}
+#' @rdname one_cluster_one_service_travel_time
+#' @export
+#' @importFrom dplyr filter select pull
 one_cluster_one_service_travel_time <- function(cluster_tb,
                                                 service,
                                                 time_min,
@@ -62,9 +78,32 @@ one_cluster_one_service_travel_time <- function(cluster_tb,
   return(one_service_sf)
 }
 
-#' @describeIn spatial_area_within_xmin_drive_of_points Calculates the .....
+#' @describeIn one_service_time_bands
 #' @param look_up_ref PARAM_DESCRIPTION
 #' @param one_cluster_travel_time_sf_list PARAM_DESCRIPTION
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param look_up_ref PARAM_DESCRIPTION
+#' @param one_cluster_travel_time_sf_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
+#'  \code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
+#'  \code{\link[stats]{setNames}}
+#'  \code{\link[stringr]{str_replace}}
+#' @rdname one_service_time_bands
+#' @export
+#' @importFrom purrr pluck map
+#' @importFrom dplyr pull filter
+#' @importFrom stats setNames
+#' @importFrom stringr str_replace_all
 one_service_time_bands <- function(look_up_ref,
                                    one_cluster_travel_time_sf_list){
   travel_time_bands <- one_cluster_travel_time_sf_list %>%
@@ -79,9 +118,27 @@ one_service_time_bands <- function(look_up_ref,
                                                      "_")))
 }
 
-#' @describeIn spatial_area_within_xmin_drive_of_points Calculates the .....
+#' @title union_one_travel_time_band_across_sites
+#' @description FUNCTION_DESCRIPTION
 #' @param time_band_ref PARAM_DESCRIPTION
 #' @param one_cluster_time_bands_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{pluck}},\code{\link[purrr]{reduce}}
+#'  \code{\link[sf]{geos_combine}}
+#'  \code{\link[dplyr]{select}}
+#' @rdname union_one_travel_time_band_across_sites
+#' @export
+#' @importFrom purrr map pluck reduce
+#' @importFrom sf st_union
+#' @importFrom dplyr select
 union_one_travel_time_band_across_sites <- function(time_band_ref,
                                                     one_cluster_time_bands_list){
   list_of_new_sfs <- purrr::map(one_cluster_time_bands_list,
@@ -91,22 +148,42 @@ union_one_travel_time_band_across_sites <- function(time_band_ref,
                   dplyr::select(id,min,max,center,drive_times))
 }
 
-#' @describeIn spatial_area_within_xmin_drive_of_points Calculates the .....
+#' @title fix_names_up_to_sfs
+#' @description FUNCTION_DESCRIPTION
 #' @param look_up_ref PARAM_DESCRIPTION
 #' @param one_cluster_up_to_xmin_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{pluck}}
+#'  \code{\link[stringr]{str_subset}},\code{\link[stringr]{str_replace}}
+#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname fix_names_up_to_sfs
+#' @export
+#' @importFrom purrr pluck
+#' @importFrom stringr str_subset str_replace_all
+#' @importFrom dplyr mutate select
+#' @importFrom rlang sym
 fix_names_up_to_sfs <- function(look_up_ref,
                                 one_cluster_up_to_xmin_list){
   max_var <- "max"
   max_vec <- one_cluster_up_to_xmin_list %>%
     purrr::pluck(look_up_ref) %>%
-    base::names() %>%
+    names() %>%
     stringr::str_subset("max")
   if(length(max_vec) > 1){
     max_var <- max_vec %>%
       stringr::str_subset("max.") %>%
       stringr::str_replace_all("max.","") %>%
-      base::as.numeric() %>%
-      base::max() %>%
+      as.numeric() %>%
+      max() %>%
       paste0("max.",.)
   }
   return_object <- one_cluster_up_to_xmin_list %>%
@@ -118,10 +195,32 @@ fix_names_up_to_sfs <- function(look_up_ref,
   return(return_object)
 }
 
-#' @describeIn spatial_area_within_xmin_drive_of_points Calculates the .....
+#' @title cluster_isochrones
+#' @description FUNCTION_DESCRIPTION
 #' @param cluster_tbs_list PARAM_DESCRIPTION
 #' @param look_up_ref PARAM_DESCRIPTION
+#' @param time_min PARAM_DESCRIPTION, Default: 0
+#' @param time_max PARAM_DESCRIPTION, Default: 60
+#' @param nbr_time_steps PARAM_DESCRIPTION, Default: 5
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{accumulate}},\code{\link[purrr]{prepend}}
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}}
+#'  \code{\link[stats]{setNames}}
+#'  \code{\link[sf]{geos_combine}},\code{\link[sf]{geos_binary_ops}}
+#' @rdname cluster_isochrones
 #' @export
+#' @importFrom purrr pluck map accumulate prepend
+#' @importFrom dplyr select pull
+#' @importFrom stats setNames
+#' @importFrom sf st_union st_difference
 cluster_isochrones <- function(cluster_tbs_list,
                                look_up_ref,
                                time_min = 0,
@@ -149,31 +248,30 @@ cluster_isochrones <- function(cluster_tbs_list,
   one_cluster_time_bands_list <- purrr::map(1:length(one_cluster_travel_time_sf_list),
                                             ~ one_service_time_bands(look_up_ref = .x,
                                                                      one_cluster_travel_time_sf_list = one_cluster_travel_time_sf_list)) %>%
-    stats::setNames(one_cluster_travel_time_sf_list %>% base::names())
+    stats::setNames(one_cluster_travel_time_sf_list %>% names())
   ##
   one_cluster_unioned_time_bands_list <- purrr::map(1:(one_cluster_time_bands_list %>%
                                                          purrr::pluck(1) %>%
-                                                         base::length()),
+                                                         length()),
                                                     ~ union_one_travel_time_band_across_sites(time_band_ref = .x,
-                                                                                              one_cluster_time_bands_list =  one_cluster_time_bands_list)
-  ) %>%
+                                                                                              one_cluster_time_bands_list =  one_cluster_time_bands_list)) %>%
     stats::setNames(paste0("tb_"
                            ,1:(one_cluster_time_bands_list %>%
                                  purrr::pluck(1) %>%
-                                 base::length())))
+                                 length())))
   ##
   one_cluster_up_to_xmin_list <- purrr::accumulate(one_cluster_unioned_time_bands_list,
                                                    ~ sf::st_union(.x,.y))  %>%
     stats::setNames(paste0("tb_"
                            ,1:(one_cluster_unioned_time_bands_list %>%
-                                 base::length())))
+                                 length())))
   ##
   one_cluster_up_to_xmin_list <- purrr::map(1:length(one_cluster_up_to_xmin_list),
                                             ~ fix_names_up_to_sfs(look_up_ref = .x,
                                                                   one_cluster_up_to_xmin_list = one_cluster_up_to_xmin_list)) %>%
     stats::setNames(paste0("tb_"
                            ,1:(one_cluster_up_to_xmin_list  %>%
-                                 base::length())))
+                                 length())))
   ##
   one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_list)-1),
                                                    ~ sf::st_difference(one_cluster_unioned_time_bands_list %>% purrr::pluck(.x+1),
@@ -181,7 +279,7 @@ cluster_isochrones <- function(cluster_tbs_list,
                                                      dplyr::select(id,min,max,center,drive_times)) %>%
     stats::setNames(paste0("tb_"
                            ,2:(one_cluster_up_to_xmin_list  %>%
-                                 base::length())))  %>%
+                                 length())))  %>%
     purrr::prepend(list(tb_1 = one_cluster_unioned_time_bands_list %>% purrr::pluck(1)))
   return(one_cluster_joint_travel_time_list)
 }

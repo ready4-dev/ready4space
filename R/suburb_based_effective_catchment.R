@@ -18,14 +18,12 @@
 #' @seealso
 #'  \code{\link[ready.utils]{data_get}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{rowwise}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
-#'  \code{\link[base]{character}},\code{\link[base]{sets}}
 #'  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_length}},\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_order}}
 #'  \code{\link[purrr]{map}}
 #' @rdname suburb_based_effective_catchment
 #' @export
 #' @importFrom ready.utils data_get
 #' @importFrom dplyr filter pull rowwise mutate group_by summarise rename inner_join
-#' @importFrom base as.character setdiff
 #' @importFrom stringr str_sub str_length str_detect str_sort
 #' @importFrom purrr map
 suburb_based_effective_catchment <- function(aus_state_suburbs_sf = ready.utils::data_get(data_lookup_tb = aus_spatial_lookup_tb,
@@ -50,14 +48,14 @@ suburb_based_effective_catchment <- function(aus_state_suburbs_sf = ready.utils:
   ## Get rid of / reassign "Unk"
   all_suburbs_included_states <- aus_state_suburbs_sf %>%
     dplyr::filter(STE_NAME16 %in% state_names) %>% dplyr::pull(SSC_NAME16) %>%
-    base::as.character()
-  not_matched <- base::setdiff(included_suburbs_one_cluster_one_year,
+    as.character()
+  not_matched <- setdiff(included_suburbs_one_cluster_one_year,
                                all_suburbs_included_states)
   matched_as_raw <- included_suburbs_one_cluster_one_year[!included_suburbs_one_cluster_one_year %in% not_matched ]
   with_state_ext <- add_st_accronym(x = not_matched,
                                     s_t = state_names[1])
-  not_matched_with_state_ext <- base::setdiff(with_state_ext, all_suburbs_included_states)
-  matched_with_state_ext <- base::setdiff(with_state_ext,not_matched_with_state_ext)
+  not_matched_with_state_ext <- setdiff(with_state_ext, all_suburbs_included_states)
+  matched_with_state_ext <- setdiff(with_state_ext,not_matched_with_state_ext)
   suffix_length <- 6
   if(state_names[1] %in% c("Northern Territory",
                           "South Australia",
@@ -68,10 +66,10 @@ suburb_based_effective_catchment <- function(aus_state_suburbs_sf = ready.utils:
                                ~ reconcile_suburb_names(.x)) %>%
     unlist()
   matched_manual_changes <- manual_changes[!stringr::str_detect(manual_changes,
-                                                                base::setdiff(manual_changes,
+                                                                setdiff(manual_changes,
                                                                               aus_state_suburbs_sf %>%
                                                                                 dplyr::pull(SSC_NAME16) %>%
-                                                                                base::as.character()))]
+                                                                                as.character()))]
   updated_included_suburbs <- c(matched_as_raw,
                                 matched_with_state_ext,
                                 matched_manual_changes) %>%

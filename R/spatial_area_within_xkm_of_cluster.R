@@ -1,9 +1,11 @@
-#' @title Calculate area within a specified distance of a cluster of points.
+#' @title spatial_area_within_xkm_of_cluster
+#' @description Calculate area within a specified distance of a cluster of points.
 #' @description FUNCTION_DESCRIPTION
 #' @param distance_km PARAM_DESCRIPTION
 #' @param clusters_vec PARAM_DESCRIPTION
 #' @param clusters_tbs_list PARAM_DESCRIPTION
 #' @param land_boundary_sf PARAM_DESCRIPTION
+#' @param crs_nbr PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -19,7 +21,6 @@
 #' @export
 #' @importFrom purrr map pluck
 #' @importFrom stats setNames
-
 spatial_area_within_xkm_of_cluster <- function(distance_km,
                                                clusters_vec,
                                                clusters_tbs_list,
@@ -35,11 +36,26 @@ spatial_area_within_xkm_of_cluster <- function(distance_km,
 
 }
 
-#' @describeIn spatial_area_within_xkm_of_cluster Calculates the .....
+#' @title reorder_distance_list_by_cluster
+#' @description FUNCTION_DESCRIPTION
 #' @param look_up_ref PARAM_DESCRIPTION
 #' @param clusters_by_distance_list PARAM_DESCRIPTION
-#' @param distances_vecclusters_tbs_list PARAM_DESCRIPTION
-
+#' @param distances_vec PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{pluck}}
+#'  \code{\link[dplyr]{mutate}}
+#' @rdname reorder_distance_list_by_cluster
+#' @export
+#' @importFrom purrr map pluck
+#' @importFrom dplyr mutate
 reorder_distance_list_by_cluster <- function(look_up_ref,
                                              clusters_by_distance_list,
                                              distances_vec){
@@ -56,8 +72,28 @@ reorder_distance_list_by_cluster <- function(look_up_ref,
                                       "km")))
 }
 
-#' @describeIn spatial_area_within_xkm_of_cluster Calculates the .....
+#' @title geom_distance_circles_to_bands
+#' @description FUNCTION_DESCRIPTION
 #' @param geom_distance_circle_sfs_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{pluck}},\code{\link[purrr]{prepend}}
+#'  \code{\link[sf]{geos_binary_ops}}
+#'  \code{\link[dplyr]{select}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname geom_distance_circles_to_bands
+#' @export
+#' @importFrom purrr map pluck prepend
+#' @importFrom sf st_difference
+#' @importFrom dplyr select
+#' @importFrom stats setNames
 geom_distance_circles_to_bands <- function(geom_distance_circle_sfs_list){
   purrr::map(1:(length(geom_distance_circle_sfs_list)-1),
              ~ sf::st_difference(geom_distance_circle_sfs_list %>%
@@ -67,7 +103,7 @@ geom_distance_circles_to_bands <- function(geom_distance_circle_sfs_list){
                dplyr::select(distance_km)) %>%
     stats::setNames(paste0("dist_"
                            ,2:(geom_distance_circle_sfs_list  %>%
-                                 base::length())))  %>%
+                                 length())))  %>%
     purrr::prepend(list(dist_1 = geom_distance_circle_sfs_list %>%
                           purrr::pluck(1)))
 
