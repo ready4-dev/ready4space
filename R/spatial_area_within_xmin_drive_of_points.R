@@ -77,11 +77,7 @@ one_cluster_one_service_travel_time <- function(cluster_tb,
                                                              nbr_time_steps = nbr_time_steps)
   return(one_service_sf)
 }
-
-#' @describeIn one_service_time_bands
-#' @param look_up_ref PARAM_DESCRIPTION
-#' @param one_cluster_travel_time_sf_list PARAM_DESCRIPTION
-#' @title FUNCTION_TITLE
+#' @title one_service_time_bands
 #' @description FUNCTION_DESCRIPTION
 #' @param look_up_ref PARAM_DESCRIPTION
 #' @param one_cluster_travel_time_sf_list PARAM_DESCRIPTION

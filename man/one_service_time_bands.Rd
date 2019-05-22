@@ -2,15 +2,11 @@
 % Please edit documentation in R/spatial_area_within_xmin_drive_of_points.R
 \name{one_service_time_bands}
 \alias{one_service_time_bands}
-\title{FUNCTION_TITLE}
+\title{one_service_time_bands}
 \usage{
 one_service_time_bands(look_up_ref, one_cluster_travel_time_sf_list)
 }
 \arguments{
-\item{look_up_ref}{PARAM_DESCRIPTION}
-
-\item{one_cluster_travel_time_sf_list}{PARAM_DESCRIPTION}
-
 \item{look_up_ref}{PARAM_DESCRIPTION}
 
 \item{one_cluster_travel_time_sf_list}{PARAM_DESCRIPTION}
