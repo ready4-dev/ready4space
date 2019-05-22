@@ -416,11 +416,11 @@ demographic_compound_growth_rate <- function(t0_pop,
 #' }
 #' @seealso
 #'  \code{\link[stringr]{str_sub}}
-#'  \code{\link[ready.data]{data_get}}
+#'  \code{\link[ready.utils]{data_get}}
 #' @rdname adjust_pop_proj_for_pe
 #' @export
 #' @importFrom stringr str_sub
-#' @importFrom ready.data data_get
+#' @importFrom ready.utils data_get
 
 adjust_pop_proj_for_pe <- function(t0_pop,
                                    t1_pop,
@@ -437,12 +437,12 @@ adjust_pop_proj_for_pe <- function(t0_pop,
                            "_yr_",
                            stringr::str_sub(age_sex_band,1,1),
                            stringr::str_sub(age_sex_band,-6))
-  ape <- ready.data::data_get(data_lookup_tb = param_tb,
+  ape <- ready.utils::data_get(data_lookup_tb = param_tb,
                        lookup_reference = age_sex_lookup,
                        lookup_variable = "parameter_name",
                        target_variable = paste0("v_it_",it_nbr),
                        evaluate = FALSE)
-  pe_sign <- ready.data::data_get(data_lookup_tb = param_tb,
+  pe_sign <- ready.utils::data_get(data_lookup_tb = param_tb,
                                      lookup_reference = "pop_pe_sign",
                                      lookup_variable = "parameter_name",
                                      target_variable = paste0("v_it_",it_nbr),

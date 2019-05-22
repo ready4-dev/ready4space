@@ -2,27 +2,24 @@
 % Please edit documentation in R/add_attr_to_sf.R
 \name{recur_add_attr_to_sf}
 \alias{recur_add_attr_to_sf}
-\title{Adds area attributes to a spatial object.}
+\title{recur_add_attr_to_sf}
 \usage{
 recur_add_attr_to_sf(input_data, sub_div_unit = NULL, area_unit,
   boundary_year, attribute_data)
 }
 \arguments{
-\item{area_unit}{A String specifying that the area type is either "LGA" or "SA2".}
+\item{input_data}{PARAM_DESCRIPTION}
 
-\item{boundary_year}{A String specifying the year to which boundary data applies}
+\item{sub_div_unit}{PARAM_DESCRIPTION, Default: NULL}
 
-\item{attribute_data}{A String vector, specifying the names of the files from which attribute data will
-be taken.}
+\item{area_unit}{PARAM_DESCRIPTION}
 
-\item{country}{A String naming the country to which data applies}
+\item{boundary_year}{PARAM_DESCRIPTION}
 
-\item{state}{A String naming the State to which data applies}
-
-\item{data_lookup_tb}{A tibble, with lookup values for all data input files.}
+\item{attribute_data}{PARAM_DESCRIPTION}
 }
 \value{
-Returns a SF.
+OUTPUT_DESCRIPTION
 }
 \description{
 Merges a SF file with population data relating to areas described in that file.
@@ -32,5 +29,18 @@ Makes data transformations (variable name, changes from strings to factors) nece
 to ensure that merged objects are compatible.
 }
 \examples{
-
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
+}
+\seealso{
+\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{country}}
+ \code{\link[dplyr]{filter}}
+ \code{\link[ready.utils]{data_get}}
+ \code{\link[stringr]{str_detect}}
+ \code{\link[rlang]{sym}}
+ \code{\link[purrr]{map}},\code{\link[purrr]{prepend}},\code{\link[purrr]{reduce}}
+ \code{\link[stats]{setNames}}
 }

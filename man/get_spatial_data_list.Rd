@@ -8,21 +8,13 @@ get_spatial_data_list(input_data, sub_div_unit = NULL,
   require_year_match = TRUE, excl_diff_bound_yr = TRUE)
 }
 \arguments{
+\item{input_data}{PARAM_DESCRIPTION}
+
+\item{sub_div_unit}{PARAM_DESCRIPTION, Default: NULL}
+
 \item{require_year_match}{PARAM_DESCRIPTION, Default: TRUE}
 
 \item{excl_diff_bound_yr}{PARAM_DESCRIPTION, Default: TRUE}
-
-\item{at_highest_res}{PARAM_DESCRIPTION}
-
-\item{data_year}{PARAM_DESCRIPTION}
-
-\item{model_end_year}{PARAM_DESCRIPTION, Default: NULL}
-
-\item{at_specified_res}{PARAM_DESCRIPTION, Default: NULL}
-
-\item{country}{PARAM_DESCRIPTION, Default: 'Australia'}
-
-\item{state}{PARAM_DESCRIPTION, Default: NULL}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -44,4 +36,6 @@ if(interactive()){
 \code{\link[stringr]{str_sub}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
  \code{\link[stats]{setNames}}
+ \code{\link[ready.utils]{data_get}}
+ \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}}
 }

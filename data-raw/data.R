@@ -46,7 +46,7 @@ old_spatial_lookup_tb <- tibble::tibble(variable_name = c("aus_age_sex_seifa_lga
 
 old_spatial_lookup_tb <- old_spatial_lookup_tb %>%
   dplyr::rename(name = variable_name)
-sp_saved_data_lookup_tb <- ready.data::data_import_show_menu_detail() %>%
+sp_saved_data_lookup_tb <- ready.utils::data_import_show_menu_detail() %>%
   dplyr::select(1:7)
 sp_saved_data_lookup_tb <- rbind(sp_saved_data_lookup_tb,
                                  sp_saved_data_lookup_tb %>%

@@ -8,13 +8,13 @@ FUNCTION_DESCRIPTION}
 sum_at_diff_funs(data_sf, var_list, funs_list, group_by)
 }
 \arguments{
+\item{data_sf}{PARAM_DESCRIPTION}
+
 \item{var_list}{PARAM_DESCRIPTION}
 
 \item{funs_list}{PARAM_DESCRIPTION}
 
 \item{group_by}{PARAM_DESCRIPTION}
-
-\item{data_tb}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -35,6 +35,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
- \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{join}}
+ \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}}
  \code{\link[rlang]{sym}}
+ \code{\link[sf]{st_join}}
 }

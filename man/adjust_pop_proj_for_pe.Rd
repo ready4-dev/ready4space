@@ -40,5 +40,5 @@ if(interactive()){
 }
 \seealso{
 \code{\link[stringr]{str_sub}}
- \code{\link[ready.data]{data_get}}
+ \code{\link[ready.utils]{data_get}}
 }

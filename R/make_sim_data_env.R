@@ -1,61 +1,40 @@
-#' make_sim_data_env
-#' Make a simulation data input for the environment.
-#' @param profiled_area_type PARAM_DESCRIPTION
-#' @param distance_km PARAM_DESCRIPTION
-#' @param travel_time_mins PARAM_DESCRIPTION
-#' @param profiled_area PARAM_DESCRIPTION
-#' @param age_lower PARAM_DESCRIPTION
-#' @param age_upper PARAM_DESCRIPTION
-#' @param age_upper PARAM_DESCRIPTION
-#' @param env_str_par_tb PARAM_DESCRIPTION
-#' @param nbr_its PARAM_DESCRIPTION
+#' @title get_data_year_chr
+#' @description FUNCTION_DESCRIPTION
+#' @param data_ymdhms PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[lubridate]{year}}
+#' @rdname get_data_year_chr
 #' @export
-
-make_sim_data_env <- function(input_data){
-  ## 1. GET PARAMETER MATRICES
-  par_str_list <- ready.sim::instantiate_env_struc_par_all(input_data$env_str_par_tb)
-  env_param_tb  <- purrr::map_dfr(1:length(par_str_list),
-                                  ~ ready.sim::genValueFromDist(par_str_list[[.x]], input_data$nbr_its))
-  ## 2. DEFINE PROFILED AREA
-  profiled_area_objs_ls <- make_profiled_area_objs(profiled_area_input = input_data$profiled_area_input)
-  ## 3. GET SPATIAL DATA
-  sp_data_list <- make_sp_data_list(input_data = input_data,
-                                    sub_div_units_vec = profiled_area_objs_ls$sub_div_units_vec)
-
-  ## 4. APPLY PROFILED AREA FILTER
-  sp_data_list <- extend_sp_data_list(sp_data_list = sp_data_list,
-                                      input_data = input_data,
-                                      profiled_area_bands_list = profiled_area_objs_ls$profiled_area_bands_list)
-
-  ## 5. REFORMAT LIST
-  sp_data_list <- list(input_bl_profiled_sf = sp_data_list[names(sp_data_list)[!names(sp_data_list)
-                                                                               %in% c("ppr_ref",
-                                                                                      names(sp_data_list)[sp_data_list$ppr_ref],
-                                                                                      "profiled_sf")]],
-                       input_dynamic_sp_pars = sp_data_list[[sp_data_list$ppr_ref]],
-                       profiled_sf = sp_data_list$profiled_sf,
-                       popl_var_prefix = sp_data_list$popl_var_prefix)
-  ## 6. CREATE SPATIO-TEMPORAL INPUT DATA OBJECT
-  st_envir <- ready.sim::ready_env(st_data = sp_data_list,
-                                   par_vals = env_param_tb)
-  ## 7. CREATE SIMULATION DATA INPUT OBJECT
-  sim_data <- ready.sim::ready_sim_data(st_envir = st_envir,
-                                        pre_model_date = ready.s4::data_ymds(input_data$profiled_area_input),
-                                        model_start_date = input_data$model_start_ymdhms,
-                                        model_end_date = get_model_end_ymdhs(input_data = input_data),
-                                        age_lower = input_data$age_lower,
-                                        age_upper = input_data$age_upper,
-                                        time_steps = input_data$simulation_steps_ymwd,
-                                        nbr_steps = input_data$nbr_steps_start_to_end)
-  return(sim_data)
-}
+#' @importFrom lubridate year
 get_data_year_chr <- function(data_ymdhms){
   data_ymdhms %>%
     lubridate::year() %>%
     as.character()
 }
+#' @title get_model_end_ymdhs
+#' @description FUNCTION_DESCRIPTION
+#' @param input_data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[lubridate]{period}}
+#' @rdname get_model_end_ymdhs
+#' @export
+#' @importFrom lubridate years weeks days
 get_model_end_ymdhs <- function(input_data){
   input_data$model_start_ymdhms +
     lubridate::years(input_data$simulation_steps_ymwd[1]) * input_data$nbr_steps_start_to_end +
@@ -63,6 +42,32 @@ get_model_end_ymdhs <- function(input_data){
     lubridate::weeks(input_data$simulation_steps_ymwd[3]) * input_data$nbr_steps_start_to_end +
     lubridate::days(input_data$simulation_steps_ymwd[4]) * input_data$nbr_steps_start_to_end
 }
+#' @title extend_sp_data_list
+#' @description FUNCTION_DESCRIPTION
+#' @param sp_data_list PARAM_DESCRIPTION
+#' @param input_data PARAM_DESCRIPTION
+#' @param profiled_area_bands_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready.s4]{geom_dist_limit_km}},\code{\link[ready.s4]{drive_time_limmit_mins}},\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_uid_lup}},\code{\link[ready.s4]{data_year}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{crs_nbr}}
+#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}}
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
+#'  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_measures}}
+#' @rdname extend_sp_data_list
+#' @export
+#' @importFrom ready.s4 geom_dist_limit_km drive_time_limmit_mins lookup_tb sp_uid_lup data_year use_coord_lup crs_nbr
+#' @importFrom ready.utils data_get
+#' @importFrom dplyr filter mutate
+#' @importFrom purrr map map2
+#' @importFrom sf st_transform st_area
 extend_sp_data_list <- function(sp_data_list,
                                 input_data,
                                 profiled_area_bands_list){
@@ -71,8 +76,7 @@ extend_sp_data_list <- function(sp_data_list,
   travel_time_mins = ready.s4::drive_time_limmit_mins(input_data$profiled_area_input)
   group_by_var <- get_group_by_var_from_pai(input_data$profiled_area_input)
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$age_sex_pop_str) + 1]
-  #ready.s4::sp_uid_lup(ready.s4::lookup_tb(input_data$profiled_area_input))
-  age_sex_counts_grouped_by <- ready.data::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
+  age_sex_counts_grouped_by <- ready.utils::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
                                                       ready.s4::sp_uid_lup() %>%
                                                       dplyr::filter(year %in% c(ready.s4::data_year(input_data$profiled_area_input),
                                                                                 "All")),
@@ -116,17 +120,36 @@ extend_sp_data_list <- function(sp_data_list,
                                        popl_var_prefix = popl_var_prefix))
   return(extended_sp_data_list)
 }
+#' @title get_group_by_var
+#' @description FUNCTION_DESCRIPTION
+#' @param profile_unit PARAM_DESCRIPTION
+#' @param data_unit PARAM_DESCRIPTION
+#' @param group_at_profile_unit PARAM_DESCRIPTION, Default: TRUE
+#' @param group_by_lookup_tb PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready.utils]{data_get}}
+#' @rdname get_group_by_var
+#' @export
+#' @importFrom ready.utils data_get
 get_group_by_var <- function(profile_unit,
                              data_unit,
                              group_at_profile_unit = TRUE,
                              group_by_lookup_tb){ ### REPLACE ?????
   group_by <- ifelse(group_at_profile_unit,
-                     ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
+                     ready.utils::data_get(data_lookup_tb = group_by_lookup_tb,
                                           lookup_variable = "spatial_unit",
                                           lookup_reference = profile_unit,
                                           target_variable = "var_name",
                                           evaluate = FALSE),
-                     ready.data::data_get(data_lookup_tb = group_by_lookup_tb,
+                     ready.utils::data_get(data_lookup_tb = group_by_lookup_tb,
                                           lookup_variable = "spatial_unit",
                                           lookup_reference = data_unit,
                                           target_variable = "var_name",
@@ -149,28 +172,32 @@ get_group_by_var_from_pai <- function(profiled_area_input){
   }
   return(group_by_var)
 }
+#' @title make_sp_data_list
+#' @description FUNCTION_DESCRIPTION
+#' @param input_data PARAM_DESCRIPTION
+#' @param sub_div_units_vec PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{transpose}},\code{\link[purrr]{prepend}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname make_sp_data_list
+#' @export
+#' @importFrom purrr map transpose map_chr map_dbl prepend
+#' @importFrom stats setNames
 make_sp_data_list <- function(input_data,
                               sub_div_units_vec){
-  # at_specified_res <- input_data$at_specified_res
-  # if(!"Victoria" %in% sub_div_units_vec){
-  #   at_highest_res <- at_highest_res[at_highest_res != "Population projections"]
-  #   model_end_year <- ready.s4::data_year(input_data$profiled_area_input)
-  # }
   lists_to_merge <- purrr::map(sub_div_units_vec,
                                ~ get_spatial_data_list(input_data = input_data,
-                                                       #at_highest_res = input_data$at_highest_res,
-                                                       #data_year = ready.s4::data_year(input_data$profiled_area_input),
-
-                                                       #model_end_year = get_model_end_ymdhs(input_data = input_data) %>%
-                                                       #lubridate::year(),
-                                                       #at_specified_res = at_specified_res,
-                                                       #country =  ready.s4::country(input_data$profiled_area_input),
                                                        sub_div_unit = .x,
                                                        require_year_match = FALSE,
-                                                       excl_diff_bound_yr = TRUE
-                                                       #,
-                                                       #pop_projs_str = input_data$pop_projs_str
-                               ))
+                                                       excl_diff_bound_yr = TRUE))
   lists_to_merge <- purrr::transpose(lists_to_merge)
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))
@@ -187,11 +214,35 @@ make_sp_data_list <- function(input_data,
   return(sp_data_list)
 }
 
+#' @title make_profiled_area_objs
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_area_input PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_starter_sf_lup}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{area_type}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{sp_site_coord_lup}},\code{\link[ready.s4]{features}},\code{\link[ready.s4]{geom_dist_limit_km}},\code{\link[ready.s4]{nbr_bands}},\code{\link[ready.s4]{crs_nbr}},\code{\link[ready.s4]{drive_time_limmit_mins}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_binary_ops}}
+#' @rdname make_profiled_area_objs
+#' @export
+#' @importFrom ready.utils data_get
+#' @importFrom ready.s4 lookup_tb sp_starter_sf_lup country area_type use_coord_lup sp_site_coord_lup features geom_dist_limit_km nbr_bands crs_nbr drive_time_limmit_mins
+#' @importFrom dplyr filter pull
+#' @importFrom rlang sym
+#' @importFrom sf st_transform st_intersection
 make_profiled_area_objs <- function(profiled_area_input){
   group_by_var <- get_group_by_var_from_pai(profiled_area_input = profiled_area_input)
   st_profiled_sf <- get_starter_sf_for_profiled_area(profiled_area_input = profiled_area_input,
                                                      group_by_var = group_by_var)
-  main_sub_div_var <- ready.data::data_get(data_lookup_tb = profiled_area_input %>%
+  main_sub_div_var <- ready.utils::data_get(data_lookup_tb = profiled_area_input %>%
                                              ready.s4::lookup_tb() %>%
                                              ready.s4::sp_starter_sf_lup() %>%
                                              dplyr::filter(country == ready.s4::country(profiled_area_input)),
@@ -242,17 +293,42 @@ make_profiled_area_objs <- function(profiled_area_input){
               profiled_area_bands_list = profiled_area_bands_list))
 }
 
+#' @title get_starter_sf_for_profiled_area
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_area_input PARAM_DESCRIPTION
+#' @param group_by_var PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_starter_sf_lup}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{area_type}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{crs_nbr}},\code{\link[ready.s4]{features}}
+#'  \code{\link[dplyr]{filter}}
+#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[sf]{st_crs<-}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname get_starter_sf_for_profiled_area
+#' @export
+#' @importFrom ready.s4 lookup_tb sp_starter_sf_lup country area_type use_coord_lup crs_nbr features
+#' @importFrom dplyr filter
+#' @importFrom ready.utils data_get
+#' @importFrom sf st_crs<-
+#' @importFrom rlang sym
 get_starter_sf_for_profiled_area <- function(profiled_area_input,
                                              group_by_var){
   sp_data_starter_sf_lup <- profiled_area_input %>%
     ready.s4::lookup_tb() %>%
     ready.s4::sp_starter_sf_lup() %>%
     dplyr::filter(country == ready.s4::country(profiled_area_input))
-  starter_sf <- ready.data::data_get(data_lookup_tb = sp_data_starter_sf_lup,
+  starter_sf <- ready.utils::data_get(data_lookup_tb = sp_data_starter_sf_lup,
                                      lookup_variable = "area_type",
                                      lookup_reference = ready.s4::area_type(profiled_area_input),
                                      target_variable = "starter_sf",
-                                     evaluate = FALSE) %>% parse(file="",n=NULL,text = .) %>% 
+                                     evaluate = FALSE) %>% parse(file="",n=NULL,text = .) %>%
     eval()
   if(ready.s4::use_coord_lup(profiled_area_input))
     starter_sf <- starter_sf %>%
@@ -262,6 +338,29 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
       dplyr::filter(!!rlang::sym(group_by_var) %in% ready.s4::features(profiled_area_input))
 }
 
+#' @title subset_sf_by_feature
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param group_by_var PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}}
+#'  \code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname subset_sf_by_feature
+#' @export
+#' @importFrom purrr map
+#' @importFrom dplyr pull filter
+#' @importFrom rlang sym
+#' @importFrom stats setNames
 subset_sf_by_feature <- function(profiled_sf,
                                  group_by_var){
   purrr::map(profiled_sf %>%
@@ -276,7 +375,7 @@ subset_sf_by_feature <- function(profiled_sf,
 
 #' sum_at_diff_funs
 #' FUNCTION_DESCRIPTION
-#' @param data_tb PARAM_DESCRIPTION
+#' @param data_sf PARAM_DESCRIPTION
 #' @param var_list PARAM_DESCRIPTION
 #' @param funs_list PARAM_DESCRIPTION
 #' @param group_by PARAM_DESCRIPTION
@@ -290,13 +389,15 @@ subset_sf_by_feature <- function(profiled_sf,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
-#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{join}}
+#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}}
 #'  \code{\link[rlang]{sym}}
+#'  \code{\link[sf]{st_join}}
 #' @rdname sum_at_diff_funs
 #' @export
 #' @importFrom purrr map2 reduce
-#' @importFrom dplyr group_by summarise_at inner_join
+#' @importFrom dplyr group_by summarise_at select one_of rename
 #' @importFrom rlang sym
+#' @importFrom sf st_join
 sum_at_diff_funs <- function(data_sf,
                              var_list,
                              funs_list,

@@ -2,47 +2,18 @@
 % Please edit documentation in R/suburb_based_effective_catchment.R
 \name{suburb_based_effective_catchment}
 \alias{suburb_based_effective_catchment}
-\alias{suburb_based_effective_catch_excl_outliers}
-\alias{client_by_suburb_one_year}
-\alias{proper}
-\alias{add_st_accronym}
-\alias{remove_st_accronym}
-\alias{apply_naming_convention}
-\alias{reconcile_suburb_names}
-\alias{get_client_suburb_vector}
 \title{Create a simple features object based on suburbs from which cluster clients come from.}
 \usage{
 
-  suburb_based_effective_catchment(aus_state_suburbs_sf = ready.data::data_get(data_lookup_tb
+  suburb_based_effective_catchment(aus_state_suburbs_sf = ready.utils::data_get(data_lookup_tb
   = aus_spatial_lookup_tb, lookup_reference = "aus_ssc_nat_shp_bound_2016",
   lookup_variable = "name", target_variable = "source_reference"),
   client_locations_ref = NULL, year = 2018, cluster, state_names)
-
-suburb_based_effective_catch_excl_outliers(outliers,
-  suburb_based_effective_catch_inc_outliers_sf)
-
-client_by_suburb_one_year(cluster, year, file_ref = NA)
-
-proper(x)
-
-add_st_accronym(x, s_t, included_sts = c("Australian Capital Territory",
-  "New South Wales", "Northern Territory", "Queensland", "South Australia",
-  "Tasmania", "Victoria", "Western Australia"))
-
-remove_st_accronym(x, s_t,
-  included_sts = c("Australian Capital Territory", "New South Wales",
-  "Northern Territory", "Queensland", "South Australia", "Tasmania",
-  "Victoria", "Western Australia"))
-
-apply_naming_convention(x, names_vector, state_territory)
-
-reconcile_suburb_names(raw_name)
-
-get_client_suburb_vector(clients_by_suburb)
 }
 \arguments{
-\item{aus_state_suburbs_sf}{PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-lookup_reference = "aus_state_suburbs_sf")}
+\item{aus_state_suburbs_sf}{PARAM_DESCRIPTION, Default: ready.utils::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+lookup_reference = "aus_ssc_nat_shp_bound_2016", lookup_variable = "name",
+target_variable = "source_reference")}
 
 \item{client_locations_ref}{PARAM_DESCRIPTION, Default: NULL}
 
@@ -51,38 +22,6 @@ lookup_reference = "aus_state_suburbs_sf")}
 \item{cluster}{PARAM_DESCRIPTION}
 
 \item{state_names}{PARAM_DESCRIPTION}
-
-\item{outliers}{PARAM_DESCRIPTION}
-
-\item{suburb_based_effective_catch_inc_outliers_sf}{PARAM_DESCRIPTION}
-
-\item{file_ref}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{s_t}{PARAM_DESCRIPTION}
-
-\item{included_sts}{PARAM_DESCRIPTION}
-
-\item{names_vector}{PARAM_DESCRIPTION}
-
-\item{raw_name}{PARAM_DESCRIPTION}
-
-\item{clients_by_suburb}{PARAM_DESCRIPTION}
-
-\item{cluster}{PARAM_DESCRIPTION}
-
-\item{year}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{s_t}{PARAM_DESCRIPTION}
-
-\item{included_sts}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -93,25 +32,6 @@ FUNCTION_DESCRIPTION
 \details{
 DETAILS
 }
-\section{Functions}{
-\itemize{
-\item \code{suburb_based_effective_catch_excl_outliers}: Calculates the .....
-
-\item \code{client_by_suburb_one_year}: Calculates the .....
-
-\item \code{proper}: Calculates the .....
-
-\item \code{add_st_accronym}: Calculates the .....
-
-\item \code{remove_st_accronym}: Calculates the .....
-
-\item \code{apply_naming_convention}: Calculates the .....
-
-\item \code{reconcile_suburb_names}: Calculates the .....
-
-\item \code{get_client_suburb_vector}: Calculates the .....
-}}
-
 \examples{
 \dontrun{
 if(interactive()){
@@ -120,8 +40,9 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.data]{data_get}}
+\code{\link[ready.utils]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{rowwise}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{select}},\code{\link[dplyr]{join}}
+ \code{\link[base]{character}},\code{\link[base]{sets}}
  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_length}},\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_order}}
  \code{\link[purrr]{map}}
 }

@@ -18,7 +18,7 @@
 #' @importFrom dplyr group_by summarise
 #' @importFrom sf st_union
 create_australia_land_boundary <- function(state_territories = NULL,
-                                           aus_boundary_sf = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
+                                           aus_boundary_sf = ready.utils::data_get(data_lookup_tb = aus_spatial_lookup_tb,
                                                                                   lookup_reference = "aus_boundary_phns_sf",
                                                                                   lookup_variable = "name",
                                                                                   target_variable = "source_reference")){

@@ -1,11 +1,7 @@
 #' @title get_spatial_data_list
 #' @description Create a list of SF objects constructed from specified data types at highest or requested level of resolution.
-#' @param at_highest_res PARAM_DESCRIPTION
-#' @param data_year PARAM_DESCRIPTION
-#' @param model_end_year PARAM_DESCRIPTION, Default: NULL
-#' @param at_specified_res PARAM_DESCRIPTION, Default: NULL
-#' @param country PARAM_DESCRIPTION, Default: 'Australia'
-#' @param state PARAM_DESCRIPTION, Default: NULL
+#' @param input_data PARAM_DESCRIPTION
+#' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
 #' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
 #' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
 #' @return OUTPUT_DESCRIPTION
@@ -20,24 +16,19 @@
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
 #'  \code{\link[stats]{setNames}}
+#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}}
 #' @rdname get_spatial_data_list
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom purrr map map2 map_lgl prepend
 #' @importFrom stats setNames
-
+#' @importFrom ready.utils data_get
+#' @importFrom ready.s4 lookup_tb sp_data_pack_lup
 get_spatial_data_list <- function(input_data,
-                                  #at_highest_res,
-                                  #data_year,
-                                  #model_end_year = NULL,
-                                  #at_specified_res = NULL,
-                                  #country = "Australia",
                                   sub_div_unit = NULL,
                                   require_year_match = TRUE,
-                                  excl_diff_bound_yr = TRUE
-                                  #,
-                                  # pop_projs_str
-  ){
+                                  excl_diff_bound_yr = TRUE){
   attributes_to_import <- get_spatial_data_names(input_data = input_data,
                                                  sub_div_unit = sub_div_unit,
                                                  require_year_match = require_year_match,
@@ -52,7 +43,7 @@ get_spatial_data_list <- function(input_data,
                               ~ recur_add_attr_to_sf(input_data = input_data,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready.data::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                     boundary_year = ready.utils::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
                                                                                             ready.s4::sp_data_pack_lup(),
                                                                                           target_variable = "boundary_year",
                                                                                           lookup_variable = "name",
@@ -72,19 +63,40 @@ get_spatial_data_list <- function(input_data,
   return(data_sf_list)
 }
 
+#' @title get_spatial_data_names
+#' @description FUNCTION_DESCRIPTION
+#' @param input_data PARAM_DESCRIPTION
+#' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
+#' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
+#' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready.s4]{data_year}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{sp_abbreviations_lup}},\code{\link[ready.s4]{sp_resolution_lup}}
+#'  \code{\link[lubridate]{year}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[stringr]{str_length}}
+#'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{flatten}},\code{\link[purrr]{reduce}}
+#'  \code{\link[ready.utils]{data_get}}
+#' @rdname get_spatial_data_names
+#' @export
+#' @importFrom ready.s4 data_year country lookup_tb sp_data_pack_lup sp_abbreviations_lup sp_resolution_lup
+#' @importFrom lubridate year
+#' @importFrom dplyr filter pull
+#' @importFrom stringr str_length
+#' @importFrom purrr pluck map map_chr map2 flatten_chr map2_chr map_dbl reduce
+#' @importFrom ready.utils data_get
 get_spatial_data_names <- function(input_data,
-                                   # at_highest_res,
-                                   #                                  data_year,
-                                   #                                  model_end_year = NULL,
-                                   #                                  at_specified_res = NULL,
-                                   #                                  country = "Australia",
                                    sub_div_unit = NULL,
                                    require_year_match = TRUE,
-                                   excl_diff_bound_yr = TRUE
-                                   #,
-                                   # pop_projs_str,
-                                   # spatial_lookup_tb = aus_spatial_lookup_tb
-){ #### NEED TO WORK ON SECOND HALF
+                                   excl_diff_bound_yr = TRUE){
+  #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_data$at_highest_res
   data_year <- ready.s4::data_year(input_data$profiled_area_input)
   at_specified_res = input_data$at_specified_res
@@ -140,7 +152,7 @@ get_spatial_data_names <- function(input_data,
                                              dplyr::filter(area_type == .y))
   if(!is.null(sub_div_unit)){
     region_lookup <- purrr::map_chr(sub_div_unit,
-                                    ~ ready.data::data_get(data_lookup_tb = abbreviations_lookup_tb,
+                                    ~ ready.utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
                                                            lookup_reference = .,
                                                            lookup_variable = "long_name",
                                                            target_variable = "short_name",
@@ -160,7 +172,7 @@ get_spatial_data_names <- function(input_data,
                                       target_year = data_year)
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
-                                   ~     ready.data::data_get(data_lookup_tb = spatial_lookup_tb %>%
+                                   ~     ready.utils::data_get(data_lookup_tb = spatial_lookup_tb %>%
                                                                 dplyr::filter(year == .y)
                                                               # %>%
                                                               #   dplyr::filter(region == region_lookup)
@@ -183,7 +195,7 @@ get_spatial_data_names <- function(input_data,
                               dplyr::filter(year %in% year_vec) %>%
                               dplyr::filter(area_type == .x[2]) %>%
                               dplyr::filter(region %in% region_lookup) %>%
-                              ready.data::data_get(lookup_reference = .x[1],
+                              ready.utils::data_get(lookup_reference = .x[1],
                                                    lookup_variable = "main_feature",
                                                    target_variable = "name",
                                                    evaluate = FALSE)) %>% purrr::flatten_chr()
@@ -191,6 +203,28 @@ get_spatial_data_names <- function(input_data,
   c(names_of_data_vec,extra_names)
 }
 
+#' @title get_closest_year
+#' @description FUNCTION_DESCRIPTION
+#' @param data_lookup_tb PARAM_DESCRIPTION
+#' @param incl_main_ft_vec PARAM_DESCRIPTION
+#' @param target_year PARAM_DESCRIPTION
+#' @param target_area PARAM_DESCRIPTION, Default: NULL
+#' @param find_closest PARAM_DESCRIPTION, Default: 'abs'
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[purrr]{map}}
+#' @rdname get_closest_year
+#' @export
+#' @importFrom dplyr filter pull
+#' @importFrom purrr map
 get_closest_year <- function(data_lookup_tb,
                              incl_main_ft_vec,
                              target_year,
@@ -221,6 +255,24 @@ get_closest_year <- function(data_lookup_tb,
   return(closest_year)
 }
 
+#' @title get_resolution_hierarchy
+#' @description FUNCTION_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param resolution_lup_r3 PARAM_DESCRIPTION
+#' @param whole_area PARAM_DESCRIPTION, Default: TRUE
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{arrange}},\code{\link[dplyr]{desc}},\code{\link[dplyr]{pull}}
+#' @rdname get_resolution_hierarchy
+#' @export
+#' @importFrom dplyr filter arrange desc pull
 get_resolution_hierarchy <- function(data_year,
                                      resolution_lup_r3,
                                      whole_area = TRUE){
@@ -235,6 +287,22 @@ get_resolution_hierarchy <- function(data_year,
     dplyr::pull(area_type)
 }
 
+#' @title get_highest_res
+#' @description FUNCTION_DESCRIPTION
+#' @param options_vec PARAM_DESCRIPTION
+#' @param year PARAM_DESCRIPTION
+#' @param resolution_lup_r3 PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname get_highest_res
+#' @export
+
 get_highest_res <- function(options_vec,
                             year,
                             resolution_lup_r3){
@@ -246,13 +314,35 @@ get_highest_res <- function(options_vec,
     NA
 }
 
-##
-
+#' @title check_if_ppr
+#' @description FUNCTION_DESCRIPTION
+#' @param data_name_item PARAM_DESCRIPTION
+#' @param data_lookup_tb PARAM_DESCRIPTION
+#' @param pop_projs_str PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}}
+#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[stringr]{str_detect}}
+#'  \code{\link[magrittr]{extract}}
+#' @rdname check_if_ppr
+#' @export
+#' @importFrom purrr map_chr
+#' @importFrom ready.utils data_get
+#' @importFrom stringr str_detect
+#' @importFrom magrittr is_greater_than
 check_if_ppr <- function(data_name_item,
                          data_lookup_tb,
                          pop_projs_str){
   purrr::map_chr(data_name_item,
-                 ~ ready.data::data_get(data_lookup_tb = data_lookup_tb,
+                 ~ ready.utils::data_get(data_lookup_tb = data_lookup_tb,
                                         lookup_reference = .x,
                                         lookup_variable = "name",
                                         target_variable = "main_feature",
@@ -261,6 +351,20 @@ check_if_ppr <- function(data_name_item,
     sum() %>%
     magrittr::is_greater_than(0)
 }
+
+#' @title get_sys_data_tbs_ls
+#' @description FUNCTION_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname get_sys_data_tbs_ls
+#' @export
+
 get_sys_data_tbs_ls <- function(){
   list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
        aus_data_resolution_tb = aus_data_resolution_tb,
