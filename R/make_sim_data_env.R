@@ -60,7 +60,7 @@ get_model_end_ymdhs <- function(input_data){
 #'  \code{\link[ready.utils]{data_get}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
-#'  \code{\link[ready.epi]{intersect_sfs_update_counts}}
+#'  \code{\link[ready.epi]{intersect_sfs_update_counts}},\code{\link[ready.epi]{get_popl_var_prefix}}
 #'  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_measures}}
 #' @rdname extend_sp_data_list
 #' @export
@@ -68,7 +68,7 @@ get_model_end_ymdhs <- function(input_data){
 #' @importFrom ready.utils data_get
 #' @importFrom dplyr filter mutate
 #' @importFrom purrr map map2
-#' @importFrom ready.epi intersect_sfs_update_counts
+#' @importFrom ready.epi intersect_sfs_update_counts get_popl_var_prefix
 #' @importFrom sf st_transform st_area
 extend_sp_data_list <- function(sp_data_list,
                                 input_data,
@@ -114,7 +114,7 @@ extend_sp_data_list <- function(sp_data_list,
                                                                                   rownames(.x))) %>%
                                             dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
-  popl_var_prefix <- get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
+  popl_var_prefix <- ready.epi::get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
                                          tot_pop_resolution = tot_pop_resolution,
                                          data_year = ready.s4::data_year(input_data$profiled_area_input))
   extended_sp_data_list <- append(sp_data_list,

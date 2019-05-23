@@ -34,6 +34,6 @@ if(interactive()){
  \code{\link[ready.utils]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
- \code{\link[ready.epi]{intersect_sfs_update_counts}}
+ \code{\link[ready.epi]{intersect_sfs_update_counts}},\code{\link[ready.epi]{get_popl_var_prefix}}
  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_measures}}
 }
