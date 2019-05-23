@@ -4,7 +4,7 @@
 \name{ready.space-package}
 \alias{ready.space}
 \alias{ready.space-package}
-\title{ready.space: Create Readyforwhatsnext Spatio-temporal Objects.}
+\title{ready.space: Readyforwhatsnext Spatio-temporal Data Processing.}
 \description{
 ready.space is a package of functions that creates the spatial and temporal environment for the readyforwhatsnext simulation toolkit.
 }

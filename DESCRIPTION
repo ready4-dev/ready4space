@@ -1,6 +1,6 @@
 Package: ready.space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9014
+Version: 0.0.0.9015
 Authors@R: c(person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),person("Alexandra", "Parker", email = "Alex.Parker@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-2398-6306")),person("Cathrine", "Mihalopoulos", email = "cathy.mihalopoulos@deakin.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-7127-9462")),person("Jonathan", "Karnon", email = "Jonathan.Karnon@flinders.edu.au", role = c("rev"), comment = c(ORCID = "0000-0003-3220-2099")),person("Petra", "Plencnerova", email = "Petra.Plencnerova@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0001-9698-9084")),person("Orygen", role = c("cph", "fnd")),person("VicHealth", role = c("fnd")),person("Victoria University", role = c("fnd")))
 Description: Functions to process spatial data to create instances of readyforwhatsnext classes.
 Depends: R (>= 3.5.1)
@@ -8,7 +8,7 @@ License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    ready.agents (>= 0.0.0.9010),
+    ready.agents (>= 0.0.0.9011),
     dplyr,
     googleway,
     httr,
@@ -25,7 +25,7 @@ Imports:
     stats,
     tibble,
     ready.utils (>= 0.0.0.9005),
-    ready.s4 (>= 0.0.0.938),
+    ready.s4 (>= 0.0.0.939),
     readxl,
     units
 RoxygenNote: 6.1.1
