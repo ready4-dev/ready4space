@@ -1,11 +1,19 @@
 #' @title Calculate age/sex populations for each year / age of interest.
 #' @description FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
 #' @param years Numeric vector of the years for which age / sex counts should be estimated.
 #' @param age_lower Numeric, start of included age range.
 #' @param age_upper Numeric, end of included age range.
+#' @param param_tb PARAM_DESCRIPTION
+#' @param it_nbr PARAM_DESCRIPTION
+#' @param acgr PARAM_DESCRIPTION, Default: TRUE
+#' @param age_by_year PARAM_DESCRIPTION, Default: FALSE
+#' @param drop_bands PARAM_DESCRIPTION, Default: TRUE
 #' @param intervals Numeric, the years included in each age group in the source sf, Default: 5
-#' @param included_features XXXXXXXXXXXXX
+#' @param month PARAM_DESCRIPTION, Default: '07'
+#' @param day PARAM_DESCRIPTION, Default: '01'
+#' @param included_prefix PARAM_DESCRIPTION, Default: ''
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -15,16 +23,10 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[purrr]{map}},\code{\link[purrr]{flatten}},\code{\link[purrr]{modify}},\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
-#'  \code{\link[stringr]{str_subset}},\code{\link[stringr]{str_sub}}
-#' @rdname demographic_by_yearly_age_sex
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}}
+#' @rdname gen_demog_features
 #' @export
-#' @importFrom magrittr %>%
-#' @importFrom purrr map flatten_chr modify_at reduce prepend flatten_dbl map_dbl pluck
-#' @importFrom stringr str_subset str_sub str_replace
-#' @importFrom dplyr mutate pull
-#' @importFrom rlang sym
-
+#' @importFrom dplyr select starts_with
 gen_demog_features <- function(profiled_sf,
                                years,
                                age_lower,
@@ -92,7 +94,6 @@ gen_demog_features <- function(profiled_sf,
 #' @importFrom purrr reduce prepend
 #' @importFrom dplyr rename_at vars starts_with funs select
 #' @importFrom stringr str_sub str_to_lower
-
 gen_demog_acgr <- function(profiled_sf,
                            fn_pars,
                            param_tb,
@@ -145,7 +146,6 @@ gen_demog_acgr <- function(profiled_sf,
 #' @export
 #' @importFrom purrr map flatten_chr modify_at
 #' @importFrom stringr str_subset str_sub
-
 gen_demog_fun_par_vals <- function(profiled_sf,
                                    years,
                                    age_lower,
@@ -221,6 +221,7 @@ gen_demog_fun_par_vals <- function(profiled_sf,
 #' @param age_lower PARAM_DESCRIPTION
 #' @param age_upper PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
+#' @param included_prefix PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -234,7 +235,6 @@ gen_demog_fun_par_vals <- function(profiled_sf,
 #' @rdname gen_age_sex_estimates_t0
 #' @export
 #' @importFrom purrr flatten_dbl map_dbl
-
 gen_age_sex_estimates_t0 <- function(profiled_sf,
                                      t0_date,
                                      included_age_bands_num,
@@ -259,6 +259,7 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
 
 #' by_sex_for_an_age
 #' FUNCTION_DESCRIPTION
+#' @description FUNCTION_DESCRIPTION
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param age PARAM_DESCRIPTION
 #' @param age_lower PARAM_DESCRIPTION
@@ -267,6 +268,7 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
 #' @param age_bands_ref PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
 #' @param included_age_bands_num_all PARAM_DESCRIPTION
+#' @param included_prefix PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -280,13 +282,12 @@ gen_age_sex_estimates_t0 <- function(profiled_sf,
 #'  \code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}},\code{\link[purrr]{pluck}}
 #'  \code{\link[dplyr]{mutate}}
 #'  \code{\link[rlang]{sym}}
+#' @rdname by_sex_for_an_age
 #' @export
 #' @importFrom stringr str_sub str_to_lower
 #' @importFrom purrr reduce prepend pluck
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @describeIn demographic_by_yearly_age_sex Calculates age populations for each sex.
-
 by_sex_for_an_age <- function(profiled_sf,
                               age,
                               age_lower,
@@ -329,6 +330,7 @@ by_sex_for_an_age <- function(profiled_sf,
 #' @param age_bands_ref PARAM_DESCRIPTION
 #' @param intervals PARAM_DESCRIPTION
 #' @param included_age_bands_num_all PARAM_DESCRIPTION
+#' @param included_prefix PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -339,10 +341,9 @@ by_sex_for_an_age <- function(profiled_sf,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
+#' @rdname by_age_sex_for_a_year
 #' @export
 #' @importFrom purrr reduce prepend
-#' @describeIn demographic_by_yearly_age_sex Calculates age and sex populations for a specific year.
-
 by_age_sex_for_a_year <- function(profiled_sf,
                                   age_lower,
                                   age_upper,
@@ -365,9 +366,9 @@ by_age_sex_for_a_year <- function(profiled_sf,
 
 #' demographic_compound_growth_rate
 #' FUNCTION_DESCRIPTION
-#' @param t0_pop A numeric vector of population counts in the baseline year.
-#' @param t1_pop A numeric vector of population counts in the follow-up year.
-#' @param n_periods Number of years between baseline and follow-up.
+#' @param t0_pop PARAM_DESCRIPTION
+#' @param t1_pop PARAM_DESCRIPTION
+#' @param n_periods PARAM_DESCRIPTION
 #' @param age_sex_band PARAM_DESCRIPTION
 #' @param param_tb PARAM_DESCRIPTION
 #' @param it_nbr PARAM_DESCRIPTION
@@ -379,8 +380,8 @@ by_age_sex_for_a_year <- function(profiled_sf,
 #'  #EXAMPLE1
 #'  }
 #' }
+#' @rdname demographic_compound_growth_rate
 #' @export
-#' @describeIn demographic_by_yearly_age_sex Calculates the compound annual growth rate between two periods.
 
 demographic_compound_growth_rate <- function(t0_pop,
                                              t1_pop,
@@ -421,7 +422,6 @@ demographic_compound_growth_rate <- function(t0_pop,
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom ready.utils data_get
-
 adjust_pop_proj_for_pe <- function(t0_pop,
                                    t1_pop,
                                    n_periods,
@@ -457,9 +457,9 @@ adjust_pop_proj_for_pe <- function(t0_pop,
 #' col_pair_growth_rate
 #' ADD DESCRIPTIVE INFO HERE
 #' @param profiled_sf PARAM_DESCRIPTION
-#' @param list_element Numeric, index value for look-up.
-#' @param included_cols_pairs A list ....
-#' @param included_time_intervals_start_end A list ....
+#' @param list_element PARAM_DESCRIPTION
+#' @param included_cols_pairs PARAM_DESCRIPTION
+#' @param included_time_intervals_start_end PARAM_DESCRIPTION
 #' @param param_tb PARAM_DESCRIPTION
 #' @param it_nbr PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
@@ -475,13 +475,12 @@ adjust_pop_proj_for_pe <- function(t0_pop,
 #'  \code{\link[dplyr]{mutate}}
 #'  \code{\link[rlang]{sym}}
 #'  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_replace}},\code{\link[stringr]{case}}
+#' @rdname col_pair_growth_rate
 #' @export
 #' @importFrom purrr reduce prepend pluck
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom stringr str_sub str_replace_all str_to_lower
-#' @describeIn demographic_by_yearly_age_sex Adds columns with the compound annual growth rate between two periods to inputted sf.
-
 col_pair_growth_rate <- function(profiled_sf,
                                  list_element,
                                  included_cols_pairs,
@@ -493,29 +492,30 @@ col_pair_growth_rate <- function(profiled_sf,
                                                     purrr::pluck("t0") %>%
                                                     length()),
                                                list(a=profiled_sf)),
-                                .f = function(x,y) x %>% dplyr::mutate(!!(paste0("acgr_",
-                                                                                 included_cols_pairs %>%
-                                                                                   purrr::pluck(list_element) %>%
-                                                                                   purrr::pluck("t0") %>%
-                                                                                   purrr::pluck(y))) := demographic_compound_growth_rate(t0_pop = !!rlang::sym(included_cols_pairs %>%
-                                                                                                                                                                 purrr::pluck(list_element) %>%
-                                                                                                                                                                 purrr::pluck("t0") %>%
-                                                                                                                                                                 purrr::pluck(y)),
-                                                                                                                                         t1_pop = !!rlang::sym(included_cols_pairs %>%
-                                                                                                                                                                 purrr::pluck(list_element) %>%
-                                                                                                                                                                 purrr::pluck("t1") %>%
-                                                                                                                                                                 purrr::pluck(y)),
-                                                                                                                                         n_periods = included_time_intervals_start_end %>%
-                                                                                                                                           purrr::pluck(list_element) %>% diff(),
-                                                                                                                                         age_sex_band = included_cols_pairs %>%
-                                                                                                                                           purrr::pluck(list_element) %>%
-                                                                                                                                           purrr::pluck("t1") %>%
-                                                                                                                                           purrr::pluck(y) %>%
-                                                                                                                                           stringr::str_sub(start = 7) %>%
-                                                                                                                                           stringr::str_replace_all("\\.","_") %>%
-                                                                                                                                           stringr::str_to_lower(),
-                                                                                                                                         param_tb = param_tb,
-                                                                                                                                         it_nbr = it_nbr)))
+                                .f = function(x,y) x %>%
+                                  dplyr::mutate(!!(paste0("acgr_",
+                                                          included_cols_pairs %>%
+                                                            purrr::pluck(list_element) %>%
+                                                            purrr::pluck("t0") %>%
+                                                            purrr::pluck(y))) := demographic_compound_growth_rate(t0_pop = !!rlang::sym(included_cols_pairs %>%
+                                                                                                                                          purrr::pluck(list_element) %>%
+                                                                                                                                          purrr::pluck("t0") %>%
+                                                                                                                                          purrr::pluck(y)),
+                                                                                                                  t1_pop = !!rlang::sym(included_cols_pairs %>%
+                                                                                                                                          purrr::pluck(list_element) %>%
+                                                                                                                                          purrr::pluck("t1") %>%
+                                                                                                                                          purrr::pluck(y)),
+                                                                                                                  n_periods = included_time_intervals_start_end %>%
+                                                                                                                    purrr::pluck(list_element) %>% diff(),
+                                                                                                                  age_sex_band = included_cols_pairs %>%
+                                                                                                                    purrr::pluck(list_element) %>%
+                                                                                                                    purrr::pluck("t1") %>%
+                                                                                                                    purrr::pluck(y) %>%
+                                                                                                                    stringr::str_sub(start = 7) %>%
+                                                                                                                    stringr::str_replace_all("\\.","_") %>%
+                                                                                                                    stringr::str_to_lower(),
+                                                                                                                  param_tb = param_tb,
+                                                                                                                  it_nbr = it_nbr)))
 
 
   return(profiled_sf)
@@ -534,9 +534,8 @@ col_pair_growth_rate <- function(profiled_sf,
 #'  #EXAMPLE1
 #'  }
 #' }
+#' @rdname future_pop_from_comp_g_r
 #' @export
-#' @describeIn demographic_by_yearly_age_sex Calculates a projected future population using the annual compound growth rate.
-
 
 future_pop_from_comp_g_r <- function(cgr,
                                      base_year_pop,
@@ -559,17 +558,16 @@ future_pop_from_comp_g_r <- function(cgr,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{pull}}
+#'  \code{\link[dplyr]{mutate_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stringr]{str_sub}},\code{\link[stringr]{str_replace}}
 #'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{reduce}},\code{\link[purrr]{prepend}}
 #'  \code{\link[lubridate]{ymd}},\code{\link[lubridate]{period}},\code{\link[lubridate]{interval}}
+#' @rdname gen_age_sex_estimates_tx
 #' @export
 #' @importFrom dplyr mutate_at vars starts_with funs rename_at contains select mutate pull
 #' @importFrom stringr str_sub str_replace str_replace_all
 #' @importFrom purrr pluck map_chr reduce prepend
 #' @importFrom lubridate ymd years weeks days interval
-#' @describeIn demographic_by_yearly_age_sex Calculates grouped age / sex counts for additional years.
-
 gen_age_sex_estimates_tx <- function(profiled_sf,
                                      ymwd_step){
   if(profiled_sf %>% names() %>% startsWith("t0_") %>% sum() ==0){
