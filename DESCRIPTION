@@ -8,7 +8,7 @@ License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    ready.agents (>= 0.0.0.9011),
+    ready.agents (>= 0.0.0.9012),
     dplyr,
     googleway,
     httr,
@@ -19,19 +19,17 @@ Imports:
     osrm,
     purrr,
     rlang,
-    seplyr,
     sf,
     stringr,
     stats,
     tibble,
     ready.utils (>= 0.0.0.9005),
     ready.s4 (>= 0.0.0.939),
-    readxl,
     units,
-    ready.epi (>= 0.0.0.9001)
+    ready.epi (>= 0.0.0.9002)
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-Remotes:  
+Remotes: 
     matthewphamilton/ready.agents,
     matthewphamilton/ready.utils,
     matthewphamilton/ready.s4,
