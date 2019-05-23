@@ -2,34 +2,32 @@
 % Please edit documentation in R/spatial_create_agent_coordinates_tb.R
 \name{spatial_create_agent_coordinates_tb}
 \alias{spatial_create_agent_coordinates_tb}
-\title{Creates a tibble of coordinates for synthetic incident cases.}
+\title{spatial_create_agent_coordinates_tb}
 \usage{
 spatial_create_agent_coordinates_tb(profiled_area_sf, disorder, year,
   case_type = "expected.incidence", person_type = "p", resolution_unit)
 }
 \arguments{
-\item{profiled_area_sf}{A SF object corresponding to the geographic unit that is to be profiled.}
+\item{profiled_area_sf}{PARAM_DESCRIPTION}
 
-\item{disorder}{A String ...}
+\item{disorder}{PARAM_DESCRIPTION}
 
-\item{year}{A String ...}
+\item{year}{PARAM_DESCRIPTION}
 
-\item{case_type}{A String ...}
+\item{case_type}{PARAM_DESCRIPTION, Default: 'expected.incidence'}
 
-\item{person_type}{A String ...}
+\item{person_type}{PARAM_DESCRIPTION, Default: 'p'}
 
-\item{resolution_unit}{A String ...}
+\item{resolution_unit}{PARAM_DESCRIPTION}
 }
 \value{
-A simple features object.
+OUTPUT_DESCRIPTION
 }
 \description{
-This function:
-  -
-  -
+Creates a tibble of coordinates for agents.
 }
 \details{
-
+DETAILS
 }
 \examples{
 \dontrun{
@@ -44,13 +42,4 @@ if(interactive()){
  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
  \code{\link[rlang]{sym}}
  \code{\link[purrr]{map2}}
-
-Other spatial functions.: \code{\link{pop_sum_15.24}},
-  \code{\link{spatial_adjust_partial_in_custom_area}},
-  \code{\link{spatial_cases_coordinates}},
-  \code{\link{spatial_one_year_projections_15_24}},
-  \code{\link{spatial_population_growth}},
-  \code{\link{spatial_profile_by_sa2}},
-  \code{\link{spatial_summarise_population_counts_0to29}}
 }
-\concept{spatial functions.}

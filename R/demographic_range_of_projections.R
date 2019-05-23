@@ -1,27 +1,12 @@
-#' @title
-#' Estimate a vector of demographic projections.
-#'
-#' @description
-#' This function creates a vector......
-#'
-#' @family demographic modelling functions.
-#'
-#' @details
-#' Implements formula from http://www.healthstrategy.com/cgi-bin/datagen.pl
+#' @title demographic_range_of_projections
+#' @description Estimate a vector of demographic projections.
+#' @details  Implements formula from http://www.healthstrategy.com/cgi-bin/datagen.pl
 #' Converts absolute mean error into +/- range.
-#'
 #' @param mean.abs.error A .....
-#'
 #' @param three.std.devs.from.mean.error A .....
-#'
 #' @param n.five.year.predictions A positive integer.
-#'
 #' @param n.replications A positive integer.
-#'
-#' @return
-#' A tibble.
-#'
-#' @details DETAILS
+#' @return A tibble.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -33,8 +18,7 @@
 #' @rdname demographic_range_of_projections
 #' @export
 #' @importFrom invgamma rinvgamma
-#'
-demographic_range_of_projections<-function(mean.abs.error,
+demographic_range_of_projections <- function(mean.abs.error,
                             three.std.devs.from.mean.error,
                             n.five.year.predictions,
                             n.replications){

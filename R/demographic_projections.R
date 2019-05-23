@@ -1,23 +1,11 @@
-#' @title
-#' Forecast population groth with prediction intervals.
-#'
-#' @description
-#' This function creates a list......
-#'
-#' @family demographic modelling functions.
-#'
-#' @details
-#' Function implements calculations based on:
+#' @title demographic_projections
+#' @description Forecast population groth with prediction intervals.
+#' @details Function implements calculations based on:
 #' http://www.jstor.org.ezp.lib.unimelb.edu.au/stable/41110880?seq=1#page_scan_tab_contents
-#'
 #' @param naive A logical value, denoting whether using a naive modelling approach (assumes
 #' previous growth rates continue into future) or a theory based model.
-#'
 #' @param n.replications A positive integer.
-#'
-#' @return
-#' A list.
-#'
+#' @return A list.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -35,9 +23,9 @@
 #' @importFrom dplyr summarise slice bind_rows select mutate pull
 #' @importFrom purrr pmap
 #' @importFrom stats setNames
-
-demographic_projections<-function(naive,
-                                  n.replications){
+## Needs to be rewritten, with parameters inputted and using classes for generalisation beyond Australian context.
+demographic_projections <- function(naive,
+                                    n.replications){
   naive.model.apes<-tibble::tibble(twoyear=c(-0.61,
                                              -0.61,
                                              -0.27,
@@ -119,12 +107,12 @@ demographic_projections<-function(naive,
                   fiveyearmape,
                   tenyearmape)
   error.multiplier.for.niaive<-1-(abs(model.comparison %>%
-                                              dplyr::slice(2)
+                                        dplyr::slice(2)
   )- abs(model.comparison %>%
-                 dplyr::slice(1)
+           dplyr::slice(1)
   )
   ) / abs(model.comparison %>%
-                  dplyr::slice(2)
+            dplyr::slice(2)
   )
   prediction.mapes.age.sex.5yr<-tibble::tibble(female.10.14=1.6,
                                                female.15.9=1.2,
@@ -165,20 +153,20 @@ demographic_projections<-function(naive,
   input.tibble<-input.tibble %>%
     dplyr::mutate(nameslist=paste0(sex,".",age))
   growth.rate.error.list<-purrr::pmap(list(a=input.tibble %>%
-                                            dplyr::select(mean.abs.error) %>%
-                                            dplyr::pull(),
-                                          b=input.tibble %>%
-                                            dplyr::select(three.std.devs.from.mean.error) %>%
-                                            dplyr::pull(),
-                                          c=input.tibble %>%
-                                            dplyr::select(n.five.year.predictions) %>%
-                                            dplyr::pull()),
-  ~ demographic_range_of_projections(mean.abs.error=..1,
-                                  three.std.devs.from.mean.error=..2,
-                                  n.five.year.predictions=..3,
-                                  n.replications = n.replications)) %>%
+                                             dplyr::select(mean.abs.error) %>%
+                                             dplyr::pull(),
+                                           b=input.tibble %>%
+                                             dplyr::select(three.std.devs.from.mean.error) %>%
+                                             dplyr::pull(),
+                                           c=input.tibble %>%
+                                             dplyr::select(n.five.year.predictions) %>%
+                                             dplyr::pull()),
+                                      ~ demographic_range_of_projections(mean.abs.error=..1,
+                                                                         three.std.devs.from.mean.error=..2,
+                                                                         n.five.year.predictions=..3,
+                                                                         n.replications = n.replications)) %>%
     stats::setNames(input.tibble %>%
-               dplyr::select(nameslist) %>%
-               dplyr::pull())
+                      dplyr::select(nameslist) %>%
+                      dplyr::pull())
   return(growth.rate.error.list)
 }

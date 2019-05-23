@@ -1,36 +1,23 @@
-#' @title
-#' Adjust population counts by fraction of spatial unit included in a profiled area.
-#'
+#' @title Adjust population counts by fraction of spatial unit included in a profiled area.
 #' @description
 #' This function:
 #'  -
-#'  -
-#'
-#' @details Need to review if removal of linestrings is appropriate.
-#'
-#' @param tot_pop_sf A simple features object comprised of SA1s
-#'
-#' @param profiled_sf A simple features object comprised of SA2s.
-#'
-#' @param group_by_var A string specifying "SA1" or "SA2" as the resolution of the
-#' returned object,
-#'
-#' @return
-#' A simple features object.
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param group_by_var PARAM_DESCRIPTION
+#' @param age_sex_var_name PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION
+#' @param tot_pop_resolution PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION, Default: ''
+#' @return OUTPUT_DESCRIPTION
 #' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso
-#'  \code{\link[dplyr]{join}},\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{summarise_all}}
-#'  \code{\link[sf]{st_geometry}},\code{\link[sf]{geos_measures}}
 #' @rdname update_pop_count_by_areas
 #' @export
-#' @importFrom dplyr inner_join group_by summarise ungroup rename mutate filter select contains rename_at vars funs mutate_at summarise_at starts_with
-#' @importFrom sf st_set_geometry st_area
-
 update_pop_count_by_areas <-function(profiled_sf,
                                      group_by_var,
                                      age_sex_var_name,
@@ -43,7 +30,6 @@ update_pop_count_by_areas <-function(profiled_sf,
                                         data_year = data_year,
                                         concept = "age_sex",
                                         popl_var_prefix = popl_var_prefix)
-  # Once fixed, could use sum_pop_by_multiple_groups_sf
   if(popl_var_prefix == "")
     profiled_sf <- sum_pop_by_multiple_groups_sf(profiled_sf = profiled_sf,
                                                  group_by_var = group_by_var,
@@ -55,7 +41,27 @@ update_pop_count_by_areas <-function(profiled_sf,
 
   return(profiled_sf)
 }
-## BREAKS DOWN FOR PRE-PROCESSED AGE/SEX COUNTS
+
+#' @title sum_pop_by_multiple_groups_sf
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param group_by_var PARAM_DESCRIPTION
+#' @param age_sex_var_name PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION
+#' @param tot_pop_resolution PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION, Default: ''
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname sum_pop_by_multiple_groups_sf
+#' @export
+
 sum_pop_by_multiple_groups_sf <- function(profiled_sf,
                                           group_by_var,
                                           age_sex_var_name,
@@ -82,13 +88,6 @@ sum_pop_by_multiple_groups_sf <- function(profiled_sf,
                                           age_sex_var_name = age_sex_var_name,
                                           age_sex_pop_resolution = age_sex_pop_resolution)
   }
-  # profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
-  #                                       grp_var_name = age_sex_var_name,
-  #                                       nse_objs_ls = gen_objs_for_nse_upd_pop(sp_unit = age_sex_pop_resolution,
-  #                                                                              concept = "age_sex",
-  #                                                                              grouping_1 = age_sex_pop_resolution),
-  #                                       suff_to_pref = TRUE)
-
   if(!is.null(tot_pop_resolution)){
     profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
                                           grp_var_name = age_sex_var_name,
@@ -150,6 +149,24 @@ drop_grouped_popl_vars <- function(profiled_sf,
                 keep_vars_vec)
 
 }
+
+#' @title suffix_to_prefix
+#' @description FUNCTION_DESCRIPTION
+#' @param data_tb PARAM_DESCRIPTION
+#' @param suffix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}}
+#' @rdname suffix_to_prefix
+#' @export
+#' @importFrom dplyr rename_at vars ends_with funs
 suffix_to_prefix <- function(data_tb,
                              suffix){
   data_tb %>%
@@ -159,6 +176,36 @@ suffix_to_prefix <- function(data_tb,
                                         gsub(paste0("_",
                                                     suffix),"",.))))
 }
+
+#' @title update_pop_by_inc_area
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param sp_unit PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param concept PARAM_DESCRIPTION
+#' @param age_sex_var_name PARAM_DESCRIPTION, Default: NULL
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION, Default: NULL
+#' @param tot_pop_col PARAM_DESCRIPTION, Default: NULL
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{mutate_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{select_all}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[sf]{geos_measures}}
+#'  \code{\link[units]{set_units}}
+#' @rdname update_pop_by_inc_area
+#' @export
+#' @importFrom dplyr mutate mutate_at vars starts_with funs rename_at
+#' @importFrom rlang sym
+#' @importFrom sf st_area
+#' @importFrom units set_units
 update_pop_by_inc_area <- function(profiled_sf,
                                    sp_unit,
                                    data_year,
@@ -178,10 +225,6 @@ update_pop_by_inc_area <- function(profiled_sf,
                     units::set_units(km^2))
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(nse_objs_ls$prop_inc_unit) := as.numeric(!!rlang::sym(nse_objs_ls$area_inc_unit)/!!rlang::sym(nse_objs_ls$area_whl_unit)))
-  # %>%
-  #   dplyr::mutate(!!rlang::sym(nse_objs_ls$prop_inc_unit) := ifelse(is.nan(!!rlang::sym(nse_objs_ls$prop_inc_unit)),
-  #                                                                   0,
-  #                                                                   !!rlang::sym(nse_objs_ls$prop_inc_unit)))
   if(!is.null(tot_pop_col)){
     profiled_sf <- profiled_sf %>%
       dplyr::mutate(!!rlang::sym(nse_objs_ls$popl_inc_unit) := !!rlang::sym(nse_objs_ls$popl_whl_unit) * !!rlang::sym(nse_objs_ls$prop_inc_unit))
@@ -240,11 +283,10 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
   if(concept == "tot_pop"){
     popl_multiplier <- "pop_prop_multiplier_tot_pop"
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
-    whl_pop_str_1 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Females.")#paste0("inc_",grouping_1,"_popl_","y",data_year,".Females.")
-    whl_pop_str_2 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Males.")#paste0("inc_",grouping_1,"_popl_","y",data_year,".Males.")
-    inc_str_to_delete <- grouping_1_age_sex_pop_str#paste0("inc_",grouping_1,"_popl_")
+    whl_pop_str_1 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Females.")
+    whl_pop_str_2 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Males.")
+    inc_str_to_delete <- grouping_1_age_sex_pop_str
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
-    # popl_inc_starts_with_1 <- paste0("inc_",sp_unit,"_popl","_",inc_pop_str_1)
     }
   list(area_whl_unit = paste0("whl_",sp_unit,"_area"),
        area_inc_unit = paste0("inc_",sp_unit,"_area"),
@@ -267,6 +309,22 @@ gen_objs_for_nse_upd_pop <- function(sp_unit,
        grouping_1_age_sex_pop = grouping_1_age_sex_pop_str,
        inc_str_to_delete = inc_str_to_delete)
 }
+#' @title get_popl_var_prefix
+#' @description FUNCTION_DESCRIPTION
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION
+#' @param tot_pop_resolution PARAM_DESCRIPTION, Default: NULL
+#' @param data_year PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname get_popl_var_prefix
+#' @export
+
 get_popl_var_prefix <- function(age_sex_pop_resolution,
                                 tot_pop_resolution = NULL,
                                 data_year){
@@ -287,13 +345,35 @@ get_popl_var_prefix <- function(age_sex_pop_resolution,
   }
   paste0(nse_names_ls$popl_inc_unit,"_")
 }
+#' @title sum_updated_pop_by_grp
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param grp_var_name PARAM_DESCRIPTION
+#' @param nse_objs_ls PARAM_DESCRIPTION
+#' @param suff_to_pref PARAM_DESCRIPTION, Default: FALSE
+#' @param top_level PARAM_DESCRIPTION, Default: FALSE
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[sf]{st_geometry}}
+#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{bind}},\code{\link[dplyr]{join}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname sum_updated_pop_by_grp
+#' @export
+#' @importFrom sf st_set_geometry
+#' @importFrom dplyr group_by summarise_at vars starts_with funs ungroup rename_at bind_cols inner_join
+#' @importFrom rlang sym
 sum_updated_pop_by_grp <- function(profiled_sf,
-                                   #group_by_res,
                                    grp_var_name,
                                    nse_objs_ls,
                                    suff_to_pref = FALSE,
                                    top_level = FALSE){
-  #group_prefix <- paste0("grp_by_",group_by_res)
   group_totals <- profiled_sf %>%
     sf::st_set_geometry(NULL) %>%
     dplyr::group_by(!!rlang::sym(grp_var_name)) %>%
@@ -302,8 +382,6 @@ sum_updated_pop_by_grp <- function(profiled_sf,
   if(suff_to_pref)
     group_totals <- group_totals %>%
       suffix_to_prefix(suffix = nse_objs_ls$grouping_1_concept_tot)
-  ##%>% # REMOVED NA.RM ARG
-    #suffix_to_prefix(suffix = nse_objs_ls$grouping_1_concept_tot) %>%
   group_totals <- group_totals %>%
     dplyr::ungroup() %>%
     dplyr::rename_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$grouping_1_concept_tot)),
@@ -316,4 +394,3 @@ sum_updated_pop_by_grp <- function(profiled_sf,
       dplyr::inner_join(.,group_totals)
   }
 }
-#s1 missing

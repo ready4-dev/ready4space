@@ -2,7 +2,7 @@
 % Please edit documentation in R/demographic_projections.R
 \name{demographic_projections}
 \alias{demographic_projections}
-\title{Forecast population groth with prediction intervals.}
+\title{demographic_projections}
 \usage{
 demographic_projections(naive, n.replications)
 }
@@ -16,7 +16,7 @@ previous growth rates continue into future) or a theory based model.}
 A list.
 }
 \description{
-This function creates a list......
+Forecast population groth with prediction intervals.
 }
 \details{
 Function implements calculations based on:
@@ -34,13 +34,4 @@ if(interactive()){
  \code{\link[dplyr]{summarise}},\code{\link[dplyr]{slice}},\code{\link[dplyr]{bind}},\code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{pull}}
  \code{\link[purrr]{map2}}
  \code{\link[stats]{setNames}}
-
-Other demographic modelling functions.: \code{\link{demographic_deterministic_2016_2021}},
-  \code{\link{demographic_growth_calcs}},
-  \code{\link{demographic_growth_list_single}},
-  \code{\link{demographic_growth_list}},
-  \code{\link{demographic_growth_projs_slice}},
-  \code{\link{demographic_inputs}},
-  \code{\link{demographic_range_of_projections}}
 }
-\concept{demographic modelling functions.}

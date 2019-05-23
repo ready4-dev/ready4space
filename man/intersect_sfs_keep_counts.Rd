@@ -2,45 +2,40 @@
 % Please edit documentation in R/intersect_sfs_keep_counts.R
 \name{intersect_sfs_keep_counts}
 \alias{intersect_sfs_keep_counts}
-\alias{intersect_sf_drop_cols}
-\title{intersect_sfs_keep_counts
-This function:
-  -}
+\title{intersect_sfs_keep_counts}
 \usage{
 intersect_sfs_keep_counts(profiled_sf, profiled_colref = NA,
   profiled_rowref = NA, attribute_sf, attribute_unit, data_type,
   data_year, popl_var_prefix = NULL)
-
-intersect_sf_drop_cols(main_sf, adjunct_sf)
 }
 \arguments{
-\item{profiled_sf}{A SF object corresponding to the geographic unit that is to be profiled.}
+\item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{profiled_colref}{A variable name from the profiled_sf object that is the basis for
-filtering the object if not all areas from the object are to be used.}
+\item{profiled_colref}{PARAM_DESCRIPTION, Default: NA}
 
-\item{profiled_rowref}{A value from the profiled_colref variable which, if specified, will
-be used to identify a subset of the profiled_sf object.}
+\item{profiled_rowref}{PARAM_DESCRIPTION, Default: NA}
 
-\item{attribute_sf}{A SF object corresponding to the geographic unit that is resolution
-at which the profiled_sf object will be profiled.}
+\item{attribute_sf}{PARAM_DESCRIPTION}
+
+\item{attribute_unit}{PARAM_DESCRIPTION}
+
+\item{data_type}{PARAM_DESCRIPTION}
+
+\item{data_year}{PARAM_DESCRIPTION}
+
+\item{popl_var_prefix}{PARAM_DESCRIPTION, Default: NULL}
 }
 \value{
-A simple features object.
+OUTPUT_DESCRIPTION
 }
 \description{
 intersect_sfs_keep_counts
-This function:
-  -
 }
 \details{
+This function:
 
+DETAILS
 }
-\section{Functions}{
-\itemize{
-\item \code{intersect_sf_drop_cols}: Function to intesect two sfs and drop extra columns.
-}}
-
 \examples{
 \dontrun{
 if(interactive()){
@@ -49,7 +44,9 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}}
+\code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{filter}}
  \code{\link[stringr]{str_subset}}
- \code{\link[sf]{geos_binary_ops}}
+ \code{\link[rlang]{sym}}
+ \code{\link[sf]{geos_measures}},\code{\link[sf]{geos_binary_ops}}
+ \code{\link[units]{set_units}}
 }

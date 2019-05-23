@@ -2,14 +2,10 @@
 % Please edit documentation in R/travel_time_app_calc.R
 \name{travel_time_app_calc}
 \alias{travel_time_app_calc}
-\alias{convert_tt_polygon_to_sf}
 \title{Create isochrones around an origin using the Travel Time App}
 \usage{
 travel_time_app_calc(appID, apiKey, origin,
   mode_of_transport = "driving", travel_time_hours, crs)
-
-convert_tt_polygon_to_sf(tt_polyline, mode_of_transport, travel_time_hours,
-  crs)
 }
 \arguments{
 \item{appID}{PARAM_DESCRIPTION}
@@ -23,8 +19,6 @@ convert_tt_polygon_to_sf(tt_polyline, mode_of_transport, travel_time_hours,
 \item{travel_time_hours}{PARAM_DESCRIPTION}
 
 \item{crs}{PARAM_DESCRIPTION}
-
-\item{tt_polyline}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -34,12 +28,9 @@ FUNCTION_DESCRIPTION
 }
 \details{
 ## Implements: https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
-}
-\section{Functions}{
-\itemize{
-\item \code{convert_tt_polygon_to_sf}: Calculates the .....
-}}
 
+DETAILS
+}
 \examples{
 \dontrun{
 if(interactive()){

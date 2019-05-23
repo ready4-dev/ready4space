@@ -2,28 +2,28 @@
 % Please edit documentation in R/spatial_area_within_xkm_of_points.R
 \name{spatial_area_within_xkm_of_points}
 \alias{spatial_area_within_xkm_of_points}
-\title{Plots a profiled geographic unit based on distancw from service location.}
+\title{spatial_area_within_xkm_of_points}
 \usage{
 spatial_area_within_xkm_of_points(point_locations, land_sf, distance,
   crs_nbr)
 }
 \arguments{
-\item{point_locations}{A tibble...}
+\item{point_locations}{PARAM_DESCRIPTION}
 
-\item{land_sf}{A SF object ....}
+\item{land_sf}{PARAM_DESCRIPTION}
 
-\item{distance}{A double....}
+\item{distance}{PARAM_DESCRIPTION}
+
+\item{crs_nbr}{PARAM_DESCRIPTION}
 }
 \value{
-A simple features object.
+OUTPUT_DESCRIPTION
 }
 \description{
-This function:
-  -
-  -
+Generates a SF based on distance from service location.
 }
 \details{
-
+DETAILS
 }
 \examples{
 \dontrun{
@@ -35,4 +35,3 @@ if(interactive()){
 \seealso{
 \code{\link[sf]{st_as_sf}},\code{\link[sf]{st_transform}},\code{\link[sf]{geos_unary}},\code{\link[sf]{geos_combine}},\code{\link[sf]{geos_binary_ops}},\code{\link[sf]{sf}}
 }
-\concept{plot functions.}

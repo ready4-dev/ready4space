@@ -2,7 +2,7 @@
 % Please edit documentation in R/demographic_range_of_projections.R
 \name{demographic_range_of_projections}
 \alias{demographic_range_of_projections}
-\title{Estimate a vector of demographic projections.}
+\title{demographic_range_of_projections}
 \usage{
 demographic_range_of_projections(mean.abs.error,
   three.std.devs.from.mean.error, n.five.year.predictions, n.replications)
@@ -20,13 +20,11 @@ demographic_range_of_projections(mean.abs.error,
 A tibble.
 }
 \description{
-This function creates a vector......
+Estimate a vector of demographic projections.
 }
 \details{
 Implements formula from http://www.healthstrategy.com/cgi-bin/datagen.pl
 Converts absolute mean error into +/- range.
-
-DETAILS
 }
 \examples{
 \dontrun{
@@ -37,13 +35,4 @@ if(interactive()){
 }
 \seealso{
 \code{\link[invgamma]{invgamma}}
-
-Other demographic modelling functions.: \code{\link{demographic_deterministic_2016_2021}},
-  \code{\link{demographic_growth_calcs}},
-  \code{\link{demographic_growth_list_single}},
-  \code{\link{demographic_growth_list}},
-  \code{\link{demographic_growth_projs_slice}},
-  \code{\link{demographic_inputs}},
-  \code{\link{demographic_projections}}
 }
-\concept{demographic modelling functions.}

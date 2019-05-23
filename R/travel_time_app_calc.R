@@ -1,5 +1,6 @@
 #' @title Create isochrones around an origin using the Travel Time App
 #' @description FUNCTION_DESCRIPTION
+#' @details ## Implements: https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
 #' @param appID PARAM_DESCRIPTION
 #' @param apiKey PARAM_DESCRIPTION
 #' @param origin PARAM_DESCRIPTION
@@ -7,7 +8,7 @@
 #' @param travel_time_hours PARAM_DESCRIPTION
 #' @param crs PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
-#' @details ## Implements: https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -27,7 +28,6 @@
 #' @importFrom googleway encode_pl
 #' @importFrom dplyr pull
 #' @importFrom purrr map reduce
-
 travel_time_app_calc <- function(appID,
                                  apiKey,
                                  origin,
@@ -73,8 +73,29 @@ travel_time_app_calc <- function(appID,
   return(mew_sf)
 }
 
-#' @describeIn travel_time_app_calc Calculates the .....
+#' @title convert_tt_polygon_to_sf
+#' @description FUNCTION_DESCRIPTION
 #' @param tt_polyline PARAM_DESCRIPTION
+#' @param mode_of_transport PARAM_DESCRIPTION
+#' @param travel_time_hours PARAM_DESCRIPTION
+#' @param crs PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[googlePolylines]{decode}}
+#'  \code{\link[purrr]{pluck}}
+#'  \code{\link[sf]{st}},\code{\link[sf]{sfc}},\code{\link[sf]{sf}}
+#' @rdname convert_tt_polygon_to_sf
+#' @export
+#' @importFrom googlePolylines decode
+#' @importFrom purrr pluck
+#' @importFrom sf st_polygon st_sfc st_sf
 convert_tt_polygon_to_sf <- function(tt_polyline,
                                      mode_of_transport,
                                      travel_time_hours,

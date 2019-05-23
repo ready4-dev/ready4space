@@ -1,30 +1,13 @@
-#' @title
-#' Creates a tibble of coordinates for synthetic incident cases.
-#'
-#' @description
-#' This function:
-#'   -
-#'   -
-#'
-#' @family spatial functions.
-#'
-#' @details
-#'
-#' @param profiled_area_sf A SF object corresponding to the geographic unit that is to be profiled.
-#'
-#' @param disorder A String ...
-#'
-#' @param year A String ...
-#'
-#' @param case_type A String ...
-#'
-#' @param person_type A String ...
-#'
-#' @param resolution_unit A String ...
-#'
-#' @return
-#' A simple features object.
-#'
+#' @title spatial_create_agent_coordinates_tb
+#' @description Creates a tibble of coordinates for agents.
+#' @param profiled_area_sf PARAM_DESCRIPTION
+#' @param disorder PARAM_DESCRIPTION
+#' @param year PARAM_DESCRIPTION
+#' @param case_type PARAM_DESCRIPTION, Default: 'expected.incidence'
+#' @param person_type PARAM_DESCRIPTION, Default: 'p'
+#' @param resolution_unit PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -44,7 +27,6 @@
 #' @importFrom dplyr select pull filter
 #' @importFrom rlang sym
 #' @importFrom purrr map2_dfr
-
 spatial_create_agent_coordinates_tb <- function(profiled_area_sf,
                                                 disorder,
                                                 year,

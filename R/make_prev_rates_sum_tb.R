@@ -3,24 +3,23 @@
 #' @param prev_rates_vec PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
-#' @examples 
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
+#' @seealso
 #'  \code{\link[stringr]{str_detect}},\code{\link[stringr]{str_sub}}
 #'  \code{\link[tibble]{tibble}}
 #'  \code{\link[dplyr]{join}}
 #' @rdname make_prev_rates_sum_tb
-#' @export 
+#' @export
 #' @importFrom stringr str_detect str_sub
 #' @importFrom tibble tibble
 #' @importFrom dplyr inner_join
-
 make_prev_rates_sum_tb <- function(prev_rates_vec){
-  female_vec <- prev_rates_vec[names(prev_rates_vec) %>% 
+  female_vec <- prev_rates_vec[names(prev_rates_vec) %>%
                                  stringr::str_detect("f_")]
   male_vec <- prev_rates_vec[names(prev_rates_vec) %>%
                                stringr::str_detect("m_")]

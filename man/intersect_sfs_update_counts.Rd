@@ -12,26 +12,26 @@ intersect_sfs_update_counts(profiled_sf, profiled_colref = NA,
   data_year)
 }
 \arguments{
-\item{profiled_sf}{A SF object corresponding to the geographic unit that is to be profiled.}
+\item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{profiled_colref}{A variable name from the profiled_sf object that is the basis for
-subsetting the object if not all areas from the object are to be used.}
+\item{profiled_colref}{PARAM_DESCRIPTION, Default: NA}
 
-\item{group_by_var}{A string specifying "SA1", "SA2" or "LGA" as the resolution of the
-returned object,}
+\item{profiled_rowref}{PARAM_DESCRIPTION, Default: NA}
 
-\item{resolution_sa1s_sf}{A simple features object comprised of SA1s}
+\item{sp_data_list}{PARAM_DESCRIPTION}
 
-\item{resolution_sa2s_sf}{A simple features object comprised of SA2s.}
+\item{tot_pop_resolution}{PARAM_DESCRIPTION}
 
-\item{profiled_rworef}{A value from the profiled_colref variable which, if specified, will
-be used to identify a subset of the profiled_sf object.}
+\item{age_sex_pop_resolution}{PARAM_DESCRIPTION}
 
-\item{resolution_sf}{A SF object corresponding to the geographic unit that is resolution
-at which the profiled_sf object will be profiled.}
+\item{group_by_var}{PARAM_DESCRIPTION}
+
+\item{age_sex_counts_grouped_by}{PARAM_DESCRIPTION}
+
+\item{data_year}{PARAM_DESCRIPTION}
 }
 \value{
-A simple features object.
+OUTPUT_DESCRIPTION
 }
 \description{
 intersect_sfs_update_counts
@@ -39,7 +39,7 @@ Create a simple features object of two intersecting areas and adjust population 
 fraction of spatial unit included in a profiled area.
 }
 \details{
-
+DETAILS
 }
 \examples{
 \dontrun{
@@ -47,4 +47,7 @@ if(interactive()){
  #EXAMPLE1
  }
 }
+}
+\seealso{
+\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}}
 }

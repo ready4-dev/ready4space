@@ -2,25 +2,25 @@
 % Please edit documentation in R/spatial_cases_coordinates.R
 \name{spatial_cases_coordinates}
 \alias{spatial_cases_coordinates}
-\title{Generates coordinates for synthetic incident cases.}
+\title{spatial_cases_coordinates}
 \usage{
 spatial_cases_coordinates(profiled_sf, incident_cases)
 }
 \arguments{
-\item{profiled_sf}{A SF object corresponding to the geographic unit that is to be profiled.}
+\item{profiled_sf}{PARAM_DESCRIPTION}
 
-\item{incident_cases}{A double ...}
+\item{incident_cases}{PARAM_DESCRIPTION}
 }
 \value{
-A simple features object.
+OUTPUT_DESCRIPTION
 }
 \description{
-This function:
-  -
-  -
+Generates coordinates for agents.
+
+FUNCTION_DESCRIPTION
 }
 \details{
-
+DETAILS
 }
 \examples{
 \dontrun{
@@ -31,15 +31,6 @@ if(interactive()){
 }
 \seealso{
 \code{\link[sf]{st_sample}},\code{\link[sf]{st_transform}},\code{\link[sf]{st_geometry}}
- \code{\link[tibble]{as_tibble}}
+ \code{\link[tibble]{as_tibble}},\code{\link[tibble]{deprecated}}
  \code{\link[stats]{setNames}}
-
-Other spatial functions.: \code{\link{pop_sum_15.24}},
-  \code{\link{spatial_adjust_partial_in_custom_area}},
-  \code{\link{spatial_create_agent_coordinates_tb}},
-  \code{\link{spatial_one_year_projections_15_24}},
-  \code{\link{spatial_population_growth}},
-  \code{\link{spatial_profile_by_sa2}},
-  \code{\link{spatial_summarise_population_counts_0to29}}
 }
-\concept{spatial functions.}

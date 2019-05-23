@@ -1,39 +1,28 @@
 #' intersect_sfs_update_counts
 #' Create a simple features object of two intersecting areas and adjust population counts by
 #' fraction of spatial unit included in a profiled area.
-#'
-#' @details
-#'
-#' @param resolution_sa1s_sf A simple features object comprised of SA1s
-#'
-#' @param resolution_sa2s_sf A simple features object comprised of SA2s.
-#'
-#' @param profiled_sf A SF object corresponding to the geographic unit that is to be profiled.
-#'
-#' @param profiled_colref A variable name from the profiled_sf object that is the basis for
-#' subsetting the object if not all areas from the object are to be used.
-#'
-#' @param profiled_rworef A value from the profiled_colref variable which, if specified, will
-#' be used to identify a subset of the profiled_sf object.
-#'
-#' @param resolution_sf A SF object corresponding to the geographic unit that is resolution
-#' at which the profiled_sf object will be profiled.
-#'
-#' @param group_by_var A string specifying "SA1", "SA2" or "LGA" as the resolution of the
-#' returned object,
-#'
-#' @return
-#' A simple features object.
-#'
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param profiled_colref PARAM_DESCRIPTION, Default: NA
+#' @param profiled_rowref PARAM_DESCRIPTION, Default: NA
+#' @param sp_data_list PARAM_DESCRIPTION
+#' @param tot_pop_resolution PARAM_DESCRIPTION
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION
+#' @param group_by_var PARAM_DESCRIPTION
+#' @param age_sex_counts_grouped_by PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname spatial_profile_by_resolution_and_update_counts
+#' @seealso
+#'  \code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}}
+#' @rdname intersect_sfs_update_counts
 #' @export
-
+#' @importFrom dplyr rename_at vars one_of funs
 intersect_sfs_update_counts <- function(profiled_sf,
                                         profiled_colref = NA,
                                         profiled_rowref = NA,
@@ -42,14 +31,7 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                         age_sex_pop_resolution,
                                         group_by_var,
                                         age_sex_counts_grouped_by,
-                                        #group_by_lookup_tb,
                                         data_year){
-  # age_sex_var_name <- ready.data::data_get(data_lookup_tb = group_by_lookup_tb %>%
-  #                                        dplyr::filter(year == data_year),
-  #                                      lookup_variable = "resolution",
-  #                                      lookup_reference = age_sex_pop_resolution,
-  #                                      target_variable = "var_name",
-  #                                      evaluate = FALSE)
   profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                            profiled_colref = profiled_colref,
                                            profiled_rowref = profiled_rowref,

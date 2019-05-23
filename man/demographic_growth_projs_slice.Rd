@@ -2,26 +2,26 @@
 % Please edit documentation in R/demographic_growth_projs_slice.R
 \name{demographic_growth_projs_slice}
 \alias{demographic_growth_projs_slice}
-\title{Demographic......}
+\title{demographic_growth_projs_slice}
 \usage{
 demographic_growth_projs_slice(demographic.projection.errors.partial,
   demographic.data.partial, namestub)
 }
 \arguments{
-\item{demographic.projection.errors.partial}{A .....}
+\item{demographic.projection.errors.partial}{PARAM_DESCRIPTION}
 
-\item{demographic.data.partial}{A .....}
+\item{demographic.data.partial}{PARAM_DESCRIPTION}
 
-\item{namestub}{A String.....}
+\item{namestub}{PARAM_DESCRIPTION}
 }
 \value{
-A tibble.
+OUTPUT_DESCRIPTION
 }
 \description{
-This function creates a tibble......
+Creates a tibble......
 }
 \details{
-
+DETAILS
 }
 \examples{
 \dontrun{
@@ -34,13 +34,4 @@ if(interactive()){
 \code{\link[purrr]{map2}}
  \code{\link[stats]{setNames}}
  \code{\link[dplyr]{bind}}
-
-Other demographic modelling functions.: \code{\link{demographic_deterministic_2016_2021}},
-  \code{\link{demographic_growth_calcs}},
-  \code{\link{demographic_growth_list_single}},
-  \code{\link{demographic_growth_list}},
-  \code{\link{demographic_inputs}},
-  \code{\link{demographic_projections}},
-  \code{\link{demographic_range_of_projections}}
 }
-\concept{demographic modelling functions.}

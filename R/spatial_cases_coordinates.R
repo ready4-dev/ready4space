@@ -1,24 +1,10 @@
-#' @title
-#' Generates coordinates for synthetic incident cases.
-#'
-#' @description
-#' This function:
-#'   -
-#'   -
-#'
-#' @family spatial functions.
-#'
-#' @details
-#'
-#' @param profiled_sf A SF object corresponding to the geographic unit that is to be profiled.
-#'
-#' @param incident_cases A double ...
-#'
-#' @return
-#' A simple features object.
-#'
-#' @export
-#'
+#' @title spatial_cases_coordinates
+#' @description Generates coordinates for agents.
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param incident_cases PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -27,14 +13,13 @@
 #' }
 #' @seealso
 #'  \code{\link[sf]{st_sample}},\code{\link[sf]{st_transform}},\code{\link[sf]{st_geometry}}
-#'  \code{\link[tibble]{as_tibble}}
+#'  \code{\link[tibble]{as_tibble}},\code{\link[tibble]{deprecated}}
 #'  \code{\link[stats]{setNames}}
 #' @rdname spatial_cases_coordinates
 #' @export
 #' @importFrom sf st_sample st_transform st_geometry
 #' @importFrom tibble as.tibble
 #' @importFrom stats setNames
-
 spatial_cases_coordinates <- function(profiled_sf,
                                     incident_cases){
   print(incident_cases)

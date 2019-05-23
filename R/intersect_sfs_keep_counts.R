@@ -1,22 +1,15 @@
 #' @title intersect_sfs_keep_counts
-#' This function:
-#'   -
-#' @details
-#'
-#' @param profiled_sf A SF object corresponding to the geographic unit that is to be profiled.
-#'
-#' @param profiled_colref A variable name from the profiled_sf object that is the basis for
-#' filtering the object if not all areas from the object are to be used.
-#'
-#' @param profiled_rowref A value from the profiled_colref variable which, if specified, will
-#' be used to identify a subset of the profiled_sf object.
-#'
-#' @param attribute_sf A SF object corresponding to the geographic unit that is resolution
-#' at which the profiled_sf object will be profiled.
-#'
-#' @return
-#' A simple features object.
-#'
+#' @details This function:
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param profiled_colref PARAM_DESCRIPTION, Default: NA
+#' @param profiled_rowref PARAM_DESCRIPTION, Default: NA
+#' @param attribute_sf PARAM_DESCRIPTION
+#' @param attribute_unit PARAM_DESCRIPTION
+#' @param data_type PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION, Default: NULL
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -24,15 +17,18 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}}
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{funs}},\code{\link[dplyr]{filter}}
 #'  \code{\link[stringr]{str_subset}}
-#'  \code{\link[sf]{geos_binary_ops}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[sf]{geos_measures}},\code{\link[sf]{geos_binary_ops}}
+#'  \code{\link[units]{set_units}}
 #' @rdname intersect_sfs_keep_counts
 #' @export
-#' @importFrom dplyr select pull slice
+#' @importFrom dplyr select pull slice mutate rename_at vars funs filter
 #' @importFrom stringr str_which
-#' @importFrom sf st_intersection
-
+#' @importFrom rlang sym
+#' @importFrom sf st_area st_intersection
+#' @importFrom units set_units
 intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_colref = NA,
                                       profiled_rowref = NA,
@@ -80,9 +76,27 @@ intersect_sfs_keep_counts <- function(profiled_sf,
   # }
   return(profiled_sf)
 }
-#' @describeIn intersect_sfs_keep_counts  Function to intesect two sfs and drop extra columns.
+#' @title intersect_sf_drop_cols
+#' @description FUNCTION_DESCRIPTION
+#' @param main_sf PARAM_DESCRIPTION
+#' @param adjunct_sf PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[stringr]{str_subset}}
+#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_geometry_type}}
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}}
+#' @rdname intersect_sf_drop_cols
 #' @export
-
+#' @importFrom stringr str_which
+#' @importFrom sf st_intersection st_geometry_type
+#' @importFrom dplyr select mutate filter
 intersect_sf_drop_cols <- function(main_sf,
                                    adjunct_sf){
   drop_names <- names(main_sf)[names(main_sf) %in% names(adjunct_sf)]
@@ -93,8 +107,24 @@ intersect_sf_drop_cols <- function(main_sf,
     dplyr::mutate(geom_type = sf::st_geometry_type(.)) %>%
     dplyr::filter(geom_type %in% c("POLYGON","MULTIPOLYGON"))
 }
-
 ## NB WILL GET ATTRIBUTE RESOLUTION SPECIFIC VARS FROM FUTURE READY_SP_INPUT DATA CLASS OBJECT
+#' @title get_res_specific_vars
+#' @description FUNCTION_DESCRIPTION
+#' @param var_names PARAM_DESCRIPTION
+#' @param data_type PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname get_res_specific_vars
+#' @export
+
 get_res_specific_vars <- function(var_names,
                                   data_type,
                                   data_year,

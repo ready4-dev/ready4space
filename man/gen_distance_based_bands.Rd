@@ -16,6 +16,8 @@ gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
 \item{service_cluster_tb}{PARAM_DESCRIPTION}
 
 \item{profiled_sf}{PARAM_DESCRIPTION}
+
+\item{crs_nbr}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
