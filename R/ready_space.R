@@ -1,4 +1,4 @@
-#' ready.space: Create Readyforwhatsnext Spatio-temporal Objects.
+#' ready.space: Readyforwhatsnext Spatio-temporal Data Processing.
 #'
 #' ready.space is a package of functions that creates the spatial and temporal environment for the readyforwhatsnext simulation toolkit.
 #'
