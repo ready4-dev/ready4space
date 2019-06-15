@@ -32,6 +32,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.agents]{gen_par_vals}}
+\code{\link[ready4agents]{gen_par_vals}}
  \code{\link[dplyr]{bind}}
 }

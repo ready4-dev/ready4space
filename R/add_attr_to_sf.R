@@ -16,18 +16,18 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{country}}
+#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{country}}
 #'  \code{\link[dplyr]{filter}}
-#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[stringr]{str_detect}}
 #'  \code{\link[rlang]{sym}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{prepend}},\code{\link[purrr]{reduce}}
 #'  \code{\link[stats]{setNames}}
 #' @rdname recur_add_attr_to_sf
 #' @export
-#' @importFrom ready.s4 lookup_tb sp_data_pack_lup country
+#' @importFrom ready4s4 lookup_tb sp_data_pack_lup country
 #' @importFrom dplyr filter
-#' @importFrom ready.utils data_get
+#' @importFrom ready4utils data_get
 #' @importFrom stringr str_detect
 #' @importFrom rlang sym
 #' @importFrom purrr map prepend reduce
@@ -38,18 +38,18 @@ recur_add_attr_to_sf <- function(input_data,
                                  boundary_year,
                                  attribute_data
                                  ){
- lookup_tb_r4 <- ready.s4::lookup_tb(input_data$profiled_area_input)
-  data_lookup_tb <- ready.s4::sp_data_pack_lup(lookup_tb_r4) %>%
+ lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
+  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4) %>%
     dplyr::filter(area_type == area_unit)
   b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
-  boundary_file <- parse(text = ready.utils::data_get(data_lookup_tb = data_lookup_tb %>%
+  boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                           dplyr::filter(boundary_year == b_yr),
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
                                        evaluate = FALSE)) %>% eval()
-  country <- ready.s4::country(input_data$profiled_area_input)
+  country <- ready4s4::country(input_data$profiled_area_input)
   if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
     if(country=="Australia")
       sub_div_unit_var_name <- names(boundary_file)[names(boundary_file) %>% stringr::str_detect("STE_NAME")]
@@ -90,10 +90,10 @@ recur_add_attr_to_sf <- function(input_data,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready4utils]{data_get}}
 #' @rdname add_attr_list_to_sf
 #' @export
-#' @importFrom ready.utils data_get
+#' @importFrom ready4utils data_get
 add_attr_list_to_sf <- function(x,
                                 y,
                                 area_unit,
@@ -102,17 +102,17 @@ add_attr_list_to_sf <- function(x,
                                 sub_div_unit){
   add_attr_to_sf(area_unit = area_unit,
                  area_sf = x,
-                 attr_data_tb = eval(parse(text = ready.utils::data_get(data_lookup_tb = data_lookup_tb,
+                 attr_data_tb = eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                                        lookup_reference = y,
                                                                        lookup_variable = "name",
                                                                        target_variable = "transformation",
                                                                        evaluate = FALSE))),
-                 attr_data_desc = ready.utils::data_get(data_lookup_tb = data_lookup_tb,
+                 attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
                                                        evaluate = FALSE),
-                 attr_data_year = ready.utils::data_get(data_lookup_tb = data_lookup_tb,
+                 attr_data_year = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "year",

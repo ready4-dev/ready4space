@@ -33,10 +33,10 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.s4]{data_year}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{sp_abbreviations_lup}},\code{\link[ready.s4]{sp_resolution_lup}}
+\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_resolution_lup}}
  \code{\link[lubridate]{year}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[stringr]{str_length}}
  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{flatten}},\code{\link[purrr]{reduce}}
- \code{\link[ready.utils]{data_get}}
+ \code{\link[ready4utils]{data_get}}
 }

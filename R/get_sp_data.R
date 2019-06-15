@@ -16,15 +16,15 @@
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
 #'  \code{\link[stats]{setNames}}
-#'  \code{\link[ready.utils]{data_get}}
-#'  \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}}
+#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
 #' @rdname get_spatial_data_list
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom purrr map map2 map_lgl prepend
 #' @importFrom stats setNames
-#' @importFrom ready.utils data_get
-#' @importFrom ready.s4 lookup_tb sp_data_pack_lup
+#' @importFrom ready4utils data_get
+#' @importFrom ready4s4 lookup_tb sp_data_pack_lup
 get_spatial_data_list <- function(input_data,
                                   sub_div_unit = NULL,
                                   require_year_match = TRUE,
@@ -43,19 +43,19 @@ get_spatial_data_list <- function(input_data,
                               ~ recur_add_attr_to_sf(input_data = input_data,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready.utils::data_get(data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
-                                                                                            ready.s4::sp_data_pack_lup(),
+                                                     boundary_year = ready4utils::data_get(data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                                                            ready4s4::sp_data_pack_lup(),
                                                                                           target_variable = "boundary_year",
                                                                                           lookup_variable = "name",
                                                                                           lookup_reference = .y[1],
                                                                                           evaluate = FALSE),
-                                                     #boundary_year = ready.s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
+                                                     #boundary_year = ready4s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
                                                      attribute_data = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
-                                             data_lookup_tb = ready.s4::lookup_tb(input_data$profiled_area_input) %>%
-                                               ready.s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
+                                             data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                                               ready4s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
                                              pop_projs_str = input_data$pop_projs_str)) %>%
     which() + 1
   data_sf_list <- purrr::prepend(data_sf_list,
@@ -78,35 +78,35 @@ get_spatial_data_list <- function(input_data,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready.s4]{data_year}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{sp_abbreviations_lup}},\code{\link[ready.s4]{sp_resolution_lup}}
+#'  \code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_resolution_lup}}
 #'  \code{\link[lubridate]{year}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stringr]{str_length}}
 #'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{flatten}},\code{\link[purrr]{reduce}}
-#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready4utils]{data_get}}
 #' @rdname get_spatial_data_names
 #' @export
-#' @importFrom ready.s4 data_year country lookup_tb sp_data_pack_lup sp_abbreviations_lup sp_resolution_lup
+#' @importFrom ready4s4 data_year country lookup_tb sp_data_pack_lup sp_abbreviations_lup sp_resolution_lup
 #' @importFrom lubridate year
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck map map_chr map2 flatten_chr map2_chr map_dbl reduce
-#' @importFrom ready.utils data_get
+#' @importFrom ready4utils data_get
 get_spatial_data_names <- function(input_data,
                                    sub_div_unit = NULL,
                                    require_year_match = TRUE,
                                    excl_diff_bound_yr = TRUE){
   #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_data$at_highest_res
-  data_year <- ready.s4::data_year(input_data$profiled_area_input)
+  data_year <- ready4s4::data_year(input_data$profiled_area_input)
   at_specified_res = input_data$at_specified_res
-  country = ready.s4::country(input_data$profiled_area_input)
+  country = ready4s4::country(input_data$profiled_area_input)
   #sub_div_unit = NULL
   pop_projs_str = input_data$pop_projs_str
   model_end_year = get_model_end_ymdhs(input_data = input_data) %>% lubridate::year()
-  lookup_tb_r4 = input_data$profiled_area_input %>% ready.s4::lookup_tb()
-  spatial_lookup_tb <- ready.s4::sp_data_pack_lup(lookup_tb_r4)
-  abbreviations_lookup_tb <- ready.s4::sp_abbreviations_lup(lookup_tb_r4)
+  lookup_tb_r4 = input_data$profiled_area_input %>% ready4s4::lookup_tb()
+  spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  abbreviations_lookup_tb <- ready4s4::sp_abbreviations_lup(lookup_tb_r4)
   if(excl_diff_bound_yr){
     spatial_lookup_tb <- spatial_lookup_tb %>%
       dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
@@ -138,7 +138,7 @@ get_spatial_data_names <- function(input_data,
                                    dplyr::pull(area_type) %>%
                                    unique() %>%
                                    get_highest_res(year = data_year,
-                                                   resolution_lup_r3 = ready.s4::sp_resolution_lup(lookup_tb_r4)))
+                                                   resolution_lup_r3 = ready4s4::sp_resolution_lup(lookup_tb_r4)))
   data_unavail_for_year <-  is.na(data_res_vec)
   if(require_year_match & sum(data_unavail_for_year) > 0)
     stop("Data not available for specified year for all data requested")
@@ -152,7 +152,7 @@ get_spatial_data_names <- function(input_data,
                                              dplyr::filter(area_type == .y))
   if(!is.null(sub_div_unit)){
     region_lookup <- purrr::map_chr(sub_div_unit,
-                                    ~ ready.utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
+                                    ~ ready4utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
                                                            lookup_reference = .,
                                                            lookup_variable = "long_name",
                                                            target_variable = "short_name",
@@ -172,7 +172,7 @@ get_spatial_data_names <- function(input_data,
                                       target_year = data_year)
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
-                                   ~     ready.utils::data_get(data_lookup_tb = spatial_lookup_tb %>%
+                                   ~     ready4utils::data_get(data_lookup_tb = spatial_lookup_tb %>%
                                                                 dplyr::filter(year == .y)
                                                               # %>%
                                                               #   dplyr::filter(region == region_lookup)
@@ -195,7 +195,7 @@ get_spatial_data_names <- function(input_data,
                               dplyr::filter(year %in% year_vec) %>%
                               dplyr::filter(area_type == .x[2]) %>%
                               dplyr::filter(region %in% region_lookup) %>%
-                              ready.utils::data_get(lookup_reference = .x[1],
+                              ready4utils::data_get(lookup_reference = .x[1],
                                                    lookup_variable = "main_feature",
                                                    target_variable = "name",
                                                    evaluate = FALSE)) %>% purrr::flatten_chr()
@@ -329,20 +329,20 @@ get_highest_res <- function(options_vec,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}}
-#'  \code{\link[ready.utils]{data_get}}
+#'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[stringr]{str_detect}}
 #'  \code{\link[magrittr]{extract}}
 #' @rdname check_if_ppr
 #' @export
 #' @importFrom purrr map_chr
-#' @importFrom ready.utils data_get
+#' @importFrom ready4utils data_get
 #' @importFrom stringr str_detect
 #' @importFrom magrittr is_greater_than
 check_if_ppr <- function(data_name_item,
                          data_lookup_tb,
                          pop_projs_str){
   purrr::map_chr(data_name_item,
-                 ~ ready.utils::data_get(data_lookup_tb = data_lookup_tb,
+                 ~ ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                         lookup_reference = .x,
                                         lookup_variable = "name",
                                         target_variable = "main_feature",

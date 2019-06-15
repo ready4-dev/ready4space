@@ -36,9 +36,9 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_data_pack_lup}},\code{\link[ready.s4]{country}}
+\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{country}}
  \code{\link[dplyr]{filter}}
- \code{\link[ready.utils]{data_get}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[stringr]{str_detect}}
  \code{\link[rlang]{sym}}
  \code{\link[purrr]{map}},\code{\link[purrr]{prepend}},\code{\link[purrr]{reduce}}
