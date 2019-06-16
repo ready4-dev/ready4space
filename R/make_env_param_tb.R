@@ -1,5 +1,5 @@
 #' @title make_env_param_tb
-#' @description Make a table of the parameter sets for a ready_sim_env object
+#' @description Make a table of the parameter sets for a ready4_sim_env object
 #' @param nbr_its PARAM_DESCRIPTION
 #' @param env_str_par_tb PARAM_DESCRIPTION
 #' @param mape_str_par_tb PARAM_DESCRIPTION
