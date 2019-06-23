@@ -39,5 +39,6 @@ if(interactive()){
 \seealso{
 \code{\link[ready4s4]{ready4_lookup}}
  \code{\link[purrr]{reduce}}
+ \code{\link[ready4utils]{add_all_tbs_in_r4}}
  \code{\link[dplyr]{slice}}
 }

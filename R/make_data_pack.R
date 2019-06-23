@@ -37,11 +37,13 @@ make_data_packs <- function(x,
 #' @seealso
 #'  \code{\link[ready4s4]{ready4_lookup}}
 #'  \code{\link[purrr]{reduce}}
+#'  \code{\link[ready4utils]{add_all_tbs_in_r4}}
 #'  \code{\link[dplyr]{slice}}
 #' @rdname make_data_packs.ready4_sp_import_lup
 #' @export
 #' @importFrom ready4s4 ready4_lookup
 #' @importFrom purrr reduce
+#' @importFrom ready4utils add_all_tbs_in_r4
 #' @importFrom dplyr slice
 make_data_packs.ready4_sp_import_lup <- function(x,
                             init_lookup_r4 = NULL,
@@ -55,7 +57,7 @@ make_data_packs.ready4_sp_import_lup <- function(x,
   purrr::reduce(1:nrow(x),
                 .init = init_lookup_r4,
                 # merge_with_vec,
-                ~ add_all_tbs_in_r4(r4_1 = .x,
+                ~ ready4utils::add_all_tbs_in_r4(r4_1 = .x,
                                     r4_2 = x %>% dplyr::slice(.y) %>%
                                       make_data_pack_sngl(merge_with = get_merge_sf_str(lookup_r4 = .x,
                                                                                         sp_import_r3_slice = x %>% dplyr::slice(.y),
