@@ -29,6 +29,5 @@ if(interactive()){
 \code{\link[dplyr]{mutate}}
  \code{\link[purrr]{map2}}
  \code{\link[ready4utils]{data_get}}
- \code{\link[ISOcodes]{ISO_3166_1}}
  \code{\link[stringr]{str_sub}}
 }

@@ -127,22 +127,22 @@ make_data_pack_sngl <- function(x,
 #'  \code{\link[dplyr]{mutate}}
 #'  \code{\link[purrr]{map2}}
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[ISOcodes]{ISO_3166_1}}
 #'  \code{\link[stringr]{str_sub}}
 #' @rdname add_names
 #' @export
 #' @importFrom dplyr mutate
 #' @importFrom purrr pmap_chr
 #' @importFrom ready4utils data_get
-#' @importFrom ISOcodes ISO_3166_1
 #' @importFrom stringr str_sub
+#' @import ISOcodes
 add_names <- function(x){
+  data(ISO_3166_1, package = "ISOcodes")
   x %>%
     dplyr::mutate(name = purrr::pmap_chr(list(country,
                                               area_type,
                                               region,
                                               year),
-                                         ~ paste0(ready4utils::data_get(data_lookup_tb = ISOcodes::ISO_3166_1,
+                                         ~ paste0(ready4utils::data_get(data_lookup_tb = ISO_3166_1,
                                                                         lookup_reference = ..1,
                                                                         lookup_variable = "Name",
                                                                         target_variable = "Alpha_3",
