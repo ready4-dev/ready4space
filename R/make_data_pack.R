@@ -99,20 +99,30 @@ make_data_pack_sngl <- function(x,
                                 processed_dir){
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
-  ## 4. Download boundary files and import them as a list of SF objects.
-  boundary_ls <- import_boundary_ls(lookup_tbs_r4,
-                                    raw_data_dir)
-  ###
-  lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
-                                     boundary_ls = boundary_ls,
-                                     processed_dir = processed_dir,
-                                     merge_with = merge_with) %>% ## may need to include within PURRR
-    export_uid_lup()
-  lookup_tbs_r4 %>%
-    export_data_pack_lup(boundary_ls = boundary_ls,
-                         pckg_name = pckg_name,
-                         lup_dir = lup_dir)
-  # usethis::use_data(lookup_tbs_r4, overwrite = TRUE)
+  if(x %>% dplyr::pull(data_type) == "Shape"){
+    boundary_ls <- import_boundary_ls(lookup_tbs_r4,
+                                      raw_data_dir)
+    lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
+                                       boundary_ls = boundary_ls,
+                                       processed_dir = processed_dir,
+                                       merge_with = merge_with) %>%
+      export_uid_lup()
+    lookup_tbs_r4 %>%
+      export_data_pack_lup(template_ls = boundary_ls,
+                           tb_data_type = "Shape",
+                           pckg_name = pckg_name,
+                           lup_dir = lup_dir)
+  }
+  if(x %>% dplyr::pull(data_type) == "Attribute"){
+    attribute_ls <- import_attribute_ls(lookup_tbs_r4,
+                                      raw_data_dir)
+    lookup_tbs_r4 <- lookup_tbs_r4 %>%
+      #export_uid_lup() %>% ## NECESSARY?
+      export_data_pack_lup(template_ls = attribute_ls,
+                           tb_data_type = "Attribute",
+                           pckg_name = pckg_name,
+                           lup_dir = lup_dir)
+  }
 }
 #' @title add_names
 #' @description FUNCTION_DESCRIPTION
@@ -195,6 +205,44 @@ import_boundary_ls <- function(lookup_tbs_r4,
                                  sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
     stats::setNames(boundaries_to_import_vec)
 }
+#' @title import_attribute_ls
+#' @description FUNCTION_DESCRIPTION
+#' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4utils]{setup_io_directories}},\code{\link[ready4utils]{c("data_import_selected_downloads", "data_import_selected_downloads")}},\code{\link[ready4utils]{c("data_import_items", "data_import_items")}}
+#'  \code{\link[ready4s4]{sp_import_lup}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname import_attribute_ls
+#' @export
+#' @importFrom ready4utils setup_io_directories data_import_selected_downloads data_import_items
+#' @importFrom ready4s4 sp_import_lup
+#' @importFrom dplyr filter pull
+#' @importFrom stats setNames
+import_attribute_ls <- function(lookup_tbs_r4,
+                               raw_data_dir){ ## Merge with import_boundary_ls
+  ready4utils::setup_io_directories(raw_data_dir)
+  dir.create(paste0(raw_data_dir,"/InputData/AttributeData"))
+  attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+    dplyr::filter(main_feature == "Attribute") %>% dplyr::pull(name)
+  ready4utils::data_import_selected_downloads(required_data = attributes_to_import_vec,
+                                              destination_directory = paste0(raw_data_dir,"/InputData/AttributeData"),
+                                              sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
+  ready4utils::data_import_items(included_items_names = attributes_to_import_vec,
+                                 item_data_type = "Attribute",
+                                 data_directory = paste0(raw_data_dir,"/InputData/SpatialData"),
+                                 sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
+    stats::setNames(attributes_to_import_vec)
+}
 #' @title export_starter_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
@@ -276,8 +324,6 @@ export_starter_sf <- function(lookup_tbs_r4,
 #' @importFrom ready4s4 sp_import_lup sp_uid_lup<-
 #' @importFrom dplyr pull
 export_uid_lup <- function(lookup_tbs_r4){
-  ## 7. Create unique ID lookup table with details of new SF object.
-  # ced_uid_lup <- ready4s4::sp_uid_lup(ced_lookup_tbs)
   uid_lup_r3 <- tibble::add_row(ready4s3::ready4_sp_uid_lup(),
                                 spatial_unit = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
                                 year = "All",
@@ -287,7 +333,8 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' @title export_data_pack_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param boundary_ls PARAM_DESCRIPTION
+#' @param tb_data_type PARAM_DESCRIPTION, Default: 'Shape'
+#' @param template_ls PARAM_DESCRIPTION, Default: NULL
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param lup_dir PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
@@ -312,12 +359,14 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' @importFrom dplyr mutate
 #' @importFrom stringr str_sub
 export_data_pack_lup <- function(lookup_tbs_r4,
-                                 boundary_ls,
+                                 tb_data_type = "Shape",
+                                 template_ls = NULL,
                                  pckg_name,
                                  lup_dir){
   ## 8. Create data pack lookup table.
-  data_pk_lup_arguments_ls <- purrr::map2(boundary_ls,
-                                          names(boundary_ls),
+  ###
+  data_pk_lup_arguments_ls <- purrr::map2(template_ls,
+                                          names(template_ls),
                                           ~ list(.x,
                                                  .y,
                                                  ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
@@ -348,7 +397,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                     .init = lookup_tbs_r4 %>%
                                       ready4s4::sp_data_pack_lup(),
                                     ~ ready4utils::add_attr_tb_to_data_pack_lup_from_arg_list(.x,.y)) %>%
-    dplyr::mutate(data_type = "Shape")
+    dplyr::mutate(data_type = tb_data_type) #####
   pckg_name <- ifelse(pckg_name =="",pckg_name, paste0(pckg_name,"::"))
   data_pack_lup_r3 <- data_pack_lup_r3 %>%
     dplyr::mutate(source_reference = paste0(pckg_name,source_reference))  %>%
@@ -358,10 +407,11 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                                               paste0(.y, # stringr::str_replace(.y,"_bound_","_bnd_")
                                                                      "_sf"),
                                                               .y)))
+  ### TRANSFORMATION [Do In Context / Model]
   lookup_tbs_r4 <- ready4s4::`sp_data_pack_lup<-`(lookup_tbs_r4, data_pack_lup_r3)
   ## 9. Add Lookup Tables object to data pack for export.
-  data_pack_name <- paste0(names(boundary_ls)[1] %>% stringr::str_sub(end = 12),
-                           names(boundary_ls)[1] %>% stringr::str_sub(start = -4),
+  data_pack_name <- paste0(names(template_ls)[1] %>% stringr::str_sub(end = 12), ##### CHECK IF DISTICNCT FROM ATTRIB
+                           names(template_ls)[1] %>% stringr::str_sub(start = -4),
                            "_lup_r4")
   saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
   lookup_tbs_r4
