@@ -88,9 +88,13 @@ make_data_packs.ready4_sp_import_lup <- function(x,
 #' }
 #' @seealso
 #'  \code{\link[ready4s4]{ready4_lookup}},\code{\link[ready4s4]{sp_import_lup<-}}
+#'  \code{\link[dplyr]{pull}}
+#'  \code{\link[purrr]{map2}}
 #' @rdname make_data_pack_sngl
 #' @export
 #' @importFrom ready4s4 ready4_lookup sp_import_lup<-
+#' @importFrom dplyr pull
+#' @importFrom purrr walk2
 make_data_pack_sngl <- function(x,
                                 merge_with,
                                 pckg_name,
@@ -116,6 +120,11 @@ make_data_pack_sngl <- function(x,
   if(x %>% dplyr::pull(data_type) == "Attribute"){
     attribute_ls <- import_attribute_ls(lookup_tbs_r4,
                                       raw_data_dir)
+    purrr::walk2(attribute_ls,
+                 names(attribute_ls),
+                 ~ export_attr_tb(attr_tb = .x,
+                                  obj_name = .y,
+                                  processed_dir = processed_dir))
     lookup_tbs_r4 <- lookup_tbs_r4 %>%
       #export_uid_lup() %>% ## NECESSARY?
       export_data_pack_lup(template_ls = attribute_ls,
@@ -123,6 +132,27 @@ make_data_pack_sngl <- function(x,
                            pckg_name = pckg_name,
                            lup_dir = lup_dir)
   }
+}
+#' @title export_attr_tb
+#' @description FUNCTION_DESCRIPTION
+#' @param attr_tb PARAM_DESCRIPTION
+#' @param obj_name PARAM_DESCRIPTION
+#' @param processed_dir PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname export_attr_tb
+#' @export
+
+export_attr_tb <- function(attr_tb,
+                           obj_name,
+                           processed_dir){
+  saveRDS(attr_tb, file = paste0(processed_dir,"/",attr_tb,".rds"))
 }
 #' @title add_names
 #' @description FUNCTION_DESCRIPTION

@@ -38,4 +38,6 @@ if(interactive()){
 }
 \seealso{
 \code{\link[ready4s4]{ready4_lookup}},\code{\link[ready4s4]{sp_import_lup<-}}
+ \code{\link[dplyr]{pull}}
+ \code{\link[purrr]{map2}}
 }
