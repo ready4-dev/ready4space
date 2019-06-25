@@ -183,6 +183,8 @@ add_names <- function(x){
     dplyr::mutate(name = purrr::pmap_chr(list(country,
                                               area_type,
                                               region,
+                                              data_type,
+                                              main_feature,
                                               year),
                                          ~ paste0(ready4utils::data_get(data_lookup_tb = ISO_3166_1,
                                                                         lookup_reference = ..1,
@@ -193,8 +195,10 @@ add_names <- function(x){
                                                   tolower(..2),
                                                   "_",
                                                   tolower(..3 %>% stringr::str_sub(end=3)),
-                                                  "_bnd_",
-                                                  ..4
+                                                  ifelse(..4 == "Shape",
+                                                         ifelse(..5 == "Boundary","_bnd_","_crd_"),
+                                                         "_att_"),
+                                                  ..6
                                          )))
 }
 #' @title import_boundary_ls
@@ -263,13 +267,13 @@ import_attribute_ls <- function(lookup_tbs_r4,
   ready4utils::setup_io_directories(raw_data_dir)
   dir.create(paste0(raw_data_dir,"/InputData/AttributeData"))
   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
-    dplyr::filter(main_feature == "Attribute") %>% dplyr::pull(name)
+    dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
   ready4utils::data_import_selected_downloads(required_data = attributes_to_import_vec,
                                               destination_directory = paste0(raw_data_dir,"/InputData/AttributeData"),
                                               sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
   ready4utils::data_import_items(included_items_names = attributes_to_import_vec,
                                  item_data_type = "Attribute",
-                                 data_directory = paste0(raw_data_dir,"/InputData/SpatialData"),
+                                 data_directory = paste0(raw_data_dir,"/InputData/AttributeData"),
                                  sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
     stats::setNames(attributes_to_import_vec)
 }
