@@ -152,7 +152,7 @@ make_data_pack_sngl <- function(x,
 export_attr_tb <- function(attr_tb,
                            obj_name,
                            processed_dir){
-  saveRDS(attr_tb, file = paste0(processed_dir,"/",attr_tb,".rds"))
+  saveRDS(attr_tb, file = paste0(processed_dir,"/",obj_name,".rds"))
 }
 #' @title add_names
 #' @description FUNCTION_DESCRIPTION
