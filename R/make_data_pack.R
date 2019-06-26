@@ -199,7 +199,7 @@ add_names <- function(x){
                                                   tolower(..3 %>% stringr::str_sub(end=3)),
                                                   ifelse(..4 == "Shape",
                                                          ifelse(..5 == "Boundary","_bnd_","_crd_"),
-                                                         "_att_"),
+                                                         tolower(..5)),
                                                   ..6
                                          )))
 }
