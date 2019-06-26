@@ -5,7 +5,8 @@
 \title{make_data_packs.ready4_sp_import_lup}
 \usage{
 \method{make_data_packs}{ready4_sp_import_lup}(x, init_lookup_r4 = NULL,
-  pckg_name, raw_data_dir, lup_dir = "data", processed_dir = "data")
+  pckg_name, raw_data_dir, lup_dir = "data", processed_dir = "data",
+  lup_r4_name)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

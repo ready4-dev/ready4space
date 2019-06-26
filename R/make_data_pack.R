@@ -50,24 +50,26 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                             pckg_name,
                             raw_data_dir,
                             lup_dir  = "data",
-                            processed_dir = "data"){
+                            processed_dir = "data",
+                            lup_r4_name){
   if(is.null(init_lookup_r4))
     init_lookup_r4 <- ready4s4::ready4_lookup()
   x <- x %>% add_names()
-  purrr::reduce(1:nrow(x),
-                .init = init_lookup_r4,
-                # merge_with_vec,
-                ~ ready4utils::add_all_tbs_in_r4(r4_1 = .x,
-                                    r4_2 = x %>% dplyr::slice(.y) %>%
-                                      make_data_pack_sngl(merge_with = get_merge_sf_str(lookup_r4 = .x,
-                                                                                        sp_import_r3_slice = x %>% dplyr::slice(.y),
-                                                                                        processed_dir = processed_dir),#merge_with_vec[.y],
-                                                          pckg_name = pckg_name,
-                                                          raw_data_dir = raw_data_dir,
-                                                          lup_dir = lup_dir,
-                                                          processed_dir = processed_dir),
-                                    r4_name = "ready4_lookup")
-  )
+  lookup_tbs_r4 <- purrr::reduce(1:nrow(x),
+                                 .init = init_lookup_r4,
+                                 # merge_with_vec,
+                                 ~ ready4utils::add_all_tbs_in_r4(r4_1 = .x,
+                                                                  r4_2 = x %>% dplyr::slice(.y) %>%
+                                                                    make_data_pack_sngl(merge_with = get_merge_sf_str(lookup_r4 = .x,
+                                                                                                                      sp_import_r3_slice = x %>% dplyr::slice(.y),
+                                                                                                                      processed_dir = processed_dir),#merge_with_vec[.y],
+                                                                                        pckg_name = pckg_name,
+                                                                                        raw_data_dir = raw_data_dir,
+                                                                                        lup_dir = lup_dir,
+                                                                                        processed_dir = processed_dir),
+                                                                  r4_name = "ready4_lookup"))
+  saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",lup_r4_name,".rds"))
+  return(lookup_tbs_r4)
 }
 
 #' @title make_data_pack_sngl
@@ -444,10 +446,10 @@ export_data_pack_lup <- function(lookup_tbs_r4,
   ### TRANSFORMATION [Do In Context / Model]
   lookup_tbs_r4 <- ready4s4::`sp_data_pack_lup<-`(lookup_tbs_r4, data_pack_lup_r3)
   ## 9. Add Lookup Tables object to data pack for export.
-  data_pack_name <- paste0(names(template_ls)[1] %>% stringr::str_sub(end = 12), ##### CHECK IF DISTICNCT FROM ATTRIB
-                           names(template_ls)[1] %>% stringr::str_sub(start = -4),
-                           "_lup_r4")
-  saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
+  # data_pack_name <- paste0(names(template_ls)[1] %>% stringr::str_sub(end = 12), ##### CHECK IF DISTICNCT FROM ATTRIB
+  #                          names(template_ls)[1] %>% stringr::str_sub(start = -4),
+  #                          "_lup_r4")
+  # saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
   lookup_tbs_r4
 }
 #' @title order_tb_ready4_sp_import_lup
