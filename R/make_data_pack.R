@@ -113,7 +113,7 @@ make_data_pack_sngl <- function(x,
                                        processed_dir = processed_dir,
                                        merge_with = merge_with) %>%
       export_uid_lup()
-    lookup_tbs_r4 %>%
+    lookup_tbs_r4 <-lookup_tbs_r4 %>%
       export_data_pack_lup(template_ls = boundary_ls,
                            tb_data_type = "Shape",
                            pckg_name = pckg_name,
@@ -121,19 +121,20 @@ make_data_pack_sngl <- function(x,
   }
   if(x %>% dplyr::pull(data_type) == "Attribute"){
     attribute_ls <- import_attribute_ls(lookup_tbs_r4,
-                                      raw_data_dir)
+                                        raw_data_dir)
     purrr::walk2(attribute_ls,
                  names(attribute_ls),
                  ~ export_attr_tb(attr_tb = .x,
                                   obj_name = .y,
                                   processed_dir = processed_dir))
-    lookup_tbs_r4 %>%
+    lookup_tbs_r4 <-lookup_tbs_r4 %>%
       #export_uid_lup() %>% ## NECESSARY?
       export_data_pack_lup(template_ls = attribute_ls,
                            tb_data_type = "Attribute",
                            pckg_name = pckg_name,
                            lup_dir = lup_dir)
   }
+  return(lookup_tbs_r4)
 }
 #' @title export_attr_tb
 #' @description FUNCTION_DESCRIPTION
@@ -180,7 +181,7 @@ export_attr_tb <- function(attr_tb,
 #' @importFrom stringr str_sub
 #' @import ISOcodes
 add_names <- function(x){
-  data(ISO_3166_1, package = "ISOcodes")
+  data(ISO_3166_1, package = "ISOcodes", envir = environment())
   x %>%
     dplyr::mutate(name = purrr::pmap_chr(list(country,
                                               area_type,
