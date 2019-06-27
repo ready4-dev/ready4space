@@ -127,7 +127,7 @@ make_data_pack_sngl <- function(x,
                  ~ export_attr_tb(attr_tb = .x,
                                   obj_name = .y,
                                   processed_dir = processed_dir))
-    lookup_tbs_r4 <- lookup_tbs_r4 %>%
+    lookup_tbs_r4 %>%
       #export_uid_lup() %>% ## NECESSARY?
       export_data_pack_lup(template_ls = attribute_ls,
                            tb_data_type = "Attribute",
