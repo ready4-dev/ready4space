@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_data_pack.R
 \name{get_merge_sf_str}
 \alias{get_merge_sf_str}
-\title{FUNCTION_TITLE}
+\title{get_merge_sf_str}
 \usage{
 get_merge_sf_str(lookup_r4, sp_import_r3_slice, processed_dir = NULL)
 }

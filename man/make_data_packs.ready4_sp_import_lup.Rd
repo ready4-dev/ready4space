@@ -20,6 +20,8 @@
 \item{lup_dir}{PARAM_DESCRIPTION, Default: 'data'}
 
 \item{processed_dir}{PARAM_DESCRIPTION, Default: 'data'}
+
+\item{lup_r4_name}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -39,6 +41,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[ready4s4]{ready4_lookup}}
+ \code{\link[ready4s3]{order_tb}}
  \code{\link[purrr]{reduce}}
  \code{\link[ready4utils]{add_all_tbs_in_r4}}
  \code{\link[dplyr]{slice}}

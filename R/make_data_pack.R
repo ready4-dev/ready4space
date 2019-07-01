@@ -26,6 +26,7 @@ make_data_packs <- function(x,
 #' @param raw_data_dir PARAM_DESCRIPTION
 #' @param lup_dir PARAM_DESCRIPTION, Default: 'data'
 #' @param processed_dir PARAM_DESCRIPTION, Default: 'data'
+#' @param lup_r4_name PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -36,12 +37,14 @@ make_data_packs <- function(x,
 #' }
 #' @seealso
 #'  \code{\link[ready4s4]{ready4_lookup}}
+#'  \code{\link[ready4s3]{order_tb}}
 #'  \code{\link[purrr]{reduce}}
 #'  \code{\link[ready4utils]{add_all_tbs_in_r4}}
 #'  \code{\link[dplyr]{slice}}
 #' @rdname make_data_packs.ready4_sp_import_lup
 #' @export
 #' @importFrom ready4s4 ready4_lookup
+#' @importFrom ready4s3 order_tb
 #' @importFrom purrr reduce
 #' @importFrom ready4utils add_all_tbs_in_r4
 #' @importFrom dplyr slice
@@ -54,7 +57,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                             lup_r4_name){
   if(is.null(init_lookup_r4))
     init_lookup_r4 <- ready4s4::ready4_lookup()
-  x <- x %>% add_names()
+  x <- x %>% add_names() %>%
+    ready4s3::order_tb()
   lookup_tbs_r4 <- purrr::reduce(1:nrow(x),
                                  .init = init_lookup_r4,
                                  # merge_with_vec,
@@ -127,7 +131,7 @@ make_data_pack_sngl <- function(x,
                  ~ export_attr_tb(attr_tb = .x,
                                   obj_name = .y,
                                   processed_dir = processed_dir))
-    lookup_tbs_r4 <-lookup_tbs_r4 %>%
+    lookup_tbs_r4 <- lookup_tbs_r4 %>%
       #export_uid_lup() %>% ## NECESSARY?
       export_data_pack_lup(template_ls = attribute_ls,
                            tb_data_type = "Attribute",
@@ -453,39 +457,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
   # saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
   lookup_tbs_r4
 }
-#' @title order_tb_ready4_sp_import_lup
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{pull}}
-#'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
-#' @rdname order_tb_ready4_sp_import_lup
-#' @export
-#' @importFrom dplyr select mutate pull
-#' @importFrom purrr map map2 reduce
-order_tb_ready4_sp_import_lup <- function(x){
-  ordering_tb <- x %>%
-    dplyr::select(uid,add_boundaries) %>%
-    dplyr::mutate(preceeded_by = purrr::map(add_boundaries,
-                                            ~ unlist(.x)[unlist(.x) %in% uid]
-    )) %>%
-    dplyr::mutate(sequence = purrr::map2(preceeded_by,
-                                         uid,
-                                         ~ c(.x,.y)))
-  ordering_vec <- purrr::reduce(ordering_tb %>%
-                                  dplyr::pull(sequence),
-                                ~ append(.x,.y[!.y %in% .x]))
-  x[match(ordering_vec, x$uid),]
-}
-#' @title FUNCTION_TITLE
+#' @title get_merge_sf_str
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_r4 PARAM_DESCRIPTION
 #' @param sp_import_r3_slice PARAM_DESCRIPTION
