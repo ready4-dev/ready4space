@@ -49,12 +49,12 @@ make_data_packs <- function(x,
 #' @importFrom ready4utils add_all_tbs_in_r4
 #' @importFrom dplyr slice
 make_data_packs.ready4_sp_import_lup <- function(x,
-                            init_lookup_r4 = NULL,
-                            pckg_name,
-                            raw_data_dir,
-                            lup_dir  = "data",
-                            processed_dir = "data",
-                            lup_r4_name){
+                                                 init_lookup_r4 = NULL,
+                                                 pckg_name,
+                                                 raw_data_dir,
+                                                 lup_dir  = "data",
+                                                 processed_dir = "data",
+                                                 lup_r4_name){
   if(is.null(init_lookup_r4))
     init_lookup_r4 <- ready4s4::ready4_lookup()
   x <- x %>% add_names() %>%
@@ -109,35 +109,40 @@ make_data_pack_sngl <- function(x,
                                 processed_dir){
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
-  if(x %>% dplyr::pull(data_type) == "Shape"){
-    boundary_ls <- import_boundary_ls(lookup_tbs_r4,
-                                      raw_data_dir)
-    lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
-                                       boundary_ls = boundary_ls,
-                                       processed_dir = processed_dir,
-                                       merge_with = merge_with) %>%
-      export_uid_lup()
-    lookup_tbs_r4 <-lookup_tbs_r4 %>%
-      export_data_pack_lup(template_ls = boundary_ls,
-                           tb_data_type = "Shape",
-                           pckg_name = pckg_name,
-                           lup_dir = lup_dir)
-  }
-  if(x %>% dplyr::pull(data_type) == "Attribute"){
-    attribute_ls <- import_attribute_ls(lookup_tbs_r4,
+  if(!x %>% dplyr::pull(make_script_src) %>% is.na()){
+    lookup_tbs_r4 <- add_data_pack_from_script(x = x, lookup_tbs_r4 = lookup_tbs_r4, merge_sfs_vec = merge_with, processed_dir = processed_dir)
+  }else{
+    if(x %>% dplyr::pull(data_type) == "Shape"){
+      boundary_ls <- import_boundary_ls(lookup_tbs_r4,
                                         raw_data_dir)
-    purrr::walk2(attribute_ls,
-                 names(attribute_ls),
-                 ~ export_attr_tb(attr_tb = .x,
-                                  obj_name = .y,
-                                  processed_dir = processed_dir))
-    lookup_tbs_r4 <- lookup_tbs_r4 %>%
-      #export_uid_lup() %>% ## NECESSARY?
-      export_data_pack_lup(template_ls = attribute_ls,
-                           tb_data_type = "Attribute",
-                           pckg_name = pckg_name,
-                           lup_dir = lup_dir)
+      lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
+                                         boundary_ls = boundary_ls,
+                                         processed_dir = processed_dir,
+                                         merge_with = merge_with) %>%
+        export_uid_lup()
+      lookup_tbs_r4 <- lookup_tbs_r4 %>%
+        export_data_pack_lup(template_ls = boundary_ls,
+                             tb_data_type = "Shape",
+                             pckg_name = pckg_name,
+                             lup_dir = lup_dir)
+    }
+    if(x %>% dplyr::pull(data_type) == "Attribute"){
+      attribute_ls <- import_attribute_ls(lookup_tbs_r4,
+                                          raw_data_dir)
+      purrr::walk2(attribute_ls,
+                   names(attribute_ls),
+                   ~ export_attr_tb(attr_tb = .x,
+                                    obj_name = .y,
+                                    processed_dir = processed_dir))
+      lookup_tbs_r4 <- lookup_tbs_r4 %>%
+        #export_uid_lup() %>% ## NECESSARY?
+        export_data_pack_lup(template_ls = attribute_ls,
+                             tb_data_type = "Attribute",
+                             pckg_name = pckg_name,
+                             lup_dir = lup_dir)
+    }
   }
+
   return(lookup_tbs_r4)
 }
 #' @title export_attr_tb
@@ -299,14 +304,16 @@ import_attribute_ls <- function(lookup_tbs_r4,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_measures}}
+#'  \code{\link[purrr]{reduce}}
+#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
 #'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[units]{set_units}}
 #'  \code{\link[tibble]{add_row}}
 #'  \code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_starter_sf_lup<-}}
 #' @rdname export_starter_sf
 #' @export
-#' @importFrom sf st_intersection st_area
+#' @importFrom purrr reduce
+#' @importFrom sf st_intersection st_geometry_type st_area
 #' @importFrom dplyr mutate filter pull
 #' @importFrom units set_units
 #' @importFrom tibble add_row
@@ -315,31 +322,27 @@ export_starter_sf <- function(lookup_tbs_r4,
                               boundary_ls,
                               processed_dir,
                               merge_with){
-  ## 5. Create new SF object, which adds State and Territory Boundary data to Boundary data and add it to data pack for export.
-  if(is.na(merge_with)){
+  if(is.na(merge_with) %>% all()){
     starter_sf <- boundary_ls[[1]]
   }else{
-    starter_sf <- sf::st_intersection(eval(parse(text=merge_with)),
-                                      boundary_ls[[1]])
-    starter_sf <- starter_sf %>%
-      dplyr::mutate(area = sf::st_area(.)) %>%
-      dplyr::filter(area > units::set_units(0,m^2))
+    starter_sf <- purrr::reduce(merge_with,
+                                .init =boundary_ls[[1]],
+                                ~ sf::st_intersection(.x,
+                                                      eval(parse(text=.y))))
+    if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
+      starter_sf <- starter_sf %>%
+        dplyr::mutate(area = sf::st_area(.)) %>%
+        dplyr::filter(area > units::set_units(0,m^2)) ## Note: Will discard points
+    }
   }
-  starter_sf_name <- paste0(names(boundary_ls)[1], #%>%
-                            #stringr::str_replace("_bound_","_bnd_"),
+  starter_sf_name <- paste0(names(boundary_ls)[1],
                             "_sf")
   saveRDS(starter_sf, file = paste0(processed_dir,"/",starter_sf_name,".rds"))
-  #usethis::use_data(starter_sf, overwrite = TRUE)
-  ## 6. Create a starter SF lookup table with details of new SF object.
   starter_sf_lup_r3 <- tibble::add_row(ready4s4::sp_starter_sf_lup(lookup_tbs_r4),
                                        country = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(country),
                                        area_type = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
                                        starter_sf = starter_sf_name,
-                                       sf_main_sub_div = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid),
-                                       # ready4s4::sp_import_lup(lookup_tbs_r4) %>%
-                                       # dplyr::pull(add_boundaries) %>%
-                                       # unlist() %>% ifelse(test = is.null(.),yes = NA_character_)
-  ) ## Assumes length one list
+                                       sf_main_sub_div = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid)) ## Assumes length one list
   ready4s4::`sp_starter_sf_lup<-`(lookup_tbs_r4, starter_sf_lup_r3)
 }
 #' @title export_uid_lup
@@ -488,20 +491,52 @@ get_merge_sf_str <- function(lookup_r4,
     NA_character_
   }else{
     # uid_str <- sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
-    sf_ref <- ready4utils::data_get(data_lookup_tb = ready4s4::sp_import_lup(lookup_r4),
-                                    lookup_reference = sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
-                                    lookup_variable = "uid",
-                                    target_variable = "name",
-                                    evaluate = FALSE) %>%
-      ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_r4),
-                            lookup_reference = .,
-                            lookup_variable = "name",
-                            target_variable = "source_reference",
-                            evaluate = FALSE)
-    if(stringr::str_detect(sf_ref,"::")){
-      st_ref
-    }else{
-      paste0("readRDS(\"",processed_dir,"/",sf_ref,".rds\")")
-    }
+    purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
+                   ~ ready4utils::data_get(data_lookup_tb = ready4s4::sp_import_lup(lookup_r4),
+                                           lookup_reference = .x, # sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
+                                           lookup_variable = "uid",
+                                           target_variable = "name",
+                                           evaluate = FALSE) %>%
+                     ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_r4),
+                                           lookup_reference = .,
+                                           lookup_variable = "name",
+                                           target_variable = "source_reference",
+                                           evaluate = FALSE) %>%
+                     ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_dir,"/",.,".rds\")")))
+    # sf_ref <-
+    # if(stringr::str_detect(sf_ref,"::")){
+    #   st_ref
+    # }else{
+    #   paste0("readRDS(\"",processed_dir,"/",sf_ref,".rds\")")
+    # }
   }
+}
+#' @title add_data_pack_from_script
+#' @description FUNCTION_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' @param merge_sfs_vec PARAM_DESCRIPTION
+#' @param processed_dir PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{pull}}
+#' @rdname add_data_pack_from_script
+#' @export
+#' @importFrom dplyr pull
+add_data_pack_from_script <- function(x,
+                                      lookup_tbs_r4,
+                                      merge_sfs_vec,
+                                      processed_dir){
+  parse(text = paste0(x %>% dplyr::pull(make_script_src),
+                      "(x = x,
+                      lookup_tbs_r4 = lookup_tbs_r4,
+                      merge_sfs_vec = merge_sfs_vec,
+                      processed_dir = processed_dir)")) %>% eval()
 }

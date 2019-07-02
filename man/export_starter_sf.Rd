@@ -32,7 +32,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_measures}}
+\code{\link[purrr]{reduce}}
+ \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[units]{set_units}}
  \code{\link[tibble]{add_row}}
