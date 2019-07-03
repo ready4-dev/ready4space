@@ -239,15 +239,17 @@ add_names <- function(x){
 import_boundary_ls <- function(lookup_tbs_r4,
                                raw_data_dir){
   ready4utils::setup_io_directories(raw_data_dir)
-  dir.create(paste0(raw_data_dir,"/InputData/SpatialData"))
+  raw_format_sp_dir <- paste0(raw_data_dir,"/InputData/Raw_Format/Geometries")
+  if(!dir.exists(raw_format_sp_dir))
+  dir.create(raw_format_sp_dir)
   boundaries_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
   ready4utils::data_import_selected_downloads(required_data = boundaries_to_import_vec,
-                                              destination_directory = paste0(raw_data_dir,"/InputData/SpatialData"),
+                                              destination_directory = raw_format_sp_dir,
                                               sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
   ready4utils::data_import_items(included_items_names = boundaries_to_import_vec,
                                  item_data_type = "Shape",
-                                 data_directory = paste0(raw_data_dir,"/InputData/SpatialData"),
+                                 data_directory = raw_format_sp_dir,
                                  sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
     stats::setNames(boundaries_to_import_vec)
 }
@@ -277,15 +279,17 @@ import_boundary_ls <- function(lookup_tbs_r4,
 import_attribute_ls <- function(lookup_tbs_r4,
                                raw_data_dir){ ## Merge with import_boundary_ls
   ready4utils::setup_io_directories(raw_data_dir)
-  dir.create(paste0(raw_data_dir,"/InputData/AttributeData"))
+  raw_format_att_dir <- paste0(raw_data_dir,"/InputData/Raw_Format/Attributes")
+  if(!dir.exists(raw_format_att_dir))
+  dir.create(raw_format_att_dir)
   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
   ready4utils::data_import_selected_downloads(required_data = attributes_to_import_vec,
-                                              destination_directory = paste0(raw_data_dir,"/InputData/AttributeData"),
+                                              destination_directory = raw_format_att_dir,
                                               sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
   ready4utils::data_import_items(included_items_names = attributes_to_import_vec,
                                  item_data_type = "Attribute",
-                                 data_directory = paste0(raw_data_dir,"/InputData/AttributeData"),
+                                 data_directory = raw_format_att_dir,
                                  sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
     stats::setNames(attributes_to_import_vec)
 }
