@@ -487,29 +487,25 @@ export_data_pack_lup <- function(lookup_tbs_r4,
 get_merge_sf_str <- function(lookup_r4,
                              sp_import_r3_slice,
                              processed_dir = NULL){
-  if(is.null(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)) |
-     is.na(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
+  if(is.null(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
     NA_character_
   }else{
-    # uid_str <- sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
-    purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
-                   ~ ready4utils::data_get(data_lookup_tb = ready4s4::sp_import_lup(lookup_r4),
-                                           lookup_reference = .x, # sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
-                                           lookup_variable = "uid",
-                                           target_variable = "name",
-                                           evaluate = FALSE) %>%
-                     ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_r4),
-                                           lookup_reference = .,
-                                           lookup_variable = "name",
-                                           target_variable = "source_reference",
-                                           evaluate = FALSE) %>%
-                     ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_dir,"/",.,".rds\")")))
-    # sf_ref <-
-    # if(stringr::str_detect(sf_ref,"::")){
-    #   st_ref
-    # }else{
-    #   paste0("readRDS(\"",processed_dir,"/",sf_ref,".rds\")")
-    # }
+    if(is.na(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
+      NA_character_
+    }else{
+      purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
+                     ~ ready4utils::data_get(data_lookup_tb = ready4s4::sp_import_lup(lookup_r4),
+                                             lookup_reference = .x, # sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
+                                             lookup_variable = "uid",
+                                             target_variable = "name",
+                                             evaluate = FALSE) %>%
+                       ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_r4),
+                                             lookup_reference = .,
+                                             lookup_variable = "name",
+                                             target_variable = "source_reference",
+                                             evaluate = FALSE) %>%
+                       ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_dir,"/",.,".rds\")")))
+    }
   }
 }
 #' @title add_data_pack_from_script
