@@ -239,7 +239,7 @@ add_names <- function(x){
 import_boundary_ls <- function(lookup_tbs_r4,
                                raw_data_dir){
   ready4utils::setup_io_directories(raw_data_dir)
-  raw_format_sp_dir <- paste0(raw_data_dir,"/InputData/Raw_Format/Geometries")
+  raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,"Geometries")#paste0(raw_data_dir,"/InputData/Raw_Format/Geometries")
   if(!dir.exists(raw_format_sp_dir))
   dir.create(raw_format_sp_dir)
   boundaries_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
@@ -252,6 +252,25 @@ import_boundary_ls <- function(lookup_tbs_r4,
                                  data_directory = raw_format_sp_dir,
                                  sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
     stats::setNames(boundaries_to_import_vec)
+}
+#' @title make_raw_format_dir_str
+#' @description FUNCTION_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
+#' @param category PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname make_raw_format_dir_str
+#' @export
+
+make_raw_format_dir_str <- function(raw_data_dir,
+                                    category){
+  paste0(raw_data_dir,"/InputData/Raw_Format/",category)
 }
 #' @title import_attribute_ls
 #' @description FUNCTION_DESCRIPTION
@@ -279,7 +298,7 @@ import_boundary_ls <- function(lookup_tbs_r4,
 import_attribute_ls <- function(lookup_tbs_r4,
                                raw_data_dir){ ## Merge with import_boundary_ls
   ready4utils::setup_io_directories(raw_data_dir)
-  raw_format_att_dir <- paste0(raw_data_dir,"/InputData/Raw_Format/Attributes")
+  raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")#paste0(raw_data_dir,"/InputData/Raw_Format/Attributes")
   if(!dir.exists(raw_format_att_dir))
   dir.create(raw_format_att_dir)
   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
