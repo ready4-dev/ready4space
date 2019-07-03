@@ -4,7 +4,8 @@
 \alias{add_data_pack_from_script}
 \title{add_data_pack_from_script}
 \usage{
-add_data_pack_from_script(x, lookup_tbs_r4, merge_sfs_vec, processed_dir)
+add_data_pack_from_script(x, lookup_tbs_r4, merge_sfs_vec, processed_dir,
+  raw_data_dir)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -14,6 +15,8 @@ add_data_pack_from_script(x, lookup_tbs_r4, merge_sfs_vec, processed_dir)
 \item{merge_sfs_vec}{PARAM_DESCRIPTION}
 
 \item{processed_dir}{PARAM_DESCRIPTION}
+
+\item{raw_data_dir}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

@@ -110,7 +110,7 @@ make_data_pack_sngl <- function(x,
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
   if(!x %>% dplyr::pull(make_script_src) %>% is.na()){
-    lookup_tbs_r4 <- add_data_pack_from_script(x = x, lookup_tbs_r4 = lookup_tbs_r4, merge_sfs_vec = merge_with, processed_dir = processed_dir)
+    lookup_tbs_r4 <- add_data_pack_from_script(x = x, lookup_tbs_r4 = lookup_tbs_r4, merge_sfs_vec = merge_with, processed_dir = processed_dir, raw_data_dir = raw_data_dir)
   }else{
     if(x %>% dplyr::pull(data_type) == "Shape"){
       boundary_ls <- import_boundary_ls(lookup_tbs_r4,
@@ -487,7 +487,8 @@ export_data_pack_lup <- function(lookup_tbs_r4,
 get_merge_sf_str <- function(lookup_r4,
                              sp_import_r3_slice,
                              processed_dir = NULL){
-  if(is.null(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
+  if(is.null(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)) |
+     is.na(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
     NA_character_
   }else{
     # uid_str <- sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1)
@@ -517,6 +518,7 @@ get_merge_sf_str <- function(lookup_r4,
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
 #' @param merge_sfs_vec PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -533,10 +535,12 @@ get_merge_sf_str <- function(lookup_r4,
 add_data_pack_from_script <- function(x,
                                       lookup_tbs_r4,
                                       merge_sfs_vec,
-                                      processed_dir){
+                                      processed_dir,
+                                      raw_data_dir){
   parse(text = paste0(x %>% dplyr::pull(make_script_src),
                       "(x = x,
                       lookup_tbs_r4 = lookup_tbs_r4,
                       merge_sfs_vec = merge_sfs_vec,
-                      processed_dir = processed_dir)")) %>% eval()
+                      processed_dir = processed_dir,
+                      raw_data_dir = raw_data_dir)")) %>% eval()
 }
