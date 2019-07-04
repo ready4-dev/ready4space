@@ -72,7 +72,7 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                                                         lup_dir = lup_dir,
                                                                                         processed_dir = processed_dir),
                                                                   r4_name = "ready4_lookup"))
-  saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",lup_r4_name,".rds"))
+  saveRDS(lookup_tbs_r4,file = paste0(processed_dir,"/",lup_r4_name,".rds"))
   return(lookup_tbs_r4)
 }
 
