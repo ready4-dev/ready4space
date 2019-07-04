@@ -156,7 +156,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                              data_directory){
   downloaded_data_tb <- x %>%
     dplyr::filter(data_type == item_data_type) %>%
-    dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_file[[1]]),
+    dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_files[[1]]),
                                         inc_file_main,
                                         ifelse(is.na(new_names_for_inc_files %>% unlist()),
                                                inc_file_main,
