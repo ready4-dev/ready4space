@@ -3,13 +3,20 @@
 \name{import_data}
 \alias{import_data}
 \alias{download_data}
+\alias{save_raw}
 \title{import_data}
 \usage{
 import_data(x, ...)
 
 download_data(x, ...)
+
+save_raw(x, ...)
 }
 \arguments{
+\item{x}{PARAM_DESCRIPTION}
+
+\item{...}{PARAM_DESCRIPTION}
+
 \item{x}{PARAM_DESCRIPTION}
 
 \item{...}{PARAM_DESCRIPTION}
@@ -22,8 +29,12 @@ download_data(x, ...)
 OUTPUT_DESCRIPTION
 
 OUTPUT_DESCRIPTION
+
+OUTPUT_DESCRIPTION
 }
 \description{
+FUNCTION_DESCRIPTION
+
 FUNCTION_DESCRIPTION
 
 FUNCTION_DESCRIPTION
@@ -32,8 +43,15 @@ FUNCTION_DESCRIPTION
 DETAILS
 
 DETAILS
+
+DETAILS
 }
 \examples{
+\dontrun{
+if(interactive()){
+ #EXAMPLE1
+ }
+}
 \dontrun{
 if(interactive()){
  #EXAMPLE1

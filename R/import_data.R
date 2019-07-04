@@ -36,6 +36,53 @@ download_data <- function(x,
                         ...){
   UseMethod("download_data",x)
 }
+#' @title save_raw
+#' @description FUNCTION_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname import_data
+#' @export
+
+save_raw <- function(x,
+                          ...){
+  UseMethod("save_raw",x)
+}
+
+#' @title save_raw
+#' @description FUNCTION_DESCRIPTION
+#' @param required_data PARAM_DESCRIPTION
+#' @param destination_directory PARAM_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}}
+#' @rdname save_raw
+#' @export
+#' @importFrom purrr walk
+save_raw.ready4_sp_import_lup <- function(x,
+                                          required_data,
+                                          destination_directory){
+  purrr::walk(required_data,
+              ~ download_data(x = x,
+                              destination_directory = destination_directory,
+                              data_lookup_ref = .x))
+}
+
 #' @title download_data.ready4_sp_import_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -397,33 +444,6 @@ data_import_show_menu_of_type_names <- function(x,
                                        lookup_ref = lookup_ref) %>%
     dplyr::select(name) %>%
     dplyr::pull()
-}
-
-#' @title data_import_selected_downloads
-#' @description FUNCTION_DESCRIPTION
-#' @param required_data PARAM_DESCRIPTION
-#' @param destination_directory PARAM_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[purrr]{map}}
-#' @rdname data_import_selected_downloads
-#' @export
-#' @importFrom purrr walk
-data_import_selected_downloads <- function(required_data,
-                                           destination_directory,
-                                           x){
-  purrr::walk(required_data,
-              ~ download_data(x = x,
-                            destination_directory = destination_directory,
-                            data_lookup_ref = .x))
 }
 
 #' @title data_import_get_one_path

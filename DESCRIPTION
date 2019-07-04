@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9042
+Version: 0.0.0.9043
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -33,7 +33,7 @@ Imports:
     units,
     ready4agents (>= 0.0.0.9019),
     ready4s4 (>= 0.0.0.948),
-    ready4utils (>= 0.0.0.9028),
+    ready4utils (>= 0.0.0.9029),
     ready4sd (>= 0.0.0.9007),
     ISOcodes,
     invgamma,

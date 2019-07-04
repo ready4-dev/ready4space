@@ -243,7 +243,7 @@ import_boundary_ls <- function(lookup_tbs_r4,
   dir.create(raw_format_sp_dir)
   boundaries_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
-  download_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+  save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
               required_data = boundaries_to_import_vec,
               destination_directory = raw_format_sp_dir)
   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
@@ -302,7 +302,7 @@ import_attribute_ls <- function(lookup_tbs_r4,
     dir.create(raw_format_att_dir)
   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
-  download_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+  save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
                 required_data = attributes_to_import_vec,
                 destination_directory = raw_format_att_dir)
   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
