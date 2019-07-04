@@ -156,14 +156,12 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                              data_directory){
   downloaded_data_tb <- x %>%
     dplyr::filter(data_type == item_data_type) %>%
-    dplyr::mutate(inc_file_main =
-                    ifelse(is.null(new_names_for_inc_files),
-                           inc_file_main,
-                           ifelse(is.na(new_names_for_inc_files %>% unlist()),
-                                  inc_file_main,
-                                  purrr::map_chr(new_names_for_inc_files,
-                                                 ~ .x[[1]]))))
-
+    dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_file[[1]]),
+                                        inc_file_main,
+                                        ifelse(is.na(new_names_for_inc_files %>% unlist()),
+                                               inc_file_main,
+                                               purrr::map_chr(new_names_for_inc_files,
+                                                              ~ .x[[1]]))))
   path_vec <- purrr::map_chr(included_items_names,
                              ~ data_import_get_one_path(downloaded_data_tb = downloaded_data_tb %>%
                                                           dplyr::select(c(name, country, area_type, region, data_type, main_feature, year, inc_file_main)),

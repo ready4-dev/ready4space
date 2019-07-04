@@ -247,9 +247,9 @@ import_boundary_ls <- function(lookup_tbs_r4,
               required_data = boundaries_to_import_vec,
               destination_directory = raw_format_sp_dir)
   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-                                 included_items_names = boundaries_to_import_vec,
-                                 item_data_type = "Shape",
-                                 data_directory = raw_format_sp_dir) %>%
+              included_items_names = boundaries_to_import_vec,
+              item_data_type = "Shape",
+              data_directory = raw_format_sp_dir) %>%
     stats::setNames(boundaries_to_import_vec)
 }
 #' @title make_raw_format_dir_str
