@@ -4,19 +4,17 @@
 \alias{import_data.ready4_sp_import_lup}
 \title{import_data.ready4_sp_import_lup}
 \usage{
-\method{import_data}{ready4_sp_import_lup}(x, destination_directory,
-  data_lookup_ref, lookup_variable = "name", directory_sub_divs = NULL)
+\method{import_data}{ready4_sp_import_lup}(x, included_items_names,
+  item_data_type, data_directory)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
 
-\item{destination_directory}{PARAM_DESCRIPTION}
+\item{included_items_names}{PARAM_DESCRIPTION}
 
-\item{data_lookup_ref}{PARAM_DESCRIPTION}
+\item{item_data_type}{PARAM_DESCRIPTION}
 
-\item{lookup_variable}{PARAM_DESCRIPTION, Default: 'name'}
-
-\item{directory_sub_divs}{PARAM_DESCRIPTION, Default: NULL}
+\item{data_directory}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -35,5 +33,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s3]{ready4_sp_import_lup}}
+\code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
+ \code{\link[purrr]{map}}
+ \code{\link[sf]{st_read}}
+ \code{\link[stats]{setNames}}
 }

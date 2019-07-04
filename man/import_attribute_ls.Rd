@@ -28,7 +28,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4utils]{setup_io_directories}},\code{\link[ready4utils]{c("data_import_selected_downloads", "data_import_selected_downloads")}},\code{\link[ready4utils]{c("data_import_items", "data_import_items")}}
+\code{\link[ready4utils]{setup_io_directories}}
  \code{\link[ready4s4]{sp_import_lup}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[stats]{setNames}}

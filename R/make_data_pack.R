@@ -142,7 +142,6 @@ make_data_pack_sngl <- function(x,
                              lup_dir = lup_dir)
     }
   }
-
   return(lookup_tbs_r4)
 }
 #' @title export_attr_tb
@@ -226,13 +225,13 @@ add_names <- function(x){
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{setup_io_directories}},\code{\link[ready4utils]{c("data_import_selected_downloads", "data_import_selected_downloads")}},\code{\link[ready4utils]{c("data_import_items", "data_import_items")}}
+#'  \code{\link[ready4utils]{setup_io_directories}}
 #'  \code{\link[ready4s4]{sp_import_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stats]{setNames}}
 #' @rdname import_boundary_ls
 #' @export
-#' @importFrom ready4utils setup_io_directories data_import_selected_downloads data_import_items
+#' @importFrom ready4utils setup_io_directories
 #' @importFrom ready4s4 sp_import_lup
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
@@ -244,13 +243,13 @@ import_boundary_ls <- function(lookup_tbs_r4,
   dir.create(raw_format_sp_dir)
   boundaries_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
-  ready4utils::data_import_selected_downloads(required_data = boundaries_to_import_vec,
-                                              destination_directory = raw_format_sp_dir,
-                                              sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
-  ready4utils::data_import_items(included_items_names = boundaries_to_import_vec,
+  download_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+              required_data = boundaries_to_import_vec,
+              destination_directory = raw_format_sp_dir)
+  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+                                 included_items_names = boundaries_to_import_vec,
                                  item_data_type = "Shape",
-                                 data_directory = raw_format_sp_dir,
-                                 sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
+                                 data_directory = raw_format_sp_dir) %>%
     stats::setNames(boundaries_to_import_vec)
 }
 #' @title make_raw_format_dir_str
@@ -285,31 +284,31 @@ make_raw_format_dir_str <- function(raw_data_dir,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{setup_io_directories}},\code{\link[ready4utils]{c("data_import_selected_downloads", "data_import_selected_downloads")}},\code{\link[ready4utils]{c("data_import_items", "data_import_items")}}
+#'  \code{\link[ready4utils]{setup_io_directories}}
 #'  \code{\link[ready4s4]{sp_import_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stats]{setNames}}
 #' @rdname import_attribute_ls
 #' @export
-#' @importFrom ready4utils setup_io_directories data_import_selected_downloads data_import_items
+#' @importFrom ready4utils setup_io_directories
 #' @importFrom ready4s4 sp_import_lup
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
 import_attribute_ls <- function(lookup_tbs_r4,
-                               raw_data_dir){ ## Merge with import_boundary_ls
+                                raw_data_dir){ ## Merge with import_boundary_ls
   ready4utils::setup_io_directories(raw_data_dir)
   raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")#paste0(raw_data_dir,"/InputData/Raw_Format/Attributes")
   if(!dir.exists(raw_format_att_dir))
-  dir.create(raw_format_att_dir)
+    dir.create(raw_format_att_dir)
   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
     dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
-  ready4utils::data_import_selected_downloads(required_data = attributes_to_import_vec,
-                                              destination_directory = raw_format_att_dir,
-                                              sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))
-  ready4utils::data_import_items(included_items_names = attributes_to_import_vec,
-                                 item_data_type = "Attribute",
-                                 data_directory = raw_format_att_dir,
-                                 sp_data_import_tb = ready4s4::sp_import_lup(lookup_tbs_r4))  %>%
+  download_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+                required_data = attributes_to_import_vec,
+                destination_directory = raw_format_att_dir)
+  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+              included_items_names = attributes_to_import_vec,
+              item_data_type = "Attribute",
+              data_directory = raw_format_att_dir)  %>%
     stats::setNames(attributes_to_import_vec)
 }
 #' @title export_starter_sf

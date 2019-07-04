@@ -17,8 +17,26 @@ import_data <- function(x,
                         ...){
   UseMethod("import_data",x)
 }
+#' @title download_data
+#' @description FUNCTION_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname import_data
+#' @export
 
-#' @title import_data.ready4_sp_import_lup
+download_data <- function(x,
+                        ...){
+  UseMethod("download_data",x)
+}
+#' @title download_data.ready4_sp_import_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
 #' @param destination_directory PARAM_DESCRIPTION
@@ -35,10 +53,10 @@ import_data <- function(x,
 #' }
 #' @seealso
 #'  \code{\link[ready4s3]{ready4_sp_import_lup}}
-#' @rdname import_data.ready4_sp_import_lup
+#' @rdname download_data.ready4_sp_import_lup
 #' @export
 #' @importFrom ready4s3 ready4_sp_import_lup
-import_data.ready4_sp_import_lup <- function(x,
+download_data.ready4_sp_import_lup <- function(x,
                                             destination_directory,
                                             #data_import_lookup_tb,
                                             data_lookup_ref,
@@ -60,6 +78,69 @@ import_data.ready4_sp_import_lup <- function(x,
 
 
 }
+#' @title import_data.ready4_sp_import_lup
+#' @description FUNCTION_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @param included_items_names PARAM_DESCRIPTION
+#' @param item_data_type PARAM_DESCRIPTION
+#' @param data_directory PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
+#'  \code{\link[purrr]{map}}
+#'  \code{\link[sf]{st_read}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname import_data.ready4_sp_import_lup
+#' @export
+#' @importFrom dplyr filter mutate select
+#' @importFrom purrr map_chr map
+#' @importFrom sf st_read
+#' @importFrom stats setNames
+import_data.ready4_sp_import_lup <- function(x, # data_import_items
+                                             included_items_names,
+                                             item_data_type,
+                                             data_directory){
+  downloaded_data_tb <- x %>%
+    dplyr::filter(data_type == item_data_type) %>%
+    dplyr::mutate(inc_file_main =
+                    ifelse(is.null(new_names_for_inc_files),
+                           inc_file_main,
+                           ifelse(is.na(new_names_for_inc_files %>% unlist()),
+                                  inc_file_main,
+                                  purrr::map_chr(new_names_for_inc_files,
+                                                 ~ .x[[1]]))))
+
+  path_vec <- purrr::map_chr(included_items_names,
+                             ~ data_import_get_one_path(downloaded_data_tb = downloaded_data_tb %>%
+                                                          dplyr::select(c(name, country, area_type, region, data_type, main_feature, year, inc_file_main)),
+                                                        # data_import_show_menu_of_type_detail(item_data_type,
+                                                        #                                      x = x),
+                                                        lookup_reference = .x,
+                                                        data_directory = data_directory))
+  if(item_data_type=="Shape"){
+    item_list <- purrr::map(path_vec,
+                            ~ sf::st_read(dsn=.x,
+                                          layer = data_import_get_file_name_from_path(.x,
+                                                                                      with_ext = FALSE))) %>%
+      stats::setNames(included_items_names)
+  }else{
+    item_list <- purrr::map(path_vec,
+                            ~ data_import_non_shape_items(.x,
+                                                          x = downloaded_data_tb
+                                                          # x
+                            )) %>%
+      stats::setNames(included_items_names)
+  }
+  return(item_list)
+}
+
 #' @title data_import_get_dir_paths
 #' @description FUNCTION_DESCRIPTION
 #' @param destination_directory PARAM_DESCRIPTION
@@ -340,7 +421,7 @@ data_import_selected_downloads <- function(required_data,
                                            destination_directory,
                                            x){
   purrr::walk(required_data,
-              ~ import_data(x = x,
+              ~ download_data(x = x,
                             destination_directory = destination_directory,
                             data_lookup_ref = .x))
 }
@@ -464,69 +545,7 @@ make_import_obj_for_context <- function(context,
 }
 
 
-#' @title data_import_items
-#' @description FUNCTION_DESCRIPTION
-#' @param included_items_names PARAM_DESCRIPTION
-#' @param item_data_type PARAM_DESCRIPTION
-#' @param data_directory PARAM_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
-#'  \code{\link[purrr]{map}}
-#'  \code{\link[sf]{st_read}}
-#'  \code{\link[stats]{setNames}}
-#' @rdname data_import_items
-#' @export
-#' @importFrom dplyr filter mutate select
-#' @importFrom purrr map_chr map
-#' @importFrom sf st_read
-#' @importFrom stats setNames
-data_import_items <- function(included_items_names,
-                              item_data_type,
-                              data_directory,
-                              x){
-  downloaded_data_tb <- x %>%
-    dplyr::filter(data_type == item_data_type) %>%
-    dplyr::mutate(inc_file_main =
-                    ifelse(is.null(new_names_for_inc_files),
-                           inc_file_main,
-                           ifelse(is.na(new_names_for_inc_files %>% unlist()),
-                                  inc_file_main,
-                                  purrr::map_chr(new_names_for_inc_files,
-                                                 ~ .x[[1]]))))
 
-  path_vec <- purrr::map_chr(included_items_names,
-                                ~ data_import_get_one_path(downloaded_data_tb = downloaded_data_tb %>%
-                                                             dplyr::select(c(name, country, area_type, region, data_type, main_feature, year, inc_file_main)),
-                                                                         # data_import_show_menu_of_type_detail(item_data_type,
-                                                                         #                                      x = x),
-                                                                       lookup_reference = .x,
-                                                                       data_directory = data_directory))
-  if(item_data_type=="Shape"){
-    item_list <- purrr::map(path_vec,
-                            ~ sf::st_read(dsn=.x,
-                                          layer = data_import_get_file_name_from_path(.x,
-                                                                                      with_ext = FALSE))) %>%
-      stats::setNames(included_items_names)
-  }else{
-    item_list <- purrr::map(path_vec,
-                            ~ data_import_non_shape_items(.x,
-                                                          x = downloaded_data_tb
-                                                            # x
-                                                          )) %>%
-      stats::setNames(included_items_names)
-  }
-
-  return(item_list)
-}
 #' @param path_str PARAM_DESCRIPTION
 #' @param with_ext PARAM_DESCRIPTION, Default: TRUE
 #' @return OUTPUT_DESCRIPTION
