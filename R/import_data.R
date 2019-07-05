@@ -275,7 +275,8 @@ data_import_save_files <- function(x,
   download_components_vec <- purrr::map_chr(c("file_name",
                                               "file_type",
                                               "download_url",
-                                              "inc_file_main"),
+                                              "inc_file_main",
+                                              "local_file_src"),
                                             ~ data_get(data_lookup_tb = x,
                                                        lookup_reference = data_lookup_ref,
                                                        lookup_variable = lookup_variable,
@@ -285,23 +286,27 @@ data_import_save_files <- function(x,
                       "/",
                       download_components_vec[1],
                       download_components_vec[2])
-  if(!is.na(paste0(directory_path,
-                   "/",
-                   download_components_vec[4]))){
-    if(!file.exists(paste0(directory_path,
-                           "/",
-                           download_components_vec[4]))){
-      utils::download.file(download_components_vec[3],
-                           destfile = dest_file,
-                           mode = 'wb')
-      if(download_components_vec[2] == ".zip"){
-        utils::unzip(dest_file,
-                     exdir = directory_path)
+  if(!is.na(download_components_vec)){
+    file.copy(from = download_components_vec[5],to = dest_file)
+  }else{
+    if(!is.na(paste0(directory_path,
+                     "/",
+                     download_components_vec[4]))){
+      if(!file.exists(paste0(directory_path,
+                             "/",
+                             download_components_vec[4]))){
+        utils::download.file(download_components_vec[3],
+                             destfile = dest_file,
+                             mode = 'wb')
+        if(download_components_vec[2] == ".zip"){
+          utils::unzip(dest_file,
+                       exdir = directory_path)
+        }
+        data_import_rename_files(x = x,
+                                 data_lookup_ref = data_lookup_ref,
+                                 lookup_variable = lookup_variable,
+                                 directory_path = directory_path)
       }
-      data_import_rename_files(x = x,
-                               data_lookup_ref = data_lookup_ref,
-                               lookup_variable = lookup_variable,
-                               directory_path = directory_path)
     }
   }
 }
