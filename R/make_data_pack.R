@@ -269,7 +269,7 @@ import_boundary_ls <- function(lookup_tbs_r4,
 
 make_raw_format_dir_str <- function(raw_data_dir,
                                     category){
-  paste0(raw_data_dir,"/InputData/Raw_Format/",category)
+  paste0(raw_data_dir,"/",category)
 }
 #' @title import_attribute_ls
 #' @description FUNCTION_DESCRIPTION

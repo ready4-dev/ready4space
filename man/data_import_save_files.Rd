@@ -33,5 +33,6 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[utils]{download.file}},\code{\link[utils]{unzip}}
 }

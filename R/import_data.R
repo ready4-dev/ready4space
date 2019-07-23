@@ -263,10 +263,12 @@ data_import_make_directories <- function(directory_paths){
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}}
+#'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[utils]{download.file}},\code{\link[utils]{unzip}}
 #' @rdname data_import_save_files
 #' @export
 #' @importFrom purrr map_chr
+#' @importFrom ready4utils data_get
 #' @importFrom utils download.file unzip
 data_import_save_files <- function(x,
                                    data_lookup_ref,
@@ -277,7 +279,7 @@ data_import_save_files <- function(x,
                                               "download_url",
                                               "inc_file_main",
                                               "local_file_src"),
-                                            ~ data_get(data_lookup_tb = x,
+                                            ~ ready4utils::data_get(data_lookup_tb = x,
                                                        lookup_reference = data_lookup_ref,
                                                        lookup_variable = lookup_variable,
                                                        target_variable = .x,
@@ -286,7 +288,7 @@ data_import_save_files <- function(x,
                       "/",
                       download_components_vec[1],
                       download_components_vec[2])
-  if(!is.na(download_components_vec)){
+  if(!is.na(download_components_vec[5])){
     file.copy(from = download_components_vec[5],to = dest_file)
   }else{
     if(!is.na(paste0(directory_path,
