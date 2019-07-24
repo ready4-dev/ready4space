@@ -28,11 +28,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[stringr]{str_sub}},\code{\link[stringr]{str_c}}
+\code{\link[stringr]{str_sub}}
  \code{\link[stringi]{stri_locate_all}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[purrr]{map}}
- \code{\link[tibble]{as_tibble}},\code{\link[tibble]{deprecated}}
- \code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}},\code{\link[dplyr]{filter}}
- \code{\link[readxl]{read_excel}}
- \code{\link[stats]{setNames}}
 }

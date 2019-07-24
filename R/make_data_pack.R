@@ -496,23 +496,25 @@ export_data_pack_lup <- function(lookup_tbs_r4,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[purrr]{pluck}}
+#'  \code{\link[dplyr]{pull}}
+#'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
 #'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_data_pack_lup}}
 #'  \code{\link[stringr]{str_detect}}
 #' @rdname get_merge_sf_str
 #' @export
-#' @importFrom purrr pluck
+#' @importFrom dplyr pull
+#' @importFrom purrr pluck map_chr
 #' @importFrom ready4utils data_get
 #' @importFrom ready4s4 sp_import_lup sp_data_pack_lup
 #' @importFrom stringr str_detect
 get_merge_sf_str <- function(lookup_r4,
                              sp_import_r3_slice,
                              processed_dir = NULL){
-  if(is.null(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
+  if(is.null(sp_import_r3_slice %>% dplyr::pull(add_boundaries) %>% purrr::pluck(1))){
     NA_character_
   }else{
-    if(is.na(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1))){
+    if(is.na(sp_import_r3_slice %>% dplyr::pull(add_boundaries) %>% purrr::pluck(1))){
       NA_character_
     }else{
       purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),

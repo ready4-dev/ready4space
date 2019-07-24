@@ -30,7 +30,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[purrr]{pluck}}
+\code{\link[dplyr]{pull}}
+ \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
  \code{\link[ready4utils]{data_get}}
  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_data_pack_lup}}
  \code{\link[stringr]{str_detect}}

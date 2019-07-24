@@ -33,4 +33,5 @@ if(interactive()){
 \seealso{
 \code{\link[purrr]{map}}
  \code{\link[dplyr]{select}}
+ \code{\link[ready4utils]{data_get}}
 }

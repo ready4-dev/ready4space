@@ -36,4 +36,5 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map}},\code{\link[purrr]{accumulate}}
+ \code{\link[ready4utils]{data_get}}
 }
