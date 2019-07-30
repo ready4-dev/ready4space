@@ -326,11 +326,21 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
     ready4s4::lookup_tb() %>%
     ready4s4::sp_starter_sf_lup() %>%
     dplyr::filter(country == ready4s4::country(profiled_area_input))
-  starter_sf <- ready4utils::data_get(data_lookup_tb = sp_data_starter_sf_lup,
+  starter_sf_nm <- ready4utils::data_get(data_lookup_tb = sp_data_starter_sf_lup,
                                      lookup_variable = "area_type",
-                                     lookup_reference = ready4s4::area_type(profiled_area_input),
+                                     lookup_reference = ifelse(ready4s4::area_type(profiled_area_input) %in% sp_data_starter_sf_lup$area_type,
+                                                               ready4s4::area_type(profiled_area_input),
+                                                               "PNT"),
                                      target_variable = "starter_sf",
-                                     evaluate = FALSE) %>% parse(file="",n=NULL,text = .) %>%
+                                     evaluate = FALSE)
+    starter_sf <-  ready4utils::data_get(data_lookup_tb = profiled_area_input %>%
+                            ready4s4::lookup_tb() %>%
+                            ready4s4::sp_data_pack_lup(),
+                          lookup_variable = "name",
+                          lookup_reference = starter_sf_nm %>% stringr::str_sub(end=-4),
+                          target_variable = "source_reference",
+                          evaluate = FALSE) %>%
+    parse(file="",n=NULL,text = .) %>%
     eval()
   if(ready4s4::use_coord_lup(profiled_area_input))
     starter_sf <- starter_sf %>%
