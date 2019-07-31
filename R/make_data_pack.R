@@ -296,7 +296,7 @@ make_raw_format_dir_str <- function(raw_data_dir,
 #' @importFrom stats setNames
 import_attribute_ls <- function(lookup_tbs_r4,
                                 raw_data_dir){ ## Merge with import_boundary_ls
-  ready4utils::setup_io_directories(raw_data_dir)
+  #ready4utils::setup_io_directories(raw_data_dir)
   raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")#paste0(raw_data_dir,"/InputData/Raw_Format/Attributes")
   if(!dir.exists(raw_format_att_dir))
     dir.create(raw_format_att_dir)
