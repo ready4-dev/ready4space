@@ -111,7 +111,7 @@ download_data.ready4_sp_import_lup <- function(x,
                                                directory_sub_divs = NULL){
 
   if(is.null(directory_sub_divs))
-    directory_sub_divs <- names(ready4s3::ready4_sp_import_lup())[2:7]
+    directory_sub_divs <- c(names(ready4s3::ready4_sp_import_lup())[2:4],names(ready4s3::ready4_sp_import_lup()[6:7]))
   directory_paths <- data_import_get_dir_paths(x = x,
                                                destination_directory = destination_directory,
                                                data_lookup_ref = data_lookup_ref,
@@ -164,9 +164,9 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                                                ~ .x[[1]]))))
   path_vec <- purrr::map_chr(included_items_names,
                              ~ data_import_get_one_path(downloaded_data_tb = downloaded_data_tb %>%
-                                                          dplyr::select(c(name, country, area_type, region, data_type, main_feature, year, inc_file_main)),
-                                                        # data_import_show_menu_of_type_detail(item_data_type,
-                                                        #                                      x = x),
+                                                          dplyr::select(c(name, country, area_type, region,
+                                                                          #data_type,
+                                                                          main_feature, year, inc_file_main)),
                                                         lookup_reference = .x,
                                                         data_directory = data_directory))
   if(item_data_type=="Shape"){

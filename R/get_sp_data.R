@@ -113,18 +113,17 @@ get_spatial_data_names <- function(input_data,
   }else
     spatial_lookup_tb <- spatial_lookup_tb
   # if(pop_projs_str != "None"){
-    year_opts <- spatial_lookup_tb %>%
-      dplyr::filter(main_feature == pop_projs_str) %>%
-      dplyr::pull(year)
-    year_opts <- year_opts[stringr::str_length(year_opts)==4]
-    year_opts_ref <- year_opts %>%
-      as.numeric() %>%
-      sort() %>%
-      min(which(. >= as.numeric(model_end_year)))
-    model_end_year <- year_opts %>%
-      as.numeric() %>%
-      sort() %>% purrr::pluck(year_opts_ref) %>%
-      as.character()
+  year_opts <- spatial_lookup_tb %>%
+    dplyr::filter(main_feature == pop_projs_str) %>%
+    dplyr::pull(year)
+  year_opts <- year_opts[stringr::str_length(year_opts)==4]
+  year_opts_ref <- which((year_opts %>%
+    as.numeric() %>%
+    sort()) >= model_end_year) %>% min()
+  model_end_year <- year_opts %>%
+    as.numeric() %>%
+    sort() %>% purrr::pluck(year_opts_ref) %>%
+    as.character()
   # }else{
   #   model_end_year <- data_year
   # }
