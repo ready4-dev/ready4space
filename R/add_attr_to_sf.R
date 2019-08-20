@@ -44,7 +44,7 @@ recur_add_attr_to_sf <- function(input_data,
   b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
-                                          dplyr::filter(boundary_year == b_yr),
+                                          dplyr::filter(year == b_yr), # boundary_year
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
