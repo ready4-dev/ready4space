@@ -167,6 +167,8 @@ add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){
 #' @param area_type PARAM_DESCRIPTION
 #' @param region PARAM_DESCRIPTION
 #' @param year PARAM_DESCRIPTION
+#' @param year_start PARAM_DESCRIPTION
+#' @param year_end PARAM_DESCRIPTION
 #' @param main_feature PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -189,6 +191,8 @@ add_attr_tb_to_data_pack_lup <- function(data_pack_lup,
                                          area_type,
                                          region,
                                          year,
+                                         year_start,
+                                         year_end,
                                          main_feature){
   tibble::tibble(name = object_name,
                  country = "Australia",
