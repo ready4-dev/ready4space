@@ -413,14 +413,14 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
-#'  \code{\link[ready4utils]{data_get}},\code{\link[ready4utils]{c("add_attr_tb_to_data_pack_lup_from_arg_list", "add_attr_tb_to_data_pack_lup_from_arg_list")}}
+#'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_data_pack_lup<-}}
 #'  \code{\link[dplyr]{mutate}}
 #'  \code{\link[stringr]{str_sub}}
 #' @rdname export_data_pack_lup
 #' @export
 #' @importFrom purrr map2 reduce map2_chr
-#' @importFrom ready4utils data_get add_attr_tb_to_data_pack_lup_from_arg_list
+#' @importFrom ready4utils data_get
 #' @importFrom ready4s4 sp_import_lup sp_data_pack_lup sp_data_pack_lup<-
 #' @importFrom dplyr mutate
 #' @importFrom stringr str_sub
@@ -474,7 +474,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
   data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls,
                                     .init = lookup_tbs_r4 %>%
                                       ready4s4::sp_data_pack_lup(),
-                                    ~ ready4utils::add_attr_tb_to_data_pack_lup_from_arg_list(.x,.y)) %>%
+                                    ~ add_attr_tb_to_data_pack_lup_from_arg_list(.x,.y)) %>%
     dplyr::mutate(data_type = tb_data_type) #####
   pckg_name <- ifelse(pckg_name =="",pckg_name, paste0(pckg_name,"::"))
   data_pack_lup_r3 <- data_pack_lup_r3 %>%
@@ -494,6 +494,8 @@ export_data_pack_lup <- function(lookup_tbs_r4,
   # saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
   lookup_tbs_r4
 }
+
+
 #' @title get_merge_sf_str
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_r4 PARAM_DESCRIPTION

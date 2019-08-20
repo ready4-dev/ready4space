@@ -36,7 +36,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
- \code{\link[ready4utils]{data_get}},\code{\link[ready4utils]{c("add_attr_tb_to_data_pack_lup_from_arg_list", "add_attr_tb_to_data_pack_lup_from_arg_list")}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_data_pack_lup<-}}
  \code{\link[dplyr]{mutate}}
  \code{\link[stringr]{str_sub}}
