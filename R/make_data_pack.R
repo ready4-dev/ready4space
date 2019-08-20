@@ -455,6 +455,18 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                                                        evaluate = FALSE),
                                                  ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          ready4s4::sp_import_lup(),
+                                                                       target_variable = "year_start",
+                                                                       lookup_variable = "name",
+                                                                       lookup_reference = .y,
+                                                                       evaluate = FALSE),
+                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                                         ready4s4::sp_import_lup(),
+                                                                       target_variable = "year_end",
+                                                                       lookup_variable = "name",
+                                                                       lookup_reference = .y,
+                                                                       evaluate = FALSE),
+                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                                         ready4s4::sp_import_lup(),
                                                                        target_variable = "main_feature",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
