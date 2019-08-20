@@ -115,7 +115,7 @@ get_spatial_data_names <- function(input_data,
   # if(pop_projs_str != "None"){
   year_opts <- spatial_lookup_tb %>%
     dplyr::filter(main_feature == pop_projs_str) %>%
-    dplyr::pull(year)
+    dplyr::pull(year_end) ## year
   year_opts <- year_opts[stringr::str_length(year_opts)==4]
   year_opts_ref <- which((year_opts %>%
     as.numeric() %>%
@@ -149,17 +149,17 @@ get_spatial_data_names <- function(input_data,
                                            matched_yr_data_res_vec,
                                            ~ .x %>%
                                              dplyr::filter(area_type == .y))
-  if(!is.null(sub_div_unit)){
-    region_lookup <- purrr::map_chr(sub_div_unit,
-                                    ~ ready4utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
-                                                           lookup_reference = .,
-                                                           lookup_variable = "long_name",
-                                                           target_variable = "short_name",
-                                                           evaluate = FALSE))
-    matched_yr_lookup_tb_list <- purrr::map2(matched_yr_lookup_tb_list,
-                                             region_lookup,
-                                             ~  .x %>% dplyr::filter(region %in% .y))
-  }
+  # if(!is.null(sub_div_unit)){
+  #   region_lookup <- purrr::map_chr(sub_div_unit,
+  #                                   ~ ready4utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
+  #                                                          lookup_reference = .,
+  #                                                          lookup_variable = "long_name",
+  #                                                          target_variable = "short_name",
+  #                                                          evaluate = FALSE))
+  #   matched_yr_lookup_tb_list <- purrr::map2(matched_yr_lookup_tb_list,
+  #                                            region_lookup,
+  #                                            ~  .x %>% dplyr::filter(region %in% .y))
+  # }
   names_of_data_vec <- purrr::map(matched_yr_lookup_tb_list,
                                   ~ .x %>%
                                     dplyr::pull(name)) %>%
@@ -193,7 +193,7 @@ get_spatial_data_names <- function(input_data,
                             ~ spatial_lookup_tb %>%
                               dplyr::filter(year %in% year_vec) %>%
                               dplyr::filter(area_type == .x[2]) %>%
-                              dplyr::filter(region %in% region_lookup) %>%
+                              #dplyr::filter(region %in% region_lookup) %>%
                               ready4utils::data_get(lookup_reference = .x[1],
                                                    lookup_variable = "main_feature",
                                                    target_variable = "name",
