@@ -4,21 +4,14 @@
 \alias{add_attr_list_to_sf}
 \title{add_attr_list_to_sf}
 \usage{
-add_attr_list_to_sf(x, y, area_unit, boundary_year, data_lookup_tb,
-  sub_div_unit)
+add_attr_list_to_sf(x, y, data_lookup_tb)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
 
 \item{y}{PARAM_DESCRIPTION}
 
-\item{area_unit}{PARAM_DESCRIPTION}
-
-\item{boundary_year}{PARAM_DESCRIPTION}
-
 \item{data_lookup_tb}{PARAM_DESCRIPTION}
-
-\item{sub_div_unit}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

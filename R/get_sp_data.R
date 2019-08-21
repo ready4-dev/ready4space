@@ -45,7 +45,7 @@ get_spatial_data_list <- function(input_data,
                                                      area_unit = .x,
                                                      boundary_year = ready4utils::data_get(data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                                                                                             ready4s4::sp_data_pack_lup(),
-                                                                                          target_variable = "boundary_year",
+                                                                                          target_variable = "year",
                                                                                           lookup_variable = "name",
                                                                                           lookup_reference = .y[1],
                                                                                           evaluate = FALSE),

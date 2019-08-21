@@ -41,22 +41,23 @@ recur_add_attr_to_sf <- function(input_data,
  lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4) %>%
     dplyr::filter(area_type == area_unit)
-  b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
+ # b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
-                                          dplyr::filter(year == b_yr), # boundary_year
+                                                        dplyr::filter(main_feature == "Boundary") %>%
+                                          dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) < as.numeric(boundary_year)])), # boundary_year
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
                                        evaluate = FALSE)) %>% eval()
-  country <- ready4s4::country(input_data$profiled_area_input)
-  if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
-    if(country=="Australia")
-      sub_div_unit_var_name <- names(boundary_file)[names(boundary_file) %>% stringr::str_detect("STE_NAME")]
-    # paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
-    boundary_file <- boundary_file %>%
-      dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
-  }
+  # country <- ready4s4::country(input_data$profiled_area_input)
+  # if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
+  #   if(country=="Australia")
+  #     sub_div_unit_var_name <- names(boundary_file)[names(boundary_file) %>% stringr::str_detect("STE_NAME")]
+  #   # paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
+  #   boundary_file <- boundary_file %>%
+  #     dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
+  # }
   boundary_file_as_list <- list(sf = boundary_file)
 
   attribute_data_list <-purrr::map(attribute_data,
@@ -67,20 +68,18 @@ recur_add_attr_to_sf <- function(input_data,
   purrr::reduce(reduce_list,
                 ~ add_attr_list_to_sf(.x,
                                       .y,
-                                      area_unit = area_unit,
-                                      boundary_year = boundary_year,
-                                      data_lookup_tb = data_lookup_tb,
-                                      sub_div_unit = sub_div_unit))
+                                      # area_unit = area_unit,
+                                      # boundary_year = boundary_year,
+                                      # data_lookup_tb = data_lookup_tb,
+                                      # sub_div_unit = sub_div_unit
+                                      ))
 }
 ##
 #' @title add_attr_list_to_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
 #' @param y PARAM_DESCRIPTION
-#' @param area_unit PARAM_DESCRIPTION
-#' @param boundary_year PARAM_DESCRIPTION
 #' @param data_lookup_tb PARAM_DESCRIPTION
-#' @param sub_div_unit PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -96,40 +95,38 @@ recur_add_attr_to_sf <- function(input_data,
 #' @importFrom ready4utils data_get
 add_attr_list_to_sf <- function(x,
                                 y,
-                                area_unit,
-                                boundary_year,
-                                data_lookup_tb,
-                                sub_div_unit){
-  add_attr_to_sf(area_unit = area_unit,
+                                #area_unit,
+                                #boundary_year,
+                                data_lookup_tb#,
+                                #sub_div_unit
+                                ){
+  add_attr_to_sf(#area_unit = area_unit,
                  area_sf = x,
                  attr_data_tb = eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                                        lookup_reference = y,
                                                                        lookup_variable = "name",
-                                                                       target_variable = "transformation",
+                                                                       target_variable = "source_reference", #transformation
                                                                        evaluate = FALSE))),
                  attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
                                                        evaluate = FALSE),
-                 attr_data_year = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
-                                                       lookup_reference = y,
-                                                       lookup_variable = "name",
-                                                       target_variable = "year",
-                                                       evaluate = FALSE),
-                 boundary_year = boundary_year,
-                 sub_div_unit = sub_div_unit )
+                 # attr_data_year = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                 #                                       lookup_reference = y,
+                 #                                       lookup_variable = "name",
+                 #                                       target_variable = "year",
+                 #                                       evaluate = FALSE),
+                 # boundary_year = boundary_year,
+                 # sub_div_unit = sub_div_unit
+                 )
 }
 ## EVERYTHING BELOW NEEDS TO BE INTEGRATED WITH australia.r4ext
 #' @title add_attr_to_sf
 #' @description FUNCTION_DESCRIPTION
-#' @param area_unit PARAM_DESCRIPTION
 #' @param area_sf PARAM_DESCRIPTION
 #' @param attr_data_tb PARAM_DESCRIPTION
 #' @param attr_data_desc PARAM_DESCRIPTION
-#' @param attr_data_year PARAM_DESCRIPTION
-#' @param boundary_year PARAM_DESCRIPTION
-#' @param sub_div_unit PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -147,24 +144,24 @@ add_attr_list_to_sf <- function(x,
 #' @importFrom dplyr inner_join
 #' @importFrom stringr str_detect
 #' @importFrom sf st_as_sf
-add_attr_to_sf <- function(area_unit,
+add_attr_to_sf <- function(#area_unit,
                            area_sf,
                            attr_data_tb,
-                           attr_data_desc,
-                           attr_data_year,
-                           boundary_year,
-                           sub_div_unit
+                           attr_data_desc#,
+                           #attr_data_year,
+                           #boundary_year,
+                           #sub_div_unit
                            ){
-  if(attr_data_desc == "Population projections"){
+  if(attr_data_desc == "PPR"){ # "Population projections"
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb)
   }
-  if(stringr::str_detect(attr_data_desc, "ERP by age and sex")){
+  if(stringr::str_detect(attr_data_desc, "ERP_TOT")){ #"ERP by age and sex"
       merged_units <- dplyr::inner_join(area_sf,
                                         attr_data_tb) %>%
         sf::st_as_sf()
   }
-  if(attr_data_desc == "ERP"){
+  if(attr_data_desc == "ERP_ASX"){ # "ERP"
     merged_units <- dplyr::inner_join(area_sf,
                                       attr_data_tb) %>%
       sf::st_as_sf()

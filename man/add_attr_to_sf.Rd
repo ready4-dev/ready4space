@@ -4,23 +4,14 @@
 \alias{add_attr_to_sf}
 \title{add_attr_to_sf}
 \usage{
-add_attr_to_sf(area_unit, area_sf, attr_data_tb, attr_data_desc,
-  attr_data_year, boundary_year, sub_div_unit)
+add_attr_to_sf(area_sf, attr_data_tb, attr_data_desc)
 }
 \arguments{
-\item{area_unit}{PARAM_DESCRIPTION}
-
 \item{area_sf}{PARAM_DESCRIPTION}
 
 \item{attr_data_tb}{PARAM_DESCRIPTION}
 
 \item{attr_data_desc}{PARAM_DESCRIPTION}
-
-\item{attr_data_year}{PARAM_DESCRIPTION}
-
-\item{boundary_year}{PARAM_DESCRIPTION}
-
-\item{sub_div_unit}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
