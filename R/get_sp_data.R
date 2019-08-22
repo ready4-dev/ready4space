@@ -37,6 +37,7 @@ get_spatial_data_list <- function(input_data,
   data_names_list <- purrr::map(boundary_res,
                                 ~ attributes_to_import[stringr::str_sub(attributes_to_import,5,7) == tolower(.x )]) %>%
     stats::setNames(boundary_res)
+  year_vec <- make_year_vec(input_data = input_data)
   extra_names <- purrr::map(input_data$at_specified_res,
                             ~ ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                               ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
@@ -130,34 +131,19 @@ get_spatial_data_names <- function(input_data,
   at_highest_res <- input_data$at_highest_res
   data_year <- ready4s4::data_year(input_data$profiled_area_input)
   at_specified_res <- input_data$at_specified_res
-  country = ready4s4::country(input_data$profiled_area_input)
+  country <- ready4s4::country(input_data$profiled_area_input)
   #sub_div_unit = NULL
-  pop_projs_str = input_data$pop_projs_str
-  model_end_year = get_model_end_ymdhs(input_data = input_data) %>% lubridate::year()
-  lookup_tb_r4 = input_data$profiled_area_input %>% ready4s4::lookup_tb()
+  pop_projs_str <- input_data$pop_projs_str
+
+  lookup_tb_r4 <- input_data$profiled_area_input %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   abbreviations_lookup_tb <- ready4s4::sp_abbreviations_lup(lookup_tb_r4)
-  if(excl_diff_bound_yr){
-    spatial_lookup_tb <- spatial_lookup_tb %>%
-      dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
-  }else
-    spatial_lookup_tb <- spatial_lookup_tb
-  # if(pop_projs_str != "None"){
-  year_opts <- spatial_lookup_tb %>%
-    dplyr::filter(main_feature == pop_projs_str) %>%
-    dplyr::pull(year_end) ## year
-  year_opts <- year_opts[stringr::str_length(year_opts)==4]
-  year_opts_ref <- which((year_opts %>%
-    as.numeric() %>%
-    sort()) >= model_end_year) %>% min()
-  model_end_year <- year_opts %>%
-    as.numeric() %>%
-    sort() %>% purrr::pluck(year_opts_ref) %>%
-    as.character()
-  # }else{
-  #   model_end_year <- data_year
-  # }
-  year_vec <- as.character(as.numeric(data_year):as.numeric(model_end_year))
+  # if(excl_diff_bound_yr){
+  #   spatial_lookup_tb <- spatial_lookup_tb %>%
+  #     dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
+  # }else
+  #   spatial_lookup_tb <- spatial_lookup_tb
+  year_vec <- make_year_vec(input_data = input_data)
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
@@ -223,6 +209,49 @@ get_spatial_data_names <- function(input_data,
   names_of_data_vec
 }
 
+
+#' @title make_year_vec
+#' @description FUNCTION_DESCRIPTION
+#' @param input_data PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
+#'  \code{\link[lubridate]{year}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[stringr]{str_length}}
+#'  \code{\link[purrr]{pluck}}
+#' @rdname make_year_vec
+#' @export
+#' @importFrom ready4s4 lookup_tb sp_data_pack_lup
+#' @importFrom lubridate year
+#' @importFrom dplyr filter pull
+#' @importFrom stringr str_length
+#' @importFrom purrr pluck
+make_year_vec <-function(input_data){
+  lookup_tb_r4 <- input_data$profiled_area_input %>% ready4s4::lookup_tb()
+  spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  pop_projs_str <- input_data$pop_projs_str
+  model_end_year <- get_model_end_ymdhs(input_data = input_data) %>% lubridate::year()
+  year_opts <- spatial_lookup_tb %>%
+    dplyr::filter(main_feature == pop_projs_str) %>%
+    dplyr::pull(year_end) ## year
+  year_opts <- year_opts[stringr::str_length(year_opts)==4]
+  year_opts_ref <- which((year_opts %>%
+                            as.numeric() %>%
+                            sort()) >= model_end_year) %>% min()
+  model_end_year <- year_opts %>%
+    as.numeric() %>%
+    sort() %>% purrr::pluck(year_opts_ref) %>%
+    as.character()
+  year_vec <- as.character(as.numeric(data_year):as.numeric(model_end_year))
+}
 #' @title get_closest_year
 #' @description FUNCTION_DESCRIPTION
 #' @param data_lookup_tb PARAM_DESCRIPTION
