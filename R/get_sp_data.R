@@ -234,7 +234,8 @@ get_spatial_data_names <- function(input_data,
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
-make_year_vec <-function(input_data){
+make_year_vec <- function(input_data){
+  data_year <- ready4s4::data_year(input_data$profiled_area_input)
   lookup_tb_r4 <- input_data$profiled_area_input %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   pop_projs_str <- input_data$pop_projs_str
@@ -250,7 +251,7 @@ make_year_vec <-function(input_data){
     as.numeric() %>%
     sort() %>% purrr::pluck(year_opts_ref) %>%
     as.character()
-  year_vec <- as.character(as.numeric(data_year):as.numeric(model_end_year))
+  as.character(as.numeric(data_year):as.numeric(model_end_year))
 }
 #' @title get_closest_year
 #' @description FUNCTION_DESCRIPTION
