@@ -70,7 +70,7 @@ recur_add_attr_to_sf <- function(input_data,
                                       .y,
                                       # area_unit = area_unit,
                                       # boundary_year = boundary_year,
-                                      data_lookup_tb = data_lookup_tb,
+                                      data_lookup_tb = data_lookup_tb#,
                                       # sub_div_unit = sub_div_unit
                                       ))
 }
