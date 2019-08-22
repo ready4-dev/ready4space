@@ -45,7 +45,7 @@ recur_add_attr_to_sf <- function(input_data,
   ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(main_feature == "Boundary") %>%
-                                          dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) < as.numeric(boundary_year)])), # boundary_year
+                                          dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])), # boundary_year
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
@@ -58,21 +58,23 @@ recur_add_attr_to_sf <- function(input_data,
   #   boundary_file <- boundary_file %>%
   #     dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
   # }
-  boundary_file_as_list <- list(sf = boundary_file)
-
+  ## TESTING
+  #boundary_file_as_list <- list(sf = boundary_file)
   attribute_data_list <-purrr::map(attribute_data,
                                    ~ .x) %>%
     stats::setNames(attribute_data)
-  reduce_list <- purrr::prepend(attribute_data_list,
-                                boundary_file_as_list)
-  purrr::reduce(reduce_list,
-                ~ add_attr_list_to_sf(.x,
-                                      .y,
-                                      # area_unit = area_unit,
-                                      # boundary_year = boundary_year,
-                                      data_lookup_tb = data_lookup_tb#,
-                                      # sub_div_unit = sub_div_unit
-                                      ))
+
+  purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file, y = .x, data_lookup_tb = data_lookup_tb)) %>% purrr::reduce(~rbind(.x,.y))
+  # reduce_list <- purrr::prepend(attribute_data_list,
+  #                               boundary_file_as_list)
+  # purrr::reduce(reduce_list,
+  #               ~ add_attr_list_to_sf(.x,
+  #                                     .y,
+  #                                     # area_unit = area_unit,
+  #                                     # boundary_year = boundary_year,
+  #                                     data_lookup_tb = data_lookup_tb#,
+  #                                     # sub_div_unit = sub_div_unit
+  #                                     ))
 }
 ##
 #' @title add_attr_list_to_sf

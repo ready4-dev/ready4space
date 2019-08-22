@@ -33,11 +33,41 @@ get_spatial_data_list <- function(input_data,
                                                  sub_div_unit = sub_div_unit,
                                                  require_year_match = require_year_match,
                                                  excl_diff_bound_yr = excl_diff_bound_yr)
-
   boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper()
   data_names_list <- purrr::map(boundary_res,
                                 ~ attributes_to_import[stringr::str_sub(attributes_to_import,5,7) == tolower(.x )]) %>%
     stats::setNames(boundary_res)
+  extra_names <- purrr::map(input_data$at_specified_res,
+                            ~ ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                              ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
+                              dplyr::filter(main_feature == .x[1]) %>%
+                              dplyr::filter(year %in% year_vec) %>%
+                              #dplyr::filter(area_type == .x[2]) %>%
+                              #dplyr::filter(region %in% region_lookup) %>%
+                              ready4utils::data_get(lookup_reference = .x[1],
+                                                    lookup_variable = "main_feature",
+                                                    target_variable = "name",
+                                                    evaluate = FALSE)) %>% #purrr::flatten_chr()
+    stats::setNames(purrr::map_chr(input_data$at_specified_res, ~.x[2]))
+  res_to_merge <- names(extra_names)[names(extra_names) %in% boundary_res]
+  if(!identical(res_to_merge,character(0))){
+    merged_elements_ls <-  purrr::map2(data_names_list[res_to_merge],
+                                       extra_names[res_to_merge],
+                                       ~ c(.x,.y))
+    if(length(merged_elements_ls) == length(data_names_list)){
+      data_names_list <- merged_elements_ls
+    }else{
+     data_names_list <- append(data_names_list[names(data_names_list)[!names(data_names_list) %in% res_to_merge]],
+                               merged_elements_ls)
+
+    }
+  }
+  extra_res <- names(extra_names)[!names(extra_names) %in% boundary_res]
+  if(!identical(extra_res,character(0))){
+    data_names_list <- append(data_names_list,extra_names[extra_res])
+    boundary_res <- c(boundary_res, extra_res)
+  }
+  ##
   data_sf_list <- purrr::map2(boundary_res,
                               data_names_list,
                               ~ recur_add_attr_to_sf(input_data = input_data,
@@ -99,7 +129,7 @@ get_spatial_data_names <- function(input_data,
   #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_data$at_highest_res
   data_year <- ready4s4::data_year(input_data$profiled_area_input)
-  at_specified_res = input_data$at_specified_res
+  at_specified_res <- input_data$at_specified_res
   country = ready4s4::country(input_data$profiled_area_input)
   #sub_div_unit = NULL
   pop_projs_str = input_data$pop_projs_str
@@ -164,7 +194,6 @@ get_spatial_data_names <- function(input_data,
                                   ~ .x %>%
                                     dplyr::pull(name)) %>%
     purrr::flatten_chr()
-
   if(!identical(non_matched_year_vec,character(0))){
     closest_years <- get_closest_year(data_lookup_tb = spatial_lookup_tb,
                                       incl_main_ft_vec = non_matched_year_vec,
@@ -189,17 +218,9 @@ get_spatial_data_names <- function(input_data,
                                                 after=non_matched_positions[.y]-1))
     #c(names_of_data_vec,extra_names)
   }
-  extra_names <- purrr::map(at_specified_res,
-                            ~ spatial_lookup_tb %>%
-                              dplyr::filter(year %in% year_vec) %>%
-                              dplyr::filter(area_type == .x[2]) %>%
-                              #dplyr::filter(region %in% region_lookup) %>%
-                              ready4utils::data_get(lookup_reference = .x[1],
-                                                   lookup_variable = "main_feature",
-                                                   target_variable = "name",
-                                                   evaluate = FALSE)) %>% purrr::flatten_chr()
     # unname()
-  c(names_of_data_vec,extra_names)
+  #c(names_of_data_vec,extra_names)
+  names_of_data_vec
 }
 
 #' @title get_closest_year
