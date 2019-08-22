@@ -39,11 +39,11 @@ recur_add_attr_to_sf <- function(input_data,
                                  attribute_data
                                  ){
  lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
-  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4) %>%
-    dplyr::filter(area_type == area_unit)
+  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
  # b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
+                                                        dplyr::filter(area_type == area_unit) %>%
                                                         dplyr::filter(main_feature == "Boundary") %>%
                                           dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])), # boundary_year
                                        lookup_reference = "Boundary",
@@ -102,13 +102,16 @@ add_attr_list_to_sf <- function(x,
                                 data_lookup_tb#,
                                 #sub_div_unit
                                 ){
+  attr_data_tb = eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                                         lookup_reference = y,
+                                                         lookup_variable = "name",
+                                                         target_variable = "source_reference", #transformation
+                                                         evaluate = FALSE)))
+  if(!is.data.frame(attr_data_tb))
+    attr_data_tb <- purrr::map_dfr(attr_data_tb,~.x)
   add_attr_to_sf(#area_unit = area_unit,
                  area_sf = x,
-                 attr_data_tb = eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
-                                                                       lookup_reference = y,
-                                                                       lookup_variable = "name",
-                                                                       target_variable = "source_reference", #transformation
-                                                                       evaluate = FALSE))),
+                 attr_data_tb = attr_data_tb,
                  attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
