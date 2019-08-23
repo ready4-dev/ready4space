@@ -40,8 +40,6 @@ recur_add_attr_to_sf <- function(input_data,
                                  ){
   lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
- # b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
-  ##### ADD BOUNDARY FILE TO DATA IMPORT
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(area_type == area_unit) %>%
                                                         dplyr::filter(main_feature == "Boundary") %>%
@@ -78,32 +76,19 @@ recur_add_attr_to_sf <- function(input_data,
 #' @importFrom ready4utils data_get
 add_attr_list_to_sf <- function(x,
                                 y,
-                                #area_unit,
-                                #boundary_year,
                                 lookup_tb_r4
-                                #data_lookup_tb#,
-                                #sub_div_unit
                                 ){
 
   attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4,
                                     lookup_ref = y,
                                     starter_sf = x)
-  add_attr_to_sf(#area_unit = area_unit,
-                 area_sf = x,
+  add_attr_to_sf(area_sf = x,
                  attr_data_tb = attr_data_xx,
                  attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
                                                        evaluate = FALSE)
-                 #,
-                 # attr_data_year = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
-                 #                                       lookup_reference = y,
-                 #                                       lookup_variable = "name",
-                 #                                       target_variable = "year",
-                 #                                       evaluate = FALSE),
-                 # boundary_year = boundary_year,
-                 # sub_div_unit = sub_div_unit
                  )
 }
 
@@ -174,7 +159,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                                lookup_variable = "area_type",
                                                target_variable = "sf_main_sub_div",
                                                evaluate = FALSE)
-    ste_names_var_str <- paste0 (ste_names_var_str,".x") # Remove - move entire section into Context package
+    #ste_names_var_str <- paste0 (ste_names_var_str,".x") # Remove - move entire section into Context package
     attr_data_xx <- attr_data_xx  %>%
       AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
                                             area_names_var_str = area_names_var_str,

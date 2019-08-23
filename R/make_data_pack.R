@@ -190,7 +190,7 @@ export_attr_tb <- function(attr_tb,
 #' @import ISOcodes
 add_names <- function(x){
   data(ISO_3166_1, package = "ISOcodes", envir = environment())
-  x %>%
+ x <- x %>%
     dplyr::mutate(name = purrr::pmap_chr(list(country,
                                               area_type,
                                               region,
@@ -211,6 +211,11 @@ add_names <- function(x){
                                                          paste0("_",tolower(..5),"_")),
                                                   ..6
                                          )))
+x %>% dplyr::mutate(name = make.unique(name)) %>% dplyr::mutate(name = map_chr(name, ~ ifelse(stringr::str_sub(.x,start = -2, end = -2) == ".",
+                                                                                              paste0(stringr::str_sub(.x, end = 11),
+                                                                                                     stringr::str_sub(.x,start = -1),
+                                                                                                     stringr::str_sub(.x, start = 12, end = -3)),
+                                                                                              .x)))
 }
 #' @title import_boundary_ls
 #' @description FUNCTION_DESCRIPTION
