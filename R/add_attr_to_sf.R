@@ -108,7 +108,6 @@ add_attr_list_to_sf <- function(x,
 #' @seealso
 #'  \code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}}
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[AusSpR4c]{c("replace_area_names_with_alt", "replace_area_names_with_alt")}},\code{\link[AusSpR4c]{spatial_select_rename_age_sex}}
 #'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[dplyr]{join}}
@@ -116,7 +115,6 @@ add_attr_list_to_sf <- function(x,
 #' @export
 #' @importFrom ready4s4 sp_data_pack_lup sp_abbreviations_lup sp_starter_sf_lup
 #' @importFrom ready4utils data_get
-#' @importFrom AusSpR4c replace_area_names_with_alt spatial_select_rename_age_sex
 #' @importFrom purrr map2 reduce
 #' @importFrom stringr str_sub
 #' @importFrom dplyr inner_join
@@ -159,18 +157,18 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                                lookup_variable = "area_type",
                                                target_variable = "sf_main_sub_div",
                                                evaluate = FALSE)
-    #ste_names_var_str <- paste0 (ste_names_var_str,".x") # Remove - move entire section into Context package
-    attr_data_xx <- attr_data_xx  %>%
-      AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
-                                            area_names_var_str = area_names_var_str,
-                                            ste_names_var_str = ste_names_var_str,
-                                            ste_short_long_names_vec = region_short_long_vec) %>%
-      purrr::map2(names(attr_data_xx) %>% stringr::str_sub(start = 2),
-                  ~ AusSpR4c::spatial_select_rename_age_sex(population_tib = .x,
-                                                            year = .y,
-                                                            also_include = NA,
-                                                            sub_div_unit = region_short_long_vec[1])) %>%
-      purrr::reduce(~dplyr::inner_join(.x,.y))
+    ## BELOW REQUIRED - NEEDS TO BE MADE A METHOD
+    # attr_data_xx <- attr_data_xx  %>%
+    #   AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
+    #                                         area_names_var_str = area_names_var_str,
+    #                                         ste_names_var_str = ste_names_var_str,
+    #                                         ste_short_long_names_vec = region_short_long_vec) %>%
+    #   purrr::map2(names(attr_data_xx) %>% stringr::str_sub(start = 2),
+    #               ~ AusSpR4c::spatial_select_rename_age_sex(population_tib = .x,
+    #                                                         year = .y,
+    #                                                         also_include = NA,
+    #                                                         sub_div_unit = region_short_long_vec[1])) %>%
+    #   purrr::reduce(~dplyr::inner_join(.x,.y))
     ##
   attr_data_xx
 }
