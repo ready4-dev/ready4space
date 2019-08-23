@@ -4,14 +4,14 @@
 \alias{add_attr_list_to_sf}
 \title{add_attr_list_to_sf}
 \usage{
-add_attr_list_to_sf(x, y, data_lookup_tb)
+add_attr_list_to_sf(x, y, lookup_tb_r4)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
 
 \item{y}{PARAM_DESCRIPTION}
 
-\item{data_lookup_tb}{PARAM_DESCRIPTION}
+\item{lookup_tb_r4}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

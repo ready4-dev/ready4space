@@ -74,13 +74,11 @@ get_spatial_data_list <- function(input_data,
                               ~ recur_add_attr_to_sf(input_data = input_data,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready4utils::data_get(data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
-                                                                                            ready4s4::sp_data_pack_lup(),
-                                                                                          target_variable = "year",
-                                                                                          lookup_variable = "name",
-                                                                                          lookup_reference = .y[1],
-                                                                                          evaluate = FALSE),
-                                                     #boundary_year = ready4s4::data_year(input_data$profiled_area_input),# data_year,#ifelse(require_year_match,data_year,NA_character_),
+                                                     boundary_year = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                       ready4s4::sp_data_pack_lup() %>%
+                                                       dplyr::filter(name %in% .y[[1]]) %>%
+                                                       dplyr::pull(year) %>%
+                                                       min(as.numeric()),
                                                      attribute_data = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,

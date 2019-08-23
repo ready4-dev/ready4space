@@ -29,7 +29,6 @@ import_data <- function(x,
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname import_data
 #' @export
 
 download_data <- function(x,
@@ -48,7 +47,6 @@ download_data <- function(x,
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname import_data
 #' @export
 
 save_raw <- function(x,

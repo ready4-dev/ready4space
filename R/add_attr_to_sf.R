@@ -38,7 +38,7 @@ recur_add_attr_to_sf <- function(input_data,
                                  boundary_year,
                                  attribute_data
                                  ){
- lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
+  lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
  # b_yr <- boundary_year ## Temporary: NEED TO RENAME boundary_year argument within function
   ##### ADD BOUNDARY FILE TO DATA IMPORT
@@ -50,38 +50,19 @@ recur_add_attr_to_sf <- function(input_data,
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
                                        evaluate = FALSE)) %>% eval()
-  # country <- ready4s4::country(input_data$profiled_area_input)
-  # if(!is.null(sub_div_unit)){ ### REWRITE AS ABSTRACT WITH LOOK-UP
-  #   if(country=="Australia")
-  #     sub_div_unit_var_name <- names(boundary_file)[names(boundary_file) %>% stringr::str_detect("STE_NAME")]
-  #   # paste0("STE_NAME",stringr::str_sub(boundary_year,3,4))
-  #   boundary_file <- boundary_file %>%
-  #     dplyr::filter(!!rlang::sym(sub_div_unit_var_name) == sub_div_unit)
-  # }
-  ## TESTING
-  #boundary_file_as_list <- list(sf = boundary_file)
-  attribute_data_list <-purrr::map(attribute_data,
+  attribute_data_list <- purrr::map(attribute_data[[1]],
                                    ~ .x) %>%
-    stats::setNames(attribute_data)
-
-  purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file, y = .x, data_lookup_tb = data_lookup_tb)) %>% purrr::reduce(~rbind(.x,.y))
-  # reduce_list <- purrr::prepend(attribute_data_list,
-  #                               boundary_file_as_list)
-  # purrr::reduce(reduce_list,
-  #               ~ add_attr_list_to_sf(.x,
-  #                                     .y,
-  #                                     # area_unit = area_unit,
-  #                                     # boundary_year = boundary_year,
-  #                                     data_lookup_tb = data_lookup_tb#,
-  #                                     # sub_div_unit = sub_div_unit
-  #                                     ))
-}
+    stats::setNames(attribute_data[[1]])
+  purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file,
+                                                        y = .x,
+                                                        lookup_tb_r4 = lookup_tb_r4)) %>% purrr::reduce(~rbind(.x,.y))
+  }
 ##
 #' @title add_attr_list_to_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
 #' @param y PARAM_DESCRIPTION
-#' @param data_lookup_tb PARAM_DESCRIPTION
+#' @param lookup_tb_r4 PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -99,19 +80,17 @@ add_attr_list_to_sf <- function(x,
                                 y,
                                 #area_unit,
                                 #boundary_year,
-                                data_lookup_tb#,
+                                lookup_tb_r4
+                                #data_lookup_tb#,
                                 #sub_div_unit
                                 ){
-  attr_data_tb = eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
-                                                         lookup_reference = y,
-                                                         lookup_variable = "name",
-                                                         target_variable = "source_reference", #transformation
-                                                         evaluate = FALSE)))
-  if(!is.data.frame(attr_data_tb))
-    attr_data_tb <- purrr::map_dfr(attr_data_tb,~.x)
+
+  attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4,
+                                    lookup_ref = y,
+                                    starter_sf = x)
   add_attr_to_sf(#area_unit = area_unit,
                  area_sf = x,
-                 attr_data_tb = attr_data_tb,
+                 attr_data_tb = attr_data_xx,
                  attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
@@ -126,6 +105,89 @@ add_attr_list_to_sf <- function(x,
                  # boundary_year = boundary_year,
                  # sub_div_unit = sub_div_unit
                  )
+}
+
+#' @title make_attr_data_xx
+#' @description FUNCTION_DESCRIPTION
+#' @param lookup_tb_r4 PARAM_DESCRIPTION
+#' @param lookup_ref PARAM_DESCRIPTION
+#' @param starter_sf PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}}
+#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[AusSpR4c]{c("replace_area_names_with_alt", "replace_area_names_with_alt")}},\code{\link[AusSpR4c]{spatial_select_rename_age_sex}}
+#'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
+#'  \code{\link[stringr]{str_sub}}
+#'  \code{\link[dplyr]{join}}
+#' @rdname make_attr_data_xx
+#' @export
+#' @importFrom ready4s4 sp_data_pack_lup sp_abbreviations_lup sp_starter_sf_lup
+#' @importFrom ready4utils data_get
+#' @importFrom AusSpR4c replace_area_names_with_alt spatial_select_rename_age_sex
+#' @importFrom purrr map2 reduce
+#' @importFrom stringr str_sub
+#' @importFrom dplyr inner_join
+make_attr_data_xx <- function(lookup_tb_r4,
+                              lookup_ref,
+                              starter_sf){
+  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  attr_data_xx <- eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                                          lookup_reference = lookup_ref,
+                                                          lookup_variable = "name",
+                                                          target_variable = "source_reference", #transformation
+                                                          evaluate = FALSE)))
+  if(is.data.frame(attr_data_xx)){
+    attr_data_xx <- list(attr_data_tb)
+  }
+    region_short_nm <- ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                             lookup_reference = lookup_ref,
+                                             lookup_variable = "name",
+                                             target_variable = "region",
+                                             evaluate = FALSE)
+    region_short_long_vec <- c(region_short_nm,
+                               ready4utils::data_get(data_lookup_tb = ready4s4::sp_abbreviations_lup(lookup_tb_r4),
+                                                     lookup_reference = region_short_nm,
+                                                     lookup_variable = "short_name",
+                                                     target_variable = "long_name",
+                                                     evaluate = FALSE))
+    area_names_var_str <- ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                                lookup_reference = lookup_ref,
+                                                lookup_variable = "name",
+                                                target_variable = "area_type",
+                                                evaluate = FALSE) %>%
+      ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
+                            lookup_reference = .,
+                            lookup_variable = "area_type",
+                            target_variable = "sf_main_sub_div",
+                            evaluate = FALSE)
+    ## This section to be context class based method
+    ste_names_var_str <- ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
+                                               lookup_reference = "STE",
+                                               lookup_variable = "area_type",
+                                               target_variable = "sf_main_sub_div",
+                                               evaluate = FALSE)
+    ste_names_var_str <- paste0 (ste_names_var_str,".x") # Remove - move entire section into Context package
+    attr_data_xx <- attr_data_xx  %>%
+      AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
+                                            area_names_var_str = area_names_var_str,
+                                            ste_names_var_str = ste_names_var_str,
+                                            ste_short_long_names_vec = region_short_long_vec) %>%
+      purrr::map2(names(attr_data_xx) %>% stringr::str_sub(start = 2),
+                  ~ AusSpR4c::spatial_select_rename_age_sex(population_tib = .x,
+                                                            year = .y,
+                                                            also_include = NA,
+                                                            sub_div_unit = region_short_long_vec[1])) %>%
+      purrr::reduce(~dplyr::inner_join(.x,.y))
+    ##
+  attr_data_xx
 }
 ## EVERYTHING BELOW NEEDS TO BE INTEGRATED WITH australia.r4ext
 #' @title add_attr_to_sf
