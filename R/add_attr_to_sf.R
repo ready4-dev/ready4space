@@ -78,7 +78,6 @@ add_attr_list_to_sf <- function(x,
                                 y,
                                 lookup_tb_r4
                                 ){
-
   attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4,
                                     lookup_ref = y,
                                     starter_sf = x)
@@ -128,7 +127,12 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                                           target_variable = "source_reference", #transformation
                                                           evaluate = FALSE)))
   if(is.data.frame(attr_data_xx)){
-    attr_data_xx <- list(attr_data_xx)
+    attr_data_xx <- list(attr_data_xx) %>%
+      stats::setNames(ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                            lookup_reference = lookup_ref,
+                                            lookup_variable = "name",
+                                            target_variable = "year",
+                                            evaluate = FALSE))
   }
     region_short_nm <- ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                              lookup_reference = lookup_ref,
@@ -156,27 +160,6 @@ make_attr_data_xx <- function(lookup_tb_r4,
                      alt_names_sf = starter_sf,
                      area_names_var_str = area_names_var_str,
                      region_short_long_vec = region_short_long_vec)
-    ## This section to be context class based method
-    # ste_names_var_str <- ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
-    #                                            lookup_reference = "STE",
-    #                                            lookup_variable = "area_type",
-    #                                            target_variable = "sf_main_sub_div",
-    #                                            evaluate = FALSE)
-    ## BELOW REQUIRED - NEEDS TO BE MADE A METHOD
-    # attr_data_xx <- attr_data_xx  %>%
-    #   AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
-    #                                         area_names_var_str = area_names_var_str,
-    #                                         ste_names_var_str = ste_names_var_str,
-    #                                         ste_short_long_names_vec = region_short_long_vec) %>%
-    #   purrr::map2(names(attr_data_xx) %>% stringr::str_sub(start = 2),
-    #               ~ AusSpR4c::spatial_select_rename_age_sex(population_tib = .x,
-    #                                                         year = .y,
-    #                                                         also_include = NA,
-    #                                                         sub_div_unit = region_short_long_vec[1])) %>%
-    #   purrr::reduce(~dplyr::inner_join(.x,.y))
-    ##
-
-    # attr_data_xx
 }
 ## EVERYTHING BELOW NEEDS TO BE INTEGRATED WITH australia.r4ext
 #' @title add_attr_to_sf
