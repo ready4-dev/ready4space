@@ -153,7 +153,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                             evaluate = FALSE)
     updateAttrDataXx(lookup_tb_r4,
                      attr_data_xx = attr_data_xx,
-                     alt_names_sf = alt_names_sf,
+                     alt_names_sf = starter_sf,
                      area_names_var_str = area_names_var_str,
                      region_short_long_vec = region_short_long_vec)
     ## This section to be context class based method
