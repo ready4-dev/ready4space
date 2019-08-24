@@ -19,6 +19,9 @@ methods::setGeneric("updateAttrDataXx",
 #' Return input object unaltered if no method for child class defined.
 #' @param x An object of class class ready4_lookup
 #' @param attr_data_xx An attribute data object - could be a dataframe or a list.
+#' @param alt_names_sf
+#' @param area_names_var_str
+#' @param region_short_long_vec
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -34,6 +37,9 @@ methods::setGeneric("updateAttrDataXx",
 methods::setMethod("updateAttrDataXx",
                    "ready4_lookup",
                    function(x,
-                            attr_data_xx) {
+                            attr_data_xx,
+                            alt_names_sf,
+                            area_names_var_str,
+                            region_short_long_vec) {
                      attr_data_xx
                    })
