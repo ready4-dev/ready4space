@@ -55,7 +55,7 @@ recur_add_attr_to_sf <- function(input_data,
                                                         y = .x,
                                                         lookup_tb_r4 = lookup_tb_r4)) %>% purrr::reduce(~rbind(.x,.y))
   }
-##
+
 #' @title add_attr_list_to_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -71,9 +71,11 @@ recur_add_attr_to_sf <- function(input_data,
 #' }
 #' @seealso
 #'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4s4]{sp_data_pack_lup}}
 #' @rdname add_attr_list_to_sf
 #' @export
 #' @importFrom ready4utils data_get
+#' @importFrom ready4s4 sp_data_pack_lup
 add_attr_list_to_sf <- function(x,
                                 y,
                                 lookup_tb_r4
@@ -83,7 +85,7 @@ add_attr_list_to_sf <- function(x,
                                     starter_sf = x)
   add_attr_to_sf(area_sf = x,
                  attr_data_tb = attr_data_xx,
-                 attr_data_desc = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                 attr_data_desc = ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_tb_r4),
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
