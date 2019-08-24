@@ -151,12 +151,13 @@ make_attr_data_xx <- function(lookup_tb_r4,
                             lookup_variable = "area_type",
                             target_variable = "sf_main_sub_div",
                             evaluate = FALSE)
+    updateAttrDataXx(lookup_tb_r4,attr_data_xx)
     ## This section to be context class based method
-    ste_names_var_str <- ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
-                                               lookup_reference = "STE",
-                                               lookup_variable = "area_type",
-                                               target_variable = "sf_main_sub_div",
-                                               evaluate = FALSE)
+    # ste_names_var_str <- ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
+    #                                            lookup_reference = "STE",
+    #                                            lookup_variable = "area_type",
+    #                                            target_variable = "sf_main_sub_div",
+    #                                            evaluate = FALSE)
     ## BELOW REQUIRED - NEEDS TO BE MADE A METHOD
     # attr_data_xx <- attr_data_xx  %>%
     #   AusSpR4c::replace_area_names_with_alt(alt_names_sf = x,
@@ -170,7 +171,8 @@ make_attr_data_xx <- function(lookup_tb_r4,
     #                                                         sub_div_unit = region_short_long_vec[1])) %>%
     #   purrr::reduce(~dplyr::inner_join(.x,.y))
     ##
-  attr_data_xx
+
+    # attr_data_xx
 }
 ## EVERYTHING BELOW NEEDS TO BE INTEGRATED WITH australia.r4ext
 #' @title add_attr_to_sf
