@@ -128,7 +128,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                                           target_variable = "source_reference", #transformation
                                                           evaluate = FALSE)))
   if(is.data.frame(attr_data_xx)){
-    attr_data_xx <- list(attr_data_tb)
+    attr_data_xx <- list(attr_data_xx)
   }
     region_short_nm <- ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                              lookup_reference = lookup_ref,
