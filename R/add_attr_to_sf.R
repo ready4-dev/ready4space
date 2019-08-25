@@ -48,9 +48,9 @@ recur_add_attr_to_sf <- function(input_data,
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
                                        evaluate = FALSE)) %>% eval()
-  attribute_data_list <- purrr::map(attribute_data[[1]],
+  attribute_data_list <- purrr::map(attribute_data,
                                    ~ .x) %>%
-    stats::setNames(attribute_data[[1]])
+    stats::setNames(attribute_data)
   purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file,
                                                         y = .x,
                                                         lookup_tb_r4 = lookup_tb_r4)) %>% purrr::reduce(~rbind(.x,.y))
@@ -157,6 +157,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                             lookup_variable = "area_type",
                             target_variable = "sf_main_sub_div",
                             evaluate = FALSE)
+    area_names_var_str <- area_names_var_str[area_names_var_str %in% names(starter_sf)]
     updateAttrDataXx(lookup_tb_r4,
                      attr_data_xx = attr_data_xx,
                      alt_names_sf = starter_sf,

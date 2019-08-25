@@ -76,7 +76,7 @@ get_spatial_data_list <- function(input_data,
                                                      area_unit = .x,
                                                      boundary_year = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                                                        ready4s4::sp_data_pack_lup() %>%
-                                                       dplyr::filter(name %in% .y[[1]]) %>%
+                                                       dplyr::filter(name %in% .y) %>%
                                                        dplyr::pull(year) %>%
                                                        min(as.numeric()),
                                                      attribute_data = .y)) %>%

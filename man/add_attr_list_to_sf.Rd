@@ -31,4 +31,5 @@ if(interactive()){
 }
 \seealso{
 \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4s4]{sp_data_pack_lup}}
 }
