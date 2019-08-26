@@ -109,7 +109,7 @@ download_data.ready4_sp_import_lup <- function(x,
                                                directory_sub_divs = NULL){
 
   if(is.null(directory_sub_divs))
-    directory_sub_divs <- c(names(ready4s3::ready4_sp_import_lup())[2:4],names(ready4s3::ready4_sp_import_lup()[6:7]))
+    directory_sub_divs <- names(ready4s3::ready4_sp_import_lup())[names(ready4s3::ready4_sp_import_lup()) %in% c("country","area_type","region","main_feature","year")] ## Could add boundary year as extra directory
   directory_paths <- data_import_get_dir_paths(x = x,
                                                destination_directory = destination_directory,
                                                data_lookup_ref = data_lookup_ref,
@@ -376,7 +376,7 @@ data_import_rename_files <- function(x,
 #' @importFrom dplyr select
 data_import_show_menu_detail <- function(x){
   x %>%
-    dplyr::select(c(1:7,11))
+    dplyr::select(c(1:8,12))
 }
 
 #' @title data_import_show_menu_of_type_detail
@@ -523,6 +523,7 @@ data_import_non_shape_items <- function(path_str,
                                      target_variable = "data_type",
                                      evaluate = FALSE)
   var_name_vec <- c("area_type",
+                    # "area_bound_yr",
                     "main_feature",
                     "year",
                     "region")
@@ -533,25 +534,25 @@ data_import_non_shape_items <- function(path_str,
                                                         lookup_variable = "inc_file_main",
                                                         target_variable = .x,
                                                         evaluate = FALSE))
-  data_feature <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
-                                                                                              x = x),
-                                        lookup_reference = file_name,
-                                        lookup_variable = "inc_file_main",
-                                        target_variable = "main_feature",
-                                        evaluate = FALSE) %>%
-    stringr::str_sub(1,3)
-  area_type <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
-                                                                                           x = x),
-                                     lookup_reference = file_name,
-                                     lookup_variable = "inc_file_main",
-                                     target_variable = "area_type",
-                                     evaluate = FALSE)
+  # data_feature <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  #                                                                                             x = x),
+  #                                       lookup_reference = file_name,
+  #                                       lookup_variable = "inc_file_main",
+  #                                       target_variable = "main_feature",
+  #                                       evaluate = FALSE) %>%
+  #   stringr::str_sub(1,3)
+  # area_type <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  #                                                                                          x = x),
+  #                                    lookup_reference = file_name,
+  #                                    lookup_variable = "inc_file_main",
+  #                                    target_variable = "area_type",
+  #                                    evaluate = FALSE)
   make_import_obj_for_context(context = ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
                                                                                                                     x = x),
                                                               lookup_reference = file_name,
                                                               lookup_variable = "inc_file_main",
                                                               target_variable = "country",
-                                                              evaluate = FALSE),
+                                                              evaluate = FALSE), # Replace with read from context attribute of lup object.
                               var_val_vec = var_val_vec,
                               path_str = path_str)
 }

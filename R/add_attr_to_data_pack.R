@@ -87,12 +87,13 @@ load_attribute_to_global <- function(combined_ste_ppr_ls,
 #' }
 #' @rdname add_ppr_ls_to_data_pack_lup
 #' @export
-add_ppr_ls_to_data_pack_lup <- function(x,y){
+add_ppr_ls_to_data_pack_lup <- function(x,y){ ## update with names and check calling function(s).
   add_ppr_to_data_pack_lup(data_pack_lup = x,
                            combined_ste_ppr_ls = y[[1]],
                            object_name_stub = y[[2]],
                            area_type = y[[3]],
-                           region = y[[4]])
+                           area_bound_yr = y[[4]],
+                           region = y[[5]])
 }
 #' @title add_ppr_to_data_pack_lup
 #' @description FUNCTION_DESCRIPTION
@@ -100,6 +101,7 @@ add_ppr_ls_to_data_pack_lup <- function(x,y){
 #' @param combined_ste_ppr_ls PARAM_DESCRIPTION
 #' @param object_name_stub PARAM_DESCRIPTION
 #' @param area_type PARAM_DESCRIPTION
+#' @param area_bound_yr PARAM_DESCRIPTION
 #' @param region PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -122,10 +124,12 @@ add_ppr_to_data_pack_lup <- function(data_pack_lup,
                                      combined_ste_ppr_ls,
                                      object_name_stub,
                                      area_type,
+                                     area_bound_yr,
                                      region){
   tibble::tibble(name = paste0(object_name_stub,names(combined_ste_ppr_ls) %>% stringr::str_sub(start = 2)),
-                 country = "Australia",
+                 country = "Australia", # Change to context based method (lookup table)
                  area_type = area_type,
+                 area_bound_yr = area_bound_yr,
                  region = region,
                  data_type = "Attribute",
                  main_feature = "Population projections",
@@ -148,16 +152,17 @@ add_ppr_to_data_pack_lup <- function(data_pack_lup,
 #' }
 #' @rdname add_attr_tb_to_data_pack_lup_from_arg_list
 #' @export
-add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){
+add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){ ## Replace with names based referencing.
   add_attr_tb_to_data_pack_lup(data_pack_lup = x,
                                attr_tb = y[[1]],
                                object_name = y[[2]],
                                area_type = y[[3]],
-                               region = y[[4]],
-                               year = y[[5]],
-                               year_start = y[[6]],
-                               year_end = y[[7]],
-                               main_feature = y[[8]])
+                               area_bound_yr = y[[4]],
+                               region = y[[5]],
+                               year = y[[6]],
+                               year_start = y[[7]],
+                               year_end = y[[8]],
+                               main_feature = y[[9]])
 }
 #' @title add_attr_tb_to_data_pack_lup
 #' @description FUNCTION_DESCRIPTION
@@ -165,6 +170,7 @@ add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){
 #' @param attr_tb PARAM_DESCRIPTION
 #' @param object_name PARAM_DESCRIPTION
 #' @param area_type PARAM_DESCRIPTION
+#' @param area_bound_yr PARAM_DESCRIPTION
 #' @param region PARAM_DESCRIPTION
 #' @param year PARAM_DESCRIPTION
 #' @param year_start PARAM_DESCRIPTION
@@ -189,14 +195,16 @@ add_attr_tb_to_data_pack_lup <- function(data_pack_lup,
                                          attr_tb,
                                          object_name,
                                          area_type,
+                                         area_bound_yr,
                                          region,
                                          year,
                                          year_start,
                                          year_end,
-                                         main_feature){
+                                         main_feature){ # replace with names based referencing
   tibble::tibble(name = object_name,
-                 country = "Australia",
+                 country = "Australia", # Pull this from context data.
                  area_type = area_type,
+                 area_bound_yr = area_bound_yr,
                  region = region,
                  data_type = "Attribute",
                  main_feature = main_feature,

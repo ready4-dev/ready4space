@@ -33,7 +33,7 @@ get_spatial_data_list <- function(input_data,
                                                  sub_div_unit = sub_div_unit,
                                                  require_year_match = require_year_match,
                                                  excl_diff_bound_yr = excl_diff_bound_yr)
-  boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper()
+  boundary_res <- stringr::str_sub(attributes_to_import,5,7) %>% unique() %>% toupper() ## Ammend from naming convention to lookup
   data_names_list <- purrr::map(boundary_res,
                                 ~ attributes_to_import[stringr::str_sub(attributes_to_import,5,7) == tolower(.x )]) %>%
     stats::setNames(boundary_res)

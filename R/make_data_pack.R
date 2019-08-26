@@ -397,7 +397,7 @@ export_starter_sf <- function(lookup_tbs_r4,
 export_uid_lup <- function(lookup_tbs_r4){
   uid_lup_r3 <- tibble::add_row(ready4s3::ready4_sp_uid_lup(),
                                 spatial_unit = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
-                                year = "All",
+                                year = "All", ## May need to rethink this.
                                 var_name = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid))
   ready4s4::`sp_uid_lup<-`(lookup_tbs_r4, uid_lup_r3)
 }
@@ -448,6 +448,12 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                                                        evaluate = FALSE),
                                                  ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          ready4s4::sp_import_lup(),
+                                                                       target_variable = "area_bound_yr",
+                                                                       lookup_variable = "name",
+                                                                       lookup_reference = .y,
+                                                                       evaluate = FALSE),
+                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                                         ready4s4::sp_import_lup(),
                                                                        target_variable = "region",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
@@ -475,7 +481,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                                                        target_variable = "main_feature",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
-                                                                       evaluate = FALSE)))
+                                                                       evaluate = FALSE))) # Set names here to allow names based referencing in destination function.
   data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls,
                                     .init = lookup_tbs_r4 %>%
                                       ready4s4::sp_data_pack_lup(),
