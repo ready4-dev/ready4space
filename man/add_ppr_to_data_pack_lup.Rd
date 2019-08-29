@@ -5,7 +5,7 @@
 \title{add_ppr_to_data_pack_lup}
 \usage{
 add_ppr_to_data_pack_lup(data_pack_lup, combined_ste_ppr_ls,
-  object_name_stub, area_type, region)
+  object_name_stub, area_type, area_bound_yr, region)
 }
 \arguments{
 \item{data_pack_lup}{PARAM_DESCRIPTION}
@@ -15,6 +15,8 @@ add_ppr_to_data_pack_lup(data_pack_lup, combined_ste_ppr_ls,
 \item{object_name_stub}{PARAM_DESCRIPTION}
 
 \item{area_type}{PARAM_DESCRIPTION}
+
+\item{area_bound_yr}{PARAM_DESCRIPTION}
 
 \item{region}{PARAM_DESCRIPTION}
 }

@@ -158,6 +158,25 @@ get_group_by_var <- function(profile_unit,
                                           evaluate = FALSE))
   return(group_by)
 }
+
+#' @title get_group_by_var_from_pai
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_area_input PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{geom_dist_limit_km}}
+#'  \code{\link[dplyr]{filter}}
+#' @rdname get_group_by_var_from_pai
+#' @export
+#' @importFrom ready4s4 sp_uid_lup lookup_tb data_year use_coord_lup area_type geom_dist_limit_km
+#' @importFrom dplyr filter
 get_group_by_var_from_pai <- function(profiled_area_input){
   group_by_lookup_tb = ready4s4::sp_uid_lup(profiled_area_input %>% ready4s4::lookup_tb()) %>%
     dplyr::filter(year %in% c(ready4s4::data_year(profiled_area_input),"All"))

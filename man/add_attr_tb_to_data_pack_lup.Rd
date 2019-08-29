@@ -5,7 +5,8 @@
 \title{add_attr_tb_to_data_pack_lup}
 \usage{
 add_attr_tb_to_data_pack_lup(data_pack_lup, attr_tb, object_name,
-  area_type, region, year, year_start, year_end, main_feature)
+  area_type, area_bound_yr, region, year, year_start, year_end,
+  main_feature)
 }
 \arguments{
 \item{data_pack_lup}{PARAM_DESCRIPTION}
@@ -15,6 +16,8 @@ add_attr_tb_to_data_pack_lup(data_pack_lup, attr_tb, object_name,
 \item{object_name}{PARAM_DESCRIPTION}
 
 \item{area_type}{PARAM_DESCRIPTION}
+
+\item{area_bound_yr}{PARAM_DESCRIPTION}
 
 \item{region}{PARAM_DESCRIPTION}
 
