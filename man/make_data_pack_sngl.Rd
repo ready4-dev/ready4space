@@ -4,8 +4,7 @@
 \alias{make_data_pack_sngl}
 \title{make_data_pack_sngl}
 \usage{
-make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, lup_dir,
-  processed_dir)
+make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, processed_dir)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -15,8 +14,6 @@ make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, lup_dir,
 \item{pckg_name}{PARAM_DESCRIPTION}
 
 \item{raw_data_dir}{PARAM_DESCRIPTION}
-
-\item{lup_dir}{PARAM_DESCRIPTION}
 
 \item{processed_dir}{PARAM_DESCRIPTION}
 }

@@ -24,7 +24,6 @@ make_data_packs <- function(x,
 #' @param init_lookup_r4 PARAM_DESCRIPTION, Default: NULL
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
-#' @param lup_dir PARAM_DESCRIPTION, Default: 'data'
 #' @param processed_dir PARAM_DESCRIPTION, Default: 'data'
 #' @param lup_r4_name PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
@@ -52,7 +51,6 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                  init_lookup_r4 = NULL,
                                                  pckg_name,
                                                  raw_data_dir,
-                                                 lup_dir  = "data",
                                                  processed_dir = "data",
                                                  lup_r4_name){
   if(is.null(init_lookup_r4))
@@ -69,7 +67,7 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                                                                                       processed_dir = processed_dir),#merge_with_vec[.y],
                                                                                         pckg_name = pckg_name,
                                                                                         raw_data_dir = raw_data_dir,
-                                                                                        lup_dir = lup_dir,
+                                                                                        # lup_dir = lup_dir,
                                                                                         processed_dir = processed_dir),
                                                                   r4_name = "ready4_lookup"))
   #saveRDS(lookup_tbs_r4,file = paste0(processed_dir,"/",lup_r4_name,".rds"))
@@ -82,7 +80,6 @@ make_data_packs.ready4_sp_import_lup <- function(x,
 #' @param merge_with PARAM_DESCRIPTION
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
-#' @param lup_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -105,7 +102,7 @@ make_data_pack_sngl <- function(x,
                                 merge_with,
                                 pckg_name,
                                 raw_data_dir,
-                                lup_dir,
+                                #lup_dir,
                                 processed_dir){
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
@@ -123,8 +120,9 @@ make_data_pack_sngl <- function(x,
       lookup_tbs_r4 <- lookup_tbs_r4 %>%
         export_data_pack_lup(template_ls = boundary_ls,
                              tb_data_type = "Shape",
-                             pckg_name = pckg_name,
-                             lup_dir = lup_dir)
+                             pckg_name = pckg_name#,
+                             #lup_dir = lup_dir
+                             )
     }
     if(x %>% dplyr::pull(data_type) == "Attribute"){
       attribute_ls <- import_attribute_ls(lookup_tbs_r4,
@@ -138,8 +136,9 @@ make_data_pack_sngl <- function(x,
         #export_uid_lup() %>% ## NECESSARY?
         export_data_pack_lup(template_ls = attribute_ls,
                              tb_data_type = "Attribute",
-                             pckg_name = pckg_name,
-                             lup_dir = lup_dir)
+                             pckg_name = pckg_name#,
+                             #lup_dir = lup_dir
+                             )
     }
   }
   return(lookup_tbs_r4)
@@ -236,13 +235,12 @@ x %>% dplyr::mutate(name = make.unique(name)) %>% dplyr::mutate(name = map_chr(n
 #'  \code{\link[stats]{setNames}}
 #' @rdname import_boundary_ls
 #' @export
-#' @importFrom ready4utils setup_io_directories
 #' @importFrom ready4s4 sp_import_lup
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
 import_boundary_ls <- function(lookup_tbs_r4,
                                raw_data_dir){
-  ready4utils::setup_io_directories(raw_data_dir)
+  # ready4utils::setup_io_directories(raw_data_dir)
   raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,"Geometries")#paste0(raw_data_dir,"/InputData/Raw_Format/Geometries")
   if(!dir.exists(raw_format_sp_dir))
   dir.create(raw_format_sp_dir)
@@ -407,7 +405,6 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' @param tb_data_type PARAM_DESCRIPTION, Default: 'Shape'
 #' @param template_ls PARAM_DESCRIPTION, Default: NULL
 #' @param pckg_name PARAM_DESCRIPTION
-#' @param lup_dir PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -432,8 +429,9 @@ export_uid_lup <- function(lookup_tbs_r4){
 export_data_pack_lup <- function(lookup_tbs_r4,
                                  tb_data_type = "Shape",
                                  template_ls = NULL,
-                                 pckg_name,
-                                 lup_dir){
+                                 pckg_name#,
+                                 # lup_dir
+                                 ){
   ## 8. Create data pack lookup table.
   ###
   data_pk_lup_arguments_ls <- purrr::map2(template_ls,
@@ -493,16 +491,10 @@ export_data_pack_lup <- function(lookup_tbs_r4,
     dplyr::mutate(source_reference = purrr::map2_chr(main_feature,
                                                      source_reference,
                                                      ~ ifelse(.x == "Boundary",
-                                                              paste0(.y, # stringr::str_replace(.y,"_bound_","_bnd_")
+                                                              paste0(.y,
                                                                      "_sf"),
                                                               .y)))
-  ### TRANSFORMATION [Do In Context / Model]
   lookup_tbs_r4 <- ready4s4::`sp_data_pack_lup<-`(lookup_tbs_r4, data_pack_lup_r3)
-  ## 9. Add Lookup Tables object to data pack for export.
-  # data_pack_name <- paste0(names(template_ls)[1] %>% stringr::str_sub(end = 12), ##### CHECK IF DISTICNCT FROM ATTRIB
-  #                          names(template_ls)[1] %>% stringr::str_sub(start = -4),
-  #                          "_lup_r4")
-  # saveRDS(lookup_tbs_r4,file = paste0(lup_dir,"/",data_pack_name,".rds"))
   lookup_tbs_r4
 }
 

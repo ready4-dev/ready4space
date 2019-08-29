@@ -5,7 +5,7 @@
 \title{export_data_pack_lup}
 \usage{
 export_data_pack_lup(lookup_tbs_r4, tb_data_type = "Shape",
-  template_ls = NULL, pckg_name, lup_dir)
+  template_ls = NULL, pckg_name)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}
@@ -15,8 +15,6 @@ export_data_pack_lup(lookup_tbs_r4, tb_data_type = "Shape",
 \item{template_ls}{PARAM_DESCRIPTION, Default: NULL}
 
 \item{pckg_name}{PARAM_DESCRIPTION}
-
-\item{lup_dir}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

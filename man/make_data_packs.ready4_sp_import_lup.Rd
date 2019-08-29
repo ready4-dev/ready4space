@@ -5,8 +5,7 @@
 \title{make_data_packs.ready4_sp_import_lup}
 \usage{
 \method{make_data_packs}{ready4_sp_import_lup}(x, init_lookup_r4 = NULL,
-  pckg_name, raw_data_dir, lup_dir = "data", processed_dir = "data",
-  lup_r4_name)
+  pckg_name, raw_data_dir, processed_dir = "data", lup_r4_name)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -16,8 +15,6 @@
 \item{pckg_name}{PARAM_DESCRIPTION}
 
 \item{raw_data_dir}{PARAM_DESCRIPTION}
-
-\item{lup_dir}{PARAM_DESCRIPTION, Default: 'data'}
 
 \item{processed_dir}{PARAM_DESCRIPTION, Default: 'data'}
 
