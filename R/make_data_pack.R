@@ -395,7 +395,7 @@ export_starter_sf <- function(lookup_tbs_r4,
 export_uid_lup <- function(lookup_tbs_r4){
   uid_lup_r3 <- tibble::add_row(ready4s3::ready4_sp_uid_lup(),
                                 spatial_unit = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
-                                year = "All", ## May need to rethink this.
+                                year =  ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_boundary_yr), ## "All".
                                 var_name = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid))
   ready4s4::`sp_uid_lup<-`(lookup_tbs_r4, uid_lup_r3)
 }

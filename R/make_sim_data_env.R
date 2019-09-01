@@ -80,8 +80,9 @@ extend_sp_data_list <- function(sp_data_list,
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$age_sex_pop_str) + 1]
   age_sex_counts_grouped_by <- ready4utils::data_get(data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                                                       ready4s4::sp_uid_lup() %>%
-                                                      dplyr::filter(year %in% c(ready4s4::data_year(input_data$profiled_area_input),
-                                                                                "All")),
+                                                      dplyr::filter(year %in% c(ready4s4::data_year(input_data$profiled_area_input)#,
+                                                                                #"All" # May need replacement
+                                                                                )),
                                                     lookup_variable = "spatial_unit",
                                                     lookup_reference = age_sex_pop_resolution,
                                                     target_variable = "var_name",
