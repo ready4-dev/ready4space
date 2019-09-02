@@ -53,8 +53,7 @@ recur_add_attr_to_sf <- function(input_data,
     stats::setNames(attribute_data)
   purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file,
                                                         y = .x,
-                                                        lookup_tb_r4 = lookup_tb_r4,
-                                                        boundary_year = boundary_year)) %>% purrr::reduce(~rbind(.x,.y))
+                                                        lookup_tb_r4 = lookup_tb_r4)) %>% purrr::reduce(~rbind(.x,.y))
   }
 
 #' @title add_attr_list_to_sf
@@ -62,7 +61,6 @@ recur_add_attr_to_sf <- function(input_data,
 #' @param x PARAM_DESCRIPTION
 #' @param y PARAM_DESCRIPTION
 #' @param lookup_tb_r4 PARAM_DESCRIPTION
-#' @param boundary_year PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -80,13 +78,10 @@ recur_add_attr_to_sf <- function(input_data,
 #' @importFrom ready4s4 sp_data_pack_lup
 add_attr_list_to_sf <- function(x,
                                 y,
-                                lookup_tb_r4,
-                                boundary_year
-                                ){
+                                lookup_tb_r4){
   attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4,
                                     lookup_ref = y,
-                                    starter_sf = x,
-                                    boundary_year = boundary_year)
+                                    starter_sf = x)
   add_attr_to_sf(area_sf = x,
                  attr_data_tb = attr_data_xx,
                  attr_data_desc = ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_tb_r4),
@@ -102,7 +97,6 @@ add_attr_list_to_sf <- function(x,
 #' @param lookup_tb_r4 PARAM_DESCRIPTION
 #' @param lookup_ref PARAM_DESCRIPTION
 #' @param starter_sf PARAM_DESCRIPTION
-#' @param boundary_year PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -124,8 +118,7 @@ add_attr_list_to_sf <- function(x,
 #' @importFrom dplyr filter pull
 make_attr_data_xx <- function(lookup_tb_r4,
                               lookup_ref,
-                              starter_sf,
-                              boundary_year){
+                              starter_sf){
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   attr_data_xx <- eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                           lookup_reference = lookup_ref,
@@ -162,6 +155,11 @@ make_attr_data_xx <- function(lookup_tb_r4,
                             target_variable = "sf_main_sub_div",
                             evaluate = FALSE)
     area_names_var_str <- area_names_var_str[area_names_var_str %in% names(starter_sf)]
+    boundary_year <- ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                                           lookup_reference = lookup_ref,
+                                           lookup_variable = "name",
+                                           target_variable = "area_bound_yr",
+                                           evaluate = F)
     area_names_var_str <- ready4s4::sp_uid_lup(lookup_tb_r4) %>%
       dplyr::filter(var_name %in% area_names_var_str) %>%
       dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>%

@@ -30,9 +30,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}}
+\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_uid_lup}}
  \code{\link[ready4utils]{data_get}}
- \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
- \code{\link[stringr]{str_sub}}
- \code{\link[dplyr]{join}}
+ \code{\link[stats]{setNames}}
+ \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 }
