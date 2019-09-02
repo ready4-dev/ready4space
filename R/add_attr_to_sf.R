@@ -115,13 +115,13 @@ add_attr_list_to_sf <- function(x,
 #'  \code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_uid_lup}}
 #'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[stats]{setNames}}
-#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{character(0)}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #' @rdname make_attr_data_xx
 #' @export
 #' @importFrom ready4s4 sp_data_pack_lup sp_abbreviations_lup sp_starter_sf_lup sp_uid_lup
 #' @importFrom ready4utils data_get
 #' @importFrom stats setNames
-#' @importFrom dplyr filter pull as.vector
+#' @importFrom dplyr filter pull
 make_attr_data_xx <- function(lookup_tb_r4,
                               lookup_ref,
                               starter_sf,
@@ -166,7 +166,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
       dplyr::filter(var_name %in% area_names_var_str) %>%
       dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>%
       dplyr::pull(var_name) %>%
-      dplyr::as.vector()
+      as.vector()
     updateAttrDataXx(lookup_tb_r4,
                      attr_data_xx = attr_data_xx,
                      alt_names_sf = starter_sf,
