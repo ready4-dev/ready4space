@@ -165,8 +165,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
     area_names_var_str <- ready4s4::sp_uid_lup(lookup_tb_r4) %>%
       dplyr::filter(var_name %in% area_names_var_str) %>%
       dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>%
-      dplyr::pull(var_name) %>%
-      as.vector()
+      dplyr::pull(var_name)
     updateAttrDataXx(lookup_tb_r4,
                      attr_data_xx = attr_data_xx,
                      alt_names_sf = starter_sf,
