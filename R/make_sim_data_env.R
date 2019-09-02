@@ -129,6 +129,7 @@ extend_sp_data_list <- function(sp_data_list,
 #' @param data_unit PARAM_DESCRIPTION
 #' @param group_at_profile_unit PARAM_DESCRIPTION, Default: TRUE
 #' @param group_by_lookup_tb PARAM_DESCRIPTION
+#' @param area_bound_year PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -139,15 +140,19 @@ extend_sp_data_list <- function(sp_data_list,
 #' }
 #' @seealso
 #'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[dplyr]{filter}}
 #' @rdname get_group_by_var
 #' @export
 #' @importFrom ready4utils data_get
+#' @importFrom dplyr filter
 get_group_by_var <- function(profile_unit,
                              data_unit,
                              group_at_profile_unit = TRUE,
-                             group_by_lookup_tb){ ### REPLACE ?????
+                             group_by_lookup_tb,
+                             area_bound_year){ ### REPLACE ?????
   group_by <- ifelse(group_at_profile_unit,
-                     ready4utils::data_get(data_lookup_tb = group_by_lookup_tb,
+                     ready4utils::data_get(data_lookup_tb = group_by_lookup_tb %>% dplyr::filter(spatial_unit == profile_unit) %>%
+                                             dplyr::filter(as.numeric(year)==area_bound_year),
                                           lookup_variable = "spatial_unit",
                                           lookup_reference = profile_unit,
                                           target_variable = "var_name",
@@ -179,18 +184,20 @@ get_group_by_var <- function(profile_unit,
 #' @importFrom ready4s4 sp_uid_lup lookup_tb data_year use_coord_lup area_type geom_dist_limit_km
 #' @importFrom dplyr filter
 get_group_by_var_from_pai <- function(profiled_area_input){
-  group_by_lookup_tb = ready4s4::sp_uid_lup(profiled_area_input %>% ready4s4::lookup_tb()) %>%
-    dplyr::filter(year %in% c(ready4s4::data_year(profiled_area_input),"All"))
+  group_by_lookup_tb = ready4s4::sp_uid_lup(profiled_area_input %>% ready4s4::lookup_tb())
+  #%>%
+    #dplyr::filter(year %in% c(ready4s4::data_year(profiled_area_input),"All"))
   if(!ready4s4::use_coord_lup(profiled_area_input)){
     group_by_var <- get_group_by_var(profile_unit = profiled_area_input %>% ready4s4::area_type(),
-                                     group_by_lookup_tb = group_by_lookup_tb)
+                                     group_by_lookup_tb = group_by_lookup_tb,
+                                     area_bound_year = ready4s4::area_bound_year(profiled_area_input))
   }else{
     if(is.na(ready4s4::geom_dist_limit_km(profiled_area_input)))
       group_by_var <- get_group_by_var(profile_unit = "DRIVE_TIME",
-                                       group_by_lookup_tb = group_by_lookup_tb)
+                                       group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
     else
       group_by_var <- get_group_by_var(profile_unit = "GEOMETRIC_DISTANCE",
-                                       group_by_lookup_tb = group_by_lookup_tb)
+                                       group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
   }
   return(group_by_var)
 }
