@@ -42,7 +42,8 @@ get_spatial_data_list <- function(input_data,
                             ~ ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                               ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
                               dplyr::filter(main_feature == .x[1]) %>%
-                              dplyr::filter(year %in% year_vec) %>%
+                              dplyr::filter(make_year_filter_logic_vec(data_tb = .,
+                                                                       included_years_vec = year_vec)) %>% #year %in% year_vec
                               #dplyr::filter(area_type == .x[2]) %>%
                               #dplyr::filter(region %in% region_lookup) %>%
                               ready4utils::data_get(lookup_reference = .x[1],
@@ -92,6 +93,27 @@ get_spatial_data_list <- function(input_data,
   return(data_sf_list)
 }
 
+#' @title make_year_filter_logic_vec
+#' @description FUNCTION_DESCRIPTION
+#' @param data_tb PARAM_DESCRIPTION
+#' @param included_years_vec PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map2}}
+#' @rdname make_year_filter_logic_vec
+#' @export
+#' @importFrom purrr map2_lgl
+make_year_filter_logic_vec <- function(data_tb,
+                                       included_years_vec){
+  purrr::map2_lgl(data_tb$year, data_tb$year_start, ~ (.x %in% included_years_vec | .y %in% included_years_vec))
+}
 #' @title get_spatial_data_names
 #' @description FUNCTION_DESCRIPTION
 #' @param input_data PARAM_DESCRIPTION

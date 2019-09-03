@@ -43,7 +43,7 @@ recur_add_attr_to_sf <- function(input_data,
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(area_type == area_unit) %>%
                                                         dplyr::filter(main_feature == "Boundary") %>%
-                                          dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])), # boundary_year
+                                          dplyr::filter(as.numeric(year_start) == max(as.numeric(year_start)[as.numeric(year_start) <= as.numeric(boundary_year)])), # boundary_year
                                        lookup_reference = "Boundary",
                                        lookup_variable = "main_feature",
                                        target_variable = "source_reference",
