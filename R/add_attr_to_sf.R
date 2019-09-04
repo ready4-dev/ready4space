@@ -53,9 +53,78 @@ recur_add_attr_to_sf <- function(input_data,
     stats::setNames(attribute_data)
   purrr::map(attribute_data_list, ~ add_attr_list_to_sf(x = boundary_file,
                                                         y = .x,
-                                                        lookup_tb_r4 = lookup_tb_r4)) %>% purrr::reduce(~rbind(.x,.y))
-  }
+                                                        lookup_tb_r4 = lookup_tb_r4)) %>%
+    subset_sf_ls_by_common_vars() %>%
+    purrr::reduce(~rbind(.x,.y))
+}
 
+#' @title subset_sf_ls_by_common_vars
+#' @description FUNCTION_DESCRIPTION
+#' @param sf_ls PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}}
+#'  \code{\link[dplyr]{select}}
+#' @rdname subset_sf_ls_by_common_vars
+#' @export
+#' @importFrom purrr map
+#' @importFrom dplyr select
+subset_sf_ls_by_common_vars <- function(sf_ls){
+common_vars_vec <- get_common_vars_sf_ls(sf_ls)
+purrr::map(sf_ls, ~ .x %>% dplyr::select(common_vars_vec))
+
+}
+
+#' @title get_common_vars_sf_ls
+#' @description FUNCTION_DESCRIPTION
+#' @param sf_ls PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[purrr]{map}}
+#' @rdname get_common_vars_sf_ls
+#' @export
+#' @importFrom purrr map
+get_common_vars_sf_ls <- function(sf_ls){
+  vec_ls <- purrr::map(sf_ls, ~ names(.x))
+  Reduce(intersect, vec_ls)
+}
+### MOVE THESE TO UTILITIES - NOT USED YET
+get_common_yrs_sf_ls <- function(sf_ls){
+  vec_ls <- purrr::map(list_of_sfs, ~ get_included_yrs_sf(.x))
+  Reduce(intersect, vec_ls)
+}
+get_max_or_min_yr_of_sf <- function(sf,
+                                    max = T){
+  year_vec <- get_included_yrs_sf(sf)
+  if(max)
+     max(year_vec)
+  else
+    min(year_vec)
+}
+get_included_yrs_sf <- function(sf){
+  sf %>%
+    sf::`st_geometry<-`(NULL) %>%
+    dplyr::select(dplyr::starts_with("y2")) %>%
+    names() %>%
+    stringr::str_sub(start = 2, end = 5) %>%
+    unique() %>%
+    as.numeric()
+}
+##
 #' @title add_attr_list_to_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
