@@ -116,12 +116,86 @@ extend_sp_data_list <- function(sp_data_list,
                                             dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
   popl_var_prefix <- ready4sd::get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
-                                         tot_pop_resolution = tot_pop_resolution,
-                                         data_year = ready4s4::data_year(input_data$profiled_area_input))
+                                                   tot_pop_resolution = tot_pop_resolution,
+                                                   data_year = ready4s4::data_year(input_data$profiled_area_input))
+  profiled_sf <- drop_grouped_popl_vars(profiled_sf = profiled_sf,
+                                        popl_var_prefix = popl_var_prefix)
+  ##
+  dyn_sf <- sp_data_list[[sp_data_list$ppr_ref]] %>% ## Should reference this from lookup
+    dplyr::select(1)
+  profiled_sf <- simplify_sf(profiled_sf,
+                           crs = sf::st_crs(dyn_sf)[[1]])
+  dyn_sf <- simplify_sf(dyn_sf)
+
+  profiled_sf <- ready4sd::add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = dyn_sf,
+                                                     pop_attr_sf = profiled_sf,
+                                                     age_sex_pop_resolution = "UNIT_ID",
+                                                     age_sex_var_name = "pop_sp_unit_id",
+                                                     popl_var_prefix = popl_var_prefix,
+                                                     data_year = input_data$profiled_area_input@data_year)
+  ##
+
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,
-                                       popl_var_prefix = popl_var_prefix))
+                                       popl_var_prefix = popl_var_prefix)) # Is pop_val_prefix needed in this list?
   return(extended_sp_data_list)
+}
+
+#' @title simplify_sf
+#' @description FUNCTION_DESCRIPTION
+#' @param sf PARAM_DESCRIPTION
+#' @param crs PARAM_DESCRIPTION, Default: NULL
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[sf]{st_crs}},\code{\link[sf]{st_transform}}
+#'  \code{\link[geojsonio]{geojson_json}},\code{\link[geojsonio]{geojson_sf}}
+#'  \code{\link[rmapshaper]{ms_simplify}}
+#' @rdname simplify_sf
+#' @export
+#' @importFrom sf st_crs st_transform
+#' @importFrom geojsonio geojson_json geojson_sf
+#' @importFrom rmapshaper ms_simplify
+simplify_sf <- function(sf,
+                        crs = NULL){
+  if(is.null(crs))
+    crs <- sf::st_crs(sf)[[1]]
+  sf_json <- geojsonio::geojson_json(sf, geometry = "polygon", type = "auto")
+  simple_json <- rmapshaper::ms_simplify(sf_json)
+  geojsonio::geojson_sf(simple_json) %>%
+    sf::st_transform(crs = crs)
+}
+#' @title drop_grouped_popl_vars
+#' @description FUNCTION_DESCRIPTION
+#' @param profiled_sf PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{select}}
+#' @rdname drop_grouped_popl_vars
+#' @export
+#' @importFrom dplyr select
+drop_grouped_popl_vars <- function(profiled_sf,
+                                   popl_var_prefix){
+  var_names_vec <- profiled_sf %>% names()
+  keep_vars_vec <- var_names_vec[!var_names_vec  %>% startsWith("whl_") & !var_names_vec  %>% startsWith("grp_by_") & !var_names_vec  %>% startsWith("dupl_")]
+  keep_vars_vec <- keep_vars_vec[!keep_vars_vec %>% startsWith("inc_") | keep_vars_vec %>% startsWith(popl_var_prefix)]
+  dplyr::select(profiled_sf,
+                keep_vars_vec)
+
 }
 #' @title get_group_by_var
 #' @description FUNCTION_DESCRIPTION
