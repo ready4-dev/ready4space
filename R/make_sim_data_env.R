@@ -133,8 +133,6 @@ extend_sp_data_list <- function(sp_data_list,
                                                      age_sex_var_name = "pop_sp_unit_id",
                                                      popl_var_prefix = popl_var_prefix,
                                                      data_year = input_data$profiled_area_input@data_year)
-  ##
-
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,
                                        popl_var_prefix = popl_var_prefix)) # Is pop_val_prefix needed in this list?
@@ -154,22 +152,73 @@ extend_sp_data_list <- function(sp_data_list,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[sf]{st_crs}},\code{\link[sf]{st_transform}}
+#'  \code{\link[sf]{st_crs}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}},\code{\link[sf]{st_transform}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{select}}
 #'  \code{\link[geojsonio]{geojson_json}},\code{\link[geojsonio]{geojson_sf}}
 #'  \code{\link[rmapshaper]{ms_simplify}}
 #' @rdname simplify_sf
 #' @export
-#' @importFrom sf st_crs st_transform
+#' @importFrom sf st_crs st_geometry_type st_collection_extract st_transform
+#' @importFrom dplyr filter select
 #' @importFrom geojsonio geojson_json geojson_sf
 #' @importFrom rmapshaper ms_simplify
 simplify_sf <- function(sf,
-                        crs = NULL){
+                        crs = NULL){ ## NOTE: CURRENTLY CREATES POLYGON WITH NA VALUE FEATURES TO FILL GAPS LEFT BY REMOVED LINESTRINGS
   if(is.null(crs))
     crs <- sf::st_crs(sf)[[1]]
-  sf_json <- geojsonio::geojson_json(sf, geometry = "polygon", type = "auto")
-  simple_json <- rmapshaper::ms_simplify(sf_json)
-  geojsonio::geojson_sf(simple_json) %>%
+  sf_poly <- sf %>% dplyr::filter(sf::st_geometry_type(.) %in% c("POLYGON","MULTIPOLYGON"))
+  sf_other <- sf %>%
+    dplyr::filter(!sf::st_geometry_type(.) %in% c("POLYGON","MULTIPOLYGON")) %>%
+    sf::st_collection_extract()
+  sf_poly <- rbind(sf_poly,sf_other)
+  sf_poly_json <- geojsonio::geojson_json(sf_poly, geometry = "polygon", type = "auto")
+  simple_poly_json <- rmapshaper::ms_simplify(sf_poly_json)
+  sf_poly <- geojsonio::geojson_sf(simple_poly_json) %>%
+    dplyr::select(-rmapshaperid) %>%
+    #dplyr::mutate(features_right = T) %>%
     sf::st_transform(crs = crs)
+  # sf_extra <- sf::st_difference(sf::st_union(sf),
+  #                               sf_poly) %>%
+  #   sf::st_sf() %>%
+  #   sf::st_transform(crs = crs)
+  # sf_extra <- sf::st_sf(tibble::add_case(sf_poly %>%
+  #                                          sf::st_set_geometry(NULL) %>%
+  #                                          dplyr::slice(1),
+  #                                        features_right = F
+  #                                      ) %>%
+  #                     dplyr::slice(2),
+  #                   geometry = sf_extra$geometry)
+  # rbind(sf_poly,
+  #       sf_extra)
+}
+
+
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param ... PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[rlang]{dots_values}}
+#'  \code{\link[sf]{sfc}},\code{\link[sf]{st_geometry}},\code{\link[sf]{sf}}
+#'  \code{\link[dplyr]{bind}}
+#' @rdname from_web_bind_rows_sf
+#' @export
+#' @importFrom rlang dots_values
+#' @importFrom sf st_sfc st_set_geometry st_sf
+#' @importFrom dplyr bind_rows
+from_web_bind_rows_sf <- function(...){ #https://github.com/r-spatial/sf/issues/49
+  sf_list <- rlang::dots_values(...)[[1]]
+  sfg_list_column <- lapply(sf_list, function(sf) sf$geometry[[1]]) %>% sf::st_sfc()
+  df <- lapply(sf_list, function(sf) sf::st_set_geometry(sf, NULL)) %>% dplyr::bind_rows()
+  sf_appended <- sf::st_sf(data.frame(df, geom=sfg_list_column))
+  return(sf_appended)
 }
 #' @title drop_grouped_popl_vars
 #' @description FUNCTION_DESCRIPTION
@@ -266,12 +315,15 @@ get_group_by_var_from_pai <- function(profiled_area_input){
                                      group_by_lookup_tb = group_by_lookup_tb,
                                      area_bound_year = ready4s4::area_bound_year(profiled_area_input))
   }else{
+    # group_by_var <- "service_name"
     if(is.na(ready4s4::geom_dist_limit_km(profiled_area_input)))
-      group_by_var <- get_group_by_var(profile_unit = "DRIVE_TIME",
-                                       group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
+      group_by_var <- "drive_times"
+        # get_group_by_var(profile_unit = "DRIVE_TIME",
+        #                                group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
     else
-      group_by_var <- get_group_by_var(profile_unit = "GEOMETRIC_DISTANCE",
-                                       group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
+      group_by_var <- "distance_km"
+    get_group_by_var(profile_unit = "GEOMETRIC_DISTANCE",
+                                   group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
   }
   return(group_by_var)
 }
@@ -345,14 +397,16 @@ make_profiled_area_objs <- function(profiled_area_input){
   group_by_var <- get_group_by_var_from_pai(profiled_area_input = profiled_area_input)
   st_profiled_sf <- get_starter_sf_for_profiled_area(profiled_area_input = profiled_area_input,
                                                      group_by_var = group_by_var)
-  main_sub_div_var <- ready4utils::data_get(data_lookup_tb = profiled_area_input %>%
+  main_sub_div_var <- ifelse(ready4s4::use_coord_lup(profiled_area_input),
+                             "STE_NAME16", ## UPDATE WITH LUP REFERENCE
+                             ready4utils::data_get(data_lookup_tb = profiled_area_input %>%
                                              ready4s4::lookup_tb() %>%
                                              ready4s4::sp_starter_sf_lup() %>%
                                              dplyr::filter(country == ready4s4::country(profiled_area_input)),
                                            lookup_variable = "area_type",
                                            lookup_reference = ready4s4::area_type(profiled_area_input),
                                            target_variable = "sf_main_sub_div",
-                                           evaluate = FALSE)
+                                           evaluate = FALSE))
   if(!ready4s4::use_coord_lup(profiled_area_input)){
     profiled_sf <- st_profiled_sf
     profiled_area_bands_list <- subset_sf_by_feature(profiled_sf = profiled_sf,
@@ -431,7 +485,8 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
                                      lookup_variable = "area_type",
                                      lookup_reference = ifelse(ready4s4::area_type(profiled_area_input) %in% sp_data_starter_sf_lup$area_type,
                                                                ready4s4::area_type(profiled_area_input),
-                                                               "PNT"),
+                                                               "STE"#"PNT"
+                                                               ),
                                      target_variable = "starter_sf",
                                      evaluate = FALSE)
     starter_sf <-  ready4utils::data_get(data_lookup_tb = profiled_area_input %>%

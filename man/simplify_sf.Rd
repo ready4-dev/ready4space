@@ -28,7 +28,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[sf]{st_crs}},\code{\link[sf]{st_transform}}
+\code{\link[sf]{st_crs}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}},\code{\link[sf]{st_transform}}
+ \code{\link[dplyr]{filter}},\code{\link[dplyr]{select}}
  \code{\link[geojsonio]{geojson_json}},\code{\link[geojsonio]{geojson_sf}}
  \code{\link[rmapshaper]{ms_simplify}}
 }
