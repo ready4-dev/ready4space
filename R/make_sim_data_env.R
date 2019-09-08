@@ -168,29 +168,18 @@ simplify_sf <- function(sf,
     crs <- sf::st_crs(sf)[[1]]
   sf_poly <- sf %>% dplyr::filter(sf::st_geometry_type(.) %in% c("POLYGON","MULTIPOLYGON"))
   sf_other <- sf %>%
-    dplyr::filter(!sf::st_geometry_type(.) %in% c("POLYGON","MULTIPOLYGON")) %>%
-    sf::st_collection_extract()
-  sf_poly <- rbind(sf_poly,sf_other)
+    dplyr::filter(!sf::st_geometry_type(.) %in% c("POLYGON","MULTIPOLYGON"))
+  if(nrow(sf_other)!=0){
+    sf_other <- sf_other %>%
+      sf::st_collection_extract()
+    sf_poly <- rbind(sf_poly,sf_other)
+  }
   sf_poly_json <- geojsonio::geojson_json(sf_poly, geometry = "polygon", type = "auto")
   simple_poly_json <- rmapshaper::ms_simplify(sf_poly_json)
   sf_poly <- geojsonio::geojson_sf(simple_poly_json) %>%
     dplyr::select(-rmapshaperid) %>%
-    #dplyr::mutate(features_right = T) %>%
     sf::st_transform(crs = crs)
-  # sf_extra <- sf::st_difference(sf::st_union(sf),
-  #                               sf_poly) %>%
-  #   sf::st_sf() %>%
-  #   sf::st_transform(crs = crs)
-  # sf_extra <- sf::st_sf(tibble::add_case(sf_poly %>%
-  #                                          sf::st_set_geometry(NULL) %>%
-  #                                          dplyr::slice(1),
-  #                                        features_right = F
-  #                                      ) %>%
-  #                     dplyr::slice(2),
-  #                   geometry = sf_extra$geometry)
-  # rbind(sf_poly,
-  #       sf_extra)
-}
+  }
 
 
 #' @title FUNCTION_TITLE
