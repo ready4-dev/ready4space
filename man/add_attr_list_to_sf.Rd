@@ -4,21 +4,14 @@
 \alias{add_attr_list_to_sf}
 \title{add_attr_list_to_sf}
 \usage{
-add_attr_list_to_sf(x, y, area_unit, boundary_year, data_lookup_tb,
-  sub_div_unit)
+add_attr_list_to_sf(x, y, lookup_tb_r4)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
 
 \item{y}{PARAM_DESCRIPTION}
 
-\item{area_unit}{PARAM_DESCRIPTION}
-
-\item{boundary_year}{PARAM_DESCRIPTION}
-
-\item{data_lookup_tb}{PARAM_DESCRIPTION}
-
-\item{sub_div_unit}{PARAM_DESCRIPTION}
+\item{lookup_tb_r4}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -37,5 +30,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.utils]{data_get}}
+\code{\link[ready4utils]{data_get}}
+ \code{\link[ready4s4]{sp_data_pack_lup}}
 }

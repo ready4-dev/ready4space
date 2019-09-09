@@ -26,8 +26,8 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.utils]{data_get}}
- \code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_starter_sf_lup}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{area_type}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{sp_site_coord_lup}},\code{\link[ready.s4]{features}},\code{\link[ready.s4]{geom_dist_limit_km}},\code{\link[ready.s4]{nbr_bands}},\code{\link[ready.s4]{crs_nbr}},\code{\link[ready.s4]{drive_time_limmit_mins}}
+\code{\link[ready4utils]{data_get}}
+ \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{sp_site_coord_lup}},\code{\link[ready4s4]{features}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{nbr_bands}},\code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{drive_time_limmit_mins}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[rlang]{sym}}
  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_binary_ops}}

@@ -28,9 +28,9 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_starter_sf_lup}},\code{\link[ready.s4]{country}},\code{\link[ready.s4]{area_type}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{crs_nbr}},\code{\link[ready.s4]{features}}
+\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{features}}
  \code{\link[dplyr]{filter}}
- \code{\link[ready.utils]{data_get}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[sf]{st_crs<-}}
  \code{\link[rlang]{sym}}
 }

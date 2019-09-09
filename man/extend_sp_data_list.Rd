@@ -30,10 +30,10 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.s4]{geom_dist_limit_km}},\code{\link[ready.s4]{drive_time_limmit_mins}},\code{\link[ready.s4]{lookup_tb}},\code{\link[ready.s4]{sp_uid_lup}},\code{\link[ready.s4]{data_year}},\code{\link[ready.s4]{use_coord_lup}},\code{\link[ready.s4]{crs_nbr}}
- \code{\link[ready.utils]{data_get}}
+\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{crs_nbr}}
+ \code{\link[ready4utils]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
- \code{\link[ready.epi]{intersect_sfs_update_counts}},\code{\link[ready.epi]{get_popl_var_prefix}}
+ \code{\link[ready4sd]{intersect_sfs_update_counts}},\code{\link[ready4sd]{get_popl_var_prefix}}
  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_measures}}
 }

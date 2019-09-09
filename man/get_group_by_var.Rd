@@ -5,7 +5,7 @@
 \title{get_group_by_var}
 \usage{
 get_group_by_var(profile_unit, data_unit, group_at_profile_unit = TRUE,
-  group_by_lookup_tb)
+  group_by_lookup_tb, area_bound_year)
 }
 \arguments{
 \item{profile_unit}{PARAM_DESCRIPTION}
@@ -15,6 +15,8 @@ get_group_by_var(profile_unit, data_unit, group_at_profile_unit = TRUE,
 \item{group_at_profile_unit}{PARAM_DESCRIPTION, Default: TRUE}
 
 \item{group_by_lookup_tb}{PARAM_DESCRIPTION}
+
+\item{area_bound_year}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -33,5 +35,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready.utils]{data_get}}
+\code{\link[ready4utils]{data_get}}
+ \code{\link[dplyr]{filter}}
 }
