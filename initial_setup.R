@@ -1,7 +1,7 @@
 usethis::create_package(getwd())
 #
 usethis::use_dev_package("ready4agents")
-usethis::use_dev_package("ready4sd")
+#usethis::use_dev_package("ready4sd")
 usethis::use_dev_package("ready4s3")
 usethis::use_dev_package("ready4s4")
 usethis::use_dev_package("ready4utils")
