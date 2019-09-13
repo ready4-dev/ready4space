@@ -115,13 +115,14 @@ intersect_lon_lat_sfs <- function(sf_1,
 #'  }
 #' }
 #' @seealso
+#'  \code{\link[dplyr]{filter}}
+#'  \code{\link[sf]{geos_query}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}}
 #'  \code{\link[lwgeom]{valid}}
-#'  \code{\link[sf]{st_cast}}
 #' @rdname make_valid_new_sf
 #' @export
-#' @import dplyr
+#' @importFrom dplyr filter
+#' @importFrom sf st_is_valid st_geometry_type st_collection_extract
 #' @importFrom lwgeom st_make_valid
-#' @importFrom sf st_cast
 make_valid_new_sf <- function(sf){
   no_prob_sf <- sf %>%
     dplyr::filter(sf::st_is_valid(.))
@@ -130,7 +131,7 @@ make_valid_new_sf <- function(sf){
     lwgeom::st_make_valid()
   fixed_sf <- fixed_sf %>%
     dplyr::filter(sf::st_geometry_type(.)=="GEOMETRYCOLLECTION") %>%
-    sf::st_cast("MULTIPOLYGON") %>%
+    sf::st_collection_extract(type = c("POLYGON")) %>%
     rbind(fixed_sf %>%
             dplyr::filter(sf::st_geometry_type(.)!="GEOMETRYCOLLECTION"))
   rbind(no_prob_sf, fixed_sf)

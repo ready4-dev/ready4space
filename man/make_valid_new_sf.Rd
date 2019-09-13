@@ -26,6 +26,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[lwgeom]{valid}}
- \code{\link[sf]{st_cast}}
+\code{\link[dplyr]{filter}}
+ \code{\link[sf]{geos_query}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}}
+ \code{\link[lwgeom]{valid}}
 }

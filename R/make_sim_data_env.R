@@ -127,13 +127,13 @@ extend_sp_data_list <- function(sp_data_list,
   # dyn_sf <- simplify_sf(dyn_sf)
 
   profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref]] %>%
-                                                       dplyr::select(1),
-                                                     pop_attr_sf = profiled_sf,
-                                                     age_sex_pop_resolution = "UNIT_ID",
-                                                     age_sex_var_name = "pop_sp_unit_id",
-                                                     popl_var_prefix = popl_var_prefix,
-                                                     data_year = input_data$profiled_area_input@data_year,
-                                                     crs_nbr_vec = crs_nbr_vec)
+                                             dplyr::select(1),
+                                           pop_attr_sf = profiled_sf,
+                                           age_sex_pop_resolution = "UNIT_ID",
+                                           age_sex_var_name = "pop_sp_unit_id",
+                                           popl_var_prefix = popl_var_prefix,
+                                           data_year = input_data$profiled_area_input@data_year,
+                                           crs_nbr_vec = crs_nbr_vec)
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,
                                        popl_var_prefix = popl_var_prefix)) # Is pop_val_prefix needed in this list?
