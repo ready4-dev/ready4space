@@ -126,7 +126,7 @@ intersect_lon_lat_sfs <- function(sf_1,
 make_valid_new_sf <- function(sf){
   valid_sf <- sf %>%
     dplyr::filter(sf::st_is_valid(.))
-  if(nrow(valid_sf)==nrow(sf)){
+  if(nrow(valid_sf)!=nrow(sf)){
     fixed_sf <- sf %>%
       dplyr::filter(!sf::st_is_valid(.)) %>%
       lwgeom::st_make_valid()
