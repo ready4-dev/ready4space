@@ -346,14 +346,16 @@ import_attribute_ls <- function(lookup_tbs_r4,
 export_starter_sf <- function(lookup_tbs_r4,
                               boundary_ls,
                               processed_dir,
-                              merge_with){
+                              merge_with,
+                              crs_nbr_vec){
   if(is.na(merge_with) %>% all()){
     starter_sf <- boundary_ls[[1]]
   }else{
     starter_sf <- purrr::reduce(merge_with,
                                 .init =boundary_ls[[1]],
-                                ~ sf::st_intersection(.x,
-                                                      eval(parse(text=.y))))
+                                ~ intersect_lon_lat_sfs(.x,
+                                                        eval(parse(text=.y)),
+                                                        crs_nbr_vec = crs_nbr_vec))
     if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
       starter_sf <- starter_sf %>%
         dplyr::mutate(area = sf::st_area(.)) %>%

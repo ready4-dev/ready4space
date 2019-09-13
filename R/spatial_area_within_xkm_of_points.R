@@ -29,8 +29,7 @@ spatial_area_within_xkm_of_points <- function(point_locations,
                                                 dist = distance) %>%
     sf::st_union() %>%
     sf::st_intersection(land_sf %>%
-                          sf::st_transform(crs_nbr[2])
-    ) %>% #3577
+                          sf::st_transform(crs_nbr[2])) %>% #3577
     sf::st_transform(crs_nbr[1]) %>%
     sf::st_sf()
   return(distance_from_pts_on_land_sf)
@@ -100,7 +99,8 @@ gen_distance_based_bands <- function(distance_km_outer,
                                                                 ~ do.call(rbind,.x)) %>%
     stats::setNames(., service_clusters_tbs_list %>% names()) %>%
     purrr::map(.,
-               ~ .x %>% dplyr::arrange(desc(distance_km)))
+               ~ .x %>% dplyr::arrange(desc(distance_km)) %>%
+                 simplify_sf(crs = crs_nbr[1]))
   return(geometric_distance_by_cluster_bands_merged_list)
 }
 

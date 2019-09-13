@@ -56,23 +56,22 @@ get_model_end_ymdhs <- function(input_data){
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{crs_nbr}}
+#'  \code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}}
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
-#'  \code{\link[ready4sd]{intersect_sfs_update_counts}},\code{\link[ready4sd]{get_popl_var_prefix}}
-#'  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_measures}}
+#'  \code{\link[sf]{geos_measures}}
 #' @rdname extend_sp_data_list
 #' @export
-#' @importFrom ready4s4 geom_dist_limit_km drive_time_limmit_mins lookup_tb sp_uid_lup data_year use_coord_lup crs_nbr
+#' @importFrom ready4s4 crs_nbr geom_dist_limit_km drive_time_limmit_mins lookup_tb sp_uid_lup data_year
 #' @importFrom ready4utils data_get
-#' @importFrom dplyr filter mutate
+#' @importFrom dplyr filter mutate select
 #' @importFrom purrr map map2
-#' @importFrom ready4sd intersect_sfs_update_counts get_popl_var_prefix
-#' @importFrom sf st_transform st_area
+#' @importFrom sf st_area
 extend_sp_data_list <- function(sp_data_list,
                                 input_data,
                                 profiled_area_bands_list){
+  crs_nbr_vec <-  input_data$profiled_area_input %>% ready4s4::crs_nbr()
   at_highest_res = input_data$at_highest_res
   distance_km = ready4s4::geom_dist_limit_km(input_data$profiled_area_input)
   travel_time_mins = ready4s4::drive_time_limmit_mins(input_data$profiled_area_input)
@@ -90,21 +89,21 @@ extend_sp_data_list <- function(sp_data_list,
   tot_pop_resolution <- NULL
   if(!is.null(input_data$tot_pop_str))
     tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$tot_pop_str) + 1]
-  if(ready4s4::use_coord_lup(input_data$profiled_area_input))
-    profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
-                                           ~ .x %>%
-                                             sf::st_transform(ready4s4::crs_nbr(input_data$profiled_area_input)[1]))
+  # if(ready4s4::use_coord_lup(input_data$profiled_area_input))
+  #   profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
+  #                                          ~ .x %>%
+  #                                            sf::st_transform(ready4s4::crs_nbr(input_data$profiled_area_input)[1]))
   by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
-                                         ~ ready4sd::intersect_sfs_update_counts(profiled_sf = .x,
-                                                                       profiled_colref = NA,
-                                                                       profiled_rowref = NA,
-                                                                       sp_data_list = sp_data_list,
-                                                                       tot_pop_resolution = tot_pop_resolution,
-                                                                       age_sex_pop_resolution = age_sex_pop_resolution,
-                                                                       group_by_var = group_by_var,
-                                                                       age_sex_counts_grouped_by = age_sex_counts_grouped_by,
-                                                                       data_year = ready4s4::data_year(input_data$profiled_area_input)
-                                         ))
+                                         ~ intersect_sfs_update_counts(profiled_sf = .x,
+                                                                                 profiled_colref = NA,
+                                                                                 profiled_rowref = NA,
+                                                                                 sp_data_list = sp_data_list,
+                                                                                 tot_pop_resolution = tot_pop_resolution,
+                                                                                 age_sex_pop_resolution = age_sex_pop_resolution,
+                                                                                 group_by_var = group_by_var,
+                                                                                 age_sex_counts_grouped_by = age_sex_counts_grouped_by,
+                                                                                 data_year = ready4s4::data_year(input_data$profiled_area_input),
+                                                                                 crs_nbr_vec = crs_nbr_vec))
   by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
                                           names(by_band_pop_counts_sf_ls),
                                           ~ .x %>%
@@ -115,28 +114,83 @@ extend_sp_data_list <- function(sp_data_list,
                                                                                   rownames(.x))) %>%
                                             dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
-  popl_var_prefix <- ready4sd::get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
+  popl_var_prefix <- get_popl_var_prefix(age_sex_pop_resolution = age_sex_pop_resolution,
                                                    tot_pop_resolution = tot_pop_resolution,
                                                    data_year = ready4s4::data_year(input_data$profiled_area_input))
   profiled_sf <- drop_grouped_popl_vars(profiled_sf = profiled_sf,
                                         popl_var_prefix = popl_var_prefix)
   ##
-  dyn_sf <- sp_data_list[[sp_data_list$ppr_ref]] %>% ## Should reference this from lookup
-    dplyr::select(1)
-  profiled_sf <- simplify_sf(profiled_sf,
-                           crs = sf::st_crs(dyn_sf)[[1]])
-  dyn_sf <- simplify_sf(dyn_sf)
+  # dyn_sf <- sp_data_list[[sp_data_list$ppr_ref]] %>% ## Should reference this from lookup
+  #   dplyr::select(1)
+  # profiled_sf <- simplify_sf(profiled_sf,
+  #                          crs = sf::st_crs(dyn_sf)[[1]])
+  # dyn_sf <- simplify_sf(dyn_sf)
 
-  profiled_sf <- ready4sd::add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = dyn_sf,
+  profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref]] %>%
+                                                       dplyr::select(1),
                                                      pop_attr_sf = profiled_sf,
                                                      age_sex_pop_resolution = "UNIT_ID",
                                                      age_sex_var_name = "pop_sp_unit_id",
                                                      popl_var_prefix = popl_var_prefix,
-                                                     data_year = input_data$profiled_area_input@data_year)
+                                                     data_year = input_data$profiled_area_input@data_year,
+                                                     crs_nbr_vec = crs_nbr_vec)
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,
                                        popl_var_prefix = popl_var_prefix)) # Is pop_val_prefix needed in this list?
   return(extended_sp_data_list)
+}
+
+#' @title add_dynamic_sp_vars_to_sf
+#' @description FUNCTION_DESCRIPTION
+#' @param dynamic_sp_vars_sf PARAM_DESCRIPTION
+#' @param pop_attr_sf PARAM_DESCRIPTION
+#' @param age_sex_pop_resolution PARAM_DESCRIPTION
+#' @param age_sex_var_name PARAM_DESCRIPTION
+#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @param data_year PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{mutate}}
+#'  \code{\link[rlang]{sym}}
+#' @rdname add_dynamic_sp_vars_to_sf
+#' @export
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+add_dynamic_sp_vars_to_sf <- function(dynamic_sp_vars_sf,
+                                      pop_attr_sf,
+                                      age_sex_pop_resolution,
+                                      age_sex_var_name,
+                                      popl_var_prefix,
+                                      data_year,
+                                      crs_nbr_vec){
+  profiled_sf <- intersect_sfs_keep_counts(profiled_sf = dynamic_sp_vars_sf,
+                                           profiled_colref = NA,
+                                           profiled_rowref = NA,
+                                           attribute_sf = pop_attr_sf,
+                                           attribute_unit = age_sex_pop_resolution,
+                                           data_type = "processed_age_sex",
+                                           data_year = data_year,
+                                           popl_var_prefix = popl_var_prefix,
+                                           crs_nbr_vec = crs_nbr_vec)
+  dyn_par_unit_id <- names(dynamic_sp_vars_sf)[1] # Should be read from lookup
+  profiled_sf <- profiled_sf %>%
+    dplyr::mutate(!!rlang::sym(age_sex_var_name) := paste0(dyn_par_unit_id,"_",!!rlang::sym(age_sex_var_name)))
+  update_pop_count_by_areas(profiled_sf = profiled_sf,
+                            group_by_var = group_by_var,
+                            age_sex_var_name = age_sex_var_name,
+                            data_year = data_year,
+                            age_sex_pop_resolution = age_sex_pop_resolution,
+                            tot_pop_resolution = NULL,
+                            popl_var_prefix = popl_var_prefix)
+
 }
 
 #' @title simplify_sf
@@ -426,10 +480,12 @@ make_profiled_area_objs <- function(profiled_area_input){
                                                      nbr_time_steps = ready4s4::nbr_bands(profiled_area_input))
       names(profiled_area_bands_list) <- paste0("dt_band_",1:length(profiled_area_bands_list))
       profiled_sf <- do.call(rbind,profiled_area_bands_list) %>%
-        sf::st_transform(ready4s4::crs_nbr(profiled_area_input)[1])
+        sf::st_transform(ready4s4::crs_nbr(profiled_area_input)[1]) %>%
+        simplify_sf()
     }
-    sub_div_units_vec <- sf::st_intersection(st_profiled_sf,
-                                             profiled_sf) %>%
+    sub_div_units_vec <- intersect_lon_lat_sfs(sf_1 = st_profiled_sf,
+                                               sf_2 = profiled_sf,
+                                               crs_nbr_vec = ready4s4::crs_nbr(profiled_area_input)) %>%
       dplyr::pull(!!rlang::sym(main_sub_div_var)) %>%
       as.vector()%>%
       unique()
@@ -493,6 +549,7 @@ get_starter_sf_for_profiled_area <- function(profiled_area_input,
   else
     starter_sf <-  starter_sf %>%
       dplyr::filter(!!rlang::sym(group_by_var) %in% ready4s4::features(profiled_area_input))
+    return(starter_sf)
 }
 
 #' @title subset_sf_by_feature
@@ -569,4 +626,38 @@ sum_at_diff_funs <- function(data_sf,
     purrr::reduce(sf::st_join) %>%
     dplyr::select(-dplyr::one_of(paste0(group_by,".y"))) %>%
     dplyr::rename(!!rlang::sym(group_by) := paste0(group_by,".x"))
+}
+
+#' @title simplify_geoms_in_lup
+#' @description FUNCTION_DESCRIPTION
+#' @param lup_r4 PARAM_DESCRIPTION
+#' @param r_data_dir PARAM_DESCRIPTION
+#' @param crs_nbr PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{sp_data_pack_lup}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[purrr]{map}}
+#' @rdname simplify_geoms_in_lup
+#' @export
+#' @importFrom ready4s4 sp_data_pack_lup
+#' @importFrom dplyr filter pull
+#' @importFrom purrr walk
+simplify_geoms_in_lup <- function(lup_r4, ## Move function to ready4space
+                                  r_data_dir,
+                                  crs_nbr){
+  lup_r4 %>%
+    ready4s4::sp_data_pack_lup() %>%
+    dplyr::filter(main_feature =="Boundary") %>%
+    dplyr::pull(source_reference) %>%
+    purrr::walk(~ readRDS(paste0(r_data_dir,"/",.x,".rds")) %>%
+                  simplify_sf(crs = crs_nbr[1]) %>%
+                  saveRDS(paste0(r_data_dir,"/",.x,".rds")))
 }
