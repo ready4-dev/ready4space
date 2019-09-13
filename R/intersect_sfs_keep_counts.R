@@ -124,17 +124,20 @@ intersect_lon_lat_sfs <- function(sf_1,
 #' @importFrom sf st_is_valid st_geometry_type st_collection_extract
 #' @importFrom lwgeom st_make_valid
 make_valid_new_sf <- function(sf){
-  no_prob_sf <- sf %>%
+  valid_sf <- sf %>%
     dplyr::filter(sf::st_is_valid(.))
-  fixed_sf <- sf %>%
-    dplyr::filter(!sf::st_is_valid(.)) %>%
-    lwgeom::st_make_valid()
-  fixed_sf <- fixed_sf %>%
-    dplyr::filter(sf::st_geometry_type(.)=="GEOMETRYCOLLECTION") %>%
-    sf::st_collection_extract(type = c("POLYGON")) %>%
-    rbind(fixed_sf %>%
-            dplyr::filter(sf::st_geometry_type(.)!="GEOMETRYCOLLECTION"))
-  rbind(no_prob_sf, fixed_sf)
+  if(nrow(valid_sf)==nrow(sf)){
+    fixed_sf <- sf %>%
+      dplyr::filter(!sf::st_is_valid(.)) %>%
+      lwgeom::st_make_valid()
+    fixed_sf <- fixed_sf %>%
+      dplyr::filter(sf::st_geometry_type(.)=="GEOMETRYCOLLECTION") %>%
+      sf::st_collection_extract(type = c("POLYGON")) %>%
+      rbind(fixed_sf %>%
+              dplyr::filter(sf::st_geometry_type(.)!="GEOMETRYCOLLECTION"))
+    valid_sf <- rbind(valid_sf, fixed_sf)
+  }
+  valid_sf
   # %>%
   #   distinct(row_ref = 1:nrow(sf)) # Method from dplyr?
   # merge(fixed_sf,
