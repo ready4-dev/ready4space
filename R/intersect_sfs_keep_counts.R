@@ -123,14 +123,23 @@ intersect_lon_lat_sfs <- function(sf_1,
 #' @importFrom lwgeom st_make_valid
 #' @importFrom sf st_cast
 make_valid_new_sf <- function(sf){
-  valid_sf <- sf %>%
-    lwgeom::st_make_valid() %>%
+  no_prob_sf <- sf %>%
+    dplyr::filter(sf::st_is_valid(.))
+  fixed_sf <- sf %>%
+    dplyr::filter(!sf::st_is_valid(.)) %>%
+    lwgeom::st_make_valid()
+  fixed_sf <- fixed_sf %>%
+    dplyr::filter(sf::st_geometry_type(.)=="GEOMETRYCOLLECTION") %>%
     sf::st_cast("MULTIPOLYGON") %>%
-    distinct(... = 1:nrow(sf)) # Method from Dplyr???
-  merge(valid_sf,
-        sf %>%
-          dplyr::slice(valid_sf$...) %>%
-          sf::st_set_geometry(NULL))
+    rbind(fixed_sf %>%
+            dplyr::filter(sf::st_geometry_type(.)!="GEOMETRYCOLLECTION"))
+  rbind(no_prob_sf, fixed_sf)
+  # %>%
+  #   distinct(row_ref = 1:nrow(sf)) # Method from dplyr?
+  # merge(fixed_sf,
+  #       sf %>%
+  #         dplyr::slice(fixed_sf$row_ref) %>%
+  #         sf::st_set_geometry(NULL))
 }
 #' @title add_feature_areas
 #' @description FUNCTION_DESCRIPTION
