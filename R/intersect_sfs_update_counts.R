@@ -33,26 +33,23 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                         age_sex_counts_grouped_by,
                                         data_year,
                                         crs_nbr_vec){
-  #tot_pop_sf <- NULL
-  if(!is.null(tot_pop_resolution)){
-   # tot_pop_sf <- sp_data_list[[tot_pop_resolution]]
-    #duplicate_names <- names(sp_data_list[[tot_pop_resolution]])[names(sp_data_list[[tot_pop_resolution]]) %in% names(profiled_sf)[names(profiled_sf)!="geometry"]]
+   if(!is.null(tot_pop_resolution)){
     if(age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])){
-      sp_data_list[[age_sex_pop_resolution]] <- merge(sp_data_list[[tot_pop_resolution]], sf::st_set_geometry(sp_data_list[[age_sex_pop_resolution]],NULL), by = age_sex_counts_grouped_by)
-      sp_data_list[[age_sex_pop_resolution]] <- add_feature_areas(sf = sp_data_list[[age_sex_pop_resolution]],
-                                                                  data_type = "tot_pop",
-                                                                  data_year = data_year,
-                                                                  feature = tot_pop_resolution)
+      sp_data_list[[age_sex_pop_resolution]] <- merge(sp_data_list[[tot_pop_resolution]],
+                                                      sf::st_set_geometry(sp_data_list[[age_sex_pop_resolution]],NULL),
+                                                      by = age_sex_counts_grouped_by) %>%
+        dplyr::distinct(.keep_all = T) %>%
+        dplyr::select(-dplyr::ends_with(".x")) %>%
+        dplyr::rename_at(.vars = dplyr::vars(dplyr::ends_with(".y")),
+                         ~ stringi::stri_replace_last_regex(.x,"\\.y$",""))
+      sp_data_list[[age_sex_pop_resolution]] <- rename_vars_based_on_res(sf = sp_data_list[[age_sex_pop_resolution]],
+                                                                         data_type = "tot_pop",
+                                                                         data_year = data_year,
+                                                                         feature_nm = tot_pop_resolution) %>%
+        add_kmsq_area_all_features(feature_nm = tot_pop_resolution) %>%
+        add_kmsq_area_by_group(group_by_var = age_sex_counts_grouped_by,
+                               feature_nm = age_sex_pop_resolution)
     }
-
-    # if(!identical(duplicate_names,character(0))){
-    #   sp_data_list[[tot_pop_resolution]] <- sp_data_list[[tot_pop_resolution]] %>%
-    #     dplyr::rename_at(dplyr::vars(dplyr::one_of(duplicate_names)),
-    #                      dplyr::funs(paste0("dupl_",
-    #                                         tot_pop_resolution,
-    #                                         "_",
-    #                                         .)))
-    # }
     }
   profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                            profiled_colref = profiled_colref,
