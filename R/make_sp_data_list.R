@@ -137,17 +137,19 @@ make_profiled_area_objs <- function(profiled_area_input){
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}}
+#'  \code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{sp_resolution_lup}}
 #'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
+#'  \code{\link[nnet]{which.is.max}}
 #'  \code{\link[sf]{geos_measures}}
 #' @rdname extend_sp_data_list
 #' @export
-#' @importFrom ready4s4 crs_nbr geom_dist_limit_km drive_time_limmit_mins lookup_tb sp_uid_lup data_year
+#' @importFrom ready4s4 crs_nbr geom_dist_limit_km drive_time_limmit_mins lookup_tb sp_uid_lup data_year sp_resolution_lup
 #' @importFrom ready4utils data_get
 #' @importFrom dplyr filter mutate select
-#' @importFrom purrr map map2
+#' @importFrom purrr map_dbl map map2
+#' @importFrom nnet which.is.max
 #' @importFrom sf st_area
 extend_sp_data_list <- function(sp_data_list,
                                 input_data,
@@ -168,8 +170,20 @@ extend_sp_data_list <- function(sp_data_list,
                                                      target_variable = "var_name",
                                                      evaluate = FALSE)
   tot_pop_resolution <- NULL
-  if(!is.null(input_data$tot_pop_str))
+  if(!is.null(input_data$tot_pop_str)){
     tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$tot_pop_str) + 1]
+    res_lup <- input_data$profiled_area_input %>% ready4s4::lookup_tb() %>% ready4s4::sp_resolution_lup()
+    use_tot_pop_lgl <- c(age_sex_pop_resolution,tot_pop_resolution) %>%
+      purrr::map_dbl(~ready4utils::data_get(data_lookup_tb = res_lup,
+                                            lookup_variable = "area_type",
+                                            lookup_reference = .x,
+                                            target_variable = "mean_size",
+                                            evaluate = F)) %>%
+      nnet::which.is.max() == 1
+    if(!use_tot_pop_lgl)
+      tot_pop_resolution <- NULL
+
+  }
   # if(ready4s4::use_coord_lup(input_data$profiled_area_input))
   #   profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
   #                                          ~ .x %>%
