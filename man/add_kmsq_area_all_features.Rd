@@ -4,12 +4,17 @@
 \alias{add_kmsq_area_all_features}
 \title{add_kmsq_area_all_features}
 \usage{
-add_kmsq_area_all_features(sf, feature_nm)
+add_kmsq_area_all_features(sf, feature_nm, prefix = "whl_",
+  suffix = "_area")
 }
 \arguments{
 \item{sf}{PARAM_DESCRIPTION}
 
 \item{feature_nm}{PARAM_DESCRIPTION}
+
+\item{prefix}{PARAM_DESCRIPTION, Default: 'whl_'}
+
+\item{suffix}{PARAM_DESCRIPTION, Default: '_area'}
 }
 \value{
 OUTPUT_DESCRIPTION

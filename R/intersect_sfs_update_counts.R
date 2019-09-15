@@ -46,11 +46,12 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                                                          data_type = "tot_pop",
                                                                          data_year = data_year,
                                                                          feature_nm = tot_pop_resolution) %>%
-        add_kmsq_area_all_features(feature_nm = tot_pop_resolution) %>%
-        add_kmsq_area_by_group(group_by_var = age_sex_counts_grouped_by,
-                               feature_nm = age_sex_pop_resolution)
+        add_kmsq_area_all_features(feature_nm = tot_pop_resolution)
     }
-    }
+   }
+  sp_data_list[[age_sex_pop_resolution]] <- sp_data_list[[age_sex_pop_resolution]] %>%
+    add_kmsq_area_by_group(group_by_var = age_sex_counts_grouped_by,
+                           feature_nm = age_sex_pop_resolution)
   profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                            profiled_colref = profiled_colref,
                                            profiled_rowref = profiled_rowref,
@@ -59,13 +60,13 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                            data_type = "age_sex",
                                            data_year = data_year,
                                            crs_nbr_vec = crs_nbr_vec)
-
   if(!is.null(tot_pop_resolution)){
     if(!age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])){
       profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf,
                                                profiled_colref = profiled_colref,
                                                profiled_rowref = profiled_rowref,
-                                               attribute_sf = sp_data_list[[tot_pop_resolution]],
+                                               attribute_sf = sp_data_list[[tot_pop_resolution]] %>%
+                                                 add_kmsq_area_all_features(feature_nm = tot_pop_resolution) ,
                                                attribute_unit = tot_pop_resolution,
                                                data_type = "tot_pop")
     }
