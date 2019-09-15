@@ -220,7 +220,7 @@ extend_sp_data_list <- function(sp_data_list,
   # profiled_sf <- simplify_sf(profiled_sf,
   #                          crs = sf::st_crs(dyn_sf)[[1]])
   # dyn_sf <- simplify_sf(dyn_sf)
-  profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref]] %>%
+  profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref[1]]] %>%
                                              dplyr::select(1),
                                            pop_attr_sf = profiled_sf,
                                            age_sex_pop_resolution = "UNIT_ID",
