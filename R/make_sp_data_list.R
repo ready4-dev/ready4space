@@ -220,7 +220,6 @@ extend_sp_data_list <- function(sp_data_list,
   # profiled_sf <- simplify_sf(profiled_sf,
   #                          crs = sf::st_crs(dyn_sf)[[1]])
   # dyn_sf <- simplify_sf(dyn_sf)
-
   profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref]] %>%
                                              dplyr::select(1),
                                            pop_attr_sf = profiled_sf,
@@ -319,10 +318,12 @@ add_dynamic_sp_vars_to_sf <- function(dynamic_sp_vars_sf,
                                            data_type = "processed_age_sex",
                                            data_year = data_year,
                                            popl_var_prefix = popl_var_prefix,
-                                           crs_nbr_vec = crs_nbr_vec)
+                                           crs_nbr_vec = crs_nbr_vec) %>%
+    add_kmsq_area_by_group(group_by_var = age_sex_var_name,
+                           feature_nm = age_sex_pop_resolution)
   dyn_par_unit_id <- names(dynamic_sp_vars_sf)[1] # Should be read from lookup
   profiled_sf <- profiled_sf %>%
-    dplyr::mutate(!!rlang::sym(age_sex_var_name) := paste0(dyn_par_unit_id,"_",!!rlang::sym(age_sex_var_name)))
+    dplyr::mutate(!!rlang::sym(age_sex_var_name) := paste0(!!rlang::sym(dyn_par_unit_id),"_",!!rlang::sym(age_sex_var_name)))
   update_pop_count_by_areas(profiled_sf = profiled_sf,
                             group_by_var = group_by_var,
                             age_sex_var_name = age_sex_var_name,

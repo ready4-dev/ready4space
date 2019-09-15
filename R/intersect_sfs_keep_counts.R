@@ -73,8 +73,9 @@ intersect_sfs_keep_counts <- function(profiled_sf,
   profiled_sf <- intersect_lon_lat_sfs(sf_1 = profiled_sf,
                                        sf_2 = attribute_sf,
                                        crs_nbr_vec = crs_nbr_vec)
-  profiled_sf <- profiled_sf %>%
-    add_kmsq_area_all_features(feature_nm = "newunit") ## REDO THIS
+  # profiled_sf <- profiled_sf %>%
+  #   add_kmsq_area_all_features(feature_nm = "new_unit",
+  #                              prefix = "") ## REDO THIS
     #dplyr::mutate(new_unit_area = sf::st_area(.))
   return(profiled_sf)
 }
@@ -149,6 +150,8 @@ make_valid_new_sf <- function(sf){
 #' @description FUNCTION_DESCRIPTION
 #' @param sf PARAM_DESCRIPTION
 #' @param feature_nm PARAM_DESCRIPTION
+#' @param prefix PARAM_DESCRIPTION, Default: 'whl_'
+#' @param suffix PARAM_DESCRIPTION, Default: '_area'
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -169,11 +172,13 @@ make_valid_new_sf <- function(sf){
 #' @importFrom sf st_area
 #' @importFrom units set_units
 add_kmsq_area_all_features <- function(sf,
-                                       feature_nm){
+                                       feature_nm,
+                                       prefix = "whl_",
+                                       suffix = "_area"){
   sf %>%
-    dplyr::mutate(!!rlang::sym(paste0("whl_",
+    dplyr::mutate(!!rlang::sym(paste0(prefix,
                                       feature_nm,
-                                      "_area")) := sf::st_area(.) %>%
+                                      suffix)) := sf::st_area(.) %>%
                     units::set_units(km^2))
 }
 #' @title add_kmsq_area_by_group
@@ -202,15 +207,20 @@ add_kmsq_area_all_features <- function(sf,
 #' @importFrom units set_units
 add_kmsq_area_by_group <- function(sf,
                                    group_by_var,
-                                   feature_nm){
+                                   feature_nm,
+                                   prefix = "whl_",
+                                   suffix = "_area"){
   merge(sf,
         sf %>%
           dplyr::group_by(!!rlang::sym(group_by_var)) %>%
           dplyr::summarise() %>%
-          dplyr::mutate(!!rlang::sym(paste0("whl_",
-                                            feature_nm,
-                                            "_area")) := sf::st_area(.) %>%
-                          units::set_units(km^2)) %>%
+          add_kmsq_area_all_features(feature_nm = feature_nm,
+                                     prefix = prefix,
+                                     suffix = suffix) %>%
+          # dplyr::mutate(!!rlang::sym(paste0(prefix,
+          #                                   feature_nm,
+          #                                   suffix)) := sf::st_area(.) %>%
+          #                 units::set_units(km^2)) %>%
           dplyr::ungroup() %>%
           sf::st_set_geometry(NULL))
 
