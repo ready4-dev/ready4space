@@ -44,8 +44,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}}
+\code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}}
  \code{\link[stringr]{str_subset}}
- \code{\link[sf]{geos_measures}}
- \code{\link[units]{set_units}}
 }

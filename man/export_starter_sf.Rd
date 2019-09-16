@@ -15,6 +15,8 @@ export_starter_sf(lookup_tbs_r4, boundary_ls, processed_dir, merge_with,
 \item{processed_dir}{PARAM_DESCRIPTION}
 
 \item{merge_with}{PARAM_DESCRIPTION}
+
+\item{crs_nbr_vec}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -34,7 +36,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{reduce}}
- \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
+ \code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[units]{set_units}}
  \code{\link[tibble]{add_row}}

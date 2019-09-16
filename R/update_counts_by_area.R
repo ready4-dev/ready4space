@@ -1,7 +1,5 @@
-#' @title Adjust population counts by fraction of spatial unit included in a profiled area.
-#' @description
-#' This function:
-#'  -
+#' @title update_pop_count_by_areas
+#' @description Adjust population counts by fraction of spatial unit included in a profiled area.
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param group_by_var PARAM_DESCRIPTION
 #' @param age_sex_var_name PARAM_DESCRIPTION
@@ -10,6 +8,7 @@
 #' @param tot_pop_resolution PARAM_DESCRIPTION
 #' @param popl_var_prefix PARAM_DESCRIPTION, Default: ''
 #' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -18,6 +17,7 @@
 #' }
 #' @rdname update_pop_count_by_areas
 #' @export
+
 update_pop_count_by_areas <-function(profiled_sf,
                                      group_by_var,
                                      age_sex_var_name,
@@ -115,7 +115,6 @@ update_pop_by_inc_area <- function(profiled_sf,
 }
 
 #' @title gen_objs_for_nse_upd_pop
-#' @description FUNCTION_DESCRIPTION
 #' @param sp_unit PARAM_DESCRIPTION
 #' @param concept PARAM_DESCRIPTION
 #' @param tot_pop_col PARAM_DESCRIPTION, Default: NULL
@@ -326,7 +325,7 @@ sum_pop_by_multiple_groups_sf <- function(profiled_sf,
 #' @export
 #' @importFrom dplyr rename_at vars ends_with funs
 suffix_to_prefix <- function(data_tb,
-                             suffix){
+                             suffix){ ##### MOVE THIS TO READY4UTILS (AND UPDATE ALL REFERENCES TO THIS FUNCTION)
   data_tb %>%
     dplyr::rename_at(dplyr::vars(dplyr::ends_with(suffix)),
                      dplyr::funs(paste0(suffix,

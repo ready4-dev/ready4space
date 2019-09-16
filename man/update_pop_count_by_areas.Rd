@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_counts_by_area.R
 \name{update_pop_count_by_areas}
 \alias{update_pop_count_by_areas}
-\title{Adjust population counts by fraction of spatial unit included in a profiled area.}
+\title{update_pop_count_by_areas}
 \usage{
 update_pop_count_by_areas(profiled_sf, group_by_var, age_sex_var_name,
   data_year, age_sex_pop_resolution, tot_pop_resolution,
@@ -27,8 +27,10 @@ update_pop_count_by_areas(profiled_sf, group_by_var, age_sex_var_name,
 OUTPUT_DESCRIPTION
 }
 \description{
-This function:
- -
+Adjust population counts by fraction of spatial unit included in a profiled area.
+}
+\details{
+DETAILS
 }
 \examples{
 \dontrun{

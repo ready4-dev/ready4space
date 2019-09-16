@@ -2,9 +2,7 @@
 % Please edit documentation in R/intersect_sfs_update_counts.R
 \name{intersect_sfs_update_counts}
 \alias{intersect_sfs_update_counts}
-\title{intersect_sfs_update_counts
-Create a simple features object of two intersecting areas and adjust population counts by
-fraction of spatial unit included in a profiled area.}
+\title{intersect_sfs_update_counts}
 \usage{
 intersect_sfs_update_counts(profiled_sf, profiled_colref = NA,
   profiled_rowref = NA, sp_data_list, tot_pop_resolution,
@@ -29,12 +27,13 @@ intersect_sfs_update_counts(profiled_sf, profiled_colref = NA,
 \item{age_sex_counts_grouped_by}{PARAM_DESCRIPTION}
 
 \item{data_year}{PARAM_DESCRIPTION}
+
+\item{crs_nbr_vec}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION
 }
 \description{
-intersect_sfs_update_counts
 Create a simple features object of two intersecting areas and adjust population counts by
 fraction of spatial unit included in a profiled area.
 }
@@ -49,5 +48,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}}
+\code{\link[sf]{st_geometry}}
+ \code{\link[dplyr]{distinct}},\code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}}
+ \code{\link[stringi]{stri_replace_all}}
 }

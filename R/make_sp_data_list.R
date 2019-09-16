@@ -52,18 +52,18 @@ make_sp_data_list <- function(input_data,
 #'  }
 #' }
 #' @seealso
+#'  \code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{sp_site_coord_lup}},\code{\link[ready4s4]{features}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{nbr_bands}},\code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{drive_time_limmit_mins}}
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{sp_site_coord_lup}},\code{\link[ready4s4]{features}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{nbr_bands}},\code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{drive_time_limmit_mins}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[rlang]{sym}}
-#'  \code{\link[sf]{st_transform}},\code{\link[sf]{geos_binary_ops}}
+#'  \code{\link[sf]{st_transform}}
 #' @rdname make_profiled_area_objs
 #' @export
+#' @importFrom ready4s4 use_coord_lup lookup_tb sp_starter_sf_lup country area_type sp_site_coord_lup features geom_dist_limit_km nbr_bands crs_nbr drive_time_limmit_mins
 #' @importFrom ready4utils data_get
-#' @importFrom ready4s4 lookup_tb sp_starter_sf_lup country area_type use_coord_lup sp_site_coord_lup features geom_dist_limit_km nbr_bands crs_nbr drive_time_limmit_mins
 #' @importFrom dplyr filter pull
 #' @importFrom rlang sym
-#' @importFrom sf st_transform st_intersection
+#' @importFrom sf st_transform
 make_profiled_area_objs <- function(profiled_area_input){
   group_by_var <- get_group_by_var_from_pai(profiled_area_input = profiled_area_input)
   st_profiled_sf <- get_starter_sf_for_profiled_area(profiled_area_input = profiled_area_input,
@@ -162,9 +162,7 @@ extend_sp_data_list <- function(sp_data_list,
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_data$age_sex_pop_str) + 1]
   age_sex_counts_grouped_by <- ready4utils::data_get(data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
                                                        ready4s4::sp_uid_lup() %>%
-                                                       dplyr::filter(year %in% c(ready4s4::data_year(input_data$profiled_area_input)#,
-                                                                                 #"All" # May need replacement
-                                                       )),
+                                                       dplyr::filter(year %in% c(ready4s4::data_year(input_data$profiled_area_input))),
                                                      lookup_variable = "spatial_unit",
                                                      lookup_reference = age_sex_pop_resolution,
                                                      target_variable = "var_name",
@@ -214,12 +212,6 @@ extend_sp_data_list <- function(sp_data_list,
                                          data_year = ready4s4::data_year(input_data$profiled_area_input))
   profiled_sf <- drop_grouped_popl_vars(profiled_sf = profiled_sf,
                                         popl_var_prefix = popl_var_prefix)
-  ##
-  # dyn_sf <- sp_data_list[[sp_data_list$ppr_ref]] %>% ## Should reference this from lookup
-  #   dplyr::select(1)
-  # profiled_sf <- simplify_sf(profiled_sf,
-  #                          crs = sf::st_crs(dyn_sf)[[1]])
-  # dyn_sf <- simplify_sf(dyn_sf)
   profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref[1]]] %>%
                                              dplyr::select(1),
                                            pop_attr_sf = profiled_sf,

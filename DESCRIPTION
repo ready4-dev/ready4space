@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9104
+Version: 0.0.0.9105
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -16,36 +16,6 @@ Depends: R (>= 3.5.1)
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: 
-    dplyr,
-    geojsonio,
-    googleway,
-    googlePolylines,
-    httr,
-    ISOcodes,
-    invgamma,
-    jsonlite,
-    lwgeom,
-    lubridate,
-    magrittr,
-    methods,
-    osrm,
-    purrr,
-    readxl,
-    ready4agents (>= 0.0.0.9019),
-    ready4s3 (>= 0.0.0.9142),
-    ready4s4 (>= 0.0.0.948),
-    ready4utils (>= 0.0.0.9033),
-    rlang,
-    rmapshaper,
-    sf,
-    stringr,
-    stats,
-    stringi,
-    tibble,
-    units,
-    utils,
-    nnet
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Remotes: 
@@ -53,3 +23,32 @@ Remotes:
     orygennp/ready4s4,
     orygennp/ready4utils,
     orygennp/ready4s3
+Imports: 
+    ready4agents (>= 0.0.0.90191),
+    ready4s3 (>= 0.0.0.91431),
+    ready4s4 (>= 0.0.0.9491),
+    ready4utils (>= 0.0.0.90331),
+    dplyr,
+    geojsonio,
+    googlePolylines,
+    googleway,
+    httr,
+    ISOcodes,
+    jsonlite,
+    lubridate,
+    lwgeom,
+    magrittr,
+    methods,
+    nnet,
+    osrm,
+    purrr,
+    readxl,
+    rlang,
+    rmapshaper,
+    sf,
+    stats,
+    stringi,
+    stringr,
+    tibble,
+    units,
+    utils
