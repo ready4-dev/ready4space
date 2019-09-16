@@ -18,16 +18,12 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}}
+#'  \code{\link[dplyr]{select}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{slice}}
 #'  \code{\link[stringr]{str_subset}}
-#'  \code{\link[sf]{geos_measures}}
-#'  \code{\link[units]{set_units}}
 #' @rdname intersect_sfs_keep_counts
 #' @export
-#' @importFrom dplyr select pull slice mutate filter
+#' @importFrom dplyr select pull slice
 #' @importFrom stringr str_which
-#' @importFrom sf st_area
-#' @importFrom units set_units
 intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_colref = NA,
                                       profiled_rowref = NA,
@@ -117,12 +113,12 @@ intersect_lon_lat_sfs <- function(sf_1,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{filter}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{distinct}}
 #'  \code{\link[sf]{geos_query}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}}
 #'  \code{\link[lwgeom]{valid}}
 #' @rdname make_valid_new_sf
 #' @export
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter distinct
 #' @importFrom sf st_is_valid st_geometry_type st_collection_extract
 #' @importFrom lwgeom st_make_valid
 make_valid_new_sf <- function(sf){
@@ -186,6 +182,8 @@ add_kmsq_area_all_features <- function(sf,
 #' @param sf PARAM_DESCRIPTION
 #' @param group_by_var PARAM_DESCRIPTION
 #' @param feature_nm PARAM_DESCRIPTION
+#' @param prefix PARAM_DESCRIPTION, Default: 'whl_'
+#' @param suffix PARAM_DESCRIPTION, Default: '_area'
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -195,16 +193,14 @@ add_kmsq_area_all_features <- function(sf,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{mutate}}
+#'  \code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}}
 #'  \code{\link[rlang]{sym}}
-#'  \code{\link[sf]{geos_measures}},\code{\link[sf]{st_geometry}}
-#'  \code{\link[units]{set_units}}
+#'  \code{\link[sf]{geos_combine}},\code{\link[sf]{st_geometry}}
 #' @rdname add_kmsq_area_by_group
 #' @export
-#' @importFrom dplyr group_by summarise mutate ungroup
+#' @importFrom dplyr group_by summarise ungroup
 #' @importFrom rlang sym
-#' @importFrom sf st_area st_set_geometry
-#' @importFrom units set_units
+#' @importFrom sf st_combine st_set_geometry
 add_kmsq_area_by_group <- function(sf,
                                    group_by_var,
                                    feature_nm,
@@ -213,7 +209,7 @@ add_kmsq_area_by_group <- function(sf,
   merge(sf,
         sf %>%
           dplyr::group_by(!!rlang::sym(group_by_var)) %>%
-          dplyr::summarise() %>%
+          dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
           add_kmsq_area_all_features(feature_nm = feature_nm,
                                      prefix = prefix,
                                      suffix = suffix) %>%
@@ -278,7 +274,7 @@ rename_vars_based_on_res <- function(sf,
 #' }
 #' @rdname get_res_specific_vars
 #' @export
-get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT SPECIFIC METHOD
+get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT SPECIFIC METHOD WITH THIS FUNCTION MOVED TO AusSPR4c
                                   data_type,
                                   data_year,
                                   popl_var_prefix){

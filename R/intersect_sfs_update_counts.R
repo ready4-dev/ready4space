@@ -1,5 +1,5 @@
-#' intersect_sfs_update_counts
-#' Create a simple features object of two intersecting areas and adjust population counts by
+#' @title intersect_sfs_update_counts
+#' @description Create a simple features object of two intersecting areas and adjust population counts by
 #' fraction of spatial unit included in a profiled area.
 #' @param profiled_sf PARAM_DESCRIPTION
 #' @param profiled_colref PARAM_DESCRIPTION, Default: NA
@@ -10,6 +10,7 @@
 #' @param group_by_var PARAM_DESCRIPTION
 #' @param age_sex_counts_grouped_by PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -19,10 +20,14 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{funs}}
+#'  \code{\link[sf]{st_geometry}}
+#'  \code{\link[dplyr]{distinct}},\code{\link[dplyr]{select}},\code{\link[dplyr]{reexports}},\code{\link[dplyr]{select_all}},\code{\link[dplyr]{vars}}
+#'  \code{\link[stringi]{stri_replace_all}}
 #' @rdname intersect_sfs_update_counts
 #' @export
-#' @importFrom dplyr rename_at vars one_of funs
+#' @importFrom sf st_set_geometry
+#' @importFrom dplyr distinct select ends_with rename_at vars
+#' @importFrom stringi stri_replace_last_regex
 intersect_sfs_update_counts <- function(profiled_sf,
                                         profiled_colref = NA,
                                         profiled_rowref = NA,

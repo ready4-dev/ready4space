@@ -35,8 +35,8 @@ spatial_area_within_xkm_of_points <- function(point_locations,
   return(distance_from_pts_on_land_sf)
 }
 
-#' gen_distance_based_bands
-#' FUNCTION_DESCRIPTION
+#' @title gen_distance_based_bands
+#' @description FUNCTION_DESCRIPTION
 #' @param distance_km_outer PARAM_DESCRIPTION
 #' @param nbr_distance_bands PARAM_DESCRIPTION
 #' @param service_cluster_tb PARAM_DESCRIPTION

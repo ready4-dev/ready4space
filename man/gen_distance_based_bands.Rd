@@ -2,8 +2,7 @@
 % Please edit documentation in R/spatial_area_within_xkm_of_points.R
 \name{gen_distance_based_bands}
 \alias{gen_distance_based_bands}
-\title{gen_distance_based_bands
-FUNCTION_DESCRIPTION}
+\title{gen_distance_based_bands}
 \usage{
 gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
   service_cluster_tb, profiled_sf, crs_nbr)
@@ -23,7 +22,6 @@ gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
 OUTPUT_DESCRIPTION
 }
 \description{
-gen_distance_based_bands
 FUNCTION_DESCRIPTION
 }
 \details{

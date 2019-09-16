@@ -37,5 +37,4 @@ if(interactive()){
  \code{\link[ready4utils]{data_get}}
  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_data_pack_lup<-}}
  \code{\link[dplyr]{mutate}}
- \code{\link[stringr]{str_sub}}
 }

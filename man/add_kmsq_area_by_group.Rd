@@ -13,6 +13,10 @@ add_kmsq_area_by_group(sf, group_by_var, feature_nm, prefix = "whl_",
 \item{group_by_var}{PARAM_DESCRIPTION}
 
 \item{feature_nm}{PARAM_DESCRIPTION}
+
+\item{prefix}{PARAM_DESCRIPTION, Default: 'whl_'}
+
+\item{suffix}{PARAM_DESCRIPTION, Default: '_area'}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -31,8 +35,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}},\code{\link[dplyr]{mutate}}
+\code{\link[dplyr]{group_by}},\code{\link[dplyr]{summarise}}
  \code{\link[rlang]{sym}}
- \code{\link[sf]{geos_measures}},\code{\link[sf]{st_geometry}}
- \code{\link[units]{set_units}}
+ \code{\link[sf]{geos_combine}},\code{\link[sf]{st_geometry}}
 }

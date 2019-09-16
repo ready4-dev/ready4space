@@ -24,7 +24,7 @@ gen_objs_for_nse_upd_pop(sp_unit, concept, tot_pop_col = NULL,
 OUTPUT_DESCRIPTION
 }
 \description{
-FUNCTION_DESCRIPTION
+gen_objs_for_nse_upd_pop
 }
 \details{
 DETAILS
