@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9105
+Version: 0.0.0.9107
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -18,11 +18,11 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-Remotes: 
-    orygennp/ready4agents,
-    orygennp/ready4s4,
-    orygennp/ready4utils,
-    orygennp/ready4s3
+Remotes:  
+    matthewphamilton/ready4agents,
+    matthewphamilton/ready4s3,
+    matthewphamilton/ready4s4,
+    matthewphamilton/ready4utils
 Imports: 
     ready4agents (>= 0.0.0.90191),
     ready4s3 (>= 0.0.0.91431),
