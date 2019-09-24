@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9109
+Version: 0.0.0.9110
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -48,7 +48,7 @@ Imports:
     tibble,
     units,
     utils,
-    ready4agents (>= 0.0.0.9020),
-    ready4s3 (>= 0.0.0.9144),
+    ready4agents (>= 0.0.0.9021),
+    ready4s3 (>= 0.0.0.9145),
     ready4s4 (>= 0.0.0.950),
-    ready4utils (>= 0.0.0.90331)
+    ready4utils (>= 0.0.0.9034)
