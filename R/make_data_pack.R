@@ -52,7 +52,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                  pckg_name,
                                                  raw_data_dir,
                                                  processed_dir = "data",
-                                                 lup_r4_name){
+                                                 lup_r4_name,
+                                                 crs_nbr_vec = NA_real_){
   if(is.null(init_lookup_r4))
     init_lookup_r4 <- ready4s4::ready4_lookup()
   x <- x %>% add_names() %>%
@@ -66,7 +67,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                                                                                       processed_dir = processed_dir),#merge_with_vec[.y],
                                                                                         pckg_name = pckg_name,
                                                                                         raw_data_dir = raw_data_dir,
-                                                                                        processed_dir = processed_dir),
+                                                                                        processed_dir = processed_dir,
+                                                                                        crs_nbr_vec = crs_nbr_vec),
                                                                   r4_name = "ready4_lookup"))
   return(lookup_tbs_r4)
 }
@@ -99,7 +101,8 @@ make_data_pack_sngl <- function(x,
                                 merge_with,
                                 pckg_name,
                                 raw_data_dir,
-                                processed_dir){
+                                processed_dir,
+                                crs_nbr_vec = NA_real_){
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
   if(!x %>% dplyr::pull(make_script_src) %>% is.na()){
@@ -111,7 +114,8 @@ make_data_pack_sngl <- function(x,
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
                                          boundary_ls = boundary_ls,
                                          processed_dir = processed_dir,
-                                         merge_with = merge_with) %>%
+                                         merge_with = merge_with,
+                                         crs_nbr_vec = crs_nbr_vec) %>%
         export_uid_lup()
       lookup_tbs_r4 <- lookup_tbs_r4 %>%
         export_data_pack_lup(template_ls = boundary_ls,
@@ -339,7 +343,7 @@ export_starter_sf <- function(lookup_tbs_r4,
     starter_sf <- boundary_ls[[1]]
   }else{
     starter_sf <- purrr::reduce(merge_with,
-                                .init =boundary_ls[[1]],
+                                .init = boundary_ls[[1]],
                                 ~ intersect_lon_lat_sfs(.x,
                                                         eval(parse(text=.y)),
                                                         crs_nbr_vec = crs_nbr_vec))

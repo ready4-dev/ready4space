@@ -4,7 +4,8 @@
 \alias{make_data_pack_sngl}
 \title{make_data_pack_sngl}
 \usage{
-make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, processed_dir)
+make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, processed_dir,
+  crs_nbr_vec = NA_real_)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
