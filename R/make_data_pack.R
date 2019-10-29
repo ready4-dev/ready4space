@@ -352,6 +352,9 @@ export_starter_sf <- function(lookup_tbs_r4,
         dplyr::mutate(area = sf::st_area(.)) %>%
         dplyr::filter(area > units::set_units(0,m^2)) ## Note: Will discard points
     }
+    if(lookup_tbs_r4 %>% ready4s4::sp_import_lup() %>% dplyr::pull(main_feature) == "Boundary")
+      starter_sf <- starter_sf %>%
+        make_valid_new_sf()
   }
   starter_sf_name <- paste0(names(boundary_ls)[1],
                             "_sf")
