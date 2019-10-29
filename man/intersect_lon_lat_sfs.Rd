@@ -4,7 +4,7 @@
 \alias{intersect_lon_lat_sfs}
 \title{intersect_lon_lat_sfs}
 \usage{
-intersect_lon_lat_sfs(sf_1, sf_2, crs_nbr_vec)
+intersect_lon_lat_sfs(sf_1, sf_2, crs_nbr_vec, validate_lgl = T)
 }
 \arguments{
 \item{sf_1}{PARAM_DESCRIPTION}
@@ -12,6 +12,8 @@ intersect_lon_lat_sfs(sf_1, sf_2, crs_nbr_vec)
 \item{sf_2}{PARAM_DESCRIPTION}
 
 \item{crs_nbr_vec}{PARAM_DESCRIPTION}
+
+\item{validate_lgl}{PARAM_DESCRIPTION, Default: T}
 }
 \value{
 OUTPUT_DESCRIPTION

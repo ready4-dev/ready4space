@@ -80,6 +80,7 @@ intersect_sfs_keep_counts <- function(profiled_sf,
 #' @param sf_1 PARAM_DESCRIPTION
 #' @param sf_2 PARAM_DESCRIPTION
 #' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param validate_lgl PARAM_DESCRIPTION, Default: T
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -95,11 +96,15 @@ intersect_sfs_keep_counts <- function(profiled_sf,
 #' @importFrom sf st_intersection st_transform
 intersect_lon_lat_sfs <- function(sf_1,
                                   sf_2,
-                                  crs_nbr_vec){
-  sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_vec[2]),
+                                  crs_nbr_vec,
+                                  validate_lgl = T){
+  sf_3 <- sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_vec[2]),
                       sf_2  %>% sf::st_transform(crs_nbr_vec[2])) %>%
-    sf::st_transform(crs_nbr_vec[1]) %>%
-    make_valid_new_sf()
+    sf::st_transform(crs_nbr_vec[1])
+  if(validate_lgl)
+    sf_3 %>% make_valid_new_sf()
+  else
+    sf_3
 }
 #' @title make_valid_new_sf
 #' @description FUNCTION_DESCRIPTION

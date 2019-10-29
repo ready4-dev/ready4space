@@ -4,13 +4,15 @@
 \alias{export_starter_sf}
 \title{export_starter_sf}
 \usage{
-export_starter_sf(lookup_tbs_r4, boundary_ls, processed_dir, merge_with,
-  crs_nbr_vec)
+export_starter_sf(lookup_tbs_r4, boundary_ls = NULL, pnt_ls = NULL,
+  processed_dir, merge_with, crs_nbr_vec)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}
 
-\item{boundary_ls}{PARAM_DESCRIPTION}
+\item{boundary_ls}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{pnt_ls}{PARAM_DESCRIPTION, Default: NULL}
 
 \item{processed_dir}{PARAM_DESCRIPTION}
 
@@ -39,6 +41,6 @@ if(interactive()){
  \code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[units]{set_units}}
+ \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_starter_sf_lup<-}}
  \code{\link[tibble]{add_row}}
- \code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_starter_sf_lup<-}}
 }

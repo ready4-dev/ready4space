@@ -307,7 +307,8 @@ import_attribute_ls <- function(lookup_tbs_r4,
 #' @title export_starter_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param boundary_ls PARAM_DESCRIPTION
+#' @param boundary_ls PARAM_DESCRIPTION, Default: NULL
+#' @param pnt_ls PARAM_DESCRIPTION, Default: NULL
 #' @param processed_dir PARAM_DESCRIPTION
 #' @param merge_with PARAM_DESCRIPTION
 #' @param crs_nbr_vec PARAM_DESCRIPTION
@@ -324,29 +325,35 @@ import_attribute_ls <- function(lookup_tbs_r4,
 #'  \code{\link[sf]{st_geometry_type}},\code{\link[sf]{geos_measures}}
 #'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[units]{set_units}}
+#'  \code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_starter_sf_lup<-}}
 #'  \code{\link[tibble]{add_row}}
-#'  \code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_import_lup}},\code{\link[ready4s4]{sp_starter_sf_lup<-}}
 #' @rdname export_starter_sf
 #' @export
 #' @importFrom purrr reduce
 #' @importFrom sf st_geometry_type st_area
 #' @importFrom dplyr mutate filter pull
 #' @importFrom units set_units
+#' @importFrom ready4s4 sp_import_lup sp_starter_sf_lup sp_starter_sf_lup<-
 #' @importFrom tibble add_row
-#' @importFrom ready4s4 sp_starter_sf_lup sp_import_lup sp_starter_sf_lup<-
 export_starter_sf <- function(lookup_tbs_r4,
-                              boundary_ls,
+                              boundary_ls = NULL,
+                              pnt_ls = NULL,
                               processed_dir,
                               merge_with,
                               crs_nbr_vec){
+  if(!is.null(boundary_ls))
+    geom_ls <- boundary_ls
+  if(!is.null(pnt_ls))
+    geom_ls <- pnt_ls
   if(is.na(merge_with) %>% all()){
-    starter_sf <- boundary_ls[[1]]
+    starter_sf <- geom_ls[[1]]
   }else{
     starter_sf <- purrr::reduce(merge_with,
-                                .init = boundary_ls[[1]],
+                                .init = geom_ls[[1]],
                                 ~ intersect_lon_lat_sfs(.x,
                                                         eval(parse(text=.y)),
-                                                        crs_nbr_vec = crs_nbr_vec))
+                                                        crs_nbr_vec = crs_nbr_vec,
+                                                        validate_lgl = is.null(pnt_ls)))
     if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
       starter_sf <- starter_sf %>%
         dplyr::mutate(area = sf::st_area(.)) %>%
@@ -356,7 +363,7 @@ export_starter_sf <- function(lookup_tbs_r4,
   if(lookup_tbs_r4 %>% ready4s4::sp_import_lup() %>% dplyr::pull(main_feature) == "Boundary")
     starter_sf <- starter_sf %>%
       simplify_sf(crs = crs_nbr_vec[1])
-  starter_sf_name <- paste0(names(boundary_ls)[1],
+  starter_sf_name <- paste0(names(geom_ls)[1],
                             "_sf")
   saveRDS(starter_sf, file = paste0(processed_dir,"/",starter_sf_name,".rds"))
   starter_sf_lup_r3 <- tibble::add_row(ready4s4::sp_starter_sf_lup(lookup_tbs_r4),
