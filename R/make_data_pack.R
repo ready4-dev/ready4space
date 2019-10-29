@@ -355,7 +355,7 @@ export_starter_sf <- function(lookup_tbs_r4,
     if(lookup_tbs_r4 %>% ready4s4::sp_import_lup() %>% dplyr::pull(main_feature) == "Boundary")
       starter_sf <- starter_sf %>%
         make_valid_new_sf() %>%
-        simplify_sf(crs = crs_nbr[1])
+        simplify_sf(crs = crs_nbr_vec[1])
   }
   starter_sf_name <- paste0(names(boundary_ls)[1],
                             "_sf")
