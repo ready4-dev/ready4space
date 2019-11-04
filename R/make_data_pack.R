@@ -108,7 +108,7 @@ make_data_pack_sngl <- function(x,
   if(!x %>% dplyr::pull(make_script_src) %>% is.na()){
     lookup_tbs_r4 <- add_data_pack_from_script(x = x, lookup_tbs_r4 = lookup_tbs_r4, merge_sfs_vec = merge_with, processed_dir = processed_dir, raw_data_dir = raw_data_dir)
   }else{
-    if(x %>% dplyr::pull(data_type) == "Shape"){
+    if(x %>% dplyr::pull(data_type) == "Geometry"){
       boundary_ls <- import_boundary_ls(lookup_tbs_r4,
                                         raw_data_dir)
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
@@ -119,7 +119,7 @@ make_data_pack_sngl <- function(x,
         export_uid_lup()
       lookup_tbs_r4 <- lookup_tbs_r4 %>%
         export_data_pack_lup(template_ls = boundary_ls,
-                             tb_data_type = "Shape",
+                             tb_data_type = "Geometry",
                              pckg_name = pckg_name)
     }
     if(x %>% dplyr::pull(data_type) == "Attribute"){
@@ -200,7 +200,7 @@ add_names <- function(x){
                                                   tolower(..2),
                                                   "_",
                                                   tolower(..3 %>% stringr::str_sub(end=3)),
-                                                  ifelse(..4 == "Shape",
+                                                  ifelse(..4 == "Geometry",
                                                          ifelse(..5 == "Boundary","_bnd_","_crd_"),
                                                          paste0("_",tolower(..5),"_")),
                                                   ..6
@@ -244,7 +244,7 @@ import_boundary_ls <- function(lookup_tbs_r4,
               destination_directory = raw_format_sp_dir)
   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
               included_items_names = boundaries_to_import_vec,
-              item_data_type = "Shape",
+              item_data_type = "Geometry",
               data_directory = raw_format_sp_dir) %>%
     stats::setNames(boundaries_to_import_vec)
 }
@@ -405,7 +405,7 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' @title export_data_pack_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param tb_data_type PARAM_DESCRIPTION, Default: 'Shape'
+#' @param tb_data_type PARAM_DESCRIPTION, Default: 'Geometry'
 #' @param template_ls PARAM_DESCRIPTION, Default: NULL
 #' @param pckg_name PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
@@ -428,7 +428,7 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' @importFrom ready4s4 sp_import_lup sp_data_pack_lup sp_data_pack_lup<-
 #' @importFrom dplyr mutate
 export_data_pack_lup <- function(lookup_tbs_r4,
-                                 tb_data_type = "Shape",
+                                 tb_data_type = "Geometry",
                                  template_ls = NULL,
                                  pckg_name){
   data_pk_lup_arguments_ls <- purrr::map2(template_ls,
