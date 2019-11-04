@@ -167,7 +167,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                                                           main_feature, year, inc_file_main)),
                                                         lookup_reference = .x,
                                                         data_directory = data_directory))
-  if(item_data_type=="Shape"){
+  if(item_data_type=="Geometry"){
     item_list <- purrr::map(path_vec,
                             ~ sf::st_read(dsn=.x,
                                           layer = data_import_get_file_name_from_path(.x,
