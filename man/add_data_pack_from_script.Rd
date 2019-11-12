@@ -5,7 +5,7 @@
 \title{add_data_pack_from_script}
 \usage{
 add_data_pack_from_script(x, lookup_tbs_r4, merge_sfs_vec, processed_dir,
-  raw_data_dir)
+  raw_data_dir, pckg_name)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -17,6 +17,8 @@ add_data_pack_from_script(x, lookup_tbs_r4, merge_sfs_vec, processed_dir,
 \item{processed_dir}{PARAM_DESCRIPTION}
 
 \item{raw_data_dir}{PARAM_DESCRIPTION}
+
+\item{pckg_name}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

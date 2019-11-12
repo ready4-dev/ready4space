@@ -4,13 +4,13 @@
 \alias{export_data_pack_lup}
 \title{export_data_pack_lup}
 \usage{
-export_data_pack_lup(lookup_tbs_r4, tb_data_type = "Shape",
+export_data_pack_lup(lookup_tbs_r4, tb_data_type = "Geometry",
   template_ls = NULL, pckg_name)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}
 
-\item{tb_data_type}{PARAM_DESCRIPTION, Default: 'Shape'}
+\item{tb_data_type}{PARAM_DESCRIPTION, Default: 'Geometry'}
 
 \item{template_ls}{PARAM_DESCRIPTION, Default: NULL}
 
