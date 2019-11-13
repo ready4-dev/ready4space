@@ -5,7 +5,7 @@
 \title{export_starter_sf}
 \usage{
 export_starter_sf(lookup_tbs_r4, boundary_ls = NULL, pnt_ls = NULL,
-  processed_dir, merge_with, crs_nbr_vec)
+  processed_dir, merge_with, crs_nbr_vec, overwrite_lgl = F)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}
@@ -19,6 +19,8 @@ export_starter_sf(lookup_tbs_r4, boundary_ls = NULL, pnt_ls = NULL,
 \item{merge_with}{PARAM_DESCRIPTION}
 
 \item{crs_nbr_vec}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION

@@ -5,7 +5,8 @@
 \title{download_data.ready4_sp_import_lup}
 \usage{
 \method{download_data}{ready4_sp_import_lup}(x, destination_directory,
-  data_lookup_ref, lookup_variable = "name", directory_sub_divs = NULL)
+  data_lookup_ref, lookup_variable = "name", directory_sub_divs = NULL,
+  overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -17,6 +18,8 @@
 \item{lookup_variable}{PARAM_DESCRIPTION, Default: 'name'}
 
 \item{directory_sub_divs}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION

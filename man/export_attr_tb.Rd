@@ -4,7 +4,7 @@
 \alias{export_attr_tb}
 \title{export_attr_tb}
 \usage{
-export_attr_tb(attr_tb, obj_name, processed_dir)
+export_attr_tb(attr_tb, obj_name, processed_dir, overwrite_lgl)
 }
 \arguments{
 \item{attr_tb}{PARAM_DESCRIPTION}
@@ -12,6 +12,8 @@ export_attr_tb(attr_tb, obj_name, processed_dir)
 \item{obj_name}{PARAM_DESCRIPTION}
 
 \item{processed_dir}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

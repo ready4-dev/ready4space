@@ -154,7 +154,7 @@ add_ppr_to_data_pack_lup <- function(data_pack_lup,
 #' @export
 add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){ ## Replace with names based referencing.
   add_attr_tb_to_data_pack_lup(data_pack_lup = x,
-                               attr_tb = y[[1]],
+                               attr_tb = y[[1]], # remove (carefully)
                                object_name = y[[2]],
                                area_type = y[[3]],
                                area_bound_yr = y[[4]],
@@ -192,7 +192,7 @@ add_attr_tb_to_data_pack_lup_from_arg_list <- function(x,y){ ## Replace with nam
 #' @importFrom tibble tibble
 #' @importFrom dplyr bind_rows
 add_attr_tb_to_data_pack_lup <- function(data_pack_lup,
-                                         attr_tb,
+                                         attr_tb, # remove (carefully)
                                          object_name,
                                          area_type,
                                          area_bound_yr,

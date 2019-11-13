@@ -5,7 +5,7 @@
 \title{data_import_rename_files}
 \usage{
 data_import_rename_files(x, data_lookup_ref, lookup_variable,
-  directory_path)
+  directory_path, overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -15,6 +15,8 @@ data_import_rename_files(x, data_lookup_ref, lookup_variable,
 \item{lookup_variable}{PARAM_DESCRIPTION}
 
 \item{directory_path}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -33,5 +35,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[purrr]{map2}}
+\code{\link[ready4utils]{data_get}}
+ \code{\link[purrr]{map2}}
 }

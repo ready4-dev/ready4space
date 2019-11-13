@@ -58,6 +58,7 @@ save_raw <- function(x,
 #' @description FUNCTION_DESCRIPTION
 #' @param required_data PARAM_DESCRIPTION
 #' @param destination_directory PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: FALSE
 #' @param x PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -74,11 +75,13 @@ save_raw <- function(x,
 #' @importFrom purrr walk
 save_raw.ready4_sp_import_lup <- function(x,
                                           required_data,
-                                          destination_directory){
+                                          destination_directory,
+                                          overwrite_lgl = F){
   purrr::walk(required_data,
               ~ download_data(x = x,
                               destination_directory = destination_directory,
-                              data_lookup_ref = .x))
+                              data_lookup_ref = .x,
+                              overwrite_lgl = overwrite_lgl))
 }
 
 #' @title download_data.ready4_sp_import_lup
@@ -88,6 +91,7 @@ save_raw.ready4_sp_import_lup <- function(x,
 #' @param data_lookup_ref PARAM_DESCRIPTION
 #' @param lookup_variable PARAM_DESCRIPTION, Default: 'name'
 #' @param directory_sub_divs PARAM_DESCRIPTION, Default: NULL
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -106,7 +110,8 @@ download_data.ready4_sp_import_lup <- function(x,
                                                #data_import_lookup_tb,
                                                data_lookup_ref,
                                                lookup_variable = "name",
-                                               directory_sub_divs = NULL){
+                                               directory_sub_divs = NULL,
+                                               overwrite_lgl = F){
 
   if(is.null(directory_sub_divs))
     directory_sub_divs <- names(ready4s3::ready4_sp_import_lup())[names(ready4s3::ready4_sp_import_lup()) %in% c("country","area_type","region","main_feature","year")] ## Could add boundary year as extra directory
@@ -119,7 +124,8 @@ download_data.ready4_sp_import_lup <- function(x,
   data_import_save_files(x = x,
                          data_lookup_ref = data_lookup_ref,
                          lookup_variable = lookup_variable,
-                         directory_path = directory_paths[length(directory_paths)])
+                         directory_path = directory_paths[length(directory_paths)],
+                         overwrite_lgl = overwrite_lgl)
 
 
 }
@@ -129,6 +135,7 @@ download_data.ready4_sp_import_lup <- function(x,
 #' @param included_items_names PARAM_DESCRIPTION
 #' @param item_data_type PARAM_DESCRIPTION
 #' @param data_directory PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -151,7 +158,8 @@ download_data.ready4_sp_import_lup <- function(x,
 import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                              included_items_names,
                                              item_data_type,
-                                             data_directory){
+                                             data_directory,
+                                             overwrite_lgl = F){
   downloaded_data_tb <- x %>%
     dplyr::filter(data_type == item_data_type) %>%
     dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_files[[1]]),
@@ -169,16 +177,26 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                                         data_directory = data_directory))
   if(item_data_type=="Geometry"){
     item_list <- purrr::map(path_vec,
-                            ~ sf::st_read(dsn=.x,
-                                          layer = data_import_get_file_name_from_path(.x,
-                                                                                      with_ext = FALSE))) %>%
+                            ~ {
+                              if(overwrite_lgl | !file.exists(.x))
+                                sf::st_read(dsn=.x,
+                                            layer = data_import_get_file_name_from_path(.x,
+                                                                                        with_ext = FALSE))
+                              else
+                                "SKIP_IMPORT"}
+                            ) %>%
       stats::setNames(included_items_names)
   }else{
     item_list <- purrr::map(path_vec,
-                            ~ data_import_non_shape_items(.x,
+                            ~ {
+                              if(overwrite_lgl | !file.exists(.x))
+                              data_import_non_shape_items(.x,
                                                           x = downloaded_data_tb
                                                           # x
-                            )) %>%
+                              )
+                              else
+                                "SKIP_IMPORT"}
+                            ) %>%
       stats::setNames(included_items_names)
   }
   return(item_list)
@@ -253,6 +271,7 @@ data_import_make_directories <- function(directory_paths){
 #' @param data_lookup_ref PARAM_DESCRIPTION
 #' @param lookup_variable PARAM_DESCRIPTION
 #' @param directory_path PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -273,7 +292,8 @@ data_import_make_directories <- function(directory_paths){
 data_import_save_files <- function(x,
                                    data_lookup_ref,
                                    lookup_variable,
-                                   directory_path){
+                                   directory_path,
+                                   overwrite_lgl = F){
   download_components_vec <- purrr::map_chr(c("file_name",
                                               "file_type",
                                               "download_url",
@@ -289,12 +309,13 @@ data_import_save_files <- function(x,
                       download_components_vec[1],
                       download_components_vec[2])
   if(!is.na(download_components_vec[5])){
-    file.copy(from = download_components_vec[5],to = dest_file)
+    if(overwrite_lgl | file.exists(dest_file))
+      file.copy(from = download_components_vec[5],to = dest_file)
   }else{
     if(!is.na(paste0(directory_path,
                      "/",
                      download_components_vec[4]))){
-      if(!file.exists(paste0(directory_path,
+      if(overwrite_lgl | !file.exists(paste0(directory_path, ## NEEDS UPDATING TO REFERENCE RENAMED PRE-EXISTING FILES
                              "/",
                              download_components_vec[4]))){
         utils::download.file(download_components_vec[3],
@@ -307,7 +328,8 @@ data_import_save_files <- function(x,
         data_import_rename_files(x = x,
                                  data_lookup_ref = data_lookup_ref,
                                  lookup_variable = lookup_variable,
-                                 directory_path = directory_path)
+                                 directory_path = directory_path,
+                                 overwrite_lgl = overwrite_lgl)
       }
     }
   }
@@ -318,6 +340,7 @@ data_import_save_files <- function(x,
 #' @param data_lookup_ref PARAM_DESCRIPTION
 #' @param lookup_variable PARAM_DESCRIPTION
 #' @param directory_path PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -327,14 +350,17 @@ data_import_save_files <- function(x,
 #'  }
 #' }
 #' @seealso
+#'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[purrr]{map2}}
 #' @rdname data_import_rename_files
 #' @export
+#' @importFrom ready4utils data_get
 #' @importFrom purrr walk2
 data_import_rename_files <- function(x,
                                      data_lookup_ref,
                                      lookup_variable,
-                                     directory_path){
+                                     directory_path,
+                                     overwrite_lgl = F){
   old_names_list <- ready4utils::data_get(data_lookup_tb = x,
                                           lookup_reference = data_lookup_ref,
                                           lookup_variable = lookup_variable,
@@ -348,7 +374,10 @@ data_import_rename_files <- function(x,
   if(!is.na(old_names_list)){
     purrr::walk2(old_names_list,
                  new_names_list,
-                 ~ file.rename(paste0(directory_path,
+                 ~ if(overwrite_lgl | !file.exists(paste0(directory_path,
+                                                          "/",
+                                                          .y)))
+                   file.rename(paste0(directory_path,
                                       "/",
                                       .x),
                                paste0(directory_path,

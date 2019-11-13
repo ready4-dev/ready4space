@@ -4,7 +4,8 @@
 \alias{data_import_save_files}
 \title{data_import_save_files}
 \usage{
-data_import_save_files(x, data_lookup_ref, lookup_variable, directory_path)
+data_import_save_files(x, data_lookup_ref, lookup_variable, directory_path,
+  overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -14,6 +15,8 @@ data_import_save_files(x, data_lookup_ref, lookup_variable, directory_path)
 \item{lookup_variable}{PARAM_DESCRIPTION}
 
 \item{directory_path}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION

@@ -5,7 +5,7 @@
 \title{import_data.ready4_sp_import_lup}
 \usage{
 \method{import_data}{ready4_sp_import_lup}(x, included_items_names,
-  item_data_type, data_directory)
+  item_data_type, data_directory, overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -15,6 +15,8 @@
 \item{item_data_type}{PARAM_DESCRIPTION}
 
 \item{data_directory}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION

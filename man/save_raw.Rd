@@ -8,7 +8,7 @@
 save_raw(x, ...)
 
 \method{save_raw}{ready4_sp_import_lup}(x, required_data,
-  destination_directory)
+  destination_directory, overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -18,6 +18,8 @@ save_raw(x, ...)
 \item{required_data}{PARAM_DESCRIPTION}
 
 \item{destination_directory}{PARAM_DESCRIPTION}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: FALSE}
 
 \item{x}{PARAM_DESCRIPTION}
 }
