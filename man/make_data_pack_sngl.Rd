@@ -5,7 +5,7 @@
 \title{make_data_pack_sngl}
 \usage{
 make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, processed_dir,
-  crs_nbr_vec = NA_real_, overwrite_lgl)
+  crs_nbr_vec = NA_real_, overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -18,7 +18,9 @@ make_data_pack_sngl(x, merge_with, pckg_name, raw_data_dir, processed_dir,
 
 \item{processed_dir}{PARAM_DESCRIPTION}
 
-\item{overwrite_lgl}{PARAM_DESCRIPTION}
+\item{crs_nbr_vec}{PARAM_DESCRIPTION, Default: NA}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION

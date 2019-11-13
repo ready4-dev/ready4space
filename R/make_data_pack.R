@@ -26,6 +26,8 @@ make_data_packs <- function(x,
 #' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION, Default: 'data'
 #' @param lup_r4_name PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -53,7 +55,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                  raw_data_dir,
                                                  processed_dir = "data",
                                                  lup_r4_name,
-                                                 crs_nbr_vec = NA_real_){
+                                                 crs_nbr_vec = NA_real_,
+                                                 overwrite_lgl = F){
   if(is.null(init_lookup_r4))
     init_lookup_r4 <- ready4s4::ready4_lookup()
   x <- x %>% add_names() %>%
@@ -68,7 +71,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                                                         pckg_name = pckg_name,
                                                                                         raw_data_dir = raw_data_dir,
                                                                                         processed_dir = processed_dir,
-                                                                                        crs_nbr_vec = crs_nbr_vec),
+                                                                                        crs_nbr_vec = crs_nbr_vec,
+                                                                                        overwrite_lgl = overwrite_lgl),
                                                                   r4_name = "ready4_lookup"))
   return(lookup_tbs_r4)
 }
@@ -80,7 +84,8 @@ make_data_packs.ready4_sp_import_lup <- function(x,
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -104,7 +109,7 @@ make_data_pack_sngl <- function(x,
                                 raw_data_dir,
                                 processed_dir,
                                 crs_nbr_vec = NA_real_,
-                                overwrite_lgl){
+                                overwrite_lgl = F){
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
   if(!x %>% dplyr::pull(make_script_src) %>% is.na()){

@@ -6,7 +6,7 @@
 \usage{
 \method{make_data_packs}{ready4_sp_import_lup}(x, init_lookup_r4 = NULL,
   pckg_name, raw_data_dir, processed_dir = "data", lup_r4_name,
-  crs_nbr_vec = NA_real_)
+  crs_nbr_vec = NA_real_, overwrite_lgl = F)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -20,6 +20,10 @@
 \item{processed_dir}{PARAM_DESCRIPTION, Default: 'data'}
 
 \item{lup_r4_name}{PARAM_DESCRIPTION}
+
+\item{crs_nbr_vec}{PARAM_DESCRIPTION, Default: NA}
+
+\item{overwrite_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 OUTPUT_DESCRIPTION
