@@ -1,6 +1,6 @@
 #' @title make_env_param_tb
 #' @description Make a table of the parameter sets for a ready4_sim_env object
-#' @param nbr_its PARAM_DESCRIPTION
+#' @param n_its_int PARAM_DESCRIPTION
 #' @param env_str_par_tb PARAM_DESCRIPTION
 #' @param mape_str_par_tb PARAM_DESCRIPTION
 #' @param jt_dist PARAM_DESCRIPTION
@@ -19,15 +19,15 @@
 #' @export
 #' @importFrom ready4agents gen_par_vals
 #' @importFrom dplyr bind_rows
-make_env_param_tb <- function(nbr_its,
+make_env_param_tb <- function(n_its_int,
                               env_str_par_tb,
                               mape_str_par_tb,
                               jt_dist){
   par_val_mape <- ready4agents::gen_par_vals(x = mape_str_par_tb,
-                                             nbr_its = nbr_its,
+                                             n_its_int = n_its_int,
                                              jt_dist = jt_dist)
   par_val_env <- ready4agents::gen_par_vals(x = env_str_par_tb,
-                                            nbr_its = nbr_its)
+                                            n_its_int = n_its_int)
   dplyr::bind_rows(par_val_env,
                    par_val_mape)
 }

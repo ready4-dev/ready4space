@@ -4,10 +4,10 @@
 \alias{make_env_param_tb}
 \title{make_env_param_tb}
 \usage{
-make_env_param_tb(nbr_its, env_str_par_tb, mape_str_par_tb, jt_dist)
+make_env_param_tb(n_its_int, env_str_par_tb, mape_str_par_tb, jt_dist)
 }
 \arguments{
-\item{nbr_its}{PARAM_DESCRIPTION}
+\item{n_its_int}{PARAM_DESCRIPTION}
 
 \item{env_str_par_tb}{PARAM_DESCRIPTION}
 
