@@ -178,24 +178,26 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
   if(item_data_type=="Geometry"){
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(overwrite_lgl | !file.exists(.x))
+                              if(!overwrite_lgl & file.exists(.x)){
+                                "SKIP_IMPORT"
+                              }else{
                                 sf::st_read(dsn=.x,
                                             layer = data_import_get_file_name_from_path(.x,
                                                                                         with_ext = FALSE))
-                              else
-                                "SKIP_IMPORT"}
+                              }
+                                }
                             ) %>%
       stats::setNames(included_items_names)
   }else{
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(overwrite_lgl | !file.exists(.x))
-                              data_import_non_shape_items(.x,
-                                                          x = downloaded_data_tb
-                                                          # x
-                              )
-                              else
-                                "SKIP_IMPORT"}
+                              if(!overwrite_lgl & file.exists(.x)){
+                                "SKIP_IMPORT"
+                              }else{
+                                data_import_non_shape_items(.x,
+                                                            x = downloaded_data_tb)
+                              }
+                              }
                             ) %>%
       stats::setNames(included_items_names)
   }
