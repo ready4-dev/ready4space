@@ -77,7 +77,7 @@ save_raw.ready4_sp_import_lup <- function(x,
                                           required_data,
                                           destination_directory,
                                           overwrite_lgl = F){
-  purrr::walk(required_data,
+  purrr::map_lgl(required_data,
               ~ download_data(x = x,
                               destination_directory = destination_directory,
                               data_lookup_ref = .x,
@@ -135,7 +135,7 @@ download_data.ready4_sp_import_lup <- function(x,
 #' @param included_items_names PARAM_DESCRIPTION
 #' @param item_data_type PARAM_DESCRIPTION
 #' @param data_directory PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' @param save_lgl PARAM_DESCRIPTION, Default: T
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -159,7 +159,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                              included_items_names,
                                              item_data_type,
                                              data_directory,
-                                             overwrite_lgl = F){
+                                             save_lgl = T){
   downloaded_data_tb <- x %>%
     dplyr::filter(data_type == item_data_type) %>%
     dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_files[[1]]),
@@ -178,7 +178,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
   if(item_data_type=="Geometry"){
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(!overwrite_lgl & file.exists(.x)){
+                              if(!save_lgl){
                                 "SKIP_IMPORT"
                               }else{
                                 sf::st_read(dsn=.x,
@@ -191,7 +191,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
   }else{
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(!overwrite_lgl & file.exists(.x)){
+                              if(!save_lgl){
                                 "SKIP_IMPORT"
                               }else{
                                 data_import_non_shape_items(.x,
@@ -296,6 +296,7 @@ data_import_save_files <- function(x,
                                    lookup_variable,
                                    directory_path,
                                    overwrite_lgl = F){
+  save_lgl <- F
   download_components_vec <- purrr::map_chr(c("file_name",
                                               "file_type",
                                               "download_url",
@@ -332,9 +333,11 @@ data_import_save_files <- function(x,
                                  lookup_variable = lookup_variable,
                                  directory_path = directory_path,
                                  overwrite_lgl = overwrite_lgl)
+        save_lgl <- T
       }
     }
   }
+  save_lgl
 }
 #' @title data_import_rename_files
 #' @description FUNCTION_DESCRIPTION
