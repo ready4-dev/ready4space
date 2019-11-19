@@ -122,9 +122,10 @@ make_data_pack_sngl <- function(x,
                                                overwrite_lgl = overwrite_lgl)
   }else{
     if(x %>% dplyr::pull(data_type) == "Geometry"){
-      boundary_ls <- import_boundary_ls(lookup_tbs_r4,
-                                        raw_data_dir,
-                                        overwrite_lgl = overwrite_lgl)
+      boundary_ls <- import_ls(lookup_tbs_r4,
+                               raw_data_dir,
+                               data_type_chr = "Geometry",
+                               overwrite_lgl = overwrite_lgl)
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
                                          boundary_ls = boundary_ls,
                                          processed_dir = processed_dir,
@@ -138,9 +139,10 @@ make_data_pack_sngl <- function(x,
                              pckg_name = pckg_name)
     }
     if(x %>% dplyr::pull(data_type) == "Attribute"){
-      attribute_ls <- import_attribute_ls(lookup_tbs_r4,
-                                          raw_data_dir,
-                                          overwrite_lgl = overwrite_lgl)
+      attribute_ls <- import_ls(lookup_tbs_r4,
+                                raw_data_dir,
+                                data_type_chr = "Attribute",
+                                overwrite_lgl = overwrite_lgl)
       purrr::walk2(attribute_ls,
                    names(attribute_ls),
                    ~ export_attr_tb(attr_tb = .x,
@@ -232,10 +234,11 @@ add_names <- function(x){
                                                                                                        stringr::str_sub(.x, start = 12, end = -3)),
                                                                                                 .x)))
 }
-#' @title import_boundary_ls
+#' @title import_ls
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
+#' @param data_type_chr PARAM_DESCRIPTION, Default: 'Geometry'
 #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -249,29 +252,37 @@ add_names <- function(x){
 #'  \code{\link[ready4s4]{sp_import_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stats]{setNames}}
-#' @rdname import_boundary_ls
+#' @rdname import_ls
 #' @export
 #' @importFrom ready4s4 sp_import_lup
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
-import_boundary_ls <- function(lookup_tbs_r4,
-                               raw_data_dir,
-                               overwrite_lgl = F){
-  raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,"Geometries")
+import_ls <- function(lookup_tbs_r4,
+                      raw_data_dir,
+                      data_type_chr = "Geometry",
+                      overwrite_lgl = F){
+  directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
+ # main_ft_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
+  raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,directory_chr)
   if(!dir.exists(raw_format_sp_dir))
-  dir.create(raw_format_sp_dir)
-  boundaries_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
-    dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
+    dir.create(raw_format_sp_dir)
+  if(data_type_chr == "Geometry"){
+    import_chr_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+      dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
+  }else{
+    import_chr_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+      dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
+  }
   save_lgl <- save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-           required_data = boundaries_to_import_vec,
-           destination_directory = raw_format_sp_dir,
-           overwrite_lgl = overwrite_lgl)
+                       required_data = import_chr_vec,
+                       destination_directory = raw_format_sp_dir,
+                       overwrite_lgl = overwrite_lgl)
   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-              included_items_names = boundaries_to_import_vec,
-              item_data_type = "Geometry",
+              included_items_names = import_chr_vec,
+              item_data_type = data_type_chr,
               data_directory = raw_format_sp_dir,
               save_lgl = save_lgl) %>%
-    stats::setNames(boundaries_to_import_vec)
+    stats::setNames(import_chr_vec)
 }
 #' @title make_raw_format_dir_str
 #' @description FUNCTION_DESCRIPTION
@@ -292,47 +303,47 @@ make_raw_format_dir_str <- function(raw_data_dir,
                                     category){
   paste0(raw_data_dir,"/",category)
 }
-#' @title import_attribute_ls
-#' @description FUNCTION_DESCRIPTION
-#' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param raw_data_dir PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
+#' #' @title import_attribute_ls
+#' #' @description FUNCTION_DESCRIPTION
+#' #' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' #' @param raw_data_dir PARAM_DESCRIPTION
+#' #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' #' @return OUTPUT_DESCRIPTION
+#' #' @details DETAILS
+#' #' @examples
+#' #' \dontrun{
+#' #' if(interactive()){
+#' #'  #EXAMPLE1
+#' #'  }
+#' #' }
+#' #' @seealso
+#' #'  \code{\link[ready4s4]{sp_import_lup}}
+#' #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#' #'  \code{\link[stats]{setNames}}
+#' #' @rdname import_attribute_ls
+#' #' @export
+#' #' @importFrom ready4s4 sp_import_lup
+#' #' @importFrom dplyr filter pull
+#' #' @importFrom stats setNames
+#' import_attribute_ls <- function(lookup_tbs_r4,
+#'                                 raw_data_dir,
+#'                                 overwrite_lgl = F){ ## Merge with import_boundary_ls
+#'   raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")
+#'   if(!dir.exists(raw_format_att_dir))
+#'     dir.create(raw_format_att_dir)
+#'   attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+#'     dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
+#'   save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+#'            required_data = attributes_to_import_vec,
+#'            destination_directory = raw_format_att_dir,
+#'            overwrite_lgl = overwrite_lgl)
+#'   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+#'               included_items_names = attributes_to_import_vec,
+#'               item_data_type = "Attribute",
+#'               data_directory = raw_format_att_dir,
+#'               overwrite_lgl = overwrite_lgl)  %>%
+#'     stats::setNames(attributes_to_import_vec)
 #' }
-#' @seealso
-#'  \code{\link[ready4s4]{sp_import_lup}}
-#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
-#'  \code{\link[stats]{setNames}}
-#' @rdname import_attribute_ls
-#' @export
-#' @importFrom ready4s4 sp_import_lup
-#' @importFrom dplyr filter pull
-#' @importFrom stats setNames
-import_attribute_ls <- function(lookup_tbs_r4,
-                                raw_data_dir,
-                                overwrite_lgl = F){ ## Merge with import_boundary_ls
-  raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")
-  if(!dir.exists(raw_format_att_dir))
-    dir.create(raw_format_att_dir)
-  attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
-    dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
-  save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-           required_data = attributes_to_import_vec,
-           destination_directory = raw_format_att_dir,
-           overwrite_lgl = overwrite_lgl)
-  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-              included_items_names = attributes_to_import_vec,
-              item_data_type = "Attribute",
-              data_directory = raw_format_att_dir,
-              overwrite_lgl = overwrite_lgl)  %>%
-    stats::setNames(attributes_to_import_vec)
-}
 #' @title export_starter_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION

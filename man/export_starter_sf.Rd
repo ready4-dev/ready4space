@@ -29,6 +29,48 @@ OUTPUT_DESCRIPTION
 FUNCTION_DESCRIPTION
 }
 \details{
+#' @title import_attribute_ls
+#' @description FUNCTION_DESCRIPTION
+#' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{sp_import_lup}}
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#'  \code{\link[stats]{setNames}}
+#' @rdname import_attribute_ls
+#' @export
+#' @importFrom ready4s4 sp_import_lup
+#' @importFrom dplyr filter pull
+#' @importFrom stats setNames
+import_attribute_ls <- function(lookup_tbs_r4,
+                                raw_data_dir,
+                                overwrite_lgl = F){ ## Merge with import_boundary_ls
+  raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")
+  if(!dir.exists(raw_format_att_dir))
+    dir.create(raw_format_att_dir)
+  attributes_to_import_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+    dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
+  save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+           required_data = attributes_to_import_vec,
+           destination_directory = raw_format_att_dir,
+           overwrite_lgl = overwrite_lgl)
+  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+              included_items_names = attributes_to_import_vec,
+              item_data_type = "Attribute",
+              data_directory = raw_format_att_dir,
+              overwrite_lgl = overwrite_lgl)  %>%
+    stats::setNames(attributes_to_import_vec)
+}
+
 DETAILS
 }
 \examples{
