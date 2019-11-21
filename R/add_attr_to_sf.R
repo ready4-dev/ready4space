@@ -38,7 +38,7 @@ recur_add_attr_to_sf <- function(input_ls,
                                  boundary_year,
                                  attribute_data
                                  ){
-  lookup_tb_r4 <- ready4s4::lookup_tb(input_ls$profiled_area_input)
+  lookup_tb_r4 <- ready4s4::lookup_tb(input_ls$pa_r4)
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(area_type == area_unit) %>%
