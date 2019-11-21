@@ -4,10 +4,10 @@
 \alias{get_starter_sf_for_profiled_area}
 \title{get_starter_sf_for_profiled_area}
 \usage{
-get_starter_sf_for_profiled_area(profiled_area_input, group_by_var)
+get_starter_sf_for_profiled_area(pa_r4, group_by_var)
 }
 \arguments{
-\item{profiled_area_input}{PARAM_DESCRIPTION}
+\item{pa_r4}{PARAM_DESCRIPTION}
 
 \item{group_by_var}{PARAM_DESCRIPTION}
 }

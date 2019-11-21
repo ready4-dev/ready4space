@@ -4,10 +4,10 @@
 \alias{make_profiled_area_objs}
 \title{make_profiled_area_objs}
 \usage{
-make_profiled_area_objs(profiled_area_input)
+make_profiled_area_objs(pa_r4)
 }
 \arguments{
-\item{profiled_area_input}{PARAM_DESCRIPTION}
+\item{pa_r4}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

@@ -4,10 +4,10 @@
 \alias{make_year_vec}
 \title{make_year_vec}
 \usage{
-make_year_vec(input_data)
+make_year_vec(input_ls)
 }
 \arguments{
-\item{input_data}{PARAM_DESCRIPTION}
+\item{input_ls}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

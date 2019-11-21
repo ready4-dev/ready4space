@@ -4,10 +4,10 @@
 \alias{get_model_end_ymdhs}
 \title{get_model_end_ymdhs}
 \usage{
-get_model_end_ymdhs(input_data)
+get_model_end_ymdhs(input_ls)
 }
 \arguments{
-\item{input_data}{PARAM_DESCRIPTION}
+\item{input_ls}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

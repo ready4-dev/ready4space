@@ -4,12 +4,12 @@
 \alias{extend_sp_data_list}
 \title{extend_sp_data_list}
 \usage{
-extend_sp_data_list(sp_data_list, input_data, profiled_area_bands_list)
+extend_sp_data_list(sp_data_list, input_ls, profiled_area_bands_list)
 }
 \arguments{
 \item{sp_data_list}{PARAM_DESCRIPTION}
 
-\item{input_data}{PARAM_DESCRIPTION}
+\item{input_ls}{PARAM_DESCRIPTION}
 
 \item{profiled_area_bands_list}{PARAM_DESCRIPTION}
 }

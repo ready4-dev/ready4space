@@ -4,10 +4,10 @@
 \alias{get_group_by_var_from_pai}
 \title{get_group_by_var_from_pai}
 \usage{
-get_group_by_var_from_pai(profiled_area_input)
+get_group_by_var_from_pai(pa_r4)
 }
 \arguments{
-\item{profiled_area_input}{PARAM_DESCRIPTION}
+\item{pa_r4}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

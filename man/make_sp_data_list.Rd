@@ -4,10 +4,10 @@
 \alias{make_sp_data_list}
 \title{make_sp_data_list}
 \usage{
-make_sp_data_list(input_data, sub_div_units_vec)
+make_sp_data_list(input_ls, sub_div_units_vec)
 }
 \arguments{
-\item{input_data}{PARAM_DESCRIPTION}
+\item{input_ls}{PARAM_DESCRIPTION}
 
 \item{sub_div_units_vec}{PARAM_DESCRIPTION}
 }

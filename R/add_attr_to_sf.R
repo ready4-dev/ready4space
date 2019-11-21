@@ -3,7 +3,7 @@
 #' Merges a SF file with population data relating to areas described in that file.
 #' @details  Makes data transformations (variable name, changes from strings to factors) necessary
 #' to ensure that merged objects are compatible.
-#' @param input_data PARAM_DESCRIPTION
+#' @param input_ls PARAM_DESCRIPTION
 #' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
 #' @param area_unit PARAM_DESCRIPTION
 #' @param boundary_year PARAM_DESCRIPTION
@@ -32,13 +32,13 @@
 #' @importFrom rlang sym
 #' @importFrom purrr map prepend reduce
 #' @importFrom stats setNames
-recur_add_attr_to_sf <- function(input_data,
+recur_add_attr_to_sf <- function(input_ls,
                                  sub_div_unit = NULL,
                                  area_unit,
                                  boundary_year,
                                  attribute_data
                                  ){
-  lookup_tb_r4 <- ready4s4::lookup_tb(input_data$profiled_area_input)
+  lookup_tb_r4 <- ready4s4::lookup_tb(input_ls$profiled_area_input)
   data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(area_type == area_unit) %>%

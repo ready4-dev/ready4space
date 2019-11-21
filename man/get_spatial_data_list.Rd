@@ -4,11 +4,11 @@
 \alias{get_spatial_data_list}
 \title{get_spatial_data_list}
 \usage{
-get_spatial_data_list(input_data, sub_div_unit = NULL,
+get_spatial_data_list(input_ls, sub_div_unit = NULL,
   require_year_match = TRUE, excl_diff_bound_yr = TRUE)
 }
 \arguments{
-\item{input_data}{PARAM_DESCRIPTION}
+\item{input_ls}{PARAM_DESCRIPTION}
 
 \item{sub_div_unit}{PARAM_DESCRIPTION, Default: NULL}
 

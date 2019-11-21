@@ -1,6 +1,6 @@
 #' @title get_spatial_data_list
 #' @description Create a list of SF objects constructed from specified data types at highest or requested level of resolution.
-#' @param input_data PARAM_DESCRIPTION
+#' @param input_ls PARAM_DESCRIPTION
 #' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
 #' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
 #' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
@@ -25,11 +25,11 @@
 #' @importFrom stats setNames
 #' @importFrom ready4utils data_get
 #' @importFrom ready4s4 lookup_tb sp_data_pack_lup
-get_spatial_data_list <- function(input_data,
+get_spatial_data_list <- function(input_ls,
                                   sub_div_unit = NULL,
                                   require_year_match = TRUE,
                                   excl_diff_bound_yr = TRUE){
-  attributes_to_import <- get_spatial_data_names(input_data = input_data,
+  attributes_to_import <- get_spatial_data_names(input_ls = input_ls,
                                                  sub_div_unit = sub_div_unit,
                                                  require_year_match = require_year_match,
                                                  excl_diff_bound_yr = excl_diff_bound_yr)
@@ -37,9 +37,9 @@ get_spatial_data_list <- function(input_data,
   data_names_list <- purrr::map(boundary_res,
                                 ~ attributes_to_import[stringr::str_sub(attributes_to_import,5,7) == tolower(.x )]) %>%
     stats::setNames(boundary_res)
-  year_vec <- make_year_vec(input_data = input_data)
-  extra_names <- purrr::map(input_data$at_specified_res,
-                            ~ ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+  year_vec <- make_year_vec(input_ls = input_ls)
+  extra_names <- purrr::map(input_ls$at_specified_res,
+                            ~ ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
                               ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
                               dplyr::filter(main_feature == .x[1]) %>%
                               dplyr::filter(make_year_filter_logic_vec(data_tb = .,
@@ -50,7 +50,7 @@ get_spatial_data_list <- function(input_data,
                                                     lookup_variable = "main_feature",
                                                     target_variable = "name",
                                                     evaluate = FALSE)) %>% #purrr::flatten_chr()
-    stats::setNames(purrr::map_chr(input_data$at_specified_res, ~.x[2]))
+    stats::setNames(purrr::map_chr(input_ls$at_specified_res, ~.x[2]))
   res_to_merge <- names(extra_names)[names(extra_names) %in% boundary_res]
   if(!identical(res_to_merge,character(0))){
     merged_elements_ls <-  purrr::map2(data_names_list[res_to_merge],
@@ -72,10 +72,10 @@ get_spatial_data_list <- function(input_data,
   ##
   data_sf_list <- purrr::map2(boundary_res,
                               data_names_list,
-                              ~ recur_add_attr_to_sf(input_data = input_data,
+                              ~ recur_add_attr_to_sf(input_ls = input_ls,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                                                     boundary_year = ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
                                                        ready4s4::sp_data_pack_lup() %>%
                                                        dplyr::filter(name %in% .y) %>%
                                                        dplyr::pull(year) %>%
@@ -84,9 +84,9 @@ get_spatial_data_list <- function(input_data,
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
-                                             data_lookup_tb = ready4s4::lookup_tb(input_data$profiled_area_input) %>%
+                                             data_lookup_tb = ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
                                                ready4s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
-                                             pop_projs_str = input_data$pop_projs_str)) %>%
+                                             pop_projs_str = input_ls$pop_projs_str)) %>%
     which() + 1
   data_sf_list <- purrr::prepend(data_sf_list,
                                  list(index_ppr=index_ppr))
@@ -116,7 +116,7 @@ make_year_filter_logic_vec <- function(data_tb,
 }
 #' @title get_spatial_data_names
 #' @description FUNCTION_DESCRIPTION
-#' @param input_data PARAM_DESCRIPTION
+#' @param input_ls PARAM_DESCRIPTION
 #' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
 #' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
 #' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
@@ -143,19 +143,19 @@ make_year_filter_logic_vec <- function(data_tb,
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck map map_chr map2 flatten_chr map2_chr map_dbl reduce
 #' @importFrom ready4utils data_get
-get_spatial_data_names <- function(input_data,
+get_spatial_data_names <- function(input_ls,
                                    sub_div_unit = NULL,
                                    require_year_match = TRUE,
                                    excl_diff_bound_yr = TRUE){
   #### NEED TO WORK ON SECOND HALF
-  at_highest_res <- input_data$at_highest_res
-  data_year <- ready4s4::data_year(input_data$profiled_area_input)
-  at_specified_res <- input_data$at_specified_res
-  country <- ready4s4::country(input_data$profiled_area_input)
+  at_highest_res <- input_ls$at_highest_res
+  data_year <- ready4s4::data_year(input_ls$profiled_area_input)
+  at_specified_res <- input_ls$at_specified_res
+  country <- ready4s4::country(input_ls$profiled_area_input)
   #sub_div_unit = NULL
-  pop_projs_str <- input_data$pop_projs_str
+  pop_projs_str <- input_ls$pop_projs_str
 
-  lookup_tb_r4 <- input_data$profiled_area_input %>% ready4s4::lookup_tb()
+  lookup_tb_r4 <- input_ls$profiled_area_input %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   abbreviations_lookup_tb <- ready4s4::sp_abbreviations_lup(lookup_tb_r4)
   # if(excl_diff_bound_yr){
@@ -163,7 +163,7 @@ get_spatial_data_names <- function(input_data,
   #     dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
   # }else
   #   spatial_lookup_tb <- spatial_lookup_tb
-  year_vec <- make_year_vec(input_data = input_data)
+  year_vec <- make_year_vec(input_ls = input_ls)
   lookup_tb_list <- purrr::map(at_highest_res,
                                ~ spatial_lookup_tb %>%
                                  dplyr::filter(main_feature == .x) %>%
@@ -232,7 +232,7 @@ get_spatial_data_names <- function(input_data,
 
 #' @title make_year_vec
 #' @description FUNCTION_DESCRIPTION
-#' @param input_data PARAM_DESCRIPTION
+#' @param input_ls PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -254,12 +254,12 @@ get_spatial_data_names <- function(input_data,
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
-make_year_vec <- function(input_data){
-  data_year <- ready4s4::data_year(input_data$profiled_area_input)
-  lookup_tb_r4 <- input_data$profiled_area_input %>% ready4s4::lookup_tb()
+make_year_vec <- function(input_ls){
+  data_year <- ready4s4::data_year(input_ls$profiled_area_input)
+  lookup_tb_r4 <- input_ls$profiled_area_input %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
-  pop_projs_str <- input_data$pop_projs_str
-  model_end_year <- get_model_end_ymdhs(input_data = input_data) %>% lubridate::year()
+  pop_projs_str <- input_ls$pop_projs_str
+  model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
   year_opts <- spatial_lookup_tb %>%
     dplyr::filter(main_feature == pop_projs_str) %>%
     dplyr::pull(year_end) ## year
