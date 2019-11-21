@@ -206,6 +206,7 @@ get_r_import_path_chr <- function(r_data_dir_chr,
                                   data_type_chr){
   if(data_type_chr=="Geometry")
     name_chr <- paste0(name_chr,"_sf")
+
   paste0(r_data_dir_chr,"/",name_chr,".rds")
 
 }
