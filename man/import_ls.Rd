@@ -4,13 +4,15 @@
 \alias{import_ls}
 \title{import_ls}
 \usage{
-import_ls(lookup_tbs_r4, raw_data_dir, data_type_chr = "Geometry",
-  overwrite_lgl = F)
+import_ls(lookup_tbs_r4, raw_data_dir, r_data_dir_chr,
+  data_type_chr = "Geometry", overwrite_lgl = F)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}
 
 \item{raw_data_dir}{PARAM_DESCRIPTION}
+
+\item{r_data_dir_chr}{PARAM_DESCRIPTION}
 
 \item{data_type_chr}{PARAM_DESCRIPTION, Default: 'Geometry'}
 

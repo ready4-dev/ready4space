@@ -159,6 +159,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                              included_items_names,
                                              item_data_type,
                                              data_directory,
+                                             r_data_dir_chr,
                                              save_lgl = T){
   downloaded_data_tb <- x %>%
     dplyr::filter(data_type == item_data_type) %>%
@@ -175,14 +176,17 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
                                                                           main_feature, year, inc_file_main)),
                                                         lookup_reference = .x,
                                                         data_directory = data_directory))
+  r_import_path_chr <- get_r_import_path_chr(r_data_dir_chr = r_data_dir_chr,
+                                             name_chr = x$name,
+                                             data_type_chr = item_data_type)
   if(item_data_type=="Geometry"){
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(!save_lgl){
+                              if(!save_lgl & file.exists(r_import_path_chr)){
                                 "SKIP_IMPORT"
                               }else{
                                 sf::st_read(dsn=.x,
-                                            layer = data_import_get_file_name_from_path(.x,
+                                            layer = get_name_from_path_chr(.x,
                                                                                         with_ext = FALSE))
                               }
                                 }
@@ -191,7 +195,7 @@ import_data.ready4_sp_import_lup <- function(x, # data_import_items
   }else{
     item_list <- purrr::map(path_vec,
                             ~ {
-                              if(!save_lgl){
+                              if(!save_lgl & file.exists(r_import_path_chr)){
                                 "SKIP_IMPORT"
                               }else{
                                 data_import_non_shape_items(.x,
@@ -548,7 +552,7 @@ data_import_get_one_path <- function(downloaded_data_tb,
 #' @importFrom purrr map_chr
 data_import_non_shape_items <- function(path_str,
                                         x){
-  file_name <-  data_import_get_file_name_from_path(path_str)
+  file_name <-  get_name_from_path_chr(path_str)
   file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
                                                as.vector())
   data_type <- ready4utils::data_get(data_lookup_tb = x,#data_import_show_menu_detail(x = x),
@@ -623,7 +627,7 @@ make_import_obj_for_context <- function(context,
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
 
-#' @title data_import_get_file_name_from_path
+#' @title get_name_from_path_chr
 #' @description FUNCTION_DESCRIPTION
 #' @param path_str PARAM_DESCRIPTION
 #' @param with_ext PARAM_DESCRIPTION, Default: TRUE
@@ -638,11 +642,11 @@ make_import_obj_for_context <- function(context,
 #' @seealso
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[stringi]{stri_locate_all}}
-#' @rdname data_import_get_file_name_from_path
+#' @rdname get_name_from_path_chr
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
-data_import_get_file_name_from_path <- function(path_str,
+get_name_from_path_chr <- function(path_str,
                                                 with_ext = TRUE){
   if(with_ext){
     stringr::str_sub(path_str,

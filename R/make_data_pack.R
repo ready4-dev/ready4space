@@ -178,10 +178,38 @@ export_attr_tb <- function(attr_tb,
                            obj_name,
                            processed_dir,
                            overwrite_lgl){
-  path_to_attr_tb_chr <- paste0(processed_dir,"/",obj_name,".rds")
+  path_to_attr_tb_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
+                                               name_chr = obj_name,
+                                               data_type_chr = "Attribute")#paste0(processed_dir,"/",obj_name,".rds")
   if(overwrite_lgl | !file.exists(path_to_attr_tb_chr))
   saveRDS(attr_tb, file = path_to_attr_tb_chr)
 }
+
+#' @title get_r_import_path_chr
+#' @description FUNCTION_DESCRIPTION
+#' @param r_data_dir_chr PARAM_DESCRIPTION
+#' @param name_chr PARAM_DESCRIPTION
+#' @param data_type_chr PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname get_r_import_path_chr
+#' @export
+
+get_r_import_path_chr <- function(r_data_dir_chr,
+                                  name_chr,
+                                  data_type_chr){
+  if(data_type_chr=="Geometry")
+    name_chr <- paste0(name_chr,"_sf")
+  paste0(r_data_dir_chr,"/",name_chr,".rds")
+
+}
+
 #' @title add_names
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -238,6 +266,7 @@ add_names <- function(x){
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
+#' @param r_data_dir_chr PARAM_DESCRIPTION
 #' @param data_type_chr PARAM_DESCRIPTION, Default: 'Geometry'
 #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
@@ -259,6 +288,7 @@ add_names <- function(x){
 #' @importFrom stats setNames
 import_ls <- function(lookup_tbs_r4,
                       raw_data_dir,
+                      r_data_dir_chr,
                       data_type_chr = "Geometry",
                       overwrite_lgl = F){
   directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
@@ -281,6 +311,7 @@ import_ls <- function(lookup_tbs_r4,
               included_items_names = import_chr_vec,
               item_data_type = data_type_chr,
               data_directory = raw_format_sp_dir,
+              r_data_dir_chr = r_data_dir_chr,
               save_lgl = save_lgl) %>%
     stats::setNames(import_chr_vec)
 }
@@ -387,9 +418,12 @@ export_starter_sf <- function(lookup_tbs_r4,
     geom_ls <- boundary_ls
   if(!is.null(pnt_ls))
     geom_ls <- pnt_ls
-  starter_sf_name <- paste0(names(geom_ls)[1],
-                            "_sf")
-  path_to_starter_sf_chr <- paste0(processed_dir,"/",starter_sf_name,".rds")
+  # starter_sf_name <- paste0(names(geom_ls)[1],
+  #                           "_sf")
+  path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
+                                                 name_chr = names(geom_ls)[1],
+                                                 data_type_chr = "Geometry")#paste0(processed_dir,"/",starter_sf_name,".rds")
+  starter_sf_name <- get_name_from_path_chr(path_to_starter_sf_chr, with_ext = F)
   if(overwrite_lgl | !file.exists(path_to_starter_sf_chr)){
     if(is.na(merge_with) %>% all()){
       starter_sf <- geom_ls[[1]]
