@@ -39,7 +39,7 @@ get_spatial_data_list <- function(input_ls,
     stats::setNames(boundary_res)
   year_vec <- make_year_vec(input_ls = input_ls)
   extra_names <- purrr::map(input_ls$at_specified_res,
-                            ~ ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
+                            ~ ready4s4::lookup_tb(input_ls$pa_r4) %>%
                               ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
                               dplyr::filter(main_feature == .x[1]) %>%
                               dplyr::filter(make_year_filter_logic_vec(data_tb = .,
@@ -75,7 +75,7 @@ get_spatial_data_list <- function(input_ls,
                               ~ recur_add_attr_to_sf(input_ls = input_ls,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
+                                                     boundary_year = ready4s4::lookup_tb(input_ls$pa_r4) %>%
                                                        ready4s4::sp_data_pack_lup() %>%
                                                        dplyr::filter(name %in% .y) %>%
                                                        dplyr::pull(year) %>%
@@ -84,7 +84,7 @@ get_spatial_data_list <- function(input_ls,
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
-                                             data_lookup_tb = ready4s4::lookup_tb(input_ls$profiled_area_input) %>%
+                                             data_lookup_tb = ready4s4::lookup_tb(input_ls$pa_r4) %>%
                                                ready4s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
                                              pop_projs_str = input_ls$pop_projs_str)) %>%
     which() + 1
@@ -149,13 +149,13 @@ get_spatial_data_names <- function(input_ls,
                                    excl_diff_bound_yr = TRUE){
   #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_ls$at_highest_res
-  data_year <- ready4s4::data_year(input_ls$profiled_area_input)
+  data_year <- ready4s4::data_year(input_ls$pa_r4)
   at_specified_res <- input_ls$at_specified_res
-  country <- ready4s4::country(input_ls$profiled_area_input)
+  country <- ready4s4::country(input_ls$pa_r4)
   #sub_div_unit = NULL
   pop_projs_str <- input_ls$pop_projs_str
 
-  lookup_tb_r4 <- input_ls$profiled_area_input %>% ready4s4::lookup_tb()
+  lookup_tb_r4 <- input_ls$pa_r4 %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   abbreviations_lookup_tb <- ready4s4::sp_abbreviations_lup(lookup_tb_r4)
   # if(excl_diff_bound_yr){
@@ -255,8 +255,8 @@ get_spatial_data_names <- function(input_ls,
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
 make_year_vec <- function(input_ls){
-  data_year <- ready4s4::data_year(input_ls$profiled_area_input)
-  lookup_tb_r4 <- input_ls$profiled_area_input %>% ready4s4::lookup_tb()
+  data_year <- ready4s4::data_year(input_ls$pa_r4)
+  lookup_tb_r4 <- input_ls$pa_r4 %>% ready4s4::lookup_tb()
   spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
   pop_projs_str <- input_ls$pop_projs_str
   model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
