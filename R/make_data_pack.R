@@ -124,6 +124,7 @@ make_data_pack_sngl <- function(x,
     if(x %>% dplyr::pull(data_type) == "Geometry"){
       boundary_ls <- import_ls(lookup_tbs_r4,
                                raw_data_dir,
+                               r_data_dir_chr = processed_dir,
                                data_type_chr = "Geometry",
                                overwrite_lgl = overwrite_lgl)
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
@@ -141,6 +142,7 @@ make_data_pack_sngl <- function(x,
     if(x %>% dplyr::pull(data_type) == "Attribute"){
       attribute_ls <- import_ls(lookup_tbs_r4,
                                 raw_data_dir,
+                                r_data_dir_chr = processed_dir
                                 data_type_chr = "Attribute",
                                 overwrite_lgl = overwrite_lgl)
       purrr::walk2(attribute_ls,
