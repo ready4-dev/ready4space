@@ -106,6 +106,57 @@ intersect_lon_lat_sfs <- function(sf_1,
   else
     sf_3
 }
+
+#' @title get_set_diff_lon_lat_sf
+#' @description FUNCTION_DESCRIPTION
+#' @param profile_sf PARAM_DESCRIPTION
+#' @param cut_sf PARAM_DESCRIPTION
+#' @param validate_lgl PARAM_DESCRIPTION, Default: T
+#' @param min_poly_area_dbl PARAM_DESCRIPTION, Default: units::set_units(0.05, km^2)
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[units]{set_units}}
+#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
+#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
+#'  \code{\link[purrr]{map}}
+#' @rdname get_set_diff_lon_lat_sf
+#' @export
+#' @importFrom units set_units
+#' @importFrom sf st_difference st_union st_cast st_area
+#' @importFrom dplyr mutate n pull filter
+#' @importFrom purrr map map_dfr
+get_set_diff_lon_lat_sf <- function(profile_sf,
+                                    cut_sf,
+                                    validate_lgl = T,
+                                    min_poly_area_dbl = units::set_units(0.05,km^2)){
+  new_sf <- sf::st_difference(profile_sf,
+                              sf::st_union(cut_sf))
+  if(validate_lgl)
+    new_sf <-  new_sf %>% make_valid_new_sf()
+  new_sf <-  new_sf %>%
+    dplyr::mutate(feature_idx_int = 1:dplyr::n())
+  new_ls <- purrr::map(dplyr::pull(new_sf,
+                                   feature_idx_int),
+                       ~ new_sf %>%
+                         dplyr::filter(feature_idx_int == .x)  %>%
+                         sf::st_cast("POLYGON") %>%
+                         dplyr::mutate(new_area = sf::st_area(.)) %>%
+                         dplyr::filter(new_area > units::set_units(0.05,km^2)) %>%
+                         sf::st_cast()
+  )
+  if(length(new_ls)>1){
+    purrr::map_dfr(new_ls,~.x)
+  }else{
+    new_ls[[1]]
+  }
+}
 #' @title make_valid_new_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param sf PARAM_DESCRIPTION
