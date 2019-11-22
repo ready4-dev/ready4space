@@ -37,6 +37,6 @@ if(interactive()){
 \seealso{
 \code{\link[units]{set_units}}
  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
- \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
+ \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{select}}
  \code{\link[purrr]{map}}
 }

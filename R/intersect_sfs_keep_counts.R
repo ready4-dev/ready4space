@@ -125,13 +125,13 @@ intersect_lon_lat_sfs <- function(sf_1,
 #' @seealso
 #'  \code{\link[units]{set_units}}
 #'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
-#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
+#'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}}
 #' @rdname get_set_diff_lon_lat_sf
 #' @export
 #' @importFrom units set_units
 #' @importFrom sf st_difference st_transform st_union st_cast st_area
-#' @importFrom dplyr mutate n pull filter
+#' @importFrom dplyr mutate n pull filter select
 #' @importFrom purrr map map_dfr
 get_set_diff_lon_lat_sf <- function(profile_sf,
                                     cut_sf,
@@ -152,7 +152,8 @@ get_set_diff_lon_lat_sf <- function(profile_sf,
                          sf::st_cast("POLYGON") %>%
                          dplyr::mutate(new_area = sf::st_area(.)) %>%
                          dplyr::filter(new_area > units::set_units(0.05,km^2)) %>%
-                         sf::st_cast()
+                         sf::st_cast() %>%
+                         dplyr::select(-new_area,-feature_idx_int)
   )
   if(length(new_ls)>1){
     purrr::map_dfr(new_ls,~.x)
