@@ -4,13 +4,15 @@
 \alias{get_set_diff_lon_lat_sf}
 \title{get_set_diff_lon_lat_sf}
 \usage{
-get_set_diff_lon_lat_sf(profile_sf, cut_sf, validate_lgl = T,
-  min_poly_area_dbl = units::set_units(0.05, km^2))
+get_set_diff_lon_lat_sf(profile_sf, cut_sf, crs_nbr_vec,
+  validate_lgl = T, min_poly_area_dbl = units::set_units(0.05, km^2))
 }
 \arguments{
 \item{profile_sf}{PARAM_DESCRIPTION}
 
 \item{cut_sf}{PARAM_DESCRIPTION}
+
+\item{crs_nbr_vec}{PARAM_DESCRIPTION}
 
 \item{validate_lgl}{PARAM_DESCRIPTION, Default: T}
 
@@ -34,7 +36,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[units]{set_units}}
- \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
+ \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
  \code{\link[purrr]{map}}
 }

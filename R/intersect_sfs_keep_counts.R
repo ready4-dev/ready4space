@@ -111,6 +111,7 @@ intersect_lon_lat_sfs <- function(sf_1,
 #' @description FUNCTION_DESCRIPTION
 #' @param profile_sf PARAM_DESCRIPTION
 #' @param cut_sf PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION
 #' @param validate_lgl PARAM_DESCRIPTION, Default: T
 #' @param min_poly_area_dbl PARAM_DESCRIPTION, Default: units::set_units(0.05, km^2)
 #' @return OUTPUT_DESCRIPTION
@@ -123,21 +124,23 @@ intersect_lon_lat_sfs <- function(sf_1,
 #' }
 #' @seealso
 #'  \code{\link[units]{set_units}}
-#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
+#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}},\code{\link[sf]{geos_combine}},\code{\link[sf]{st_cast}},\code{\link[sf]{geos_measures}}
 #'  \code{\link[dplyr]{mutate}},\code{\link[dplyr]{n}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{filter}}
 #'  \code{\link[purrr]{map}}
 #' @rdname get_set_diff_lon_lat_sf
 #' @export
 #' @importFrom units set_units
-#' @importFrom sf st_difference st_union st_cast st_area
+#' @importFrom sf st_difference st_transform st_union st_cast st_area
 #' @importFrom dplyr mutate n pull filter
 #' @importFrom purrr map map_dfr
 get_set_diff_lon_lat_sf <- function(profile_sf,
                                     cut_sf,
+                                    crs_nbr_vec,
                                     validate_lgl = T,
                                     min_poly_area_dbl = units::set_units(0.05,km^2)){
-  new_sf <- sf::st_difference(profile_sf,
-                              sf::st_union(cut_sf))
+  new_sf <- sf::st_difference(profile_sf %>% sf::st_transform(crs = crs_nbr_vec[2]),
+                              sf::st_union(cut_sf) %>% sf::st_transform(crs = crs_nbr_vec[2])) %>%
+    sf::st_transform(crs = crs_nbr_vec[1])
   if(validate_lgl)
     new_sf <-  new_sf %>% make_valid_new_sf()
   new_sf <-  new_sf %>%
