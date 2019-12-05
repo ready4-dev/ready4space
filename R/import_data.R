@@ -30,12 +30,10 @@ save_raw.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS G
                               overwrite_lgl = overwrite_lgl))
 }
 
-#' @importClassesFrom ready4s3 ready4_sp_import_lup
 #' @importMethodsFrom ready4use save_raw
 #' @export
 methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
 
-#' @importClassesFrom ready4s4 ready4_local_raw ready4_local_proc
 #' @importMethodsFrom ready4use save_raw
 #' @export
 methods::setMethod("save_raw",
