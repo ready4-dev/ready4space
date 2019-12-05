@@ -131,38 +131,15 @@ make_data_pack_sngl <- function(x,
     lookup_tbs_r4 <- rlang::exec(!!rlang::sym(import_type_ls),
                                  import_xx)
   }else{
-    local_proc_r4 <- save_raw(local_raw_r4)
-    local_proc_r4 <- ready4s4::`proc_data_dir_chr<-`(local_proc_r4, processed_dir)
-    import_data(local_proc_r4,
-                crs_nbr_vec = crs_nbr_vec)
-    # import_this_ls <- import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-    #                               included_items_names = import_chr_vec,
-    #                               item_data_type = data_type_chr,
-    #                               data_directory = raw_format_sp_dir,
-    #                               r_data_dir_chr = r_data_dir_chr,
-    #                               save_lgl = save_lgl) %>%
-    #   stats::setNames(import_chr_vec)
-    #
-    # if(x %>% dplyr::pull(data_type) == "Geometry"){
-    #   path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
-    #                                                   name_chr = names(import_this_ls)[1],
-    #                                                   data_type_chr = "Geometry")#paste0(processed_dir,"/",starter_sf_name,".rds")
-    # }else{
-    #   path_to_starter_sf_chr <- NA_character_
-    # }
-    # process_import_xx(x,
-    #                   import_this_ls = import_this_ls,
-    #                   path_to_starter_sf_chr = path_to_starter_sf_chr,
-    #                   merge_with = merge_with,
-    #                   pckg_name = pckg_name,
-    #                   raw_data_dir = raw_data_dir,
-    #                   processed_dir = processed_dir,
-    #                   crs_nbr_vec = crs_nbr_vec,
-    #                   overwrite_lgl = F)
+    local_proc_r4 <- save_raw(local_raw_r4) %>%
+    ready4s4::`proc_data_dir_chr<-`(processed_dir)
+    import_this_ls <- import_data(local_proc_r4,
+                                          crs_nbr_vec = crs_nbr_vec)
+
     ###UPDATE
     if(x %>% dplyr::pull(data_type) == "Geometry"){
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
-                                         path_to_starter_sf_chr = path_to_starter_sf_chr) %>%
+                                         path_to_starter_sf_chr = import_this_ls$path_to_starter_sf_chr) %>%
         export_uid_lup()
     }
     #}
@@ -212,8 +189,8 @@ process_import_xx <- function(x,
     process_geom_import(x,
                   import_this_ls = import_this_ls,
                   path_to_starter_sf_chr = path_to_starter_sf_chr,
-                  processed_dir = processed_dir,
-                  merge_with_chr_vec = merge_with_chr_vec,
+                  #processed_dir = processed_dir,
+                  merge_with_chr_vec = merge_with,
                   crs_nbr_vec= crs_nbr_vec,
                   overwrite_lgl = overwrite_lgl)
   }

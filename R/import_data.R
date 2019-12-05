@@ -197,7 +197,7 @@ methods::setMethod("import_data",
                    "ready4_local_proc",
                    function(x,
                             crs_nbr_vec,
-                            return_r4_lgl = T) {
+                            return_import_ls = T) {
                      sp_import_lup <- x@lup_tbs_r4@sp_import_lup
                      ready4use::assert_single_row_tb(sp_import_lup)
                      import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
@@ -211,13 +211,14 @@ methods::setMethod("import_data",
                                                    save_lgl = x@save_lgl) %>%
                        stats::setNames(import_chr_vec)
 
-                     if(x %>% dplyr::pull(data_type) == "Geometry"){
+                     if(sp_import_lup$data_type == "Geometry"){
                        path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = x@proc_data_dir_chr,
                                                                        name_chr = names(import_this_ls)[1],
                                                                        data_type_chr = "Geometry")
                      }else{
                        path_to_starter_sf_chr <- NA_character_
                      }
+                     import_this_ls$path_to_starter_sf_chr <- path_to_starter_sf_chr
                      process_import_xx(x = sp_import_lup,
                                        import_this_ls = import_this_ls,
                                        path_to_starter_sf_chr = path_to_starter_sf_chr,
@@ -226,6 +227,8 @@ methods::setMethod("import_data",
                                        raw_data_dir = raw_data_dir,
                                        crs_nbr_vec = crs_nbr_vec,
                                        overwrite_lgl = x@overwrite_lgl)
+                     if(return_import_ls)
+                       import_this_ls
                    }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
 
 
