@@ -110,55 +110,145 @@ make_data_pack_sngl <- function(x,
                                 processed_dir,
                                 crs_nbr_vec = NA_real_,
                                 overwrite_lgl = F){
+  ready4use::assert_single_row_tb(x)
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
-  if(!x %>% dplyr::pull(make_script_src) %>% is.na()){
-    lookup_tbs_r4 <- add_data_pack_from_script(x = x,
-                                               lookup_tbs_r4 = lookup_tbs_r4,
-                                               merge_sfs_vec = merge_with,
-                                               processed_dir = processed_dir,
-                                               raw_data_dir = raw_data_dir,
-                                               pckg_name = pckg_name,
-                                               overwrite_lgl = overwrite_lgl)
+  import_type_ls <- ready4use::get_import_type_ls(x)
+  data_type_chr <- x %>% dplyr::pull(data_type)
+  local_raw_r4 <- ready4s4::ready4_local_raw(lup_tbs_r4 = lookup_tbs_r4,
+                                             merge_sfs_chr_vec = merge_with,
+                                             raw_data_dir_chr = raw_data_dir,
+                                             pckg_chr = pckg_name,
+                                             overwrite_lgl = overwrite_lgl)
+  if(names(import_type_ls) == "script_chr"){#!x %>% dplyr::pull(make_script_src) %>% is.na()
+    import_xx <- ready4use::make_import_xx(x,
+                                           script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
+                                                                 merge_sfs_chr_vec = merge_with,
+                                                                 proc_data_dir_chr = processed_dir,
+                                                                 raw_data_dir_chr = raw_data_dir,
+                                                                 pckg_chr = pckg_name,
+                                                                 overwrite_lgl = overwrite_lgl))
+    lookup_tbs_r4 <- rlang::exec(!!rlang::sym(import_type_ls),
+                                 import_xx)
   }else{
+    raw_format_sp_dir <- make_raw_format_dir(data_type_chr = data_type_chr,
+                                             raw_data_dir = raw_data_dir)
+
+    import_chr_vec <- get_import_chr_vec(lookup_tbs_r4,
+                                         data_type_chr = data_type_chr)
+### SAVE
+    save_lgl <- save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+                         required_data = import_chr_vec,
+                         destination_directory = raw_format_sp_dir,
+                         overwrite_lgl = overwrite_lgl)
+    ### PROCESS
+    import_this_ls <- import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+                                  included_items_names = import_chr_vec,
+                                  item_data_type = data_type_chr,
+                                  data_directory = raw_format_sp_dir,
+                                  r_data_dir_chr = r_data_dir_chr,
+                                  save_lgl = save_lgl) %>%
+      stats::setNames(import_chr_vec)
+
     if(x %>% dplyr::pull(data_type) == "Geometry"){
-      boundary_ls <- import_ls(lookup_tbs_r4,
-                               raw_data_dir,
-                               r_data_dir_chr = processed_dir,
-                               data_type_chr = "Geometry",
-                               overwrite_lgl = overwrite_lgl)
+      path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
+                                                      name_chr = names(import_this_ls)[1],
+                                                      data_type_chr = "Geometry")#paste0(processed_dir,"/",starter_sf_name,".rds")
+    }else{
+      path_to_starter_sf_chr <- NA_character_
+    }
+    process_import_xx(x,
+                      import_this_ls = import_this_ls,
+                      path_to_starter_sf_chr = path_to_starter_sf_chr,
+                      merge_with = merge_with,
+                      pckg_name = pckg_name,
+                      raw_data_dir = raw_data_dir,
+                      processed_dir = processed_dir,
+                      crs_nbr_vec = crs_nbr_vec,
+                      overwrite_lgl = F)
+    ###UPDATE
+    if(x %>% dplyr::pull(data_type) == "Geometry"){
       lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
-                                         boundary_ls = boundary_ls,
-                                         processed_dir = processed_dir,
-                                         merge_with = merge_with,
-                                         crs_nbr_vec = crs_nbr_vec,
-                                         overwrite_lgl = overwrite_lgl) %>%
+                                         path_to_starter_sf_chr = path_to_starter_sf_chr) %>%
         export_uid_lup()
-      lookup_tbs_r4 <- lookup_tbs_r4 %>%
-        export_data_pack_lup(template_ls = boundary_ls,
-                             tb_data_type = "Geometry",
-                             pckg_name = pckg_name)
     }
-    if(x %>% dplyr::pull(data_type) == "Attribute"){
-      attribute_ls <- import_ls(lookup_tbs_r4,
-                                raw_data_dir,
-                                r_data_dir_chr = processed_dir,
-                                data_type_chr = "Attribute",
-                                overwrite_lgl = overwrite_lgl)
-      purrr::walk2(attribute_ls,
-                   names(attribute_ls),
-                   ~ export_attr_tb(attr_tb = .x,
-                                    obj_name = .y,
-                                    processed_dir = processed_dir,
-                                    overwrite_lgl = overwrite_lgl))
-      lookup_tbs_r4 <- lookup_tbs_r4 %>%
-        export_data_pack_lup(template_ls = attribute_ls,
-                             tb_data_type = "Attribute",
-                             pckg_name = pckg_name)
-    }
+    #}
+    lookup_tbs_r4 <- lookup_tbs_r4 %>%
+      export_data_pack_lup(template_ls = import_this_ls,
+                           tb_data_type = x %>% dplyr::pull(data_type),
+                           pckg_name = pckg_name)
   }
   return(lookup_tbs_r4)
 }
+process_import_xx <- function(x,
+                        import_this_ls,
+                        path_to_starter_sf_chr,
+                        merge_with,
+                        pckg_name,
+                        raw_data_dir,
+                        processed_dir,
+                        crs_nbr_vec = NA_real_,
+                        overwrite_lgl = F){
+  if(x %>% dplyr::pull(data_type) == "Geometry"){
+    process_geom_import(x,
+                  import_this_ls = import_this_ls,
+                  path_to_starter_sf_chr = path_to_starter_sf_chr,
+                  processed_dir = processed_dir,
+                  merge_with_chr_vec = merge_with_chr_vec,
+                  crs_nbr_vec= crs_nbr_vec,
+                  overwrite_lgl = overwrite_lgl)
+  }
+  if(x %>% dplyr::pull(data_type) == "Attribute"){
+    purrr::walk2(import_this_ls,
+                 names(import_this_ls),
+                 ~ export_attr_tb(attr_tb = .x,
+                                  obj_name = .y,
+                                  processed_dir = processed_dir,
+                                  overwrite_lgl = overwrite_lgl))
+
+  }
+}
+
+
+# setMethod("save_raw", signature=signature(x="greeting"),
+#           function(x) cat(x, x, x, "\n"))
+
+
+process_geom_import <- function(x,#lookup_tbs_r4 %>% ready4s4::sp_import_lup()
+                          import_this_ls,
+                          path_to_starter_sf_chr,
+                          processed_dir,
+                          merge_with_chr_vec,
+                          crs_nbr_vec,
+                          overwrite_lgl){
+  ready4use::assert_single_row_tb(x)
+  # if(!is.null(import_this_ls))
+  #   geom_ls <- import_this_ls
+  # if(!is.null(pnt_ls))
+  #   geom_ls <- pnt_ls
+  if(overwrite_lgl | !file.exists(path_to_starter_sf_chr)){
+    if(is.na(merge_with_chr_vec) %>% all()){
+      starter_sf <- import_this_ls[[1]]
+    }else{
+      starter_sf <- purrr::reduce(merge_with_chr_vec,
+                                  .init = import_this_ls[[1]],
+                                  ~ intersect_lon_lat_sfs(.x,
+                                                          eval(parse(text=.y)),
+                                                          crs_nbr_vec = crs_nbr_vec,
+                                                          validate_lgl = is.null(pnt_ls)))
+      if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
+        starter_sf <- starter_sf %>%
+          dplyr::mutate(area = sf::st_area(.)) %>%
+          dplyr::filter(area > units::set_units(0,m^2)) ## Note: Will discard points
+      }
+    }
+    if(x %>% dplyr::pull(main_feature) == "Boundary")
+      starter_sf <- starter_sf %>%
+        simplify_sf(crs = crs_nbr_vec[1])
+    saveRDS(starter_sf, file = path_to_starter_sf_chr)
+  }
+}
+
 #' @title export_attr_tb
 #' @description FUNCTION_DESCRIPTION
 #' @param attr_tb PARAM_DESCRIPTION
@@ -265,13 +355,81 @@ add_names <- function(x){
                                                                                                        stringr::str_sub(.x, start = 12, end = -3)),
                                                                                                 .x)))
 }
-#' @title import_ls
+#' #' @title import_ls
+#' #' @description FUNCTION_DESCRIPTION
+#' #' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' #' @param raw_data_dir PARAM_DESCRIPTION
+#' #' @param r_data_dir_chr PARAM_DESCRIPTION
+#' #' @param data_type_chr PARAM_DESCRIPTION, Default: 'Geometry'
+#' #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' #' @return OUTPUT_DESCRIPTION
+#' #' @details DETAILS
+#' #' @examples
+#' #' \dontrun{
+#' #' if(interactive()){
+#' #'  #EXAMPLE1
+#' #'  }
+#' #' }
+#' #' @seealso
+#' #'  \code{\link[ready4s4]{sp_import_lup}}
+#' #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+#' #'  \code{\link[stats]{setNames}}
+#' #' @rdname import_ls
+#' #' @export
+#' #' @importFrom ready4s4 sp_import_lup
+#' #' @importFrom dplyr filter pull
+#' #' @importFrom stats setNames
+#' import_ls <- function(lookup_tbs_r4,
+#'                       raw_data_dir,
+#'                       r_data_dir_chr,
+#'                       data_type_chr = "Geometry",
+#'                       overwrite_lgl = F){
+#'   raw_format_sp_dir <- make_raw_format_dir(data_type_chr = data_type_chr,
+#'                                            raw_data_dir = raw_data_dir)
+#'
+#'   import_chr_vec <- get_import_chr_vec()
+#'
+#'   save_lgl <- save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+#'                        required_data = import_chr_vec,
+#'                        destination_directory = raw_format_sp_dir,
+#'                        overwrite_lgl = overwrite_lgl)
+#'   import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
+#'               included_items_names = import_chr_vec,
+#'               item_data_type = data_type_chr,
+#'               data_directory = raw_format_sp_dir,
+#'               r_data_dir_chr = r_data_dir_chr,
+#'               save_lgl = save_lgl) %>%
+#'     stats::setNames(import_chr_vec)
+#' }
+#'
+#' @title make_raw_format_dir
+#' @description FUNCTION_DESCRIPTION
+#' @param data_type_chr PARAM_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname make_raw_format_dir
+#' @export
+
+make_raw_format_dir <- function(data_type_chr,
+                                raw_data_dir){
+  directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
+  # main_ft_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
+  raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,directory_chr)
+  if(!dir.exists(raw_format_sp_dir))
+    dir.create(raw_format_sp_dir)
+  raw_format_sp_dir
+}
+#' @title get_import_chr_vec
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param raw_data_dir PARAM_DESCRIPTION
-#' @param r_data_dir_chr PARAM_DESCRIPTION
-#' @param data_type_chr PARAM_DESCRIPTION, Default: 'Geometry'
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' @param data_type_chr PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -283,41 +441,22 @@ add_names <- function(x){
 #' @seealso
 #'  \code{\link[ready4s4]{sp_import_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
-#'  \code{\link[stats]{setNames}}
-#' @rdname import_ls
+#' @rdname get_import_chr_vec
 #' @export
 #' @importFrom ready4s4 sp_import_lup
 #' @importFrom dplyr filter pull
-#' @importFrom stats setNames
-import_ls <- function(lookup_tbs_r4,
-                      raw_data_dir,
-                      r_data_dir_chr,
-                      data_type_chr = "Geometry",
-                      overwrite_lgl = F){
-  directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
- # main_ft_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
-  raw_format_sp_dir <- make_raw_format_dir_str(raw_data_dir,directory_chr)
-  if(!dir.exists(raw_format_sp_dir))
-    dir.create(raw_format_sp_dir)
+get_import_chr_vec <- function(lookup_tbs_r4,
+                               data_type_chr){
   if(data_type_chr == "Geometry"){
-    import_chr_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+    ready4s4::sp_import_lup(lookup_tbs_r4) %>%
       dplyr::filter(main_feature == "Boundary") %>% dplyr::pull(name)
   }else{
-    import_chr_vec <- ready4s4::sp_import_lup(lookup_tbs_r4) %>%
+    ready4s4::sp_import_lup(lookup_tbs_r4) %>%
       dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
   }
-  save_lgl <- save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-                       required_data = import_chr_vec,
-                       destination_directory = raw_format_sp_dir,
-                       overwrite_lgl = overwrite_lgl)
-  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-              included_items_names = import_chr_vec,
-              item_data_type = data_type_chr,
-              data_directory = raw_format_sp_dir,
-              r_data_dir_chr = r_data_dir_chr,
-              save_lgl = save_lgl) %>%
-    stats::setNames(import_chr_vec)
 }
+
+
 #' @title make_raw_format_dir_str
 #' @description FUNCTION_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
@@ -411,44 +550,8 @@ make_raw_format_dir_str <- function(raw_data_dir,
 #' @importFrom ready4s4 sp_import_lup sp_starter_sf_lup sp_starter_sf_lup<-
 #' @importFrom tibble add_row
 export_starter_sf <- function(lookup_tbs_r4,
-                              boundary_ls = NULL,
-                              pnt_ls = NULL,
-                              processed_dir,
-                              merge_with,
-                              crs_nbr_vec,
-                              overwrite_lgl = F){
-  if(!is.null(boundary_ls))
-    geom_ls <- boundary_ls
-  if(!is.null(pnt_ls))
-    geom_ls <- pnt_ls
-  # starter_sf_name <- paste0(names(geom_ls)[1],
-  #                           "_sf")
-  path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
-                                                 name_chr = names(geom_ls)[1],
-                                                 data_type_chr = "Geometry")#paste0(processed_dir,"/",starter_sf_name,".rds")
+                              path_to_starter_sf_chr){
   starter_sf_name <- get_name_from_path_chr(path_to_starter_sf_chr, with_ext = F)
-  if(overwrite_lgl | !file.exists(path_to_starter_sf_chr)){
-    if(is.na(merge_with) %>% all()){
-      starter_sf <- geom_ls[[1]]
-    }else{
-      starter_sf <- purrr::reduce(merge_with,
-                                  .init = geom_ls[[1]],
-                                  ~ intersect_lon_lat_sfs(.x,
-                                                          eval(parse(text=.y)),
-                                                          crs_nbr_vec = crs_nbr_vec,
-                                                          validate_lgl = is.null(pnt_ls)))
-      if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
-        starter_sf <- starter_sf %>%
-          dplyr::mutate(area = sf::st_area(.)) %>%
-          dplyr::filter(area > units::set_units(0,m^2)) ## Note: Will discard points
-      }
-    }
-    if(lookup_tbs_r4 %>% ready4s4::sp_import_lup() %>% dplyr::pull(main_feature) == "Boundary")
-      starter_sf <- starter_sf %>%
-        simplify_sf(crs = crs_nbr_vec[1])
-    saveRDS(starter_sf, file = path_to_starter_sf_chr)
-
-  }
   starter_sf_lup_r3 <- tibble::add_row(ready4s4::sp_starter_sf_lup(lookup_tbs_r4),
                                        country = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(country),
                                        area_type = ready4s4::sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
@@ -628,41 +731,41 @@ get_merge_sf_str <- function(lookup_r4,
     }
   }
 }
-#' @title add_data_pack_from_script
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param merge_sfs_vec PARAM_DESCRIPTION
-#' @param processed_dir PARAM_DESCRIPTION
-#' @param raw_data_dir PARAM_DESCRIPTION
-#' @param pckg_name PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
+#' #' @title add_data_pack_from_script
+#' #' @description FUNCTION_DESCRIPTION
+#' #' @param x PARAM_DESCRIPTION
+#' #' @param lookup_tbs_r4 PARAM_DESCRIPTION
+#' #' @param merge_sfs_vec PARAM_DESCRIPTION
+#' #' @param processed_dir PARAM_DESCRIPTION
+#' #' @param raw_data_dir PARAM_DESCRIPTION
+#' #' @param pckg_name PARAM_DESCRIPTION
+#' #' @param overwrite_lgl PARAM_DESCRIPTION
+#' #' @return OUTPUT_DESCRIPTION
+#' #' @details DETAILS
+#' #' @examples
+#' #' \dontrun{
+#' #' if(interactive()){
+#' #'  #EXAMPLE1
+#' #'  }
+#' #' }
+#' #' @seealso
+#' #'  \code{\link[dplyr]{pull}}
+#' #' @rdname add_data_pack_from_script
+#' #' @export
+#' #' @importFrom dplyr pull
+#' add_data_pack_from_script <- function(x,
+#'                                       lookup_tbs_r4,
+#'                                       merge_sfs_vec,
+#'                                       processed_dir,
+#'                                       raw_data_dir,
+#'                                       pckg_name,
+#'                                       overwrite_lgl){
+#'   parse(text = paste0(x %>% dplyr::pull(make_script_src),
+#'                       "(x = x,
+#'                       lookup_tbs_r4 = lookup_tbs_r4,
+#'                       merge_sfs_vec = merge_sfs_vec,
+#'                       processed_dir = processed_dir,
+#'                       raw_data_dir = raw_data_dir,
+#'                       pckg_name = pckg_name,
+#'                       overwrite_lgl = overwrite_lgl)")) %>% eval()
 #' }
-#' @seealso
-#'  \code{\link[dplyr]{pull}}
-#' @rdname add_data_pack_from_script
-#' @export
-#' @importFrom dplyr pull
-add_data_pack_from_script <- function(x,
-                                      lookup_tbs_r4,
-                                      merge_sfs_vec,
-                                      processed_dir,
-                                      raw_data_dir,
-                                      pckg_name,
-                                      overwrite_lgl){
-  parse(text = paste0(x %>% dplyr::pull(make_script_src),
-                      "(x = x,
-                      lookup_tbs_r4 = lookup_tbs_r4,
-                      merge_sfs_vec = merge_sfs_vec,
-                      processed_dir = processed_dir,
-                      raw_data_dir = raw_data_dir,
-                      pckg_name = pckg_name,
-                      overwrite_lgl = overwrite_lgl)")) %>% eval()
-}

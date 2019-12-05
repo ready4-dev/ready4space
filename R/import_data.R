@@ -1,65 +1,10 @@
-#' @title import_data
+
+#' @title save_raw.ready4_sp_import_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname import_data
-#' @export
-
-import_data <- function(x,
-                        ...){
-  UseMethod("import_data",x)
-}
-#' @title download_data
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @export
-
-download_data <- function(x,
-                          ...){
-  UseMethod("download_data",x)
-}
-#' @title save_raw
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param ... PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @export
-
-save_raw <- function(x,
-                     ...){
-  UseMethod("save_raw",x)
-}
-
-#' @title save_raw
-#' @description FUNCTION_DESCRIPTION
 #' @param required_data PARAM_DESCRIPTION
 #' @param destination_directory PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: FALSE
-#' @param x PARAM_DESCRIPTION
+#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -70,10 +15,11 @@ save_raw <- function(x,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}}
-#' @rdname save_raw
+#' @rdname save_raw.ready4_sp_import_lup
 #' @export
-#' @importFrom purrr walk
-save_raw.ready4_sp_import_lup <- function(x,
+#' @importFrom purrr map_lgl
+#' @importFrom ready4use save_raw
+save_raw.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                           required_data,
                                           destination_directory,
                                           overwrite_lgl = F){
@@ -83,6 +29,39 @@ save_raw.ready4_sp_import_lup <- function(x,
                               data_lookup_ref = .x,
                               overwrite_lgl = overwrite_lgl))
 }
+
+#' @importClassesFrom ready4s3 ready4_sp_import_lup
+#' @importMethodsFrom ready4use save_raw
+#' @export
+methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
+
+#' @importClassesFrom ready4s4 ready4_local_raw ready4_local_proc
+#' @importMethodsFrom ready4use save_raw
+#' @export
+methods::setMethod("save_raw",
+                   "ready4_local_raw",
+                   function(x,
+                            return_r4_lgl = T) {
+                     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
+                     ready4use::assert_single_row_tb(sp_import_lup)
+                     raw_format_sp_dir <- make_raw_format_dir(data_type_chr = sp_import_lup$data_type,
+                                                              raw_data_dir = x@raw_data_dir_chr)
+
+                     import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
+                                                          data_type_chr = data_type_chr)
+                     save_lgl <- save_raw(x = sp_import_lup,
+                                          required_data = import_chr_vec,
+                                          destination_directory = raw_format_sp_dir,
+                                          overwrite_lgl = x@overwrite_lgl)
+                     if(return_r4_lgl){
+                       ready4s4::ready4_local_proc(lup_tbs_r4 = x@lup_tbs_r4,
+                                                   merge_sfs_chr_vec = x@merge_sfs_chr_vec,
+                                                   raw_data_dir_chr = raw_format_sp_dir,
+                                                   overwrite_lgl = x@overwrite_lgl,
+                                                   save_lgl = save_lgl)
+                     }
+                   }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
+
 
 #' @title download_data.ready4_sp_import_lup
 #' @description FUNCTION_DESCRIPTION
@@ -105,9 +84,9 @@ save_raw.ready4_sp_import_lup <- function(x,
 #' @rdname download_data.ready4_sp_import_lup
 #' @export
 #' @importFrom ready4s3 ready4_sp_import_lup
-download_data.ready4_sp_import_lup <- function(x,
+#' @importFrom ready4use download_data
+download_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                                destination_directory,
-                                               #data_import_lookup_tb,
                                                data_lookup_ref,
                                                lookup_variable = "name",
                                                directory_sub_divs = NULL,
@@ -135,6 +114,7 @@ download_data.ready4_sp_import_lup <- function(x,
 #' @param included_items_names PARAM_DESCRIPTION
 #' @param item_data_type PARAM_DESCRIPTION
 #' @param data_directory PARAM_DESCRIPTION
+#' @param r_data_dir_chr PARAM_DESCRIPTION
 #' @param save_lgl PARAM_DESCRIPTION, Default: T
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -153,9 +133,10 @@ download_data.ready4_sp_import_lup <- function(x,
 #' @export
 #' @importFrom dplyr filter mutate select
 #' @importFrom purrr map_chr map
+#' @importFrom ready4use import_data
 #' @importFrom sf st_read
 #' @importFrom stats setNames
-import_data.ready4_sp_import_lup <- function(x, # data_import_items
+import_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                              included_items_names,
                                              item_data_type,
                                              data_directory,
@@ -524,8 +505,6 @@ data_import_get_one_path <- function(downloaded_data_tb,
          "/",
          paste(path_element_vector,collapse = "/"))
 }
-
-
 
 #' @title data_import_non_shape_items
 #' @description FUNCTION_DESCRIPTION

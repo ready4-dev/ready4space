@@ -16,6 +16,8 @@
 
 \item{data_directory}{PARAM_DESCRIPTION}
 
+\item{r_data_dir_chr}{PARAM_DESCRIPTION}
+
 \item{save_lgl}{PARAM_DESCRIPTION, Default: T}
 }
 \value{

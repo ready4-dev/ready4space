@@ -4,8 +4,7 @@
 \alias{export_starter_sf}
 \title{export_starter_sf}
 \usage{
-export_starter_sf(lookup_tbs_r4, boundary_ls = NULL, pnt_ls = NULL,
-  processed_dir, merge_with, crs_nbr_vec, overwrite_lgl = F)
+export_starter_sf(lookup_tbs_r4, path_to_starter_sf_chr)
 }
 \arguments{
 \item{lookup_tbs_r4}{PARAM_DESCRIPTION}

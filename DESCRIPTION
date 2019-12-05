@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9138
+Version: 0.0.0.9139
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -22,7 +22,8 @@ Remotes:
     orygennp/ready4agents,
     orygennp/ready4s3,
     orygennp/ready4s4,
-    orygennp/ready4utils
+    orygennp/ready4utils,
+    orygennp/ready4use
 Imports: 
     dplyr,
     geojsonio,
@@ -48,7 +49,8 @@ Imports:
     tibble,
     units,
     utils,
-    ready4agents (>= 0.0.0.9023),
-    ready4s3 (>= 0.0.0.9147),
-    ready4s4 (>= 0.0.0.9511),
-    ready4utils (>= 0.0.0.9037)
+    ready4agents (>= 0.0.0.9024),
+    ready4s3 (>= 0.0.0.9152),
+    ready4s4 (>= 0.0.0.9519),
+    ready4utils (>= 0.0.0.9047),
+    ready4use (>= 0.0.0.9008)
