@@ -46,7 +46,7 @@ methods::setMethod("save_raw",
                                                               raw_data_dir = x@raw_data_dir_chr)
 
                      import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
-                                                          data_type_chr = data_type_chr)
+                                                          data_type_chr = sp_import_lup$data_type)
                      save_lgl <- save_raw(x = sp_import_lup,
                                           required_data = import_chr_vec,
                                           destination_directory = raw_format_sp_dir,
@@ -186,6 +186,48 @@ import_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORT
   }
   return(item_list)
 }
+
+#' @importMethodsFrom ready4use import_data
+#' @export
+methods::setMethod("import_data","ready4_sp_import_lup",import_data.ready4_sp_import_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
+
+#' @importMethodsFrom ready4use import_data
+#' @export
+methods::setMethod("import_data",
+                   "ready4_local_proc",
+                   function(x,
+                            crs_nbr_vec,
+                            return_r4_lgl = T) {
+                     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
+                     ready4use::assert_single_row_tb(sp_import_lup)
+                     import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
+                                                          data_type_chr = sp_import_lup$data_type)
+
+                     import_this_ls <- import_data(x = sp_import_lup,
+                                                   included_items_names = import_chr_vec,
+                                                   item_data_type = sp_import_lup$data_type,
+                                                   data_directory = x@raw_data_dir_chr,
+                                                   r_data_dir_chr = x@proc_data_dir_chr,
+                                                   save_lgl = x@save_lgl) %>%
+                       stats::setNames(import_chr_vec)
+
+                     if(x %>% dplyr::pull(data_type) == "Geometry"){
+                       path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = x@proc_data_dir_chr,
+                                                                       name_chr = names(import_this_ls)[1],
+                                                                       data_type_chr = "Geometry")
+                     }else{
+                       path_to_starter_sf_chr <- NA_character_
+                     }
+                     process_import_xx(x = sp_import_lup,
+                                       import_this_ls = import_this_ls,
+                                       path_to_starter_sf_chr = path_to_starter_sf_chr,
+                                       merge_with = x@merge_sfs_chr_vec,
+                                       pckg_name = x@pckg_chr,
+                                       raw_data_dir = raw_data_dir,
+                                       crs_nbr_vec = crs_nbr_vec,
+                                       overwrite_lgl = x@overwrite_lgl)
+                   }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
+
 
 #' @title data_import_get_dir_paths
 #' @description FUNCTION_DESCRIPTION
