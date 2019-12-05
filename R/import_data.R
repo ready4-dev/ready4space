@@ -1,111 +1,4 @@
 
-#' @title save_raw.ready4_sp_import_lup
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param required_data PARAM_DESCRIPTION
-#' @param destination_directory PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[purrr]{map}}
-#' @rdname save_raw.ready4_sp_import_lup
-#' @export
-#' @importFrom purrr map_lgl
-#' @importFrom ready4use save_raw
-save_raw.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
-                                          required_data,
-                                          destination_directory,
-                                          overwrite_lgl = F){
-  purrr::map_lgl(required_data,
-              ~ download_data(x = x,
-                              destination_directory = destination_directory,
-                              data_lookup_ref = .x,
-                              overwrite_lgl = overwrite_lgl))
-}
-
-#' @importMethodsFrom ready4use save_raw
-#' @export
-methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
-
-#' @importMethodsFrom ready4use save_raw
-#' @export
-methods::setMethod("save_raw",
-                   "ready4_local_raw",
-                   function(x,
-                            return_r4_lgl = T) {
-                     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
-                     ready4use::assert_single_row_tb(sp_import_lup)
-                     raw_format_sp_dir <- make_raw_format_dir(data_type_chr = sp_import_lup$data_type,
-                                                              raw_data_dir = x@raw_data_dir_chr)
-
-                     import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
-                                                          data_type_chr = sp_import_lup$data_type)
-                     save_lgl <- save_raw(x = sp_import_lup,
-                                          required_data = import_chr_vec,
-                                          destination_directory = raw_format_sp_dir,
-                                          overwrite_lgl = x@overwrite_lgl)
-                     if(return_r4_lgl){
-                       ready4s4::ready4_local_proc(lup_tbs_r4 = x@lup_tbs_r4,
-                                                   merge_sfs_chr_vec = x@merge_sfs_chr_vec,
-                                                   raw_data_dir_chr = raw_format_sp_dir,
-                                                   overwrite_lgl = x@overwrite_lgl,
-                                                   save_lgl = save_lgl)
-                     }
-                   }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
-
-
-#' @title download_data.ready4_sp_import_lup
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param destination_directory PARAM_DESCRIPTION
-#' @param data_lookup_ref PARAM_DESCRIPTION
-#' @param lookup_variable PARAM_DESCRIPTION, Default: 'name'
-#' @param directory_sub_divs PARAM_DESCRIPTION, Default: NULL
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[ready4s3]{ready4_sp_import_lup}}
-#' @rdname download_data.ready4_sp_import_lup
-#' @export
-#' @importFrom ready4s3 ready4_sp_import_lup
-#' @importFrom ready4use download_data
-download_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
-                                               destination_directory,
-                                               data_lookup_ref,
-                                               lookup_variable = "name",
-                                               directory_sub_divs = NULL,
-                                               overwrite_lgl = F){
-
-  if(is.null(directory_sub_divs))
-    directory_sub_divs <- names(ready4s3::ready4_sp_import_lup())[names(ready4s3::ready4_sp_import_lup()) %in% c("country","area_type","region","main_feature","year")] ## Could add boundary year as extra directory
-  directory_paths <- data_import_get_dir_paths(x = x,
-                                               destination_directory = destination_directory,
-                                               data_lookup_ref = data_lookup_ref,
-                                               lookup_variable = lookup_variable,
-                                               directory_sub_divs = directory_sub_divs)
-  data_import_make_directories(directory_paths = directory_paths)
-  data_import_save_files(x = x,
-                         data_lookup_ref = data_lookup_ref,
-                         lookup_variable = lookup_variable,
-                         directory_path = directory_paths[length(directory_paths)],
-                         overwrite_lgl = overwrite_lgl)
-
-
-}
 #' @title import_data.ready4_sp_import_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -197,20 +90,16 @@ methods::setMethod("import_data",
                    "ready4_local_proc",
                    function(x,
                             crs_nbr_vec,
-                            return_import_ls = T) {
+                            return_r4_lgl = T) {
                      sp_import_lup <- x@lup_tbs_r4@sp_import_lup
                      ready4use::assert_single_row_tb(sp_import_lup)
-                     import_chr_vec <- get_import_chr_vec(x@lup_tbs_r4,
-                                                          data_type_chr = sp_import_lup$data_type)
-
                      import_this_ls <- import_data(x = sp_import_lup,
-                                                   included_items_names = import_chr_vec,
+                                                   included_items_names = x@import_chr_vec,
                                                    item_data_type = sp_import_lup$data_type,
                                                    data_directory = x@raw_data_dir_chr,
                                                    r_data_dir_chr = x@proc_data_dir_chr,
                                                    save_lgl = x@save_lgl) %>%
                        stats::setNames(import_chr_vec)
-
                      if(sp_import_lup$data_type == "Geometry"){
                        path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = x@proc_data_dir_chr,
                                                                        name_chr = names(import_this_ls)[1],
@@ -218,7 +107,6 @@ methods::setMethod("import_data",
                      }else{
                        path_to_starter_sf_chr <- NA_character_
                      }
-                     import_this_ls$path_to_starter_sf_chr <- path_to_starter_sf_chr
                      process_import_xx(x = sp_import_lup,
                                        import_this_ls = import_this_ls,
                                        path_to_starter_sf_chr = path_to_starter_sf_chr,
@@ -227,8 +115,9 @@ methods::setMethod("import_data",
                                        raw_data_dir = raw_data_dir,
                                        crs_nbr_vec = crs_nbr_vec,
                                        overwrite_lgl = x@overwrite_lgl)
-                     if(return_import_ls)
-                       import_this_ls
+                     if(return_r4_lgl)
+                       ready4s4::`path_to_starter_sf_chr<-`(x,path_to_starter_sf_chr) %>%
+                       ready4s4::`import_this_ls<-`(import_this_ls)
                    }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
 
 

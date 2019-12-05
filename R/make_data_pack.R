@@ -114,12 +114,6 @@ make_data_pack_sngl <- function(x,
   lookup_tbs_r4 <- ready4s4::ready4_lookup()
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
   import_type_ls <- ready4use::get_import_type_ls(x)
-  data_type_chr <- x %>% dplyr::pull(data_type)
-  local_raw_r4 <- ready4s4::ready4_local_raw(lup_tbs_r4 = lookup_tbs_r4,
-                                             merge_sfs_chr_vec = merge_with,
-                                             raw_data_dir_chr = raw_data_dir,
-                                             pckg_chr = pckg_name,
-                                             overwrite_lgl = overwrite_lgl)
   if(names(import_type_ls) == "script_chr"){#!x %>% dplyr::pull(make_script_src) %>% is.na()
     import_xx <- ready4use::make_import_xx(x,
                                            script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
@@ -128,27 +122,21 @@ make_data_pack_sngl <- function(x,
                                                                  raw_data_dir_chr = raw_data_dir,
                                                                  pckg_chr = pckg_name,
                                                                  overwrite_lgl = overwrite_lgl))
-    lookup_tbs_r4 <- rlang::exec(!!rlang::sym(import_type_ls),
+    rlang::exec(!!rlang::sym(import_type_ls),
                                  import_xx)
   }else{
-    local_proc_r4 <- save_raw(local_raw_r4) %>%
-    ready4s4::`proc_data_dir_chr<-`(processed_dir)
-    import_this_ls <- import_data(local_proc_r4,
-                                          crs_nbr_vec = crs_nbr_vec)
-
-    ###UPDATE
-    if(x %>% dplyr::pull(data_type) == "Geometry"){
-      lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,
-                                         path_to_starter_sf_chr = import_this_ls$path_to_starter_sf_chr) %>%
-        export_uid_lup()
-    }
-    #}
-    lookup_tbs_r4 <- lookup_tbs_r4 %>%
-      export_data_pack_lup(template_ls = import_this_ls,
-                           tb_data_type = x %>% dplyr::pull(data_type),
-                           pckg_name = pckg_name)
+    ready4s4::ready4_local_raw(lup_tbs_r4 = lookup_tbs_r4,
+                               merge_with_chr_vec = merge_with,
+                               raw_data_dir_chr = raw_data_dir,
+                               pckg_chr = pckg_name,
+                               overwrite_lgl = overwrite_lgl) %>%
+    save_raw() %>%
+      ready4s4::`proc_data_dir_chr<-`(processed_dir) %>%
+      import_data(local_proc_r4,
+                  crs_nbr_vec = crs_nbr_vec) %>%
+      update_this()
   }
-  return(lookup_tbs_r4)
+
 }
 #' @title process_import_xx
 #' @description FUNCTION_DESCRIPTION
