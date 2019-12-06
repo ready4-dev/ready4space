@@ -131,12 +131,35 @@ make_data_pack_sngl <- function(x,
                                raw_data_dir_chr = raw_data_dir,
                                pckg_chr = pckg_name,
                                overwrite_lgl = overwrite_lgl) %>%
-    save_raw() %>%
-      ready4s4::`proc_data_dir_chr<-`(processed_dir) %>%
-      import_data(crs_nbr_vec = crs_nbr_vec) %>%
-      update_this()
+    save_import_and_update(processed_dir_chr = processed_dir,
+                           crs_nbr_vec = crs_nbr_vec)
   }
-
+}
+#' @title save_import_and_update
+#' @description FUNCTION_DESCRIPTION
+#' @param x PARAM_DESCRIPTION
+#' @param processed_dir_chr PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[ready4s4]{proc_data_dir_chr<-}}
+#' @rdname save_import_and_update
+#' @export
+#' @importFrom ready4s4 proc_data_dir_chr<-
+save_import_and_update <- function(x,
+                                   processed_dir_chr,
+                                   crs_nbr_vec){
+  save_raw(x) %>%
+    ready4s4::`proc_data_dir_chr<-`(processed_dir) %>%
+    import_data(crs_nbr_vec = crs_nbr_vec) %>%
+    update_this()
 }
 #' @title process_import_xx
 #' @description FUNCTION_DESCRIPTION
