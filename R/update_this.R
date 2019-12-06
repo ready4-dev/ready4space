@@ -4,7 +4,7 @@ methods::setMethod("update_this",
                    "ready4_local_proc",
                    function(x) {
                      lookup_tbs_r4 <- x@lup_tbs_r4
-                     sp_import_lup <- lup_tbs_r4@sp_import_lup
+                     sp_import_lup <- lookup_tbs_r4@sp_import_lup
                      ready4use::assert_single_row_tb(sp_import_lup)
                      if(sp_import_lup$data_type == "Geometry"){
                        lookup_tbs_r4 <- export_starter_sf(lookup_tbs_r4,

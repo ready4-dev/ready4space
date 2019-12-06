@@ -99,7 +99,7 @@ methods::setMethod("import_data",
                                                    data_directory = x@raw_data_dir_chr,
                                                    r_data_dir_chr = x@proc_data_dir_chr,
                                                    save_lgl = x@save_lgl) %>%
-                       stats::setNames(import_chr_vec)
+                       stats::setNames(x@import_chr_vec)
                      if(sp_import_lup$data_type == "Geometry"){
                        path_to_starter_sf_chr <- get_r_import_path_chr(r_data_dir_chr = x@proc_data_dir_chr,
                                                                        name_chr = names(import_this_ls)[1],
@@ -110,7 +110,7 @@ methods::setMethod("import_data",
                      process_import_xx(x = sp_import_lup,
                                        import_this_ls = import_this_ls,
                                        path_to_starter_sf_chr = path_to_starter_sf_chr,
-                                       merge_with = x@merge_sfs_chr_vec,
+                                       merge_with = x@merge_with_chr_vec,
                                        pckg_name = x@pckg_chr,
                                        raw_data_dir = raw_data_dir,
                                        crs_nbr_vec = crs_nbr_vec,

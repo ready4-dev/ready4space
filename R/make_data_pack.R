@@ -115,15 +115,16 @@ make_data_pack_sngl <- function(x,
   lookup_tbs_r4 <- ready4s4::`sp_import_lup<-`(lookup_tbs_r4,x)
   import_type_ls <- ready4use::get_import_type_ls(x)
   if(names(import_type_ls) == "script_chr"){#!x %>% dplyr::pull(make_script_src) %>% is.na()
-    import_xx <- ready4use::make_import_xx(x,
-                                           script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
-                                                                 merge_sfs_chr_vec = merge_with,
-                                                                 proc_data_dir_chr = processed_dir,
-                                                                 raw_data_dir_chr = raw_data_dir,
-                                                                 pckg_chr = pckg_name,
-                                                                 overwrite_lgl = overwrite_lgl))
+    script_data_r4 <- ready4use::make_import_xx(x,
+                                                script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
+                                                                      merge_sfs_chr_vec = merge_with,
+                                                                      proc_data_dir_chr = processed_dir,
+                                                                      raw_data_dir_chr = raw_data_dir,
+                                                                      pckg_chr = pckg_name,
+                                                                      overwrite_lgl = overwrite_lgl,
+                                                                      crs_nbr_vec = crs_nbr_vec))
     rlang::exec(!!rlang::sym(import_type_ls),
-                                 import_xx)
+                script_data_r4)
   }else{
     ready4s4::ready4_local_raw(lup_tbs_r4 = lookup_tbs_r4,
                                merge_with_chr_vec = merge_with,
@@ -132,8 +133,7 @@ make_data_pack_sngl <- function(x,
                                overwrite_lgl = overwrite_lgl) %>%
     save_raw() %>%
       ready4s4::`proc_data_dir_chr<-`(processed_dir) %>%
-      import_data(local_proc_r4,
-                  crs_nbr_vec = crs_nbr_vec) %>%
+      import_data(crs_nbr_vec = crs_nbr_vec) %>%
       update_this()
   }
 

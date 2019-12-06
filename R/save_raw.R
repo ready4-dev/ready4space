@@ -55,8 +55,9 @@ methods::setMethod("save_raw",
                                                    merge_with_chr_vec = x@merge_with_chr_vec,
                                                    raw_data_dir_chr = raw_format_sp_dir,
                                                    overwrite_lgl = x@overwrite_lgl,
-                                                   save_lgl = save_lgl,
-                                                   import_chr_vec = import_chr_vec)
+                                                   save_lgl = save_lgl) %>%
+                         ready4s4::`import_chr_vec<-`(import_chr_vec)
+
                      }
                    }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
 
