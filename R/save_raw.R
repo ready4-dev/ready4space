@@ -36,7 +36,7 @@ methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_l
 #' @importMethodsFrom ready4use save_raw
 #' @export
 methods::setMethod("save_raw",
-                   "ready4_local_raw",
+                   c("ready4_local_raw"),
                    function(x,
                             return_r4_lgl = T) {
                      sp_import_lup <- x@lup_tbs_r4@sp_import_lup
@@ -52,7 +52,7 @@ methods::setMethod("save_raw",
                                           overwrite_lgl = x@overwrite_lgl)
                      if(return_r4_lgl){
                        ready4s4::ready4_local_proc(lup_tbs_r4 = x@lup_tbs_r4,
-                                                   merge_with_chr_vec = x@merge_with_chr_vec,
+                                                   merge_with_chr_vec = x@merge_with_chr_vec, ##
                                                    raw_data_dir_chr = raw_format_sp_dir,
                                                    overwrite_lgl = x@overwrite_lgl,
                                                    save_lgl = save_lgl) %>%

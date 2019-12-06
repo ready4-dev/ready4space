@@ -18,53 +18,6 @@ OUTPUT_DESCRIPTION
 FUNCTION_DESCRIPTION
 }
 \details{
-#' @title import_ls
-#' @description FUNCTION_DESCRIPTION
-#' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param raw_data_dir PARAM_DESCRIPTION
-#' @param r_data_dir_chr PARAM_DESCRIPTION
-#' @param data_type_chr PARAM_DESCRIPTION, Default: 'Geometry'
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[ready4s4]{sp_import_lup}}
-#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
-#'  \code{\link[stats]{setNames}}
-#' @rdname import_ls
-#' @export
-#' @importFrom ready4s4 sp_import_lup
-#' @importFrom dplyr filter pull
-#' @importFrom stats setNames
-import_ls <- function(lookup_tbs_r4,
-                      raw_data_dir,
-                      r_data_dir_chr,
-                      data_type_chr = "Geometry",
-                      overwrite_lgl = F){
-  raw_format_sp_dir <- make_raw_format_dir(data_type_chr = data_type_chr,
-                                           raw_data_dir = raw_data_dir)
-
-import_chr_vec <- get_import_chr_vec()
-
-save_lgl <- save_raw(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-                       required_data = import_chr_vec,
-                       destination_directory = raw_format_sp_dir,
-                       overwrite_lgl = overwrite_lgl)
-  import_data(x = ready4s4::sp_import_lup(lookup_tbs_r4),
-              included_items_names = import_chr_vec,
-              item_data_type = data_type_chr,
-              data_directory = raw_format_sp_dir,
-              r_data_dir_chr = r_data_dir_chr,
-              save_lgl = save_lgl) %>%
-    stats::setNames(import_chr_vec)
-}
-
 DETAILS
 }
 \examples{
