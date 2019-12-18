@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9146
+Version: 0.0.0.9147
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -19,9 +19,6 @@ LazyData: true
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Remotes: 
-    orygennp/ready4agents,
-    orygennp/ready4s3,
-    orygennp/ready4s4,
     orygennp/ready4utils,
     orygennp/ready4use
 Imports: 
@@ -49,8 +46,47 @@ Imports:
     tibble,
     units,
     utils,
-    ready4agents (>= 0.0.0.9024),
-    ready4s3 (>= 0.0.0.9152),
-    ready4s4 (>= 0.0.0.9527),
-    ready4utils (>= 0.0.0.9047),
-    ready4use (>= 0.0.0.9011)
+    ready4use (>= 0.0.0.9020),
+    ready4utils (>= 0.0.0.9064)
+Collate: 
+    'fn_add_attr_to_data_pack.R'
+    'fn_add_attr_to_sf.R'
+    'fn_add_sp_resolution.R'
+    'fn_get_sp_data.R'
+    'fn_intersect_sfs_keep_counts.R'
+    'fn_intersect_sfs_update_counts.R'
+    'fn_make_env_param_tb.R'
+    'fn_make_sp_data_list.R'
+    'fn_spatial_area_within_xkm_of_cluster.R'
+    'fn_spatial_area_within_xkm_of_points.R'
+    'fn_spatial_area_within_xmin_drive_of_points.R'
+    'fn_spatial_cases_coordinates.R'
+    'fn_spatial_create_agent_coordinates_tb.R'
+    'fn_travel_time_app_calc.R'
+    'fn_update_counts_by_area.R'
+    'gnrc_country.R'
+    'gnrc_distribution.R'
+    'gnrc_parameter_name.R'
+    'gnrc_sp_abbreviations_lup.R'
+    'gnrc_st_data.R'
+    'gnrc_st_envir.R'
+    'imp_methods.R'
+    'imp_pipe.R'
+    'mthd_gen_par_vals.R'
+    'mthd_gen_val_envir.R'
+    'mthd_gen_val_mape.R'
+    'pckg_ready4space.R'
+    's3_ready4_par_str_envir.R'
+    's3_ready4_par_struc_mape.R'
+    's3_ready4_par_val_envir.R'
+    's3_ready4_sp_abbreviations_lup.R'
+    's3_ready4_sp_data_pack_lup.R'
+    's3_ready4_sp_import_lup.R'
+    's3_ready4_sp_resolution_lup.R'
+    's3_ready4_sp_site_coord_lup.R'
+    's3_ready4_sp_starter_sf_lup.R'
+    's3_ready4_sp_uid_lup.R'
+    's4_ready4_env.R'
+    's4_ready4_lookup.R'
+    's4_ready4_profiled_area.R'
+    's4_ready4_struc.R'
