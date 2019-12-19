@@ -8,6 +8,7 @@
 #' @slot overwrite_lgl logical
 #' @slot save_lgl logical
 #' @import ready4use
+#' @include s4_ready4_lookup.R
 methods::setClass(methods::className("ready4_sp_local","ready4use"),
 contains = "ready4_local",
 slots = c(lup_tbs_r4 = "ready4_lookup"),
@@ -22,23 +23,23 @@ prototype =  list(lup_tbs_r4 = ready4_lookup()))
 #' @param overwrite_lgl logical, Default: NA
 #' @param save_lgl logical, Default: NA
 #' @return An S4 object of the ready4_sp_local class
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
+#' @seealso
 #'  \code{\link[methods]{new}}
 #' @rdname ready4_sp_local
-#' @export 
+#' @export
 #' @importFrom methods new
 ready4_sp_local <- function(merge_with_chr_vec = NA_character_,
 raw_data_dir_chr = NA_character_,
 pckg_chr = NA_character_,
 overwrite_lgl = NA,
-save_lgl = NA){ 
+save_lgl = NA){
 methods::new("ready4_sp_local",
 merge_with_chr_vec = merge_with_chr_vec,
 raw_data_dir_chr = raw_data_dir_chr,

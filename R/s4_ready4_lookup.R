@@ -7,13 +7,16 @@ setOldClass(c("ready4_sp_data_pack_lup","tbl_df", "tbl", "data.frame"))
 setOldClass(c("ready4_sp_resolution_lup","tbl_df", "tbl", "data.frame"))
 setOldClass(c("ready4_sp_site_coord_lup","tbl_df", "tbl", "data.frame"))
 setOldClass(c("ready4_sp_starter_sf_lup","tbl_df", "tbl", "data.frame"))
-setOldClass(c("ready4_sp_uid_lup","tbl_df", "tbl", "data.frame"))#' @slot sp_abbreviations_lup ready4_sp_abbreviations_lup
+setOldClass(c("ready4_sp_uid_lup","tbl_df", "tbl", "data.frame")) ### Needed to insert extra linebreak - update ready4class
+#' @slot sp_abbreviations_lup ready4_sp_abbreviations_lup
 #' @slot sp_import_lup ready4_sp_import_lup
 #' @slot sp_data_pack_lup ready4_sp_data_pack_lup
 #' @slot sp_resolution_lup ready4_sp_resolution_lup
 #' @slot sp_site_coord_lup ready4_sp_site_coord_lup
 #' @slot sp_starter_sf_lup ready4_sp_starter_sf_lup
 #' @slot sp_uid_lup ready4_sp_uid_lup
+#' @include s3_ready4_sp_abbreviations_lup.R s3_ready4_sp_import_lup.R s3_ready4_sp_data_pack_lup.R s3_ready4_sp_resolution_lup.R s3_ready4_sp_site_coord_lup.R s3_ready4_sp_starter_sf_lup.R s3_ready4_sp_uid_lup.R
+
 methods::setClass(methods::className("ready4_lookup",".GlobalEnv"),
 slots = c(sp_abbreviations_lup = "ready4_sp_abbreviations_lup",sp_import_lup = "ready4_sp_import_lup",sp_data_pack_lup = "ready4_sp_data_pack_lup",sp_resolution_lup = "ready4_sp_resolution_lup",sp_site_coord_lup = "ready4_sp_site_coord_lup",sp_starter_sf_lup = "ready4_sp_starter_sf_lup",sp_uid_lup = "ready4_sp_uid_lup"),
 prototype =  list(sp_abbreviations_lup = ready4_sp_abbreviations_lup(),sp_import_lup = ready4_sp_import_lup(),sp_data_pack_lup = ready4_sp_data_pack_lup(),sp_resolution_lup = ready4_sp_resolution_lup(),sp_site_coord_lup = ready4_sp_site_coord_lup(),sp_starter_sf_lup = ready4_sp_starter_sf_lup(),sp_uid_lup = ready4_sp_uid_lup()))
@@ -29,17 +32,17 @@ prototype =  list(sp_abbreviations_lup = ready4_sp_abbreviations_lup(),sp_import
 #' @param sp_starter_sf_lup ready4_sp_starter_sf_lup, Default: ready4_sp_starter_sf_lup()
 #' @param sp_uid_lup ready4_sp_uid_lup, Default: ready4_sp_uid_lup()
 #' @return An S4 object of the ready4_lookup class
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
+#' @seealso
 #'  \code{\link[methods]{new}}
 #' @rdname ready4_lookup
-#' @export 
+#' @export
 #' @importFrom methods new
 ready4_lookup <- function(sp_abbreviations_lup = ready4_sp_abbreviations_lup(),
 sp_import_lup = ready4_sp_import_lup(),
@@ -47,7 +50,7 @@ sp_data_pack_lup = ready4_sp_data_pack_lup(),
 sp_resolution_lup = ready4_sp_resolution_lup(),
 sp_site_coord_lup = ready4_sp_site_coord_lup(),
 sp_starter_sf_lup = ready4_sp_starter_sf_lup(),
-sp_uid_lup = ready4_sp_uid_lup()){ 
+sp_uid_lup = ready4_sp_uid_lup()){
 methods::new("ready4_lookup",
 sp_abbreviations_lup = sp_abbreviations_lup,
 sp_import_lup = sp_import_lup,
@@ -138,117 +141,3 @@ methods::setMethod("sp_data_pack_lup<-", methods::className("ready4_lookup",".Gl
 x@sp_data_pack_lup <- value
 methods::validObject(x)
 x})
-#' sp_resolution_lup
-#' @name sp_resolution_lup-ready4_lookup
-#' @description Get the value of the slot sp_resolution_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_resolution_lup
-methods::setMethod("sp_resolution_lup", methods::className("ready4_lookup",".GlobalEnv"), function(x) x@sp_resolution_lup)
-#' sp_resolution_lup<-
-#' @name sp_resolution_lup<--ready4_lookup
-#' @description Set the value of the slot sp_resolution_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_resolution_lup-set
-methods::setMethod("sp_resolution_lup<-", methods::className("ready4_lookup",".GlobalEnv"), function(x, value) {
-x@sp_resolution_lup <- value
-methods::validObject(x)
-x})
-#' sp_site_coord_lup
-#' @name sp_site_coord_lup-ready4_lookup
-#' @description Get the value of the slot sp_site_coord_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_site_coord_lup
-methods::setMethod("sp_site_coord_lup", methods::className("ready4_lookup",".GlobalEnv"), function(x) x@sp_site_coord_lup)
-#' sp_site_coord_lup<-
-#' @name sp_site_coord_lup<--ready4_lookup
-#' @description Set the value of the slot sp_site_coord_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_site_coord_lup-set
-methods::setMethod("sp_site_coord_lup<-", methods::className("ready4_lookup",".GlobalEnv"), function(x, value) {
-x@sp_site_coord_lup <- value
-methods::validObject(x)
-x})
-#' sp_starter_sf_lup
-#' @name sp_starter_sf_lup-ready4_lookup
-#' @description Get the value of the slot sp_starter_sf_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_starter_sf_lup
-methods::setMethod("sp_starter_sf_lup", methods::className("ready4_lookup",".GlobalEnv"), function(x) x@sp_starter_sf_lup)
-#' sp_starter_sf_lup<-
-#' @name sp_starter_sf_lup<--ready4_lookup
-#' @description Set the value of the slot sp_starter_sf_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_starter_sf_lup-set
-methods::setMethod("sp_starter_sf_lup<-", methods::className("ready4_lookup",".GlobalEnv"), function(x, value) {
-x@sp_starter_sf_lup <- value
-methods::validObject(x)
-x})
-#' sp_uid_lup
-#' @name sp_uid_lup-ready4_lookup
-#' @description Get the value of the slot sp_uid_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_uid_lup
-methods::setMethod("sp_uid_lup", methods::className("ready4_lookup",".GlobalEnv"), function(x) x@sp_uid_lup)
-#' sp_uid_lup<-
-#' @name sp_uid_lup<--ready4_lookup
-#' @description Set the value of the slot sp_uid_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname sp_uid_lup-set
-methods::setMethod("sp_uid_lup<-", methods::className("ready4_lookup",".GlobalEnv"), function(x, value) {
-x@sp_uid_lup <- value
-methods::validObject(x)
-x})
-
-methods::setValidity(methods::className("ready4_lookup",".GlobalEnv"),
-function(object){
-msg <- NULL
-if (is.null(msg)) TRUE else msg
-})
