@@ -98,11 +98,11 @@ make_profiled_area_objs <- function(pa_r4){
       profiled_area_bands_list <- subset_sf_by_feature(profiled_sf = profiled_sf,
                                                        group_by_var = group_by_var)
     }
-    if(!is.na(drive_time_limmit_mins(pa_r4))){
+    if(!is.na(drive_time_limit_mins(pa_r4))){
       profiled_area_bands_list <- cluster_isochrones(cluster_tbs_list = list(cluster_tb),
                                                      look_up_ref = 1,
                                                      time_min = 0,
-                                                     time_max = drive_time_limmit_mins(pa_r4),
+                                                     time_max = drive_time_limit_mins(pa_r4),
                                                      nbr_time_steps = nbr_bands(pa_r4))
       names(profiled_area_bands_list) <- paste0("dt_band_",1:length(profiled_area_bands_list))
       profiled_sf <- do.call(rbind,profiled_area_bands_list) %>%
@@ -153,7 +153,7 @@ extend_sp_data_list <- function(sp_data_list,
   crs_nbr_vec <-  input_ls$pa_r4 %>% crs_nbr()
   at_highest_res = input_ls$at_highest_res
   distance_km = geom_dist_limit_km(input_ls$pa_r4)
-  travel_time_mins = drive_time_limmit_mins(input_ls$pa_r4)
+  travel_time_mins = drive_time_limit_mins(input_ls$pa_r4)
   group_by_var <- get_group_by_var_from_pai(input_ls$pa_r4)
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
   age_sex_counts_grouped_by <- ready4utils::data_get(data_lookup_tb = lookup_tb(input_ls$pa_r4) %>%

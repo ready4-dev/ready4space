@@ -23,7 +23,7 @@ class_pt_lup <- ready4class::make_and_update(s3_classes_to_make_tb,
                                              output_dir = "R",
                                              file_exists_logic = "overwrite",
                                              init_class_pt_lup = class_pt_lup)
-class_pt_lup <- ready4class::make_and_update(s4_classes_to_make_tb[4:6,], ## Had to run each line sequentially - debugging required. Not finding newly created class. Needs documentation/loading within loop?
+class_pt_lup <- ready4class::make_and_update(s4_classes_to_make_tb[5:6,], ## Had to run each line sequentially - debugging required. Not finding newly created class. Needs documentation/loading within loop?
                                              dev_pckg_namespace = dev_pckg_namespace,
                                              name_prefix = name_prefix,
                                              output_dir = "R",
