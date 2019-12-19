@@ -2,7 +2,6 @@
 % Please edit documentation in R/mthd_updateAttrDataXx.R
 \name{updateAttrDataXx}
 \alias{updateAttrDataXx}
-\alias{updateAttrDataXx-ready4_lookup}
 \title{updateAttrDataXx
 S4 Generic function to update attribute data object.}
 \arguments{

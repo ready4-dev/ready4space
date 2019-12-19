@@ -17,7 +17,7 @@ methods::setGeneric("updateAttrDataXx",
                     signature = "x")
 #' updateAttrDataXx
 #' @description Return input object unaltered if no method for child class defined.
-#' @name updateAttrDataXx-ready4_lookup
+#' @name updateAttrDataXx
 #' @param attr_data_xx An object
 #' @param alt_names_sf A simple features object
 #' @param area_names_var_str A character string
