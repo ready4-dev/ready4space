@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_site_coord_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_site_coord_lup()
 #' @return A validated instance of the ready4_sp_site_coord_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes used in simulation
+#' @details Readyforwhatsnext S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

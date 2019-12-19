@@ -50,7 +50,7 @@ Validate an instance of the S3 class: validate_ready4_sp_starter_sf_lup
 Check whether an object is a valid instance of the S3 class: is_ready4_sp_starter_sf_lup
 }
 \details{
-Readyforwhatsnext S3 class for tibble object lookup table for base file used in creation of certain spatial objects used in simulations.
+Readyforwhatsnext S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \examples{
 \dontrun{

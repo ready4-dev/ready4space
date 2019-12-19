@@ -37,5 +37,4 @@ if(interactive()){
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
  \code{\link[stats]{setNames}}
  \code{\link[ready4utils]{data_get}}
- \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
 }

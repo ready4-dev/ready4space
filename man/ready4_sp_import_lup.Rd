@@ -50,7 +50,7 @@ Validate an instance of the S3 class: validate_ready4_sp_import_lup
 Check whether an object is a valid instance of the S3 class: is_ready4_sp_import_lup
 }
 \details{
-Readyforwhatsnext S3 class for tibble object lookup table of sources of raw (un-processed) spatial data to import.
+Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \examples{
 \dontrun{

@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_data_pack_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_data_pack_lup()
 #' @return A validated instance of the ready4_sp_data_pack_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table of sources of pre-processed simulation input data packs.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

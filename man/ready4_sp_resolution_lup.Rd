@@ -50,7 +50,7 @@ Validate an instance of the S3 class: validate_ready4_sp_resolution_lup
 Check whether an object is a valid instance of the S3 class: is_ready4_sp_resolution_lup
 }
 \details{
-Readyforwhatsnext S3 class for tibble object lookup table of the relative resolutions of different spatial objects used in simulations.
+Readyforwhatsnext S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \examples{
 \dontrun{

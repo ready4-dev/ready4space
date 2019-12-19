@@ -51,7 +51,7 @@ Validate an instance of the S3 class: validate_ready4_sp_abbreviations_lup
 Check whether an object is a valid instance of the S3 class: is_ready4_sp_abbreviations_lup
 }
 \details{
-Readyforwhatsnext S3 class for tibble object lookup table for abbreviations used in simulation input data.
+Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
 }
 \examples{
 \dontrun{

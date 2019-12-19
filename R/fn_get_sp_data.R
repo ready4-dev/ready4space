@@ -17,14 +17,12 @@
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
 #'  \code{\link[stats]{setNames}}
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
 #' @rdname get_spatial_data_list
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom purrr map map2 map_lgl prepend
 #' @importFrom stats setNames
 #' @importFrom ready4utils data_get
-#' @importFrom ready4s4 lookup_tb sp_data_pack_lup
 get_spatial_data_list <- function(input_ls,
                                   sub_div_unit = NULL,
                                   require_year_match = TRUE,
@@ -39,8 +37,8 @@ get_spatial_data_list <- function(input_ls,
     stats::setNames(boundary_res)
   year_vec <- make_year_vec(input_ls = input_ls)
   extra_names <- purrr::map(input_ls$at_specified_res,
-                            ~ ready4s4::lookup_tb(input_ls$pa_r4) %>%
-                              ready4s4::sp_data_pack_lup() %>% # spatial_lookup_tb %>%
+                            ~ lookup_tb(input_ls$pa_r4) %>%
+                              sp_data_pack_lup() %>% # spatial_lookup_tb %>%
                               dplyr::filter(main_feature == .x[1]) %>%
                               dplyr::filter(make_year_filter_logic_vec(data_tb = .,
                                                                        included_years_vec = year_vec)) %>% #year %in% year_vec
@@ -75,8 +73,8 @@ get_spatial_data_list <- function(input_ls,
                               ~ recur_add_attr_to_sf(input_ls = input_ls,
                                                      sub_div_unit = sub_div_unit,
                                                      area_unit = .x,
-                                                     boundary_year = ready4s4::lookup_tb(input_ls$pa_r4) %>%
-                                                       ready4s4::sp_data_pack_lup() %>%
+                                                     boundary_year = lookup_tb(input_ls$pa_r4) %>%
+                                                       sp_data_pack_lup() %>%
                                                        dplyr::filter(name %in% .y) %>%
                                                        dplyr::pull(year) %>%
                                                        min(as.numeric()),
@@ -84,8 +82,8 @@ get_spatial_data_list <- function(input_ls,
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
-                                             data_lookup_tb = ready4s4::lookup_tb(input_ls$pa_r4) %>%
-                                               ready4s4::sp_data_pack_lup(),#aus_spatial_lookup_tb,
+                                             data_lookup_tb = lookup_tb(input_ls$pa_r4) %>%
+                                               sp_data_pack_lup(),#aus_spatial_lookup_tb,
                                              pop_projs_str = input_ls$pop_projs_str)) %>%
     which() + 1
   data_sf_list <- purrr::prepend(data_sf_list,
@@ -129,7 +127,6 @@ make_year_filter_logic_vec <- function(data_tb,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{country}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_resolution_lup}}
 #'  \code{\link[lubridate]{year}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stringr]{str_length}}
@@ -137,7 +134,6 @@ make_year_filter_logic_vec <- function(data_tb,
 #'  \code{\link[ready4utils]{data_get}}
 #' @rdname get_spatial_data_names
 #' @export
-#' @importFrom ready4s4 data_year country lookup_tb sp_data_pack_lup sp_abbreviations_lup sp_resolution_lup
 #' @importFrom lubridate year
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
@@ -149,15 +145,15 @@ get_spatial_data_names <- function(input_ls,
                                    excl_diff_bound_yr = TRUE){
   #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_ls$at_highest_res
-  data_year <- ready4s4::data_year(input_ls$pa_r4)
+  data_year <- data_year(input_ls$pa_r4)
   at_specified_res <- input_ls$at_specified_res
-  country <- ready4s4::country(input_ls$pa_r4)
+  country <- country(input_ls$pa_r4)
   #sub_div_unit = NULL
   pop_projs_str <- input_ls$pop_projs_str
 
-  lookup_tb_r4 <- input_ls$pa_r4 %>% ready4s4::lookup_tb()
-  spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
-  abbreviations_lookup_tb <- ready4s4::sp_abbreviations_lup(lookup_tb_r4)
+  lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
+  spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
+  abbreviations_lookup_tb <- sp_abbreviations_lup(lookup_tb_r4)
   # if(excl_diff_bound_yr){
   #   spatial_lookup_tb <- spatial_lookup_tb %>%
   #     dplyr::filter(is.na(additional_detail) | additional_detail != " for 2016 boundaries")
@@ -173,7 +169,7 @@ get_spatial_data_names <- function(input_ls,
                                    dplyr::pull(area_type) %>%
                                    unique() %>%
                                    get_highest_res(year = data_year,
-                                                   resolution_lup_r3 = ready4s4::sp_resolution_lup(lookup_tb_r4)))
+                                                   resolution_lup_r3 = sp_resolution_lup(lookup_tb_r4)))
   data_unavail_for_year <-  is.na(data_res_vec)
   if(require_year_match & sum(data_unavail_for_year) > 0)
     stop("Data not available for specified year for all data requested")
@@ -242,22 +238,20 @@ get_spatial_data_names <- function(input_ls,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
 #'  \code{\link[lubridate]{year}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stringr]{str_length}}
 #'  \code{\link[purrr]{pluck}}
 #' @rdname make_year_vec
 #' @export
-#' @importFrom ready4s4 lookup_tb sp_data_pack_lup
 #' @importFrom lubridate year
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
 make_year_vec <- function(input_ls){
-  data_year <- ready4s4::data_year(input_ls$pa_r4)
-  lookup_tb_r4 <- input_ls$pa_r4 %>% ready4s4::lookup_tb()
-  spatial_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  data_year <- data_year(input_ls$pa_r4)
+  lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
+  spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
   pop_projs_str <- input_ls$pop_projs_str
   model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
   year_opts <- spatial_lookup_tb %>%

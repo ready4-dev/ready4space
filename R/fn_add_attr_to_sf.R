@@ -16,7 +16,6 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{country}}
 #'  \code{\link[dplyr]{filter}}
 #'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[stringr]{str_detect}}
@@ -25,7 +24,6 @@
 #'  \code{\link[stats]{setNames}}
 #' @rdname recur_add_attr_to_sf
 #' @export
-#' @importFrom ready4s4 lookup_tb sp_data_pack_lup country
 #' @importFrom dplyr filter
 #' @importFrom ready4utils data_get
 #' @importFrom stringr str_detect
@@ -38,8 +36,8 @@ recur_add_attr_to_sf <- function(input_ls,
                                  boundary_year,
                                  attribute_data
                                  ){
-  lookup_tb_r4 <- ready4s4::lookup_tb(input_ls$pa_r4)
-  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  lookup_tb_r4 <- lookup_tb(input_ls$pa_r4)
+  data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
   boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
                                                         dplyr::filter(area_type == area_unit) %>%
                                                         dplyr::filter(main_feature == "Boundary") %>%
@@ -140,11 +138,9 @@ get_included_yrs_sf <- function(sf){
 #' }
 #' @seealso
 #'  \code{\link[ready4utils]{data_get}}
-#'  \code{\link[ready4s4]{sp_data_pack_lup}}
 #' @rdname add_attr_list_to_sf
 #' @export
 #' @importFrom ready4utils data_get
-#' @importFrom ready4s4 sp_data_pack_lup
 add_attr_list_to_sf <- function(x,
                                 y,
                                 lookup_tb_r4){
@@ -153,7 +149,7 @@ add_attr_list_to_sf <- function(x,
                                     starter_sf = x)
   add_attr_to_sf(area_sf = x,
                  attr_data_tb = attr_data_xx,
-                 attr_data_desc = ready4utils::data_get(data_lookup_tb = ready4s4::sp_data_pack_lup(lookup_tb_r4),
+                 attr_data_desc = ready4utils::data_get(data_lookup_tb = sp_data_pack_lup(lookup_tb_r4),
                                                        lookup_reference = y,
                                                        lookup_variable = "name",
                                                        target_variable = "main_feature",
@@ -175,20 +171,18 @@ add_attr_list_to_sf <- function(x,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4s4]{sp_data_pack_lup}},\code{\link[ready4s4]{sp_abbreviations_lup}},\code{\link[ready4s4]{sp_starter_sf_lup}},\code{\link[ready4s4]{sp_uid_lup}}
 #'  \code{\link[ready4utils]{data_get}}
 #'  \code{\link[stats]{setNames}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #' @rdname make_attr_data_xx
 #' @export
-#' @importFrom ready4s4 sp_data_pack_lup sp_abbreviations_lup sp_starter_sf_lup sp_uid_lup
 #' @importFrom ready4utils data_get
 #' @importFrom stats setNames
 #' @importFrom dplyr filter pull
 make_attr_data_xx <- function(lookup_tb_r4,
                               lookup_ref,
                               starter_sf){
-  data_lookup_tb <- ready4s4::sp_data_pack_lup(lookup_tb_r4)
+  data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
   attr_data_xx <- eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
                                                           lookup_reference = lookup_ref,
                                                           lookup_variable = "name",
@@ -208,7 +202,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                              target_variable = "region",
                                              evaluate = FALSE)
     region_short_long_vec <- c(region_short_nm,
-                               ready4utils::data_get(data_lookup_tb = ready4s4::sp_abbreviations_lup(lookup_tb_r4),
+                               ready4utils::data_get(data_lookup_tb = sp_abbreviations_lup(lookup_tb_r4),
                                                      lookup_reference = region_short_nm,
                                                      lookup_variable = "short_name",
                                                      target_variable = "long_name",
@@ -218,7 +212,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                                 lookup_variable = "name",
                                                 target_variable = "area_type",
                                                 evaluate = FALSE) %>%
-      ready4utils::data_get(data_lookup_tb = ready4s4::sp_starter_sf_lup(lookup_tb_r4),
+      ready4utils::data_get(data_lookup_tb = sp_starter_sf_lup(lookup_tb_r4),
                             lookup_reference = .,
                             lookup_variable = "area_type",
                             target_variable = "sf_main_sub_div",
@@ -229,7 +223,7 @@ make_attr_data_xx <- function(lookup_tb_r4,
                                            lookup_variable = "name",
                                            target_variable = "area_bound_yr",
                                            evaluate = F)
-    area_names_var_str <- ready4s4::sp_uid_lup(lookup_tb_r4) %>%
+    area_names_var_str <- sp_uid_lup(lookup_tb_r4) %>%
       dplyr::filter(var_name %in% area_names_var_str) %>%
       dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>%
       dplyr::pull(var_name)

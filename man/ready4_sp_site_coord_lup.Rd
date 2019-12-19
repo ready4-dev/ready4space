@@ -50,7 +50,7 @@ Validate an instance of the S3 class: validate_ready4_sp_site_coord_lup
 Check whether an object is a valid instance of the S3 class: is_ready4_sp_site_coord_lup
 }
 \details{
-Readyforwhatsnext S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes used in simulation
+Readyforwhatsnext S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \examples{
 \dontrun{

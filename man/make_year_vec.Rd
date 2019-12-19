@@ -26,8 +26,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_data_pack_lup}}
- \code{\link[lubridate]{year}}
+\code{\link[lubridate]{year}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[stringr]{str_length}}
  \code{\link[purrr]{pluck}}

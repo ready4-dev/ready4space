@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_resolution_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_resolution_lup()
 #' @return A validated instance of the ready4_sp_resolution_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table of the relative resolutions of different spatial objects used in simulations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

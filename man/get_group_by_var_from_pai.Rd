@@ -26,6 +26,5 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{use_coord_lup}},\code{\link[ready4s4]{area_type}},\code{\link[ready4s4]{geom_dist_limit_km}}
- \code{\link[dplyr]{filter}}
+\code{\link[dplyr]{filter}}
 }

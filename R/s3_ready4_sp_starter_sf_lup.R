@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_starter_sf_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_starter_sf_lup()
 #' @return A validated instance of the ready4_sp_starter_sf_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table for base file used in creation of certain spatial objects used in simulations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

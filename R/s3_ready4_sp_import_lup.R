@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_import_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_import_lup()
 #' @return A validated instance of the ready4_sp_import_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table of sources of raw (un-processed) spatial data to import.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

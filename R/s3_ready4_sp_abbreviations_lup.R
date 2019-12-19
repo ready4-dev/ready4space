@@ -3,7 +3,7 @@
 #' @description Create a new valid instance of the S3 class: ready4_sp_abbreviations_lup
 #' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_abbreviations_lup()
 #' @return A validated instance of the ready4_sp_abbreviations_lup class
-#' @details Readyforwhatsnext S3 class for tibble object lookup table for abbreviations used in simulation input data.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){

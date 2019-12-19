@@ -1,129 +1,50 @@
-## Script to create the object from which S4 classes will be made.
+## Script to create the Make Classes Table from which S4 classes will be made.
 ##
 ## 1. Prerequisites
 ##    None
 ##
 ## 2. Make the ready4_class_make_tb object summarising the metadata about the S3 classes that we wish to create and export with this package.
 s4_classes_to_make_tb <- ready4class::ready4_class_make_tb() %>%
-  tibble::add_case(name_stub = "lookup",
+  tibble::add_case(name_stub = "lookup", ## RENAME TO SP_LUPS
                    class_slots = c("sp_abbreviations_lup","sp_import_lup","sp_data_pack_lup","sp_resolution_lup","sp_site_coord_lup","sp_starter_sf_lup","sp_uid_lup") %>% list(),
                    prototype = c("ready4_sp_abbreviations_lup","ready4_sp_import_lup","ready4_sp_data_pack_lup","ready4_sp_resolution_lup","ready4_sp_site_coord_lup","ready4_sp_starter_sf_lup","ready4_sp_uid_lup") %>% list(),
                    class_desc = "Look up tables to use throughout readyforwhatsnext suite",
                    parent_class = NA_character_) %>%
+  tibble::add_case(name_stub = "profiled_area",
+                   class_desc = "Information to create a profiled area object",
+                   prototype = list(c("character","character","numeric","character","logical","ready4_lookup", "numeric", "numeric", "numeric", "numeric", "character","POSIXt")),
+                   class_slots = list(c("country","area_type","area_bound_year","features","use_coord_lup","lookup_tb","crs_nbr","geom_dist_limit_km", "drive_time_limit_mins", "nbr_bands", "data_year","data_ymds")),
+                   parent_class = NA_character_,
+                   include_classes = list("ready4_lookup")) %>%
   tibble::add_case(name_stub = "env",
                    class_slots = c("st_data","env_sf","par_vals") %>% list(),
                    prototype = c("list","sf","tbl_df") %>% list(),
                    class_desc = "Spatiotemporal environment",
                    parent_class = NA_character_) %>%
-  tibble::add_case(name_stub = "struc",
-                   class_slots = c("parameter_name","deterministic_val","param_1","param_2","param_3","param_4","transformation","use_in","evidence_source") %>% list(),
-                   prototype = c("character","numeric","numeric","numeric","numeric","numeric","character","character","character") %>% list(),
-                   class_desc = "Structural parameter probability distributions and transformations",
-                   parent_class = NA_character_) %>%
-  tibble::add_case(name_stub = "profiled_area",
-                   class_desc = "Information to create a profiled area object",
-                   prototype = list(c("character","character","numeric","character","logical","ready4_lookup", "numeric", "numeric", "numeric", "numeric", "character","POSIXt")),
-                   class_slots = list(c("country","area_type","area_bound_year","features","use_coord_lup","lookup_tb","crs_nbr","geom_dist_limit_km", "drive_time_limmit_mins", "nbr_bands", "data_year","data_ymds")),
-                   parent_class = NA_character_,
-                   include_classes = list("ready4_lookup")) %>%
-  tibble::add_case(name_stub = "sim_data",
-                   class_desc = "Data inputs for simulation",
-                   prototype = list(c("ready4_env",
-                                      #"ready4_agent",
-                                      "numeric","numeric","POSIXt","POSIXt","POSIXt","numeric","numeric","tbl_df")),
-                   class_slots = list(c("st_envir",
-                                       # "agent_pops",
-                                        "age_lower","age_upper","pre_model_date","model_start_date","model_end_date","time_steps","nbr_steps","results")),
-                   parent_class = NA_character_,
-                   include_classes = list(c("ready4_agent","ready4_env"))) %>%
-  tibble::add_case(name_stub = "struc_pert",
-                   class_desc = "Structural pert distribution parameters and transformations",
-                   prototype = list(c("character")),
-                   class_slots = list(c("distribution")),
-                   values = list(distribution = "pert"),
-                   allowed_values = list(distribution = "pert"),
-                   parent_class = "ready4_struc",
-                   meaningful_names = list(list(Parameter = "parameter_name",
-                                                Deterministic_value = "deterministic_val",
-                                                Distribution = "distribution",
-                                                Mode = "param_1",
-                                                Minimum = "param_2",
-                                                Maximum = "param_3",
-                                                Shape = "param_4",
-                                                Transformation = "transformation",
-                                                Use_in = "use_in",
-                                                Source = "evidence_source")),
-                   include_classes = list("ready4_struc")) %>%
-  tibble::add_case(name_stub = "struc_unif",
-                   class_desc = "Structural parameters using uniform distribution and transformations",
-                   prototype = list(c("character")),
-                   class_slots = list(c("distribution")),
-                   values = list(distribution = "uniform"),
-                   allowed_values = list(distribution = "uniform"),
-                   parent_class = "ready4_struc",
-                   meaningful_names = list(list(Parameter = "parameter_name",
-                                                Deterministic_value = "deterministic_val",
-                                                Distribution = "distribution",
-                                                Unused_1 = "param_1",
-                                                Unused_2 = "param_2",
-                                                Unused_3= "param_3",
-                                                Unused_4 = "param_4",
-                                                Transformation = "transformation",
-                                                Use_in = "use_in",
-                                                Source = "evidence_source")),
-                   include_classes = list("ready4_struc")) %>%
-  tibble::add_case(name_stub = "struc_norm",
-                   class_desc = "Structural parameters using normal distribution and transformations",
-                   prototype = list(c("character")),
-                   class_slots = list(c("distribution")),
-                   values = list(distribution = "normal"),
-                   allowed_values = list(distribution = "normal"),
-                   parent_class = "ready4_struc",
-                   meaningful_names = list(list(Parameter = "parameter_name",
-                                                Deterministic_value = "deterministic_val",
-                                                Distribution = "distribution",
-                                                Mean = "param_1",
-                                                SE = "param_2",
-                                                Unused_3= "param_3",
-                                                Unused_4 = "param_4",
-                                                Transformation = "transformation",
-                                                Use_in = "use_in",
-                                                Source = "evidence_source")),
-                   include_classes = list("ready4_struc")) %>%
-  # tibble::add_case(name_stub = "local",
-  #                  class_slots = c("lup_tbs_r4","merge_with_chr_vec","raw_data_dir_chr","pckg_chr","overwrite_lgl", "save_lgl") %>% list(),
-  #                  prototype = c("ready4_lookup","character","character","character","logical", "logical") %>% list(),
-  #                  class_desc = "Object defining data to be saved in local directory.",
-  #                  parent_class = NA_character_,
-  #                  include_classes = list("ready4_lookup")) %>%
-  # tibble::add_case(name_stub = "local_raw",
-  #                  class_slots = c("save_type") %>% list(),
-  #                  prototype = c("character") %>% list(),
-  #                  values = list(save_type ="raw"),
-  #                  allowed_values = list(save_type = "raw"),
-  #                  class_desc = "Object defining data to be saved in local directory in a raw (unprocessed) format.",
-  #                  parent_class = "ready4_local",
-  #                  include_classes = list("ready4_local")) %>%
-  # tibble::add_case(name_stub = "local_proc",
-  #                  class_slots = c("save_type","proc_data_dir_chr","import_chr_vec","path_to_starter_sf_chr","import_this_ls") %>% list(),
-  #                  prototype = c("character","character","character","character","list") %>% list(),
-  #                  values = list(save_type = "proc"),
-  #                  allowed_values = list(save_type = "proc"),
-  #                  class_desc = "Object defining data to be saved in local directory in a processed (R) format.",
-  #                  parent_class = "ready4_local",
-  #                  include_classes = list("ready4_local")) %>%
-  # tibble::add_case(name_stub = "script_data",
-  #                  class_slots = c(#"proc_data_dir_chr",
-  #                    "raw_data_dir_chr", "crs_nbr_vec") %>% list(),
-  #                  prototype = c("character","numeric") %>% list(),
-  #                  class_desc = "Data to be passed to a function that constructs a spatial object from a lookup table.",
-  #                  parent_class = "ready4_local_proc",
-  #                  include_classes = list("ready4_local_proc")) %>%
-  dplyr::mutate(make_s3 = FALSE) #%>% ready4use::remake_ls_cols()
-# %>%
-#   dplyr::mutate_at(dplyr::vars(prototype,
-#                                prototype_checker_prefix,
-#                                prototype_namespace,
-#                                class_slots,
-#                                include_classes),
-#                    ~ purrr::map(., ~ list(.x)))
+  tibble::add_case(name_stub = "sp_local",
+                   class_slots = c("lup_tbs_r4") %>% list(),#,"merge_with_chr_vec","raw_data_dir_chr","pckg_chr","overwrite_lgl", "save_lgl") %>% list(),
+                   prototype = c("ready4_lookup") %>% list(),#,"character","character","character","logical", "logical") %>% list(),
+                   class_desc = "Object defining data to be saved in local directory.",
+                   parent_class = "ready4_local"#,#NA_character_,
+                   #include_classes = list("ready4_local")
+                   ) %>%
+  tibble::add_case(name_stub = "sp_local_raw",
+                   class_slots = c("lup_tbs_r4") %>% list(),#,c("save_type") %>% list(),
+                   prototype = c("ready4_lookup") %>% list(),#,c("character") %>% list(),
+                   #values = list(save_type ="raw"),
+                   #allowed_values = list(save_type = "raw"),
+                   class_desc = "Object defining data to be saved in local directory in a raw (unprocessed) format.",
+                   parent_class = "ready4_local_raw"#,
+                   #include_classes = list("ready4_local")
+                   ) %>%
+  tibble::add_case(name_stub = "sp_local_proc",
+                   class_slots = c("lup_tbs_r4") %>% list(),#,c("save_type","proc_data_dir_chr","import_chr_vec","path_to_starter_sf_chr","import_this_ls") %>% list(),
+                   prototype = c("ready4_lookup") %>% list(),#,c("character","character","character","character","list") %>% list(),
+                   #values = list(save_type = "proc"),
+                   #allowed_values = list(save_type = "proc"),
+                   class_desc = "Object defining data to be saved in local directory in a processed (R) format.",
+                   parent_class = "ready4_local_proc"#,
+                  # include_classes = list("ready4_local")
+                  ) %>%
+  dplyr::mutate(make_s3 = FALSE) %>%
+  ready4use::remake_ls_cols()

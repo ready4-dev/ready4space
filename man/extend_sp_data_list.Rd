@@ -30,8 +30,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s4]{crs_nbr}},\code{\link[ready4s4]{geom_dist_limit_km}},\code{\link[ready4s4]{drive_time_limmit_mins}},\code{\link[ready4s4]{lookup_tb}},\code{\link[ready4s4]{sp_uid_lup}},\code{\link[ready4s4]{data_year}},\code{\link[ready4s4]{sp_resolution_lup}}
- \code{\link[ready4utils]{data_get}}
+\code{\link[ready4utils]{data_get}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
  \code{\link[nnet]{which.is.max}}

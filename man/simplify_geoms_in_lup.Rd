@@ -30,7 +30,6 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4s4]{sp_data_pack_lup}}
- \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
+\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[purrr]{map}}
 }

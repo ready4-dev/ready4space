@@ -4,10 +4,15 @@
 \alias{ready4_env}
 \title{ready4_env}
 \usage{
-ready4_env(st_data = list(list()))
+ready4_env(st_data = list(list()), env_sf = sf::st_sf(sf::st_sfc()),
+  par_vals = tibble::tibble())
 }
 \arguments{
 \item{st_data}{list, Default: list(list())}
+
+\item{env_sf}{sf, Default: sf::st_sf(sf::st_sfc())}
+
+\item{par_vals}{tbl_df, Default: tibble::tibble()}
 }
 \value{
 An S4 object of the ready4_env class
@@ -21,6 +26,10 @@ Create a new S4 object of the class:ready4_env
 
 \describe{
 \item{\code{st_data}}{list}
+
+\item{\code{env_sf}}{sf}
+
+\item{\code{par_vals}}{tbl_df}
 }}
 
 \examples{
@@ -31,5 +40,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[methods]{new}}
+\code{\link[sf]{sf}},\code{\link[sf]{sfc}}
+ \code{\link[tibble]{tibble}}
+ \code{\link[methods]{new}}
 }
