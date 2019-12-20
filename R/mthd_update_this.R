@@ -1,6 +1,5 @@
 #' @importMethodsFrom ready4use update_this
 #' @export
-#' @include s4_ready4_sp_local_proc.R
 methods::setMethod("update_this",
                    "ready4_sp_local_proc",
                    function(x) {

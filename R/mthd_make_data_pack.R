@@ -45,7 +45,6 @@ make_data_packs <- function(x,
 #' @importFrom purrr reduce
 #' @importFrom ready4utils add_all_tbs_in_r4
 #' @importFrom dplyr slice
-#' @include s4_ready4_lookup.R
 make_data_packs.ready4_sp_import_lup <- function(x,
                                                  init_lookup_r4 = NULL,
                                                  pckg_name,

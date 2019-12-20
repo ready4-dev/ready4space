@@ -1,3 +1,4 @@
+
 #' ready4_par_str_envir
 #' @name ready4_par_str_envir
 #' @description Create a new valid instance of the S3 class: ready4_par_str_envir

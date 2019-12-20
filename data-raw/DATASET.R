@@ -6,34 +6,63 @@
 ## 2. Load package functions
 devtools::load_all()
 ##
-## 3. Run script to create the object with the metadata about the classes we will be creating.
+## 3. Run scripts to create the MAKE CLASS TABLE object with the metadata about the classes we will be creating.
 source("data-raw/MAKE_CLASSES_S3.R")
 source("data-raw/MAKE_CLASSES_S4.R")
 ##
-## 4. Specify details about this package and the prefix we will use on all classes we create in this package.
-name_prefix <- "ready4_"
-dev_pckg_namespace <- "ready4space"
-## 5. Load a prototype lookup table that contains all of the potential parent / prototype classes that we will be using.
-data("class_pt_lup", package = "ready4use")
-##
-## 6. Remake the classes we previously created, this time using the new, preferred make_and_update method, which appends the metadata on the new classes to our instance of the ready4_class_pt_lup class.
-class_pt_lup <- ready4class::make_and_update(s3_classes_to_make_tb,
-                                             dev_pckg_namespace = dev_pckg_namespace,
-                                             name_prefix = name_prefix,
-                                             output_dir = "R",
-                                             file_exists_logic = "overwrite",
-                                             init_class_pt_lup = class_pt_lup)
-class_pt_lup <- ready4class::make_and_update(s4_classes_to_make_tb[5:6,], ## Had to run each line sequentially - debugging required. Not finding newly created class. Needs documentation/loading within loop?
-                                             dev_pckg_namespace = dev_pckg_namespace,
-                                             name_prefix = name_prefix,
-                                             output_dir = "R",
-                                             #delete_files_pattern_chr = NA_character_,
-                                             file_exists_logic = "overwrite",
-                                             init_class_pt_lup = class_pt_lup,
-                                             ignore_ns_chr = c("ready4s4"),
-                                             class_in_cache_logic_chr = "overwrite")
-## 7. Save a copy of a class prototype object with details about the newly created classes.
-usethis::use_data(class_pt_lup,overwrite = T)
-## 8. Document.
+## 3. Merge the two MAKE CLASS TABLE objects and pass the merged object to the method to create the new classes and make an updated PROTOTYPE LOOKUP object.
+prototype_lup <- dplyr::bind_rows(s3_classes_to_make_tb,
+                                 s4_classes_to_make_tb) %>%
+  ready4class::make_and_update(dev_pckg_namespace = "ready4space",
+                               name_prefix = "ready4_",
+                               output_dir = "R",
+                               file_exists_logic = "overwrite",
+                               init_class_pt_lup = ready4use::prototype_lup,
+                               ignore_ns_chr = c("ready4s4"),
+                               class_in_cache_logic_chr = "overwrite")
+## 4. Save a copy of the updated PROTOTYPE LOOKUP object, which now contains details about the newly created classes.
+usethis::use_data(prototype_lup,overwrite = T)
+## 5. Document.
+usethis::use_package("dplyr")
+usethis::use_package("geojsonio")
+usethis::use_package("googlePolylines")
+usethis::use_package("googleway")
+usethis::use_package("httr")
+usethis::use_package("ISOcodes")
+usethis::use_package("jsonlite")
+usethis::use_package("lubridate")
+usethis::use_package("lwgeom")
+usethis::use_package("magrittr")
+usethis::use_package("mc2d")
+usethis::use_package("methods")
+usethis::use_package("nnet")
+usethis::use_package("osrm")
+usethis::use_package("purrr")
+usethis::use_package("rlang")
+usethis::use_package("rmapshaper")
+usethis::use_package("sf")
+usethis::use_package("stats")
+usethis::use_package("stringi")
+usethis::use_package("stringr")
+usethis::use_package("tibble")
+usethis::use_package("tidyr")
+usethis::use_package("units")
+usethis::use_dev_package("ready4use")
+usethis::use_dev_package("ready4utils")
 devtools::document()
 
+# class_pt_lup <- ready4class::make_and_update(s3_classes_to_make_tb,
+#                                              dev_pckg_namespace = dev_pckg_namespace,
+#                                              name_prefix = name_prefix,
+#                                              output_dir = "R",
+#                                              file_exists_logic = "overwrite",
+#                                              init_class_pt_lup = class_pt_lup)
+# class_pt_lup <- ready4class::make_and_update(s4_classes_to_make_tb, ## Had to run each line sequentially - debugging required. Not finding newly created class. Needs documentation/loading within loop?
+#                                              dev_pckg_namespace = dev_pckg_namespace,
+#                                              name_prefix = name_prefix,
+#                                              output_dir = "R",
+#                                              #delete_files_pattern_chr = NA_character_,
+#                                              file_exists_logic = "overwrite",
+#                                              init_class_pt_lup = class_pt_lup,
+#                                              ignore_ns_chr = c("ready4s4"),
+#                                              class_in_cache_logic_chr = "overwrite")

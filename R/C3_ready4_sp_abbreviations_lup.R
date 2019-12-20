@@ -1,3 +1,4 @@
+
 #' ready4_sp_abbreviations_lup
 #' @name ready4_sp_abbreviations_lup
 #' @description Create a new valid instance of the S3 class: ready4_sp_abbreviations_lup

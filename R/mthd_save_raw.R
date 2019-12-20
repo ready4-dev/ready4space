@@ -35,7 +35,6 @@ methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_l
 
 #' @importMethodsFrom ready4use save_raw
 #' @export
-#' @include s4_ready4_sp_local.R
 methods::setMethod("save_raw",
                    c("ready4_sp_local"),
                    function(x,
@@ -60,7 +59,6 @@ methods::setMethod("save_raw",
 
 
 #' @importMethodsFrom ready4use make_local_proc_r4 import_chr_vec<-
-#' @include s4_ready4_sp_local.R
 methods::setMethod("make_local_proc_r4",
                    c("ready4_sp_local"), function(x,
                                                raw_data_dir_chr,

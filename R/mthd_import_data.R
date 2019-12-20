@@ -87,7 +87,6 @@ methods::setMethod("import_data",
 
 #' @importMethodsFrom ready4use import_data path_to_starter_sf_chr import_this_ls<-
 #' @export
-#' @include s4_ready4_sp_local_proc.R
 methods::setMethod("import_data",
                    "ready4_sp_local_proc",
                    function(x,

@@ -24,7 +24,6 @@ methods::setGeneric("updateAttrDataXx",
 #' @param region_short_long_vec A character vector
 #' @export
 #' @rdname updateAttrDataXx
-#' @include s4_ready4_lookup.R
 methods::setMethod("updateAttrDataXx",
                    "ready4_lookup",
                    function(x,
