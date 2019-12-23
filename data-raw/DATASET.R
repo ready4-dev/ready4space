@@ -19,6 +19,7 @@ prototype_lup <- dplyr::bind_rows(s3_classes_to_make_tb,
                                file_exists_logic = "overwrite",
                                init_class_pt_lup = ready4use::prototype_lup,
                                ignore_ns_chr = c("ready4s4"),
+                               delete_files_pattern_chr_vec = c("^C4_","^C3_"),
                                class_in_cache_logic_chr = "overwrite")
 ## 4. Save a copy of the updated PROTOTYPE LOOKUP object, which now contains details about the newly created classes.
 usethis::use_data(prototype_lup,overwrite = T)

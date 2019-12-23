@@ -11,6 +11,18 @@
 #' @export
 
 methods::setGeneric("sp_uid_lup", function(x) standardGeneric("sp_uid_lup"))
+#' sp_uid_lup
+#' @name sp_uid_lup-ready4_lookup
+#' @description Get the value of the slot sp_uid_lup for S4 objects of class ready4_lookup
+#' @param x An object of class ready4_lookup
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname sp_uid_lup
+methods::setMethod("sp_uid_lup", methods::className("ready4_lookup",".GlobalEnv"), function(x) x@sp_uid_lup)
 #' sp_uid_lup<-
 #' @description S4 Generic function to set the value of the slot sp_uid_lup
 #' @name sp_uid_lup<-
@@ -24,3 +36,18 @@ methods::setGeneric("sp_uid_lup", function(x) standardGeneric("sp_uid_lup"))
 #' @export
 
 methods::setGeneric("sp_uid_lup<-", function(x, value) standardGeneric("sp_uid_lup<-"))
+#' sp_uid_lup<-
+#' @name sp_uid_lup<--ready4_lookup
+#' @description Set the value of the slot sp_uid_lup for S4 objects of class ready4_lookup
+#' @param x An object of class ready4_lookup
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname sp_uid_lup-set
+methods::setMethod("sp_uid_lup<-", methods::className("ready4_lookup",".GlobalEnv"), function(x, value) {
+x@sp_uid_lup <- value
+methods::validObject(x)
+x})
