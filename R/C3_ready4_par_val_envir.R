@@ -36,7 +36,7 @@ validate_ready4_par_val_envir(new_ready4_par_val_envir(x))
 #' @importFrom tibble is_tibble
 new_ready4_par_val_envir <- function(x){ 
 stopifnot(tibble::is_tibble(x))
-class(x) <- append("ready4_par_val_envir",
+class(x) <- append(c("ready4_par_val_envir",setdiff(make_prototype_ready4_par_val_envir() %>% class(),class(x))),
 class(x))
 x
 }

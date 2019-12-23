@@ -36,7 +36,7 @@ validate_ready4_sp_import_lup(new_ready4_sp_import_lup(x))
 #' @importFrom tibble is_tibble
 new_ready4_sp_import_lup <- function(x){ 
 stopifnot(tibble::is_tibble(x))
-class(x) <- append("ready4_sp_import_lup",
+class(x) <- append(c("ready4_sp_import_lup",setdiff(make_prototype_ready4_sp_import_lup() %>% class(),class(x))),
 class(x))
 x
 }
