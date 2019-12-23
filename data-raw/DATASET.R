@@ -52,18 +52,4 @@ usethis::use_dev_package("ready4use")
 usethis::use_dev_package("ready4utils")
 devtools::document()
 
-# class_pt_lup <- ready4class::make_and_update(s3_classes_to_make_tb,
-#                                              dev_pckg_namespace = dev_pckg_namespace,
-#                                              name_prefix = name_prefix,
-#                                              output_dir = "R",
-#                                              file_exists_logic = "overwrite",
-#                                              init_class_pt_lup = class_pt_lup)
-# class_pt_lup <- ready4class::make_and_update(s4_classes_to_make_tb, ## Had to run each line sequentially - debugging required. Not finding newly created class. Needs documentation/loading within loop?
-#                                              dev_pckg_namespace = dev_pckg_namespace,
-#                                              name_prefix = name_prefix,
-#                                              output_dir = "R",
-#                                              #delete_files_pattern_chr = NA_character_,
-#                                              file_exists_logic = "overwrite",
-#                                              init_class_pt_lup = class_pt_lup,
-#                                              ignore_ns_chr = c("ready4s4"),
-#                                              class_in_cache_logic_chr = "overwrite")
+
