@@ -12,9 +12,9 @@
 
 methods::setGeneric("area_type", function(x) standardGeneric("area_type"))
 #' area_type
-#' @name area_type-ready4_profiled_area
-#' @description Get the value of the slot area_type for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name area_type-ready4_meso_area
+#' @description Get the value of the slot area_type for S4 objects of class ready4_meso_area
+#' @param x An object of class ready4_meso_area
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -22,7 +22,7 @@ methods::setGeneric("area_type", function(x) standardGeneric("area_type"))
 #'  }
 #' }
 #' @rdname area_type
-methods::setMethod("area_type", methods::className("ready4_profiled_area",".GlobalEnv"), function(x) x@area_type)
+methods::setMethod("area_type", methods::className("ready4_meso_area",".GlobalEnv"), function(x) x@area_type)
 #' area_type<-
 #' @description S4 Generic function to set the value of the slot area_type
 #' @name area_type<-
@@ -37,9 +37,9 @@ methods::setMethod("area_type", methods::className("ready4_profiled_area",".Glob
 
 methods::setGeneric("area_type<-", function(x, value) standardGeneric("area_type<-"))
 #' area_type<-
-#' @name area_type<--ready4_profiled_area
-#' @description Set the value of the slot area_type for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name area_type<--ready4_meso_area
+#' @description Set the value of the slot area_type for S4 objects of class ready4_meso_area
+#' @param x An object of class ready4_meso_area
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -47,7 +47,7 @@ methods::setGeneric("area_type<-", function(x, value) standardGeneric("area_type
 #'  }
 #' }
 #' @rdname area_type-set
-methods::setMethod("area_type<-", methods::className("ready4_profiled_area",".GlobalEnv"), function(x, value) {
+methods::setMethod("area_type<-", methods::className("ready4_meso_area",".GlobalEnv"), function(x, value) {
 x@area_type <- value
 methods::validObject(x)
 x})

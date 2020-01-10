@@ -2,17 +2,17 @@
 % Please edit documentation in R/gnrc_area_type.R
 \name{area_type}
 \alias{area_type}
-\alias{area_type-ready4_profiled_area}
+\alias{area_type-ready4_meso_area}
 \title{area_type}
 \arguments{
 \item{x}{An object}
 
-\item{x}{An object of class ready4_profiled_area}
+\item{x}{An object of class ready4_meso_area}
 }
 \description{
 S4 Generic function to get the value of the slot area_type
 
-Get the value of the slot area_type for S4 objects of class ready4_profiled_area
+Get the value of the slot area_type for S4 objects of class ready4_meso_area
 }
 \examples{
 \dontrun{

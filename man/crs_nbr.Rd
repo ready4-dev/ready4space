@@ -2,17 +2,17 @@
 % Please edit documentation in R/gnrc_crs_nbr.R
 \name{crs_nbr}
 \alias{crs_nbr}
-\alias{crs_nbr-ready4_profiled_area}
+\alias{crs_nbr-ready4_macro}
 \title{crs_nbr}
 \arguments{
 \item{x}{An object}
 
-\item{x}{An object of class ready4_profiled_area}
+\item{x}{An object of class ready4_macro}
 }
 \description{
 S4 Generic function to get the value of the slot crs_nbr
 
-Get the value of the slot crs_nbr for S4 objects of class ready4_profiled_area
+Get the value of the slot crs_nbr for S4 objects of class ready4_macro
 }
 \examples{
 \dontrun{

@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9154
+Version: 0.0.0.9155
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -43,8 +43,81 @@ Imports:
     tibble,
     tidyr,
     units,
-    ready4use (>= 0.0.0.9035),
-    ready4utils (>= 0.0.0.9069)
+    ready4utils (>= 0.0.0.9069),
+    ready4use (>= 0.0.0.9035)
 Remotes: 
-    orygennp/ready4use,
-    orygennp/ready4utils
+    orygennp/ready4utils,
+    orygennp/ready4use
+Collate: 
+    'C3_ready4_par_str_envir.R'
+    'C3_ready4_par_val_envir.R'
+    'C3_ready4_sp_abbreviations_lup.R'
+    'C3_ready4_sp_data_pack_lup.R'
+    'C3_ready4_sp_import_lup.R'
+    'C3_ready4_sp_resolution_lup.R'
+    'C3_ready4_sp_site_coord_lup.R'
+    'C3_ready4_sp_starter_sf_lup.R'
+    'C3_ready4_sp_uid_lup.R'
+    'C4_ready4_env.R'
+    'C4_ready4_lookup.R'
+    'C4_ready4_macro.R'
+    'C4_ready4_meso_region.R'
+    'C4_ready4_meso_area.R'
+    'C4_ready4_micro.R'
+    'C4_ready4_profiled_area.R'
+    'C4_ready4_sp_local.R'
+    'C4_ready4_sp_local_proc.R'
+    'C4_ready4_sp_local_raw.R'
+    'fn_add_attr_to_data_pack.R'
+    'fn_add_attr_to_sf.R'
+    'fn_add_sp_resolution.R'
+    'fn_get_sp_data.R'
+    'fn_intersect_sfs_keep_counts.R'
+    'fn_intersect_sfs_update_counts.R'
+    'fn_make_env_param_tb.R'
+    'fn_make_sp_data_list.R'
+    'fn_reshape_pop_projs.R'
+    'fn_spatial_area_within_xkm_of_cluster.R'
+    'fn_spatial_area_within_xkm_of_points.R'
+    'fn_spatial_area_within_xmin_drive_of_points.R'
+    'fn_spatial_cases_coordinates.R'
+    'fn_spatial_create_agent_coordinates_tb.R'
+    'fn_travel_time_app_calc.R'
+    'fn_update_counts_by_area.R'
+    'gnrc_area.R'
+    'gnrc_area_bound_year.R'
+    'gnrc_area_type.R'
+    'gnrc_country.R'
+    'gnrc_country_bound_year.R'
+    'gnrc_crs_nbr.R'
+    'gnrc_data_year.R'
+    'gnrc_data_ymds.R'
+    'gnrc_drive_time_limit_mins.R'
+    'gnrc_env_sf.R'
+    'gnrc_features.R'
+    'gnrc_geom_dist_km_cuts.R'
+    'gnrc_geom_dist_limit_km.R'
+    'gnrc_global_region.R'
+    'gnrc_lookup_tb.R'
+    'gnrc_lup_tbs_r4.R'
+    'gnrc_nbr_bands.R'
+    'gnrc_par_vals.R'
+    'gnrc_region.R'
+    'gnrc_region_bound_year.R'
+    'gnrc_region_type.R'
+    'gnrc_sp_abbreviations_lup.R'
+    'gnrc_sp_data_pack_lup.R'
+    'gnrc_sp_import_lup.R'
+    'gnrc_sp_resolution_lup.R'
+    'gnrc_sp_site_coord_lup.R'
+    'gnrc_sp_starter_sf_lup.R'
+    'gnrc_sp_uid_lup.R'
+    'gnrc_st_data.R'
+    'gnrc_temporal_max.R'
+    'gnrc_temporal_min.R'
+    'gnrc_travel_mode.R'
+    'gnrc_travel_time_mins_cuts.R'
+    'gnrc_use_coord_lup.R'
+    'imp_methods.R'
+    'imp_pipe.R'
+    'pckg_ready4space.R'

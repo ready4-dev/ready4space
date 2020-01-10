@@ -2,17 +2,17 @@
 % Please edit documentation in R/gnrc_area_bound_year.R
 \name{area_bound_year<-}
 \alias{area_bound_year<-}
-\alias{area_bound_year<--ready4_profiled_area}
+\alias{area_bound_year<--ready4_meso_area}
 \title{area_bound_year<-}
 \arguments{
 \item{x}{An object}
 
-\item{x}{An object of class ready4_profiled_area}
+\item{x}{An object of class ready4_meso_area}
 }
 \description{
 S4 Generic function to set the value of the slot area_bound_year
 
-Set the value of the slot area_bound_year for S4 objects of class ready4_profiled_area
+Set the value of the slot area_bound_year for S4 objects of class ready4_meso_area
 }
 \examples{
 \dontrun{

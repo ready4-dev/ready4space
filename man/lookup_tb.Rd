@@ -2,17 +2,17 @@
 % Please edit documentation in R/gnrc_lookup_tb.R
 \name{lookup_tb}
 \alias{lookup_tb}
-\alias{lookup_tb-ready4_profiled_area}
+\alias{lookup_tb-ready4_macro}
 \title{lookup_tb}
 \arguments{
 \item{x}{An object}
 
-\item{x}{An object of class ready4_profiled_area}
+\item{x}{An object of class ready4_macro}
 }
 \description{
 S4 Generic function to get the value of the slot lookup_tb
 
-Get the value of the slot lookup_tb for S4 objects of class ready4_profiled_area
+Get the value of the slot lookup_tb for S4 objects of class ready4_macro
 }
 \examples{
 \dontrun{

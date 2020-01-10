@@ -12,9 +12,9 @@
 
 methods::setGeneric("crs_nbr", function(x) standardGeneric("crs_nbr"))
 #' crs_nbr
-#' @name crs_nbr-ready4_profiled_area
-#' @description Get the value of the slot crs_nbr for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name crs_nbr-ready4_macro
+#' @description Get the value of the slot crs_nbr for S4 objects of class ready4_macro
+#' @param x An object of class ready4_macro
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -22,7 +22,7 @@ methods::setGeneric("crs_nbr", function(x) standardGeneric("crs_nbr"))
 #'  }
 #' }
 #' @rdname crs_nbr
-methods::setMethod("crs_nbr", methods::className("ready4_profiled_area",".GlobalEnv"), function(x) x@crs_nbr)
+methods::setMethod("crs_nbr", methods::className("ready4_macro",".GlobalEnv"), function(x) x@crs_nbr)
 #' crs_nbr<-
 #' @description S4 Generic function to set the value of the slot crs_nbr
 #' @name crs_nbr<-
@@ -37,9 +37,9 @@ methods::setMethod("crs_nbr", methods::className("ready4_profiled_area",".Global
 
 methods::setGeneric("crs_nbr<-", function(x, value) standardGeneric("crs_nbr<-"))
 #' crs_nbr<-
-#' @name crs_nbr<--ready4_profiled_area
-#' @description Set the value of the slot crs_nbr for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name crs_nbr<--ready4_macro
+#' @description Set the value of the slot crs_nbr for S4 objects of class ready4_macro
+#' @param x An object of class ready4_macro
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -47,7 +47,7 @@ methods::setGeneric("crs_nbr<-", function(x, value) standardGeneric("crs_nbr<-")
 #'  }
 #' }
 #' @rdname crs_nbr-set
-methods::setMethod("crs_nbr<-", methods::className("ready4_profiled_area",".GlobalEnv"), function(x, value) {
+methods::setMethod("crs_nbr<-", methods::className("ready4_macro",".GlobalEnv"), function(x, value) {
 x@crs_nbr <- value
 methods::validObject(x)
 x})

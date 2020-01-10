@@ -9,6 +9,7 @@ devtools::load_all()
 ## 3. Run scripts to create the MAKE CLASS TABLE object with the metadata about the classes we will be creating.
 source("data-raw/MAKE_CLASSES_S3.R")
 source("data-raw/MAKE_CLASSES_S4.R")
+prototype_lup <- ready4use::prototype_lup
 ##
 ## 3. Merge the two MAKE CLASS TABLE objects and pass the merged object to the method to create the new classes and make an updated PROTOTYPE LOOKUP object.
 prototype_lup <- dplyr::bind_rows(s3_classes_to_make_tb,
@@ -17,9 +18,10 @@ prototype_lup <- dplyr::bind_rows(s3_classes_to_make_tb,
                                name_prefix = "ready4_",
                                output_dir = "R",
                                file_exists_logic = "overwrite",
-                               init_class_pt_lup = ready4use::prototype_lup,
+                               init_class_pt_lup = prototype_lup,#ready4use::prototype_lup,
                                ignore_ns_chr = c("ready4s4"),
-                               delete_files_pattern_chr_vec = c("^C4_","^C3_"),
+                               required_pckg_chr_vec = c("ready4use"), ## Need to implement new delete package logic now documenting and loading package with each new class.
+                               #delete_files_pattern_chr_vec = c("^C4_","^C3_"),
                                class_in_cache_logic_chr = "overwrite")
 ## 4. Save a copy of the updated PROTOTYPE LOOKUP object, which now contains details about the newly created classes.
 usethis::use_data(prototype_lup,overwrite = T)

@@ -1,14 +1,7 @@
-#' ready4_profiled_area
-#' @name ready4_profiled_area
-#' @description An S4 class to represent Information to create a profiled area object
-#' @include C4_ready4_micro.R
-#' @slot features character
-#' @slot use_coord_lup logical
-#' @slot geom_dist_limit_km numeric
-#' @slot drive_time_limit_mins numeric
-#' @slot nbr_bands numeric
-#' @slot data_year character
-#' @slot data_ymds POSIXt
+#' ready4_micro
+#' @name ready4_micro
+#' @description An S4 class to represent Micro level context
+#' @include C4_ready4_meso_area.R
 #' @slot geom_dist_km_cuts numeric
 #' @slot travel_time_mins_cuts numeric
 #' @slot travel_mode character
@@ -25,17 +18,14 @@
 #' @slot crs_nbr numeric
 #' @slot temporal_min POSIXt
 #' @slot temporal_max POSIXt
-methods::setClass(methods::className("ready4_profiled_area",".GlobalEnv"),
-contains = "ready4_micro",
-slots = c(features = "character",use_coord_lup = "logical",geom_dist_limit_km = "numeric",drive_time_limit_mins = "numeric",nbr_bands = "numeric",data_year = "character",data_ymds = "POSIXt"),
-prototype =  list(features = NA_character_,use_coord_lup = NA,geom_dist_limit_km = NA_real_,drive_time_limit_mins = NA_real_,nbr_bands = NA_real_,data_year = NA_character_,data_ymds = .POSIXct(NA_character_)))
+methods::setClass(methods::className("ready4_micro",".GlobalEnv"),
+contains = "ready4_meso_area",
+slots = c(geom_dist_km_cuts = "numeric",travel_time_mins_cuts = "numeric",travel_mode = "character"),
+prototype =  list(geom_dist_km_cuts = NA_real_,travel_time_mins_cuts = NA_real_,travel_mode = NA_character_))
 
-#' ready4_profiled_area
-#' @name ready4_profiled_area
-#' @description Create a new S4 object of the class:ready4_profiled_area
-#' @param geom_dist_km_cuts numeric, Default: NA
-#' @param travel_time_mins_cuts numeric, Default: NA
-#' @param travel_mode character, Default: 'NA'
+#' ready4_micro
+#' @name ready4_micro
+#' @description Create a new S4 object of the class:ready4_micro
 #' @param area_type character, Default: 'NA'
 #' @param area character, Default: 'NA'
 #' @param area_bound_year numeric, Default: NA
@@ -49,7 +39,7 @@ prototype =  list(features = NA_character_,use_coord_lup = NA,geom_dist_limit_km
 #' @param crs_nbr numeric, Default: NA
 #' @param temporal_min POSIXt, Default: .POSIXct(NA_character_)
 #' @param temporal_max POSIXt, Default: .POSIXct(NA_character_)
-#' @return An S4 object of the ready4_profiled_area class
+#' @return An S4 object of the ready4_micro class
 #' 
 #' @examples 
 #' \dontrun{
@@ -59,13 +49,10 @@ prototype =  list(features = NA_character_,use_coord_lup = NA,geom_dist_limit_km
 #' }
 #' @seealso 
 #'  \code{\link[methods]{new}}
-#' @rdname ready4_profiled_area
+#' @rdname ready4_micro
 #' @export 
 #' @importFrom methods new
-ready4_profiled_area <- function(geom_dist_km_cuts = NA_real_,
-travel_time_mins_cuts = NA_real_,
-travel_mode = NA_character_,
-area_type = NA_character_,
+ready4_micro <- function(area_type = NA_character_,
 area = NA_character_,
 area_bound_year = NA_real_,
 region_type = NA_character_,
@@ -78,10 +65,7 @@ lookup_tb = ready4_lookup(),
 crs_nbr = NA_real_,
 temporal_min = .POSIXct(NA_character_),
 temporal_max = .POSIXct(NA_character_)){ 
-methods::new("ready4_profiled_area",
-geom_dist_km_cuts = geom_dist_km_cuts,
-travel_time_mins_cuts = travel_time_mins_cuts,
-travel_mode = travel_mode,
+methods::new("ready4_micro",
 area_type = area_type,
 area = area,
 area_bound_year = area_bound_year,
@@ -97,7 +81,7 @@ temporal_min = temporal_min,
 temporal_max = temporal_max)
 }
 
-methods::setValidity(methods::className("ready4_profiled_area",".GlobalEnv"),
+methods::setValidity(methods::className("ready4_micro",".GlobalEnv"),
 function(object){
 msg <- NULL
 if (is.null(msg)) TRUE else msg
