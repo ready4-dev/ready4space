@@ -2,13 +2,13 @@
 % Please edit documentation in R/mthd_gen_par_vals.R
 \name{gen_par_vals}
 \alias{gen_par_vals}
-\alias{gen_par_vals.ready4_params_struc_mape}
+\alias{gen_par_vals.ready4_par_struc_mape}
 \alias{gen_par_vals.ready4_par_str_envir}
 \title{gen_par_vals}
 \usage{
 gen_par_vals(x, n_its_int, jt_dist = FALSE, ...)
 
-\method{gen_par_vals}{ready4_params_struc_mape}(x, n_its_int, jt_dist)
+\method{gen_par_vals}{ready4_par_struc_mape}(x, n_its_int, jt_dist)
 
 \method{gen_par_vals}{ready4_par_str_envir}(x, n_its_int)
 }
@@ -50,7 +50,7 @@ DETAILS
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{ready4_params_struc_mape}: Method for ready4_params_struc_mape class.
+\item \code{ready4_par_struc_mape}: Method for ready4_params_struc_mape class.
 
 \item \code{ready4_par_str_envir}: Method for ready4_par_str_envir class.
 }}

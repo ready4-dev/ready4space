@@ -43,7 +43,7 @@ gen_par_vals <- function(x,
 #' @importFrom purrr prepend reduce
 #' @importFrom dplyr inner_join
 #' @import ready4use
-gen_par_vals.ready4_params_struc_mape <- function(x,
+gen_par_vals.ready4_par_struc_mape <- function(x,
                                                   n_its_int,
                                                   jt_dist){
   if(n_its_int==1){
