@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9160
+Version: 0.0.0.9161
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -68,7 +68,6 @@ Collate:
     'C4_ready4_sp_local.R'
     'C4_ready4_sp_local_proc.R'
     'C4_ready4_sp_local_raw.R'
-    'PROBLEMS.R'
     'fn_add_attr_to_data_pack.R'
     'fn_add_attr_to_sf.R'
     'fn_add_sp_resolution.R'

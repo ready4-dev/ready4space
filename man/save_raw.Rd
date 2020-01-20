@@ -11,7 +11,7 @@
 \S4method{save_raw}{ready4_sp_local}(x, return_r4_lgl)
 }
 \arguments{
-\item{x}{Primary input object - see Usage section for allowable types}
+\item{x}{Primary input object - see Usage section for allowable signatures}
 
 \item{required_data}{PARAM_DESCRIPTION}
 

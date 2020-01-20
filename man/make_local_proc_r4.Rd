@@ -11,7 +11,7 @@
 \S4method{make_local_proc_r4}{ready4_sp_local}(x, import_chr_vec, raw_data_dir_chr, save_lgl)
 }
 \arguments{
-\item{x}{Primary input object - see Usage section for allowable types}
+\item{x}{Primary input object - see Usage section for allowable signatures}
 
 \item{raw_data_dir_chr}{A character}
 
