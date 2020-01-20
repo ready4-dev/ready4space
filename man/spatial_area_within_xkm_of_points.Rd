@@ -4,8 +4,7 @@
 \alias{spatial_area_within_xkm_of_points}
 \title{spatial_area_within_xkm_of_points}
 \usage{
-spatial_area_within_xkm_of_points(point_locations, land_sf, distance,
-  crs_nbr)
+spatial_area_within_xkm_of_points(point_locations, land_sf, distance, crs_nbr)
 }
 \arguments{
 \item{point_locations}{PARAM_DESCRIPTION}

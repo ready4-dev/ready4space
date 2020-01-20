@@ -4,8 +4,13 @@
 \alias{gen_val_envir_sgl}
 \title{gen_val_envir_sgl}
 \usage{
-gen_val_envir_sgl(distribution, dist_param_1, dist_param_2, dist_param_3,
-  transformation)
+gen_val_envir_sgl(
+  distribution,
+  dist_param_1,
+  dist_param_2,
+  dist_param_3,
+  transformation
+)
 }
 \arguments{
 \item{distribution}{PARAM_DESCRIPTION}

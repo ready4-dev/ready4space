@@ -4,9 +4,17 @@
 \alias{process_import_xx}
 \title{process_import_xx}
 \usage{
-process_import_xx(x, import_this_ls, path_to_starter_sf_chr, merge_with,
-  pckg_name, raw_data_dir, processed_dir, crs_nbr_vec = NA_real_,
-  overwrite_lgl = F)
+process_import_xx(
+  x,
+  import_this_ls,
+  path_to_starter_sf_chr,
+  merge_with,
+  pckg_name,
+  raw_data_dir,
+  processed_dir,
+  crs_nbr_vec = NA_real_,
+  overwrite_lgl = F
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

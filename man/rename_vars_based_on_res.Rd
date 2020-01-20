@@ -4,8 +4,7 @@
 \alias{rename_vars_based_on_res}
 \title{rename_vars_based_on_res}
 \usage{
-rename_vars_based_on_res(sf, feature_nm, data_type, data_year,
-  popl_var_prefix)
+rename_vars_based_on_res(sf, feature_nm, data_type, data_year, popl_var_prefix)
 }
 \arguments{
 \item{sf}{PARAM_DESCRIPTION}

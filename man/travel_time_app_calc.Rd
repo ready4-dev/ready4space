@@ -4,8 +4,14 @@
 \alias{travel_time_app_calc}
 \title{Create isochrones around an origin using the Travel Time App}
 \usage{
-travel_time_app_calc(appID, apiKey, origin,
-  mode_of_transport = "driving", travel_time_hours, crs)
+travel_time_app_calc(
+  appID,
+  apiKey,
+  origin,
+  mode_of_transport = "driving",
+  travel_time_hours,
+  crs
+)
 }
 \arguments{
 \item{appID}{PARAM_DESCRIPTION}

@@ -4,9 +4,16 @@
 \alias{update_pop_by_inc_area}
 \title{update_pop_by_inc_area}
 \usage{
-update_pop_by_inc_area(profiled_sf, sp_unit, data_year, concept,
-  age_sex_var_name = NULL, age_sex_pop_resolution = NULL,
-  tot_pop_col = NULL, popl_var_prefix)
+update_pop_by_inc_area(
+  profiled_sf,
+  sp_unit,
+  data_year,
+  concept,
+  age_sex_var_name = NULL,
+  age_sex_pop_resolution = NULL,
+  tot_pop_col = NULL,
+  popl_var_prefix
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

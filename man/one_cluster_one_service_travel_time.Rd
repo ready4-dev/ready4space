@@ -4,8 +4,13 @@
 \alias{one_cluster_one_service_travel_time}
 \title{one_cluster_one_service_travel_time}
 \usage{
-one_cluster_one_service_travel_time(cluster_tb, service, time_min,
-  time_max, nbr_time_steps)
+one_cluster_one_service_travel_time(
+  cluster_tb,
+  service,
+  time_min,
+  time_max,
+  nbr_time_steps
+)
 }
 \arguments{
 \item{cluster_tb}{PARAM_DESCRIPTION}

@@ -4,9 +4,12 @@
 \alias{geom_dist_limit_km<-}
 \alias{geom_dist_limit_km<--ready4_profiled_area}
 \title{geom_dist_limit_km<-}
-\arguments{
-\item{x}{An object}
+\usage{
+geom_dist_limit_km(x) <- value
 
+\S4method{geom_dist_limit_km}{ready4_profiled_area}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

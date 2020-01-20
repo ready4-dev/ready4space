@@ -17,19 +17,9 @@ gen_par_vals(x, n_its_int, jt_dist = FALSE, ...)
 
 \item{n_its_int}{PARAM_DESCRIPTION}
 
-\item{jt_dist}{PARAM_DESCRIPTION, Default: FALSE}
-
-\item{...}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{n_its_int}{PARAM_DESCRIPTION}
-
 \item{jt_dist}{PARAM_DESCRIPTION}
 
-\item{x}{PARAM_DESCRIPTION}
-
-\item{n_its_int}{PARAM_DESCRIPTION}
+\item{...}{PARAM_DESCRIPTION}
 }
 \value{
 OUTPUT_DESCRIPTION

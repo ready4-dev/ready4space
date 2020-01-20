@@ -4,9 +4,12 @@
 \alias{sp_import_lup}
 \alias{sp_import_lup-ready4_lookup}
 \title{sp_import_lup}
-\arguments{
-\item{x}{An object}
+\usage{
+sp_import_lup(x)
 
+\S4method{sp_import_lup}{ready4_lookup}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_lookup}
 }
 \description{

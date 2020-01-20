@@ -4,8 +4,13 @@
 \alias{gen_distance_based_bands}
 \title{gen_distance_based_bands}
 \usage{
-gen_distance_based_bands(distance_km_outer, nbr_distance_bands,
-  service_cluster_tb, profiled_sf, crs_nbr)
+gen_distance_based_bands(
+  distance_km_outer,
+  nbr_distance_bands,
+  service_cluster_tb,
+  profiled_sf,
+  crs_nbr
+)
 }
 \arguments{
 \item{distance_km_outer}{PARAM_DESCRIPTION}

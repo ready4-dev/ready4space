@@ -4,9 +4,12 @@
 \alias{sp_starter_sf_lup<-}
 \alias{sp_starter_sf_lup<--ready4_lookup}
 \title{sp_starter_sf_lup<-}
-\arguments{
-\item{x}{An object}
+\usage{
+sp_starter_sf_lup(x) <- value
 
+\S4method{sp_starter_sf_lup}{ready4_lookup}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_lookup}
 }
 \description{

@@ -4,8 +4,10 @@
 \alias{union_one_travel_time_band_across_sites}
 \title{union_one_travel_time_band_across_sites}
 \usage{
-union_one_travel_time_band_across_sites(time_band_ref,
-  one_cluster_time_bands_list)
+union_one_travel_time_band_across_sites(
+  time_band_ref,
+  one_cluster_time_bands_list
+)
 }
 \arguments{
 \item{time_band_ref}{PARAM_DESCRIPTION}

@@ -19,12 +19,6 @@ validate_ready4_sp_uid_lup(x)
 is_ready4_sp_uid_lup(x)
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_uid_lup()}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
 \item{x}{PARAM_DESCRIPTION}
 }
 \value{

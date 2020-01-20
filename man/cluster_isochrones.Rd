@@ -4,8 +4,13 @@
 \alias{cluster_isochrones}
 \title{cluster_isochrones}
 \usage{
-cluster_isochrones(cluster_tbs_list, look_up_ref, time_min = 0,
-  time_max = 60, nbr_time_steps = 5)
+cluster_isochrones(
+  cluster_tbs_list,
+  look_up_ref,
+  time_min = 0,
+  time_max = 60,
+  nbr_time_steps = 5
+)
 }
 \arguments{
 \item{cluster_tbs_list}{PARAM_DESCRIPTION}

@@ -15,7 +15,7 @@ setOldClass(c("ready4_sp_uid_lup","tbl_df", "tbl", "data.frame"))
 #' @slot sp_site_coord_lup ready4_sp_site_coord_lup
 #' @slot sp_starter_sf_lup ready4_sp_starter_sf_lup
 #' @slot sp_uid_lup ready4_sp_uid_lup
-methods::setClass(methods::className("ready4_lookup",".GlobalEnv"),
+methods::setClass("ready4_lookup",
 slots = c(sp_abbreviations_lup = "ready4_sp_abbreviations_lup",sp_import_lup = "ready4_sp_import_lup",sp_data_pack_lup = "ready4_sp_data_pack_lup",sp_resolution_lup = "ready4_sp_resolution_lup",sp_site_coord_lup = "ready4_sp_site_coord_lup",sp_starter_sf_lup = "ready4_sp_starter_sf_lup",sp_uid_lup = "ready4_sp_uid_lup"),
 prototype =  list(sp_abbreviations_lup = ready4_sp_abbreviations_lup(),sp_import_lup = ready4_sp_import_lup(),sp_data_pack_lup = ready4_sp_data_pack_lup(),sp_resolution_lup = ready4_sp_resolution_lup(),sp_site_coord_lup = ready4_sp_site_coord_lup(),sp_starter_sf_lup = ready4_sp_starter_sf_lup(),sp_uid_lup = ready4_sp_uid_lup()))
 

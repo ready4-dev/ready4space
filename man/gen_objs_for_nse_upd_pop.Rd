@@ -4,8 +4,14 @@
 \alias{gen_objs_for_nse_upd_pop}
 \title{gen_objs_for_nse_upd_pop}
 \usage{
-gen_objs_for_nse_upd_pop(sp_unit, concept, tot_pop_col = NULL,
-  grouping_1 = NULL, data_year, popl_var_prefix)
+gen_objs_for_nse_upd_pop(
+  sp_unit,
+  concept,
+  tot_pop_col = NULL,
+  grouping_1 = NULL,
+  data_year,
+  popl_var_prefix
+)
 }
 \arguments{
 \item{sp_unit}{PARAM_DESCRIPTION}

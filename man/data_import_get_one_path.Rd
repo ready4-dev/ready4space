@@ -4,8 +4,7 @@
 \alias{data_import_get_one_path}
 \title{data_import_get_one_path}
 \usage{
-data_import_get_one_path(downloaded_data_tb, lookup_reference,
-  data_directory)
+data_import_get_one_path(downloaded_data_tb, lookup_reference, data_directory)
 }
 \arguments{
 \item{downloaded_data_tb}{PARAM_DESCRIPTION}

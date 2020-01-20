@@ -4,9 +4,12 @@
 \alias{lookup_tb}
 \alias{lookup_tb-ready4_macro}
 \title{lookup_tb}
-\arguments{
-\item{x}{An object}
+\usage{
+lookup_tb(x)
 
+\S4method{lookup_tb}{ready4_macro}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

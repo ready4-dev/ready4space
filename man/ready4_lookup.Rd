@@ -4,13 +4,15 @@
 \alias{ready4_lookup}
 \title{ready4_lookup}
 \usage{
-ready4_lookup(sp_abbreviations_lup = ready4_sp_abbreviations_lup(),
+ready4_lookup(
+  sp_abbreviations_lup = ready4_sp_abbreviations_lup(),
   sp_import_lup = ready4_sp_import_lup(),
   sp_data_pack_lup = ready4_sp_data_pack_lup(),
   sp_resolution_lup = ready4_sp_resolution_lup(),
   sp_site_coord_lup = ready4_sp_site_coord_lup(),
   sp_starter_sf_lup = ready4_sp_starter_sf_lup(),
-  sp_uid_lup = ready4_sp_uid_lup())
+  sp_uid_lup = ready4_sp_uid_lup()
+)
 }
 \arguments{
 \item{sp_abbreviations_lup}{ready4_sp_abbreviations_lup, Default: ready4_sp_abbreviations_lup()}

@@ -4,8 +4,12 @@
 \alias{save_raw.ready4_sp_import_lup}
 \title{save_raw.ready4_sp_import_lup}
 \usage{
-save_raw.ready4_sp_import_lup(x, required_data, destination_directory,
-  overwrite_lgl = F)
+save_raw.ready4_sp_import_lup(
+  x,
+  required_data,
+  destination_directory,
+  overwrite_lgl = F
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

@@ -4,8 +4,14 @@
 \alias{spatial_create_agent_coordinates_tb}
 \title{spatial_create_agent_coordinates_tb}
 \usage{
-spatial_create_agent_coordinates_tb(profiled_area_sf, disorder, year,
-  case_type = "expected.incidence", person_type = "p", resolution_unit)
+spatial_create_agent_coordinates_tb(
+  profiled_area_sf,
+  disorder,
+  year,
+  case_type = "expected.incidence",
+  person_type = "p",
+  resolution_unit
+)
 }
 \arguments{
 \item{profiled_area_sf}{PARAM_DESCRIPTION}

@@ -4,9 +4,12 @@
 \alias{country}
 \alias{country-ready4_macro}
 \title{country}
-\arguments{
-\item{x}{An object}
+\usage{
+country(x)
 
+\S4method{country}{ready4_macro}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

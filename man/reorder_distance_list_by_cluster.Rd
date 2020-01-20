@@ -4,8 +4,11 @@
 \alias{reorder_distance_list_by_cluster}
 \title{reorder_distance_list_by_cluster}
 \usage{
-reorder_distance_list_by_cluster(look_up_ref, clusters_by_distance_list,
-  distances_vec)
+reorder_distance_list_by_cluster(
+  look_up_ref,
+  clusters_by_distance_list,
+  distances_vec
+)
 }
 \arguments{
 \item{look_up_ref}{PARAM_DESCRIPTION}

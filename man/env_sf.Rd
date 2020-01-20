@@ -4,9 +4,12 @@
 \alias{env_sf}
 \alias{env_sf-ready4_env}
 \title{env_sf}
-\arguments{
-\item{x}{An object}
+\usage{
+env_sf(x)
 
+\S4method{env_sf}{ready4_env}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_env}
 }
 \description{

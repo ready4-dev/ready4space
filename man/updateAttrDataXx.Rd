@@ -4,6 +4,17 @@
 \alias{updateAttrDataXx}
 \title{updateAttrDataXx
 S4 Generic function to update attribute data object.}
+\usage{
+updateAttrDataXx(x, ..., verbose = TRUE)
+
+\S4method{updateAttrDataXx}{ready4_lookup}(
+  x,
+  attr_data_xx,
+  alt_names_sf,
+  area_names_var_str,
+  region_short_long_vec
+)
+}
 \arguments{
 \item{x}{An object}
 

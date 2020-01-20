@@ -4,8 +4,11 @@
 \alias{get_popl_var_prefix}
 \title{get_popl_var_prefix}
 \usage{
-get_popl_var_prefix(age_sex_pop_resolution, tot_pop_resolution = NULL,
-  data_year)
+get_popl_var_prefix(
+  age_sex_pop_resolution,
+  tot_pop_resolution = NULL,
+  data_year
+)
 }
 \arguments{
 \item{age_sex_pop_resolution}{PARAM_DESCRIPTION}

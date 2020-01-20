@@ -4,8 +4,13 @@
 \alias{sum_updated_pop_by_grp}
 \title{sum_updated_pop_by_grp}
 \usage{
-sum_updated_pop_by_grp(profiled_sf, grp_var_name, nse_objs_ls,
-  suff_to_pref = FALSE, top_level = FALSE)
+sum_updated_pop_by_grp(
+  profiled_sf,
+  grp_var_name,
+  nse_objs_ls,
+  suff_to_pref = FALSE,
+  top_level = FALSE
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

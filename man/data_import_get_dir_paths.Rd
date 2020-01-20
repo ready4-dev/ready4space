@@ -4,8 +4,13 @@
 \alias{data_import_get_dir_paths}
 \title{data_import_get_dir_paths}
 \usage{
-data_import_get_dir_paths(x, destination_directory, data_lookup_ref,
-  lookup_variable, directory_sub_divs)
+data_import_get_dir_paths(
+  x,
+  destination_directory,
+  data_lookup_ref,
+  lookup_variable,
+  directory_sub_divs
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

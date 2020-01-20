@@ -4,9 +4,12 @@
 \alias{temporal_max<-}
 \alias{temporal_max<--ready4_macro}
 \title{temporal_max<-}
-\arguments{
-\item{x}{An object}
+\usage{
+temporal_max(x) <- value
 
+\S4method{temporal_max}{ready4_macro}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

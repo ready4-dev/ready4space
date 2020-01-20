@@ -4,9 +4,12 @@
 \alias{area_bound_year}
 \alias{area_bound_year-ready4_meso_area}
 \title{area_bound_year}
-\arguments{
-\item{x}{An object}
+\usage{
+area_bound_year(x)
 
+\S4method{area_bound_year}{ready4_meso_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_meso_area}
 }
 \description{

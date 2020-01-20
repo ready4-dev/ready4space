@@ -10,10 +10,6 @@ get_name_from_path_chr(path_str, with_ext = TRUE)
 \item{path_str}{PARAM_DESCRIPTION}
 
 \item{with_ext}{PARAM_DESCRIPTION, Default: TRUE}
-
-\item{path_str}{PARAM_DESCRIPTION}
-
-\item{with_ext}{PARAM_DESCRIPTION, Default: TRUE}
 }
 \value{
 OUTPUT_DESCRIPTION

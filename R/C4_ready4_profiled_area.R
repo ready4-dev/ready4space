@@ -25,7 +25,7 @@
 #' @slot crs_nbr numeric
 #' @slot temporal_min POSIXt
 #' @slot temporal_max POSIXt
-methods::setClass(methods::className("ready4_profiled_area",".GlobalEnv"),
+methods::setClass("ready4_profiled_area",
 contains = "ready4_micro",
 slots = c(features = "character",use_coord_lup = "logical",geom_dist_limit_km = "numeric",drive_time_limit_mins = "numeric",nbr_bands = "numeric",data_year = "character",data_ymds = "POSIXt"),
 prototype =  list(features = NA_character_,use_coord_lup = NA,geom_dist_limit_km = NA_real_,drive_time_limit_mins = NA_real_,nbr_bands = NA_real_,data_year = NA_character_,data_ymds = .POSIXct(NA_character_)))
@@ -49,6 +49,13 @@ prototype =  list(features = NA_character_,use_coord_lup = NA,geom_dist_limit_km
 #' @param crs_nbr numeric, Default: NA
 #' @param temporal_min POSIXt, Default: .POSIXct(NA_character_)
 #' @param temporal_max POSIXt, Default: .POSIXct(NA_character_)
+#' @param features character, Default: 'NA'
+#' @param use_coord_lup logical, Default: NA
+#' @param geom_dist_limit_km numeric, Default: NA
+#' @param drive_time_limit_mins numeric, Default: NA
+#' @param nbr_bands numeric, Default: NA
+#' @param data_year character, Default: 'NA'
+#' @param data_ymds POSIXt, Default: .POSIXct(NA_character_)
 #' @return An S4 object of the ready4_profiled_area class
 #' 
 #' @examples 
@@ -77,7 +84,14 @@ country_bound_year = NA_real_,
 lookup_tb = ready4_lookup(),
 crs_nbr = NA_real_,
 temporal_min = .POSIXct(NA_character_),
-temporal_max = .POSIXct(NA_character_)){ 
+temporal_max = .POSIXct(NA_character_),
+features = NA_character_,
+use_coord_lup = NA,
+geom_dist_limit_km = NA_real_,
+drive_time_limit_mins = NA_real_,
+nbr_bands = NA_real_,
+data_year = NA_character_,
+data_ymds = .POSIXct(NA_character_)){ 
 methods::new("ready4_profiled_area",
 geom_dist_km_cuts = geom_dist_km_cuts,
 travel_time_mins_cuts = travel_time_mins_cuts,
@@ -94,7 +108,14 @@ country_bound_year = country_bound_year,
 lookup_tb = lookup_tb,
 crs_nbr = crs_nbr,
 temporal_min = temporal_min,
-temporal_max = temporal_max)
+temporal_max = temporal_max,
+features = features,
+use_coord_lup = use_coord_lup,
+geom_dist_limit_km = geom_dist_limit_km,
+drive_time_limit_mins = drive_time_limit_mins,
+nbr_bands = nbr_bands,
+data_year = data_year,
+data_ymds = data_ymds)
 }
 
 methods::setValidity(methods::className("ready4_profiled_area",".GlobalEnv"),

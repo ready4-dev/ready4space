@@ -4,8 +4,13 @@
 \alias{gen_val_envir_vect}
 \title{gen_val_envir_vect}
 \usage{
-gen_val_envir_vect(distribution, dist_param_1, dist_param_2, dist_param_3,
-  transformation)
+gen_val_envir_vect(
+  distribution,
+  dist_param_1,
+  dist_param_2,
+  dist_param_3,
+  transformation
+)
 }
 \arguments{
 \item{distribution}{PARAM_DESCRIPTION}

@@ -4,9 +4,12 @@
 \alias{nbr_bands}
 \alias{nbr_bands-ready4_profiled_area}
 \title{nbr_bands}
-\arguments{
-\item{x}{An object}
+\usage{
+nbr_bands(x)
 
+\S4method{nbr_bands}{ready4_profiled_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

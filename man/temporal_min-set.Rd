@@ -4,9 +4,12 @@
 \alias{temporal_min<-}
 \alias{temporal_min<--ready4_macro}
 \title{temporal_min<-}
-\arguments{
-\item{x}{An object}
+\usage{
+temporal_min(x) <- value
 
+\S4method{temporal_min}{ready4_macro}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

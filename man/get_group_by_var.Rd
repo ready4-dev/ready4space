@@ -4,8 +4,13 @@
 \alias{get_group_by_var}
 \title{get_group_by_var}
 \usage{
-get_group_by_var(profile_unit, data_unit, group_at_profile_unit = TRUE,
-  group_by_lookup_tb, area_bound_year)
+get_group_by_var(
+  profile_unit,
+  data_unit,
+  group_at_profile_unit = TRUE,
+  group_by_lookup_tb,
+  area_bound_year
+)
 }
 \arguments{
 \item{profile_unit}{PARAM_DESCRIPTION}

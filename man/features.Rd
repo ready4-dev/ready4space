@@ -4,9 +4,12 @@
 \alias{features}
 \alias{features-ready4_profiled_area}
 \title{features}
-\arguments{
-\item{x}{An object}
+\usage{
+features(x)
 
+\S4method{features}{ready4_profiled_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

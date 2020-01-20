@@ -4,9 +4,17 @@
 \alias{intersect_sfs_keep_counts}
 \title{intersect_sfs_keep_counts}
 \usage{
-intersect_sfs_keep_counts(profiled_sf, profiled_colref = NA,
-  profiled_rowref = NA, attribute_sf, attribute_unit, data_type,
-  data_year, crs_nbr_vec, popl_var_prefix = NULL)
+intersect_sfs_keep_counts(
+  profiled_sf,
+  profiled_colref = NA,
+  profiled_rowref = NA,
+  attribute_sf,
+  attribute_unit,
+  data_type,
+  data_year,
+  crs_nbr_vec,
+  popl_var_prefix = NULL
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

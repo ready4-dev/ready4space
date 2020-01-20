@@ -4,8 +4,14 @@
 \alias{process_geom_import}
 \title{process_geom_import}
 \usage{
-process_geom_import(x, import_this_ls, path_to_starter_sf_chr,
-  merge_with_chr_vec, crs_nbr_vec, overwrite_lgl)
+process_geom_import(
+  x,
+  import_this_ls,
+  path_to_starter_sf_chr,
+  merge_with_chr_vec,
+  crs_nbr_vec,
+  overwrite_lgl
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

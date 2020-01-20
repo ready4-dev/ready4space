@@ -4,9 +4,12 @@
 \alias{data_year}
 \alias{data_year-ready4_profiled_area}
 \title{data_year}
-\arguments{
-\item{x}{An object}
+\usage{
+data_year(x)
 
+\S4method{data_year}{ready4_profiled_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

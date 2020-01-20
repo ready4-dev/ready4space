@@ -4,9 +4,12 @@
 \alias{sp_resolution_lup<-}
 \alias{sp_resolution_lup<--ready4_lookup}
 \title{sp_resolution_lup<-}
-\arguments{
-\item{x}{An object}
+\usage{
+sp_resolution_lup(x) <- value
 
+\S4method{sp_resolution_lup}{ready4_lookup}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_lookup}
 }
 \description{

@@ -4,9 +4,12 @@
 \alias{crs_nbr<-}
 \alias{crs_nbr<--ready4_macro}
 \title{crs_nbr<-}
-\arguments{
-\item{x}{An object}
+\usage{
+crs_nbr(x) <- value
 
+\S4method{crs_nbr}{ready4_macro}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

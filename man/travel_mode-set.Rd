@@ -4,9 +4,12 @@
 \alias{travel_mode<-}
 \alias{travel_mode<--ready4_micro}
 \title{travel_mode<-}
-\arguments{
-\item{x}{An object}
+\usage{
+travel_mode(x) <- value
 
+\S4method{travel_mode}{ready4_micro}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_micro}
 }
 \description{

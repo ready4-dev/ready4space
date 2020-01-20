@@ -4,9 +4,16 @@
 \alias{make_data_packs.ready4_sp_import_lup}
 \title{make_data_packs.ready4_sp_import_lup}
 \usage{
-\method{make_data_packs}{ready4_sp_import_lup}(x, init_lookup_r4 = NULL,
-  pckg_name, raw_data_dir, processed_dir = "data", lup_r4_name,
-  crs_nbr_vec = NA_real_, overwrite_lgl = F)
+\method{make_data_packs}{ready4_sp_import_lup}(
+  x,
+  init_lookup_r4 = NULL,
+  pckg_name,
+  raw_data_dir,
+  processed_dir = "data",
+  lup_r4_name,
+  crs_nbr_vec = NA_real_,
+  overwrite_lgl = F
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

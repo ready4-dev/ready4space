@@ -4,8 +4,13 @@
 \alias{spatial_area_within_xmin_drive_of_points}
 \title{spatial_area_within_xmin_drive_of_points}
 \usage{
-spatial_area_within_xmin_drive_of_points(long, lat, time_min, time_max,
-  nbr_time_steps)
+spatial_area_within_xmin_drive_of_points(
+  long,
+  lat,
+  time_min,
+  time_max,
+  nbr_time_steps
+)
 }
 \arguments{
 \item{long}{PARAM_DESCRIPTION}

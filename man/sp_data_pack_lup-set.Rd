@@ -4,9 +4,12 @@
 \alias{sp_data_pack_lup<-}
 \alias{sp_data_pack_lup<--ready4_lookup}
 \title{sp_data_pack_lup<-}
-\arguments{
-\item{x}{An object}
+\usage{
+sp_data_pack_lup(x) <- value
 
+\S4method{sp_data_pack_lup}{ready4_lookup}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_lookup}
 }
 \description{

@@ -4,9 +4,12 @@
 \alias{data_ymds}
 \alias{data_ymds-ready4_profiled_area}
 \title{data_ymds}
-\arguments{
-\item{x}{An object}
+\usage{
+data_ymds(x)
 
+\S4method{data_ymds}{ready4_profiled_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

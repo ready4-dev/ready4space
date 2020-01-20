@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9158
+Version: 0.0.0.9160
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -16,7 +16,7 @@ Depends: R (>= 3.5.1)
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 Imports: 
     dplyr,
@@ -68,6 +68,7 @@ Collate:
     'C4_ready4_sp_local.R'
     'C4_ready4_sp_local_proc.R'
     'C4_ready4_sp_local_raw.R'
+    'PROBLEMS.R'
     'fn_add_attr_to_data_pack.R'
     'fn_add_attr_to_sf.R'
     'fn_add_sp_resolution.R'
@@ -120,9 +121,11 @@ Collate:
     'gnrc_use_coord_lup.R'
     'imp_methods.R'
     'imp_pipe.R'
+    'mthd_download_data.R'
     'mthd_gen_par_vals.R'
     'mthd_import_data.R'
     'mthd_make_data_pack.R'
+    'mthd_make_ready4_local_proc_r4.R'
     'mthd_order_tb.R'
     'mthd_save_raw.R'
     'mthd_updateAttrDataXx.R'

@@ -4,8 +4,13 @@
 \alias{get_closest_year}
 \title{get_closest_year}
 \usage{
-get_closest_year(data_lookup_tb, incl_main_ft_vec, target_year,
-  target_area = NULL, find_closest = "abs")
+get_closest_year(
+  data_lookup_tb,
+  incl_main_ft_vec,
+  target_year,
+  target_area = NULL,
+  find_closest = "abs"
+)
 }
 \arguments{
 \item{data_lookup_tb}{PARAM_DESCRIPTION}

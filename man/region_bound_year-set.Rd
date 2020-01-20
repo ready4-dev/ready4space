@@ -4,9 +4,12 @@
 \alias{region_bound_year<-}
 \alias{region_bound_year<--ready4_meso_region}
 \title{region_bound_year<-}
-\arguments{
-\item{x}{An object}
+\usage{
+region_bound_year(x) <- value
 
+\S4method{region_bound_year}{ready4_meso_region}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_meso_region}
 }
 \description{

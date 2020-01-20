@@ -13,7 +13,7 @@
 #' @slot overwrite_lgl logical
 #' @slot save_lgl logical
 #' @import ready4use
-methods::setClass(methods::className("ready4_sp_local_proc","ready4use"),
+methods::setClass("ready4_sp_local_proc",
 contains = "ready4_local_proc",
 slots = c(lup_tbs_r4 = "ready4_lookup"),
 prototype =  list(lup_tbs_r4 = ready4_lookup()))
@@ -31,6 +31,7 @@ prototype =  list(lup_tbs_r4 = ready4_lookup()))
 #' @param pckg_chr character, Default: 'NA'
 #' @param overwrite_lgl logical, Default: NA
 #' @param save_lgl logical, Default: NA
+#' @param lup_tbs_r4 ready4_lookup, Default: ready4_lookup()
 #' @return An S4 object of the ready4_sp_local_proc class
 #' 
 #' @examples 
@@ -53,7 +54,8 @@ merge_with_chr_vec = NA_character_,
 raw_data_dir_chr = NA_character_,
 pckg_chr = NA_character_,
 overwrite_lgl = NA,
-save_lgl = NA){ 
+save_lgl = NA,
+lup_tbs_r4 = ready4_lookup()){ 
 methods::new("ready4_sp_local_proc",
 save_type = save_type,
 proc_data_dir_chr = proc_data_dir_chr,
@@ -64,7 +66,8 @@ merge_with_chr_vec = merge_with_chr_vec,
 raw_data_dir_chr = raw_data_dir_chr,
 pckg_chr = pckg_chr,
 overwrite_lgl = overwrite_lgl,
-save_lgl = save_lgl)
+save_lgl = save_lgl,
+lup_tbs_r4 = lup_tbs_r4)
 }
 
 methods::setValidity(methods::className("ready4_sp_local_proc",".GlobalEnv"),

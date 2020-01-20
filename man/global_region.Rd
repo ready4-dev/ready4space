@@ -4,9 +4,12 @@
 \alias{global_region}
 \alias{global_region-ready4_macro}
 \title{global_region}
-\arguments{
-\item{x}{An object}
+\usage{
+global_region(x)
 
+\S4method{global_region}{ready4_macro}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

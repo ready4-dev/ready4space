@@ -6,13 +6,16 @@
 \alias{lup_tbs_r4<--ready4_sp_local_raw}
 \alias{lup_tbs_r4<--ready4_sp_local_proc}
 \title{lup_tbs_r4<-}
+\usage{
+lup_tbs_r4(x) <- value
+
+\S4method{lup_tbs_r4}{ready4_sp_local}(x) <- value
+
+\S4method{lup_tbs_r4}{ready4_sp_local_raw}(x) <- value
+
+\S4method{lup_tbs_r4}{ready4_sp_local_proc}(x) <- value
+}
 \arguments{
-\item{x}{An object}
-
-\item{x}{An object of class ready4_sp_local}
-
-\item{x}{An object of class ready4_sp_local_raw}
-
 \item{x}{An object of class ready4_sp_local_proc}
 }
 \description{

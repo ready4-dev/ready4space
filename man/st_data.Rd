@@ -4,9 +4,12 @@
 \alias{st_data}
 \alias{st_data-ready4_env}
 \title{st_data}
-\arguments{
-\item{x}{An object}
+\usage{
+st_data(x)
 
+\S4method{st_data}{ready4_env}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_env}
 }
 \description{

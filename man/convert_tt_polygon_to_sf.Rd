@@ -4,8 +4,12 @@
 \alias{convert_tt_polygon_to_sf}
 \title{convert_tt_polygon_to_sf}
 \usage{
-convert_tt_polygon_to_sf(tt_polyline, mode_of_transport, travel_time_hours,
-  crs)
+convert_tt_polygon_to_sf(
+  tt_polyline,
+  mode_of_transport,
+  travel_time_hours,
+  crs
+)
 }
 \arguments{
 \item{tt_polyline}{PARAM_DESCRIPTION}

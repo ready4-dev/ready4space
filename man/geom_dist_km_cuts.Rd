@@ -4,9 +4,12 @@
 \alias{geom_dist_km_cuts}
 \alias{geom_dist_km_cuts-ready4_micro}
 \title{geom_dist_km_cuts}
-\arguments{
-\item{x}{An object}
+\usage{
+geom_dist_km_cuts(x)
 
+\S4method{geom_dist_km_cuts}{ready4_micro}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_micro}
 }
 \description{

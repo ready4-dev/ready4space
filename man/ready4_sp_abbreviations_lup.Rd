@@ -8,8 +8,7 @@
 \alias{is_ready4_sp_abbreviations_lup}
 \title{ready4_sp_abbreviations_lup}
 \usage{
-
-  ready4_sp_abbreviations_lup(x = make_prototype_ready4_sp_abbreviations_lup())
+ready4_sp_abbreviations_lup(x = make_prototype_ready4_sp_abbreviations_lup())
 
 new_ready4_sp_abbreviations_lup(x)
 
@@ -20,12 +19,6 @@ validate_ready4_sp_abbreviations_lup(x)
 is_ready4_sp_abbreviations_lup(x)
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_abbreviations_lup()}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
 \item{x}{PARAM_DESCRIPTION}
 }
 \value{

@@ -4,9 +4,15 @@
 \alias{update_pop_count_by_areas}
 \title{update_pop_count_by_areas}
 \usage{
-update_pop_count_by_areas(profiled_sf, group_by_var, age_sex_var_name,
-  data_year, age_sex_pop_resolution, tot_pop_resolution,
-  popl_var_prefix = "")
+update_pop_count_by_areas(
+  profiled_sf,
+  group_by_var,
+  age_sex_var_name,
+  data_year,
+  age_sex_pop_resolution,
+  tot_pop_resolution,
+  popl_var_prefix = ""
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

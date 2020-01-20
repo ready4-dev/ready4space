@@ -4,9 +4,12 @@
 \alias{use_coord_lup<-}
 \alias{use_coord_lup<--ready4_profiled_area}
 \title{use_coord_lup<-}
-\arguments{
-\item{x}{An object}
+\usage{
+use_coord_lup(x) <- value
 
+\S4method{use_coord_lup}{ready4_profiled_area}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

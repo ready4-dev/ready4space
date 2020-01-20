@@ -4,9 +4,12 @@
 \alias{sp_abbreviations_lup<-}
 \alias{sp_abbreviations_lup<--ready4_lookup}
 \title{sp_abbreviations_lup<-}
-\arguments{
-\item{x}{An object}
+\usage{
+sp_abbreviations_lup(x) <- value
 
+\S4method{sp_abbreviations_lup}{ready4_lookup}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_lookup}
 }
 \description{

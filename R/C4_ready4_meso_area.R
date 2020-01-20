@@ -15,7 +15,7 @@
 #' @slot crs_nbr numeric
 #' @slot temporal_min POSIXt
 #' @slot temporal_max POSIXt
-methods::setClass(methods::className("ready4_meso_area",".GlobalEnv"),
+methods::setClass("ready4_meso_area",
 contains = "ready4_meso_region",
 slots = c(area_type = "character",area = "character",area_bound_year = "numeric"),
 prototype =  list(area_type = NA_character_,area = NA_character_,area_bound_year = NA_real_))
@@ -33,6 +33,9 @@ prototype =  list(area_type = NA_character_,area = NA_character_,area_bound_year
 #' @param crs_nbr numeric, Default: NA
 #' @param temporal_min POSIXt, Default: .POSIXct(NA_character_)
 #' @param temporal_max POSIXt, Default: .POSIXct(NA_character_)
+#' @param area_type character, Default: 'NA'
+#' @param area character, Default: 'NA'
+#' @param area_bound_year numeric, Default: NA
 #' @return An S4 object of the ready4_meso_area class
 #' 
 #' @examples 
@@ -55,7 +58,10 @@ country_bound_year = NA_real_,
 lookup_tb = ready4_lookup(),
 crs_nbr = NA_real_,
 temporal_min = .POSIXct(NA_character_),
-temporal_max = .POSIXct(NA_character_)){ 
+temporal_max = .POSIXct(NA_character_),
+area_type = NA_character_,
+area = NA_character_,
+area_bound_year = NA_real_){ 
 methods::new("ready4_meso_area",
 region_type = region_type,
 region = region,
@@ -66,7 +72,10 @@ country_bound_year = country_bound_year,
 lookup_tb = lookup_tb,
 crs_nbr = crs_nbr,
 temporal_min = temporal_min,
-temporal_max = temporal_max)
+temporal_max = temporal_max,
+area_type = area_type,
+area = area,
+area_bound_year = area_bound_year)
 }
 
 methods::setValidity(methods::className("ready4_meso_area",".GlobalEnv"),

@@ -4,10 +4,18 @@
 \alias{intersect_sfs_update_counts}
 \title{intersect_sfs_update_counts}
 \usage{
-intersect_sfs_update_counts(profiled_sf, profiled_colref = NA,
-  profiled_rowref = NA, sp_data_list, tot_pop_resolution,
-  age_sex_pop_resolution, group_by_var, age_sex_counts_grouped_by,
-  data_year, crs_nbr_vec)
+intersect_sfs_update_counts(
+  profiled_sf,
+  profiled_colref = NA,
+  profiled_rowref = NA,
+  sp_data_list,
+  tot_pop_resolution,
+  age_sex_pop_resolution,
+  group_by_var,
+  age_sex_counts_grouped_by,
+  data_year,
+  crs_nbr_vec
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

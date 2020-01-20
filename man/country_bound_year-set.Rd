@@ -4,9 +4,12 @@
 \alias{country_bound_year<-}
 \alias{country_bound_year<--ready4_macro}
 \title{country_bound_year<-}
-\arguments{
-\item{x}{An object}
+\usage{
+country_bound_year(x) <- value
 
+\S4method{country_bound_year}{ready4_macro}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_macro}
 }
 \description{

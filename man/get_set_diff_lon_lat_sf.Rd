@@ -4,8 +4,13 @@
 \alias{get_set_diff_lon_lat_sf}
 \title{get_set_diff_lon_lat_sf}
 \usage{
-get_set_diff_lon_lat_sf(profile_sf, cut_sf, crs_nbr_vec,
-  validate_lgl = T, min_poly_area_dbl = units::set_units(0.05, km^2))
+get_set_diff_lon_lat_sf(
+  profile_sf,
+  cut_sf,
+  crs_nbr_vec,
+  validate_lgl = T,
+  min_poly_area_dbl = units::set_units(0.05, km^2)
+)
 }
 \arguments{
 \item{profile_sf}{PARAM_DESCRIPTION}

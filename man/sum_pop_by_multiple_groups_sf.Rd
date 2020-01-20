@@ -4,9 +4,15 @@
 \alias{sum_pop_by_multiple_groups_sf}
 \title{sum_pop_by_multiple_groups_sf}
 \usage{
-sum_pop_by_multiple_groups_sf(profiled_sf, group_by_var, age_sex_var_name,
-  data_year, age_sex_pop_resolution, tot_pop_resolution,
-  popl_var_prefix = "")
+sum_pop_by_multiple_groups_sf(
+  profiled_sf,
+  group_by_var,
+  age_sex_var_name,
+  data_year,
+  age_sex_pop_resolution,
+  tot_pop_resolution,
+  popl_var_prefix = ""
+)
 }
 \arguments{
 \item{profiled_sf}{PARAM_DESCRIPTION}

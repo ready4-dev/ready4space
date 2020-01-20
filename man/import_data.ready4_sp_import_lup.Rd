@@ -4,8 +4,14 @@
 \alias{import_data.ready4_sp_import_lup}
 \title{import_data.ready4_sp_import_lup}
 \usage{
-import_data.ready4_sp_import_lup(x, included_items_names, item_data_type,
-  data_directory, r_data_dir_chr, save_lgl = T)
+import_data.ready4_sp_import_lup(
+  x,
+  included_items_names,
+  item_data_type,
+  data_directory,
+  r_data_dir_chr,
+  save_lgl = T
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

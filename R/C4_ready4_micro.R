@@ -18,7 +18,7 @@
 #' @slot crs_nbr numeric
 #' @slot temporal_min POSIXt
 #' @slot temporal_max POSIXt
-methods::setClass(methods::className("ready4_micro",".GlobalEnv"),
+methods::setClass("ready4_micro",
 contains = "ready4_meso_area",
 slots = c(geom_dist_km_cuts = "numeric",travel_time_mins_cuts = "numeric",travel_mode = "character"),
 prototype =  list(geom_dist_km_cuts = NA_real_,travel_time_mins_cuts = NA_real_,travel_mode = NA_character_))
@@ -39,6 +39,9 @@ prototype =  list(geom_dist_km_cuts = NA_real_,travel_time_mins_cuts = NA_real_,
 #' @param crs_nbr numeric, Default: NA
 #' @param temporal_min POSIXt, Default: .POSIXct(NA_character_)
 #' @param temporal_max POSIXt, Default: .POSIXct(NA_character_)
+#' @param geom_dist_km_cuts numeric, Default: NA
+#' @param travel_time_mins_cuts numeric, Default: NA
+#' @param travel_mode character, Default: 'NA'
 #' @return An S4 object of the ready4_micro class
 #' 
 #' @examples 
@@ -64,7 +67,10 @@ country_bound_year = NA_real_,
 lookup_tb = ready4_lookup(),
 crs_nbr = NA_real_,
 temporal_min = .POSIXct(NA_character_),
-temporal_max = .POSIXct(NA_character_)){ 
+temporal_max = .POSIXct(NA_character_),
+geom_dist_km_cuts = NA_real_,
+travel_time_mins_cuts = NA_real_,
+travel_mode = NA_character_){ 
 methods::new("ready4_micro",
 area_type = area_type,
 area = area,
@@ -78,7 +84,10 @@ country_bound_year = country_bound_year,
 lookup_tb = lookup_tb,
 crs_nbr = crs_nbr,
 temporal_min = temporal_min,
-temporal_max = temporal_max)
+temporal_max = temporal_max,
+geom_dist_km_cuts = geom_dist_km_cuts,
+travel_time_mins_cuts = travel_time_mins_cuts,
+travel_mode = travel_mode)
 }
 
 methods::setValidity(methods::className("ready4_micro",".GlobalEnv"),

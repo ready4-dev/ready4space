@@ -4,8 +4,13 @@
 \alias{recur_add_attr_to_sf}
 \title{recur_add_attr_to_sf}
 \usage{
-recur_add_attr_to_sf(input_ls, sub_div_unit = NULL, area_unit,
-  boundary_year, attribute_data)
+recur_add_attr_to_sf(
+  input_ls,
+  sub_div_unit = NULL,
+  area_unit,
+  boundary_year,
+  attribute_data
+)
 }
 \arguments{
 \item{input_ls}{PARAM_DESCRIPTION}

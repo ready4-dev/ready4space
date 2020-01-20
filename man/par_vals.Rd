@@ -4,9 +4,12 @@
 \alias{par_vals}
 \alias{par_vals-ready4_env}
 \title{par_vals}
-\arguments{
-\item{x}{An object}
+\usage{
+par_vals(x)
 
+\S4method{par_vals}{ready4_env}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_env}
 }
 \description{

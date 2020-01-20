@@ -4,9 +4,12 @@
 \alias{region_type<-}
 \alias{region_type<--ready4_meso_region}
 \title{region_type<-}
-\arguments{
-\item{x}{An object}
+\usage{
+region_type(x) <- value
 
+\S4method{region_type}{ready4_meso_region}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_meso_region}
 }
 \description{

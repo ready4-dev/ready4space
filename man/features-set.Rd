@@ -4,9 +4,12 @@
 \alias{features<-}
 \alias{features<--ready4_profiled_area}
 \title{features<-}
-\arguments{
-\item{x}{An object}
+\usage{
+features(x) <- value
 
+\S4method{features}{ready4_profiled_area}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

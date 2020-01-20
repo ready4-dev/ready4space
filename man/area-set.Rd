@@ -4,9 +4,12 @@
 \alias{area<-}
 \alias{area<--ready4_meso_area}
 \title{area<-}
-\arguments{
-\item{x}{An object}
+\usage{
+area(x) <- value
 
+\S4method{area}{ready4_meso_area}(x) <- value
+}
+\arguments{
 \item{x}{An object of class ready4_meso_area}
 }
 \description{

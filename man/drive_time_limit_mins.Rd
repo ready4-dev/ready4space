@@ -4,9 +4,12 @@
 \alias{drive_time_limit_mins}
 \alias{drive_time_limit_mins-ready4_profiled_area}
 \title{drive_time_limit_mins}
-\arguments{
-\item{x}{An object}
+\usage{
+drive_time_limit_mins(x)
 
+\S4method{drive_time_limit_mins}{ready4_profiled_area}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_profiled_area}
 }
 \description{

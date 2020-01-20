@@ -19,12 +19,6 @@ validate_ready4_par_val_envir(x)
 is_ready4_par_val_envir(x)
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION, Default: make_prototype_ready4_par_val_envir()}
-
-\item{x}{PARAM_DESCRIPTION}
-
-\item{x}{PARAM_DESCRIPTION}
-
 \item{x}{PARAM_DESCRIPTION}
 }
 \value{

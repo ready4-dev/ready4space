@@ -4,9 +4,12 @@
 \alias{travel_time_mins_cuts}
 \alias{travel_time_mins_cuts-ready4_micro}
 \title{travel_time_mins_cuts}
-\arguments{
-\item{x}{An object}
+\usage{
+travel_time_mins_cuts(x)
 
+\S4method{travel_time_mins_cuts}{ready4_micro}(x)
+}
+\arguments{
 \item{x}{An object of class ready4_micro}
 }
 \description{

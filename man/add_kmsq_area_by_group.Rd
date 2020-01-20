@@ -4,8 +4,13 @@
 \alias{add_kmsq_area_by_group}
 \title{add_kmsq_area_by_group}
 \usage{
-add_kmsq_area_by_group(sf, group_by_var, feature_nm, prefix = "whl_",
-  suffix = "_area")
+add_kmsq_area_by_group(
+  sf,
+  group_by_var,
+  feature_nm,
+  prefix = "whl_",
+  suffix = "_area"
+)
 }
 \arguments{
 \item{sf}{PARAM_DESCRIPTION}
