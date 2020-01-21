@@ -109,16 +109,26 @@ make_data_pack_sngl <- function(x, ## MAKE METHOD
   lookup_tbs_r4 <- `sp_import_lup<-`(lookup_tbs_r4,x)
   import_type_ls <- ready4use::get_import_type_ls(x)
   if(names(import_type_ls) == "script_chr"){#!x %>% dplyr::pull(make_script_src) %>% is.na()
-    script_data_r4 <- ready4use::make_import_xx(x,
-                                                script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
-                                                                      merge_sfs_chr_vec = merge_with,
-                                                                      proc_data_dir_chr = processed_dir,
-                                                                      raw_data_dir_chr = raw_data_dir,
-                                                                      pckg_chr = pckg_name,
-                                                                      overwrite_lgl = overwrite_lgl,
-                                                                      crs_nbr_vec = crs_nbr_vec))
-    rlang::exec(!!rlang::sym(import_type_ls),
-                script_data_r4)
+    make_class_fn_chr <- eval(parse(text = import_type_ls))
+    script_args_ls <- list(lup_tbs_r4 = lookup_tbs_r4,
+                           merge_with_chr_vec = merge_with,
+                           proc_data_dir_chr = processed_dir,
+                           raw_data_dir_chr = raw_data_dir,
+                           pckg_chr = pckg_name,
+                           overwrite_lgl = overwrite_lgl,
+                           crs_nbr_vec = crs_nbr_vec)
+    script_data_r4 <- rlang::exec(make_class_fn_chr, !!!script_args_ls)
+    import_data(script_data_r4)
+    # script_data_r4 <- ready4use::make_import_xx(x,
+    #                                             script_args_ls = list(lup_tbs_r4 = lookup_tbs_r4,
+    #                                                                   merge_sfs_chr_vec = merge_with,
+    #                                                                   proc_data_dir_chr = processed_dir,
+    #                                                                   raw_data_dir_chr = raw_data_dir,
+    #                                                                   pckg_chr = pckg_name,
+    #                                                                   overwrite_lgl = overwrite_lgl,
+    #                                                                   crs_nbr_vec = crs_nbr_vec))
+    # rlang::exec(!!rlang::sym(import_type_ls),
+    #             script_data_r4)
   }else{
     ready4_sp_local_raw(lup_tbs_r4 = lookup_tbs_r4,
                                merge_with_chr_vec = merge_with,
