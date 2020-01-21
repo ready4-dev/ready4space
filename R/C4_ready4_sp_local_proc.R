@@ -14,9 +14,7 @@
 #' @slot save_lgl logical
 #' @import ready4use
 methods::setClass("ready4_sp_local_proc",
-contains = "ready4_local_proc",
-slots = c(lup_tbs_r4 = "ready4_lookup"),
-prototype =  list(lup_tbs_r4 = ready4_lookup()))
+contains = c("ready4_local_proc", "ready4_sp_local"))
 
 #' ready4_sp_local_proc
 #' @name ready4_sp_local_proc
@@ -33,17 +31,17 @@ prototype =  list(lup_tbs_r4 = ready4_lookup()))
 #' @param save_lgl logical, Default: NA
 #' @param lup_tbs_r4 ready4_lookup, Default: ready4_lookup()
 #' @return An S4 object of the ready4_sp_local_proc class
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso 
+#' @seealso
 #'  \code{\link[methods]{new}}
 #' @rdname ready4_sp_local_proc
-#' @export 
+#' @export
 #' @importFrom methods new
 ready4_sp_local_proc <- function(save_type = NA_character_,
 proc_data_dir_chr = NA_character_,
@@ -55,7 +53,7 @@ raw_data_dir_chr = NA_character_,
 pckg_chr = NA_character_,
 overwrite_lgl = NA,
 save_lgl = NA,
-lup_tbs_r4 = ready4_lookup()){ 
+lup_tbs_r4 = ready4_lookup()){
 methods::new("ready4_sp_local_proc",
 save_type = save_type,
 proc_data_dir_chr = proc_data_dir_chr,

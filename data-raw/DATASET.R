@@ -1,5 +1,9 @@
 ## Script to make classes and save updated prototype table.
 ##
+## NOTE: AFTER RUNNING THE BELOW SCRIPT I IMPLEMENTED SOME MANUAL CHANGES TO THE ready4_sp_local* CLASSES TO
+## ALLOW FOR MULTIPLE INHERITENCE. THIS IS A TEMPORARY FIX - ONCE READY4CLASS IS UPDATED TO MANAGE MULTIPLE
+## INHERITENCE, I WILL RERUN SCRIPT AND NO MANUAL EDIT WILL BE REQUIRED.
+##
 ## 1. Pre-requisites
 ## The following files are required to be in the package's R folder:
 ## imp_pipe.R
