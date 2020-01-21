@@ -147,7 +147,8 @@ make_data_pack_sngl <- function(x, ## MAKE METHOD
 save_import_and_update <- function(x,
                                    processed_dir_chr,
                                    crs_nbr_vec){
-  save_raw(x) %>%
+  save_raw(x,
+           return_r4_lgl = T) %>%
     ready4use::`proc_data_dir_chr<-`(processed_dir_chr) %>%
     import_data(crs_nbr_vec = crs_nbr_vec) %>%
     update_this()
