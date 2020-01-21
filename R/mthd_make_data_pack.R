@@ -12,7 +12,6 @@
 #' }
 #' @rdname make_data_packs
 #' @export
-
 make_data_packs <- function(x,
                          ...){
   UseMethod("make_data_packs",x)
@@ -139,6 +138,7 @@ make_data_pack_sngl <- function(x, ## MAKE METHOD
                            crs_nbr_vec = crs_nbr_vec)
   }
 }
+
 #' @title save_import_and_update
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -163,6 +163,7 @@ save_import_and_update <- function(x,
     import_data(crs_nbr_vec = crs_nbr_vec) %>%
     update_this()
 }
+
 #' @title process_import_xx
 #' @description FUNCTION_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
@@ -217,7 +218,6 @@ process_import_xx <- function(x,
 
   }
 }
-
 
 #' @title process_geom_import
 #' @description FUNCTION_DESCRIPTION
@@ -299,7 +299,6 @@ process_geom_import <- function(x,#lookup_tbs_r4 %>% sp_import_lup()
 #' }
 #' @rdname export_attr_tb
 #' @export
-
 export_attr_tb <- function(attr_tb,
                            obj_name,
                            processed_dir,
@@ -326,7 +325,6 @@ export_attr_tb <- function(attr_tb,
 #' }
 #' @rdname get_r_import_path_chr
 #' @export
-
 get_r_import_path_chr <- function(r_data_dir_chr,
                                   name_chr,
                                   data_type_chr){
@@ -405,7 +403,6 @@ add_names <- function(x){
 #' }
 #' @rdname make_raw_format_dir
 #' @export
-
 make_raw_format_dir <- function(data_type_chr,
                                 raw_data_dir){
   directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
@@ -415,6 +412,7 @@ make_raw_format_dir <- function(data_type_chr,
     dir.create(raw_format_sp_dir)
   raw_format_sp_dir
 }
+
 #' @title get_import_chr_vec
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
@@ -443,7 +441,6 @@ get_import_chr_vec <- function(lookup_tbs_r4,
   }
 }
 
-
 #' @title make_raw_format_dir_str
 #' @description FUNCTION_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
@@ -458,59 +455,15 @@ get_import_chr_vec <- function(lookup_tbs_r4,
 #' }
 #' @rdname make_raw_format_dir_str
 #' @export
-
 make_raw_format_dir_str <- function(raw_data_dir,
                                     category){
   paste0(raw_data_dir,"/",category)
 }
-#' #' @title import_attribute_ls
-#' #' @description FUNCTION_DESCRIPTION
-#' #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' #' @param raw_data_dir PARAM_DESCRIPTION
-#' #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
-#' #' @return OUTPUT_DESCRIPTION
-#' #' @details DETAILS
-#' #' @examples
-#' #' \dontrun{
-#' #' if(interactive()){
-#' #'  #EXAMPLE1
-#' #'  }
-#' #' }
-#' #' @seealso
-#' #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
-#' #'  \code{\link[stats]{setNames}}
-#' #' @rdname import_attribute_ls
-#' #' @export
-#' #' @importFrom dplyr filter pull
-#' #' @importFrom stats setNames
-#' import_attribute_ls <- function(lookup_tbs_r4,
-#'                                 raw_data_dir,
-#'                                 overwrite_lgl = F){ ## Merge with import_boundary_ls
-#'   raw_format_att_dir <- make_raw_format_dir_str(raw_data_dir,"Attributes")
-#'   if(!dir.exists(raw_format_att_dir))
-#'     dir.create(raw_format_att_dir)
-#'   attributes_to_import_vec <- sp_import_lup(lookup_tbs_r4) %>%
-#'     dplyr::filter(data_type == "Attribute") %>% dplyr::pull(name)
-#'   save_raw(x = sp_import_lup(lookup_tbs_r4),
-#'            required_data = attributes_to_import_vec,
-#'            destination_directory = raw_format_att_dir,
-#'            overwrite_lgl = overwrite_lgl)
-#'   import_data(x = sp_import_lup(lookup_tbs_r4),
-#'               included_items_names = attributes_to_import_vec,
-#'               item_data_type = "Attribute",
-#'               data_directory = raw_format_att_dir,
-#'               overwrite_lgl = overwrite_lgl)  %>%
-#'     stats::setNames(attributes_to_import_vec)
-#' }
+
 #' @title export_starter_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' @param boundary_ls PARAM_DESCRIPTION, Default: NULL
-#' @param pnt_ls PARAM_DESCRIPTION, Default: NULL
-#' @param processed_dir PARAM_DESCRIPTION
-#' @param merge_with PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
-#' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
+#' @param path_to_starter_sf_chr A character string.
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -542,6 +495,7 @@ export_starter_sf <- function(lookup_tbs_r4,
                                        sf_main_sub_div = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid)) ## Assumes length one list
   `sp_starter_sf_lup<-`(lookup_tbs_r4, starter_sf_lup_r3)
 }
+
 #' @title export_uid_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
@@ -567,6 +521,7 @@ export_uid_lup <- function(lookup_tbs_r4){
                                 var_name = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid))
   `sp_uid_lup<-`(lookup_tbs_r4, uid_lup_r3)
 }
+
 #' @title export_data_pack_lup
 #' @description FUNCTION_DESCRIPTION
 #' @param lookup_tbs_r4 PARAM_DESCRIPTION
@@ -706,41 +661,4 @@ get_merge_sf_str <- function(lookup_r4,
     }
   }
 }
-#' #' @title add_data_pack_from_script
-#' #' @description FUNCTION_DESCRIPTION
-#' #' @param x PARAM_DESCRIPTION
-#' #' @param lookup_tbs_r4 PARAM_DESCRIPTION
-#' #' @param merge_sfs_vec PARAM_DESCRIPTION
-#' #' @param processed_dir PARAM_DESCRIPTION
-#' #' @param raw_data_dir PARAM_DESCRIPTION
-#' #' @param pckg_name PARAM_DESCRIPTION
-#' #' @param overwrite_lgl PARAM_DESCRIPTION
-#' #' @return OUTPUT_DESCRIPTION
-#' #' @details DETAILS
-#' #' @examples
-#' #' \dontrun{
-#' #' if(interactive()){
-#' #'  #EXAMPLE1
-#' #'  }
-#' #' }
-#' #' @seealso
-#' #'  \code{\link[dplyr]{pull}}
-#' #' @rdname add_data_pack_from_script
-#' #' @export
-#' #' @importFrom dplyr pull
-#' add_data_pack_from_script <- function(x,
-#'                                       lookup_tbs_r4,
-#'                                       merge_sfs_vec,
-#'                                       processed_dir,
-#'                                       raw_data_dir,
-#'                                       pckg_name,
-#'                                       overwrite_lgl){
-#'   parse(text = paste0(x %>% dplyr::pull(make_script_src),
-#'                       "(x = x,
-#'                       lookup_tbs_r4 = lookup_tbs_r4,
-#'                       merge_sfs_vec = merge_sfs_vec,
-#'                       processed_dir = processed_dir,
-#'                       raw_data_dir = raw_data_dir,
-#'                       pckg_name = pckg_name,
-#'                       overwrite_lgl = overwrite_lgl)")) %>% eval()
-#' }
+
