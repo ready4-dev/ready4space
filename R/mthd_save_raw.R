@@ -62,6 +62,7 @@ methods::setMethod("save_raw",
                                           overwrite_lgl = x@overwrite_lgl)
                      if(return_r4_lgl){
                        make_local_proc_r4(x,
+                                          import_chr_vec = import_chr_vec,
                                           raw_data_dir_chr = raw_format_sp_dir,
                                           save_lgl = save_lgl)
 
