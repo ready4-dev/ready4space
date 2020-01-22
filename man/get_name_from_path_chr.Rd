@@ -13,15 +13,11 @@ get_name_from_path_chr(path_str, with_ext = TRUE)
 }
 \value{
 OUTPUT_DESCRIPTION
-
-OUTPUT_DESCRIPTION
 }
 \description{
 FUNCTION_DESCRIPTION
 }
 \details{
-DETAILS
-
 DETAILS
 }
 \examples{
@@ -30,16 +26,8 @@ if(interactive()){
  #EXAMPLE1
  }
 }
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
 }
 \seealso{
-\code{\link[stringr]{str_sub}}
- \code{\link[stringi]{stri_locate_all}}
-
 \code{\link[stringr]{str_sub}}
  \code{\link[stringi]{stri_locate_all}}
 }

@@ -498,47 +498,32 @@ data_import_non_shape_items <- function(path_str,
   #                                    lookup_variable = "inc_file_main",
   #                                    target_variable = "area_type",
   #                                    evaluate = FALSE)
-  make_import_obj_for_context(context = ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
-                                                                                                                    x = x),
-                                                              lookup_reference = file_name,
-                                                              lookup_variable = "inc_file_main",
-                                                              target_variable = "country",
-                                                              evaluate = FALSE), # Replace with read from context attribute of lup object.
-                              var_val_vec = var_val_vec,
-                              path_str = path_str)
-}
-
-make_import_obj_for_context <- function(context,
-                                        var_val_vec,
-                                        path_str){
-  ## Replace condition logic by class based methods
-  if(context == "Australia")
-    context <- "AusSpR4c"
-  library(context, character.only=TRUE)
-  x <- make_import_obj_for_australia(var_val_vec = var_val_vec,
-                                     path_str = path_str)
-  detach(paste0("package:",context), character.only = T)
-  x
+  make_import_object(x,
+                     var_val_vec = var_val_vec,
+                     path_str = path_str)
+  # make_import_obj_for_context(context = ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  #                                                                                                                   x = x),
+  #                                                             lookup_reference = file_name,
+  #                                                             lookup_variable = "inc_file_main",
+  #                                                             target_variable = "country",
+  #                                                             evaluate = FALSE), # Replace with read from context attribute of lup object.
+  #                             var_val_vec = var_val_vec,
+  #                             path_str = path_str)
 }
 
 
-
-#' @param path_str PARAM_DESCRIPTION
-#' @param with_ext PARAM_DESCRIPTION, Default: TRUE
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[stringr]{str_sub}}
-#'  \code{\link[stringi]{stri_locate_all}}
-#' @export
-#' @importFrom stringr str_sub
-#' @importFrom stringi stri_locate_last_regex
+# make_import_obj_for_context <- function(context,
+#                                         var_val_vec,
+#                                         path_str){
+#   ## Replace condition logic by class based methods
+#   if(context == "Australia")
+#     context <- "s2lsd"#AusSpR4c
+#   library(context, character.only=TRUE)
+#   x <- make_import_obj_for_australia(var_val_vec = var_val_vec,
+#                                      path_str = path_str)
+#   detach(paste0("package:",context), character.only = T)
+#   x
+# }
 
 #' @title get_name_from_path_chr
 #' @description FUNCTION_DESCRIPTION
