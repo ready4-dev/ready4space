@@ -4,7 +4,7 @@
 \alias{make_import_object.ready4_sp_import_lup}
 \title{make_import_object.ready4_sp_import_lup}
 \usage{
-make_import_object.ready4_sp_import_lup(x, var_val_vec, path_str)
+\method{make_import_object}{ready4_sp_import_lup}(x, var_val_vec, path_str)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}

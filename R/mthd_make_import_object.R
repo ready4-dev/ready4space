@@ -12,7 +12,7 @@
 #' }
 #' @rdname make_import_object
 #' @export
-make_data_packs <- function(x,
+make_import_object <- function(x,
                             ...){
   UseMethod("make_import_object",x)
 }
