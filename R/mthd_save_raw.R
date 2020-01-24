@@ -47,7 +47,7 @@ methods::setMethod("save_raw","ready4_sp_import_lup",save_raw.ready4_sp_import_l
 #' @param return_r4_lgl PARAM_DESCRIPTION
 #' @rdname save_raw
 methods::setMethod("save_raw",
-                   "ready4_sp_local",
+                   c("ready4_sp_local"),
                    function(x,
                             return_r4_lgl){
                      sp_import_lup <- x@lup_tbs_r4@sp_import_lup

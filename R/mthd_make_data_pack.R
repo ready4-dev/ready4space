@@ -170,8 +170,6 @@ save_import_and_update <- function(x,
 #' @param import_this_ls PARAM_DESCRIPTION
 #' @param path_to_starter_sf_chr PARAM_DESCRIPTION
 #' @param merge_with PARAM_DESCRIPTION
-#' @param pckg_name PARAM_DESCRIPTION
-#' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
 #' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
 #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
@@ -194,8 +192,6 @@ process_import_xx <- function(x,
                         import_this_ls,
                         path_to_starter_sf_chr,
                         merge_with,
-                        pckg_name,
-                        raw_data_dir,
                         processed_dir,
                         crs_nbr_vec = NA_real_,
                         overwrite_lgl = F){
