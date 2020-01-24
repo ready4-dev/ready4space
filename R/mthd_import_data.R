@@ -112,8 +112,6 @@ methods::setMethod("import_data",
                                        import_this_ls = import_this_ls,
                                        path_to_starter_sf_chr = path_to_starter_sf_chr,
                                        merge_with = x@merge_with_chr_vec,
-                                       pckg_name = x@pckg_chr,
-                                       raw_data_dir = raw_data_dir,
                                        processed_dir = x@proc_data_dir_chr,
                                        crs_nbr_vec = crs_nbr_vec,
                                        overwrite_lgl = x@overwrite_lgl)
