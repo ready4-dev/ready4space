@@ -15,6 +15,6 @@ methods::setMethod("update_this",
                      lookup_tbs_r4 %>%
                        export_data_pack_lup(template_ls = x@import_this_ls,
                                             tb_data_type = sp_import_lup$data_type,
-                                            pckg_name = pckg_name)
+                                            pckg_name = x@pckg_chr)
 
                    }) # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE
