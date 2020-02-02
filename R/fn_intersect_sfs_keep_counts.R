@@ -109,6 +109,7 @@ intersect_lon_lat_sfs <- function(sf_1,
 
 #' @title join_lon_lat_sfs
 #' @description FUNCTION_DESCRIPTION
+#' @param polys_sf PARAM_DESCRIPTION
 #' @param points_sf PARAM_DESCRIPTION
 #' @param crs_nbr_vec PARAM_DESCRIPTION
 #' @param validate_lgl PARAM_DESCRIPTION, Default: T
@@ -121,15 +122,15 @@ intersect_lon_lat_sfs <- function(sf_1,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}}
+#'  \code{\link[sf]{st_join}},\code{\link[sf]{st_transform}}
 #' @rdname join_lon_lat_sfs
 #' @export
-#' @importFrom sf st_intersection st_transform
+#' @importFrom sf st_join st_transform
 join_lon_lat_sfs <- function(polys_sf,
                              points_sf,
                              crs_nbr_vec,
                              validate_lgl = T){
-  sf_3 <- sf::st_intersection(polys_sf %>% sf::st_transform(crs_nbr_vec[2]),
+  sf_3 <- sf::st_join(polys_sf %>% sf::st_transform(crs_nbr_vec[2]),
                               points_sf  %>% sf::st_transform(crs_nbr_vec[2])) %>%
     sf::st_transform(crs_nbr_vec[1])
   if(validate_lgl)

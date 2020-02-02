@@ -7,6 +7,8 @@
 join_lon_lat_sfs(polys_sf, points_sf, crs_nbr_vec, validate_lgl = T)
 }
 \arguments{
+\item{polys_sf}{PARAM_DESCRIPTION}
+
 \item{points_sf}{PARAM_DESCRIPTION}
 
 \item{crs_nbr_vec}{PARAM_DESCRIPTION}
@@ -30,5 +32,5 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}}
+\code{\link[sf]{st_join}},\code{\link[sf]{st_transform}}
 }
