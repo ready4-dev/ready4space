@@ -107,6 +107,37 @@ intersect_lon_lat_sfs <- function(sf_1,
     sf_3
 }
 
+#' @title join_lon_lat_sfs
+#' @description FUNCTION_DESCRIPTION
+#' @param points_sf PARAM_DESCRIPTION
+#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param validate_lgl PARAM_DESCRIPTION, Default: T
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{st_transform}}
+#' @rdname join_lon_lat_sfs
+#' @export
+#' @importFrom sf st_intersection st_transform
+join_lon_lat_sfs <- function(polys_sf,
+                             points_sf,
+                             crs_nbr_vec,
+                             validate_lgl = T){
+  sf_3 <- sf::st_intersection(polys_sf %>% sf::st_transform(crs_nbr_vec[2]),
+                              points_sf  %>% sf::st_transform(crs_nbr_vec[2])) %>%
+    sf::st_transform(crs_nbr_vec[1])
+  if(validate_lgl)
+    sf_3 %>% make_valid_new_sf()
+  else
+    sf_3
+}
+
 #' @title get_set_diff_lon_lat_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param profile_sf PARAM_DESCRIPTION

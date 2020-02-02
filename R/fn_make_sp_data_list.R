@@ -67,7 +67,11 @@ make_profiled_area_objs <- function(pa_r4){
   st_profiled_sf <- get_starter_sf_for_profiled_area(pa_r4 = pa_r4,
                                                      group_by_var = group_by_var)
   main_sub_div_var <- ifelse(use_coord_lup(pa_r4),
-                             "STE_NAME16", ## UPDATE WITH LUP REFERENCE
+                             pa_r4@lookup_tb@sp_uid_lup %>%
+                               ready4utils::data_get(lookup_variable = "spatial_unit",
+                                                     lookup_reference = pa_r4@region_type,
+                                                     target_variable = "var_name",
+                                                     evaluate = F),#"STE_NAME16", ##
                              ready4utils::data_get(data_lookup_tb = pa_r4 %>%
                                                      lookup_tb() %>%
                                                      sp_starter_sf_lup() %>%
@@ -87,7 +91,7 @@ make_profiled_area_objs <- function(pa_r4){
   }else{
     cluster_tb = lookup_tb(pa_r4) %>%
       sp_site_coord_lup() %>%
-      dplyr::filter(service_type %in% area_type(pa_r4))  %>%
+      #dplyr::filter(service_type %in% area_type(pa_r4))  %>%
       dplyr::filter(service_name %in% features(pa_r4))
     if(!is.na(geom_dist_limit_km(pa_r4))){
       profiled_sf <- gen_distance_based_bands(distance_km_outer = geom_dist_limit_km(pa_r4), # *1000

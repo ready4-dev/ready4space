@@ -9,6 +9,8 @@ process_import_xx(
   import_this_ls,
   path_to_starter_sf_chr,
   merge_with,
+  pckg_name,
+  raw_data_dir,
   processed_dir,
   crs_nbr_vec = NA_real_,
   overwrite_lgl = F
@@ -22,6 +24,10 @@ process_import_xx(
 \item{path_to_starter_sf_chr}{PARAM_DESCRIPTION}
 
 \item{merge_with}{PARAM_DESCRIPTION}
+
+\item{pckg_name}{PARAM_DESCRIPTION}
+
+\item{raw_data_dir}{PARAM_DESCRIPTION}
 
 \item{processed_dir}{PARAM_DESCRIPTION}
 

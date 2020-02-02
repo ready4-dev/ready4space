@@ -170,6 +170,8 @@ save_import_and_update <- function(x,
 #' @param import_this_ls PARAM_DESCRIPTION
 #' @param path_to_starter_sf_chr PARAM_DESCRIPTION
 #' @param merge_with PARAM_DESCRIPTION
+#' @param pckg_name PARAM_DESCRIPTION
+#' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
 #' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
 #' @param overwrite_lgl PARAM_DESCRIPTION, Default: F
@@ -192,6 +194,8 @@ process_import_xx <- function(x,
                         import_this_ls,
                         path_to_starter_sf_chr,
                         merge_with,
+                        pckg_name,
+                        raw_data_dir,
                         processed_dir,
                         crs_nbr_vec = NA_real_,
                         overwrite_lgl = F){
@@ -596,7 +600,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                       sp_data_pack_lup(),
                                     ~ add_attr_tb_to_data_pack_lup_from_arg_list(.x,.y)) %>%
     dplyr::mutate(data_type = tb_data_type)
-  pckg_name <- ifelse((pckg_name ==""|is.na(pckg_name)),"", paste0(pckg_name,"::"))
+  pckg_name <- ifelse(pckg_name =="",pckg_name, paste0(pckg_name,"::"))
   data_pack_lup_r3 <- data_pack_lup_r3 %>%
     dplyr::mutate(source_reference = paste0(pckg_name,source_reference))  %>%
     dplyr::mutate(source_reference = purrr::map2_chr(main_feature,
