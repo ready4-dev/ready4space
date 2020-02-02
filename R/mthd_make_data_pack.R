@@ -600,7 +600,7 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                       sp_data_pack_lup(),
                                     ~ add_attr_tb_to_data_pack_lup_from_arg_list(.x,.y)) %>%
     dplyr::mutate(data_type = tb_data_type)
-  pckg_name <- ifelse(pckg_name =="",pckg_name, paste0(pckg_name,"::"))
+  pckg_name <- ifelse(pckg_name ==""|is.na(pckg_name),"", paste0(pckg_name,"::"))
   data_pack_lup_r3 <- data_pack_lup_r3 %>%
     dplyr::mutate(source_reference = paste0(pckg_name,source_reference))  %>%
     dplyr::mutate(source_reference = purrr::map2_chr(main_feature,
