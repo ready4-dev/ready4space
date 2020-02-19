@@ -75,7 +75,8 @@ make_profiled_area_objs <- function(pa_r4){
                              ready4utils::data_get(data_lookup_tb = pa_r4 %>%
                                                      lookup_tb() %>%
                                                      sp_starter_sf_lup() %>%
-                                                     dplyr::filter(country == country(pa_r4)),
+                                                     dplyr::filter(country == country(pa_r4)) %>%
+                                                     dplyr::filter(area_bound_yr == area_bound_year(pa_r4)),
                                                    lookup_variable = "area_type",
                                                    lookup_reference = area_type(pa_r4),
                                                    target_variable = "sf_main_sub_div",
