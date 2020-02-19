@@ -491,6 +491,7 @@ export_starter_sf <- function(lookup_tbs_r4,
   starter_sf_lup_r3 <- tibble::add_row(sp_starter_sf_lup(lookup_tbs_r4),
                                        country = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(country),
                                        area_type = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_type),
+                                       area_type = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(area_bound_yr),
                                        starter_sf = starter_sf_name,
                                        sf_main_sub_div = sp_import_lup(lookup_tbs_r4) %>% dplyr::pull(uid)) ## Assumes length one list
   `sp_starter_sf_lup<-`(lookup_tbs_r4, starter_sf_lup_r3)
