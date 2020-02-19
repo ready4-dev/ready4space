@@ -532,11 +532,14 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
     lookup_tb() %>%
     sp_starter_sf_lup() %>%
     dplyr::filter(country == country(pa_r4))
+  if(!is.na(area_bound_year(pa_r4)))
+    sp_data_starter_sf_lup <- sp_data_starter_sf_lup %>%
+    dplyr::filter(area_bound_yr == area_bound_year(pa_r4))
   starter_sf_nm <- ready4utils::data_get(data_lookup_tb = sp_data_starter_sf_lup,
                                      lookup_variable = "area_type",
                                      lookup_reference = ifelse(area_type(pa_r4) %in% sp_data_starter_sf_lup$area_type,
                                                                area_type(pa_r4),
-                                                               "STE"#"PNT"
+                                                               region_type(pa_r4)#"STE"#"PNT"
                                                                ),
                                      target_variable = "starter_sf",
                                      evaluate = FALSE)
@@ -549,12 +552,13 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
                           evaluate = FALSE) %>%
     parse(file="",n=NULL,text = .) %>%
     eval()
-  if(use_coord_lup(pa_r4))
+  if(use_coord_lup(pa_r4)){
     starter_sf <- starter_sf %>%
       sf::`st_crs<-`(crs_nbr(pa_r4)[1])
-  else
+  }else{
     starter_sf <-  starter_sf %>%
       dplyr::filter(!!rlang::sym(group_by_var) %in% features(pa_r4))
+  }
     return(starter_sf)
 }
 
