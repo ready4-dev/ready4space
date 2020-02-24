@@ -16,6 +16,7 @@
 #' @rdname get_data.ready4_sp_data_pack_lup
 #' @export
 #' @importFrom ready4utils data_get
+#' @import ready4use
 get_data.ready4_sp_data_pack_lup <- function(x,
                                              col_chr = "main_feature",
                                              value_chr){
