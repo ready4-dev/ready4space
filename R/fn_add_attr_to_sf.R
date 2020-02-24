@@ -38,14 +38,19 @@ recur_add_attr_to_sf <- function(input_ls,
                                  ){
   lookup_tb_r4 <- lookup_tb(input_ls$pa_r4)
   data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-  boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
-                                                        dplyr::filter(area_type == area_unit) %>%
-                                                        dplyr::filter(main_feature == "Boundary") %>%
-                                          dplyr::filter(as.numeric(year_start) == max(as.numeric(year_start)[as.numeric(year_start) <= as.numeric(boundary_year)])), # boundary_year
-                                       lookup_reference = "Boundary",
-                                       lookup_variable = "main_feature",
-                                       target_variable = "source_reference",
-                                       evaluate = FALSE)) %>% eval()
+  # boundary_file <- parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb %>%
+  #                                                       dplyr::filter(area_type == area_unit) %>%
+  #                                                       dplyr::filter(main_feature == "Boundary") %>%
+  #                                         dplyr::filter(as.numeric(year_start) == max(as.numeric(year_start)[as.numeric(year_start) <= as.numeric(boundary_year)])), # boundary_year
+  #                                      lookup_reference = "Boundary",
+  #                                      lookup_variable = "main_feature",
+  #                                      target_variable = "source_reference",
+  #                                      evaluate = FALSE)) %>% eval()
+  boundary_file <- get_data(data_lookup_tb %>%
+                              dplyr::filter(area_type == area_unit) %>%
+                              dplyr::filter(main_feature == "Boundary") %>%
+                              dplyr::filter(as.numeric(year_start) == max(as.numeric(year_start)[as.numeric(year_start) <= as.numeric(boundary_year)])),
+                            value_chr = "Boundary")
   attribute_data_list <- purrr::map(attribute_data,
                                    ~ .x) %>%
     stats::setNames(attribute_data)
@@ -183,11 +188,14 @@ make_attr_data_xx <- function(lookup_tb_r4,
                               lookup_ref,
                               starter_sf){
   data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-  attr_data_xx <- eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
-                                                          lookup_reference = lookup_ref,
-                                                          lookup_variable = "name",
-                                                          target_variable = "source_reference", #transformation
-                                                          evaluate = FALSE)))
+  # attr_data_xx <- eval(parse(text = ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+  #                                                         lookup_reference = lookup_ref,
+  #                                                         lookup_variable = "name",
+  #                                                         target_variable = "source_reference", #transformation
+  #                                                         evaluate = FALSE)))
+  attr_data_xx <- get_data(data_lookup_tb,
+                           col_chr = "name",
+                           value_chr = lookup_ref)
   if(is.data.frame(attr_data_xx)){
     attr_data_xx <- list(attr_data_xx) %>%
       stats::setNames(ready4utils::data_get(data_lookup_tb = data_lookup_tb,

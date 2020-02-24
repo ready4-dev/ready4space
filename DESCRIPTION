@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9183
+Version: 0.0.0.9184
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -125,6 +125,7 @@ Collate:
     'imp_pipe.R'
     'mthd_download_data.R'
     'mthd_gen_par_vals.R'
+    'mthd_get_data.R'
     'mthd_import_data.R'
     'mthd_make_data_pack.R'
     'mthd_make_import_object.R'

@@ -544,15 +544,20 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
                                                                ),
                                      target_variable = "starter_sf",
                                      evaluate = FALSE)
-    starter_sf <-  ready4utils::data_get(data_lookup_tb = pa_r4 %>%
-                            lookup_tb() %>%
-                            sp_data_pack_lup(),
-                          lookup_variable = "name",
-                          lookup_reference = starter_sf_nm %>% stringr::str_sub(end=-4),
-                          target_variable = "source_reference",
-                          evaluate = FALSE) %>%
-    parse(file="",n=NULL,text = .) %>%
-    eval()
+    # starter_sf <-  ready4utils::data_get(data_lookup_tb = pa_r4 %>%
+    #                         lookup_tb() %>%
+    #                         sp_data_pack_lup(),
+    #                       lookup_variable = "name",
+    #                       lookup_reference = starter_sf_nm %>% stringr::str_sub(end=-4),
+    #                       target_variable = "source_reference",
+    #                       evaluate = FALSE) %>%
+    # parse(file="",n=NULL,text = .) %>%
+    # eval()
+    starter_sf <- get_data(pa_r4 %>%
+                             lookup_tb() %>%
+                             sp_data_pack_lup(),
+                           col_chr = "name",
+                           value_chr = starter_sf_nm %>% stringr::str_sub(end=-4))
   if(use_coord_lup(pa_r4)){
     starter_sf <- starter_sf %>%
       sf::`st_crs<-`(crs_nbr(pa_r4)[1])
