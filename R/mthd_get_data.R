@@ -11,12 +11,10 @@
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso
-#'  \code{\link[ready4utils]{data_get}}
 #' @rdname get_data.ready4_sp_data_pack_lup
-#' @export
 #' @importFrom ready4utils data_get
-#' @import ready4use
+#' @importMethodsFrom ready4use get_data
+#' @export
 get_data.ready4_sp_data_pack_lup <- function(x,
                                              col_chr = "main_feature",
                                              value_chr){
@@ -26,3 +24,16 @@ get_data.ready4_sp_data_pack_lup <- function(x,
                                 target_variable = "shiny_source",
                                 evaluate = FALSE))
 }
+
+#' Get data
+#' @description Get data referenced in a lookup table.
+#' @name get_data
+#' @param x Primary input object - see Usage section for allowable signatures
+NULL
+
+#' @importMethodsFrom ready4use get_data
+#' @export
+#' @param col_chr PARAM_DESCRIPTION, Default: 'main_feature'
+#' @param value_chr PARAM_DESCRIPTION
+#' @rdname get_data
+methods::setMethod("get_data","ready4_sp_data_pack_lup",get_data.ready4_sp_data_pack_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD

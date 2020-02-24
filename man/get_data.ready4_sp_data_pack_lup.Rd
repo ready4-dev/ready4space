@@ -4,7 +4,7 @@
 \alias{get_data.ready4_sp_data_pack_lup}
 \title{get_data.ready4_sp_data_pack_lup}
 \usage{
-\method{get_data}{ready4_sp_data_pack_lup}(x, col_chr = "main_feature", value_chr)
+get_data.ready4_sp_data_pack_lup(x, col_chr = "main_feature", value_chr)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -28,7 +28,4 @@ if(interactive()){
  #EXAMPLE1
  }
 }
-}
-\seealso{
-\code{\link[ready4utils]{data_get}}
 }
