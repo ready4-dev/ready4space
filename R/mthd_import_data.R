@@ -202,11 +202,13 @@ data_import_make_directories <- function(directory_paths){
 #' @seealso
 #'  \code{\link[purrr]{map}}
 #'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4use]{get_data}}
 #'  \code{\link[utils]{download.file}},\code{\link[utils]{unzip}}
 #' @rdname data_import_save_files
 #' @export
 #' @importFrom purrr map_chr
 #' @importFrom ready4utils data_get
+#' @importFrom ready4use get_data
 #' @importFrom utils download.file unzip
 data_import_save_files <- function(x,
                                    data_lookup_ref,
@@ -218,7 +220,8 @@ data_import_save_files <- function(x,
                                               "file_type",
                                               "download_url",
                                               "inc_file_main",
-                                              "local_file_src"),
+                                              "local_file_src",
+                                              "data_repo_db_ui"),
                                             ~ ready4utils::data_get(data_lookup_tb = x,
                                                                     lookup_reference = data_lookup_ref,
                                                                     lookup_variable = lookup_variable,
@@ -238,9 +241,16 @@ data_import_save_files <- function(x,
       if(overwrite_lgl | !file.exists(paste0(directory_path, ## NEEDS UPDATING TO REFERENCE RENAMED PRE-EXISTING FILES
                              "/",
                              download_components_vec[4]))){
-        utils::download.file(download_components_vec[3],
-                             destfile = dest_file,
-                             mode = 'wb')
+        if(!is.na(download_components_vec[6])){
+          ready4use::get_data(x,
+                              save_dir_path_chr = directory_path,
+                              unlink_lgl = F)
+
+        }else{
+          utils::download.file(download_components_vec[3],
+                               destfile = dest_file,
+                               mode = 'wb')
+        }
         if(download_components_vec[2] == ".zip"){
           utils::unzip(dest_file,
                        exdir = directory_path)
