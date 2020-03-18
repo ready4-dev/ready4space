@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9190
+Version: 0.0.0.9191
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -16,7 +16,7 @@ Depends: R (>= 3.5.1)
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Imports: 
     dplyr,
@@ -34,9 +34,9 @@ Imports:
     nnet,
     osrm,
     purrr,
-    ready4class (>= 0.0.0.9045),
-    ready4use (>= 0.0.0.9038),
-    ready4utils (>= 0.0.0.9069),
+    ready4class (>= 0.0.0.9047),
+    ready4use (>= 0.0.0.9039),
+    ready4utils (>= 0.0.0.9070),
     rlang,
     rmapshaper,
     sf,
