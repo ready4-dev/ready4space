@@ -27,7 +27,6 @@ Imports:
     ISOcodes,
     jsonlite,
     lubridate,
-    lwgeom,
     magrittr,
     mc2d,
     methods,
