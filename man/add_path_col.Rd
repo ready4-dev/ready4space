@@ -7,6 +7,8 @@
 \usage{
 add_path_col(x, ...)
 
+add_path_col(x, ...)
+
 \S4method{add_path_col}{ready4_sp_data_pack_lup}(x, r_data_dir_chr)
 }
 \arguments{
@@ -21,6 +23,8 @@ OUTPUT_DESCRIPTION
 }
 \description{
 FUNCTION_DESCRIPTION
+
+Generic method for getting data referenced in a lookup table
 }
 \details{
 DETAILS

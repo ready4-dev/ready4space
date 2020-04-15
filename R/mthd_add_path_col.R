@@ -17,9 +17,9 @@ add_path_col <- function(x,
 }
 
 #' add_path_col
-#' @name get_data
+#' @name add_path_col
 #' @description Generic method for getting data referenced in a lookup table
-#' @rdname get_data
+#' @rdname add_path_col
 #' @export
 methods::setGeneric("add_path_col")
 
