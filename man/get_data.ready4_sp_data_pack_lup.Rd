@@ -4,7 +4,12 @@
 \alias{get_data.ready4_sp_data_pack_lup}
 \title{get_data.ready4_sp_data_pack_lup}
 \usage{
-get_data.ready4_sp_data_pack_lup(x, col_chr = "main_feature", value_chr)
+get_data.ready4_sp_data_pack_lup(
+  x,
+  col_chr = "main_feature",
+  value_chr,
+  r_data_dir_chr = NA_character_
+)
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
@@ -12,6 +17,8 @@ get_data.ready4_sp_data_pack_lup(x, col_chr = "main_feature", value_chr)
 \item{col_chr}{PARAM_DESCRIPTION, Default: 'main_feature'}
 
 \item{value_chr}{PARAM_DESCRIPTION}
+
+\item{r_data_dir_chr}{PARAM_DESCRIPTION, Default: 'NA'}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -28,4 +35,7 @@ if(interactive()){
  #EXAMPLE1
  }
 }
+}
+\seealso{
+\code{\link[ready4utils]{data_get}}
 }
