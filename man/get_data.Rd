@@ -18,6 +18,8 @@
 \item{col_chr}{PARAM_DESCRIPTION, Default: 'main_feature'}
 
 \item{value_chr}{PARAM_DESCRIPTION}
+
+\item{r_data_dir_chr}{PARAM_DESCRIPTION, Default: 'NA'}
 }
 \description{
 Get data referenced in a lookup table.

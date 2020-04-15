@@ -43,5 +43,6 @@ NULL
 #' @export
 #' @param col_chr PARAM_DESCRIPTION, Default: 'main_feature'
 #' @param value_chr PARAM_DESCRIPTION
+#' @param r_data_dir_chr PARAM_DESCRIPTION, Default: 'NA'
 #' @rdname get_data
-methods::setMethod("get_data","ready4_sp_data_pack_lup",get_data.ready4_sp_data_pack_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
+methods::setMethod("get_data","ready4_sp_data_pack_lup",get_data.ready4_sp_data_pack_lup) # NOTE, DEFAULTS TO S3 METHOD
