@@ -3,6 +3,8 @@
 \name{get_data}
 \alias{get_data}
 \alias{get_data,ready4_sp_data_pack_lup-method}
+\alias{get_data,ready4_sp_abbreviations_lup-method}
+\alias{get_data,ready4_sp_uid_lup-method}
 \title{Get data}
 \usage{
 \S4method{get_data}{ready4_sp_data_pack_lup}(
@@ -11,15 +13,21 @@
   value_chr,
   r_data_dir_chr = NA_character_
 )
+
+\S4method{get_data}{ready4_sp_abbreviations_lup}(x, col_chr = "short_name", value_chr)
+
+\S4method{get_data}{ready4_sp_uid_lup}(x, col_chr = "spatial_unit", value_chr, area_bound_yr)
 }
 \arguments{
 \item{x}{Primary input object - see Usage section for allowable signatures}
 
-\item{col_chr}{PARAM_DESCRIPTION, Default: 'main_feature'}
+\item{col_chr}{PARAM_DESCRIPTION, Default: 'spatial_unit'}
 
 \item{value_chr}{PARAM_DESCRIPTION}
 
 \item{r_data_dir_chr}{PARAM_DESCRIPTION, Default: 'NA'}
+
+\item{area_bound_yr}{PARAM_DESCRIPTION}
 }
 \description{
 Get data referenced in a lookup table.
