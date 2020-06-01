@@ -27,5 +27,5 @@ if(interactive()){
 }
 \seealso{
 \code{\link[dplyr]{filter}},\code{\link[dplyr]{distinct}}
- \code{\link[sf]{geos_query}},\code{\link[sf]{valid}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}}
+ \code{\link[sf]{valid}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}},\code{\link[sf]{st_cast}}
 }

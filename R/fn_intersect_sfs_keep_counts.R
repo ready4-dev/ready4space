@@ -206,11 +206,11 @@ get_set_diff_lon_lat_sf <- function(profile_sf,
 #' }
 #' @seealso
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{distinct}}
-#'  \code{\link[sf]{geos_query}},\code{\link[sf]{valid}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}}
+#'  \code{\link[sf]{valid}},\code{\link[sf]{st_geometry_type}},\code{\link[sf]{st_collection_extract}},\code{\link[sf]{st_cast}}
 #' @rdname make_valid_new_sf
 #' @export
 #' @importFrom dplyr filter distinct
-#' @importFrom sf st_is_valid st_make_valid st_geometry_type st_collection_extract
+#' @importFrom sf st_is_valid st_make_valid st_geometry_type st_collection_extract st_cast
 make_valid_new_sf <- function(sf){
   valid_sf <- sf %>%
     dplyr::filter(sf::st_is_valid(.))
@@ -230,6 +230,7 @@ make_valid_new_sf <- function(sf){
   }
   valid_sf %>%
     dplyr::filter(sf::st_geometry_type(.) %in% c("POLYGON", "MULTIPOLYGON")) %>%
+    sf::st_cast("MULTIPOLYGON") %>%
     dplyr::distinct(.keep_all = T)
 }
 #' @title add_kmsq_area_all_features
