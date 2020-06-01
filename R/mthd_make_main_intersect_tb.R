@@ -41,7 +41,7 @@ make_main_intersect_tb <- function(x,
 #'  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_measures}},\code{\link[sf]{st_geometry}}
 #'  \code{\link[units]{set_units}}
 #'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname make_main_intersect_tb.ready4_lookup
 #' @export
 #' @importFrom dplyr filter pull mutate arrange group_by summarise
@@ -49,7 +49,7 @@ make_main_intersect_tb <- function(x,
 #' @importFrom sf st_intersection st_area st_set_geometry
 #' @importFrom units set_units
 #' @importFrom purrr pluck map_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 make_main_intersect_tb.ready4_lookup <- function(x,
                                                  r_data_dir_chr,
                                                  template_tb,
@@ -87,7 +87,7 @@ make_main_intersect_tb.ready4_lookup <- function(x,
   template_tb <- template_tb %>%
     dplyr::mutate(!!rlang::sym(tgt_var_chr) := !!rlang::sym(tb_ref_var_chr) %>% as.character() %>% purrr::map_chr(~ ifelse(is.na(.x),
                                                                                                                            NA_character_,
-                                                                                                                           ready4utils::data_get(ref_sf  %>% sf::st_set_geometry(NULL),
+                                                                                                                           ready4fun::get_from_lup(ref_sf  %>% sf::st_set_geometry(NULL),
                                                                                                                                                  lookup_reference = .x,
                                                                                                                                                  lookup_variable = ref_var_chr,
                                                                                                                                                  target_variable = tgt_var_chr,

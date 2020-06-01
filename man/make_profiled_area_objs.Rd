@@ -26,7 +26,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4utils]{data_get}}
+\code{\link[ready4fun]{get_from_lup}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[rlang]{sym}}
  \code{\link[sf]{st_transform}}

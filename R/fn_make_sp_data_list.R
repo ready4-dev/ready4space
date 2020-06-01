@@ -52,13 +52,13 @@ make_sp_data_list <- function(input_ls,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[rlang]{sym}}
 #'  \code{\link[sf]{st_transform}}
 #' @rdname make_profiled_area_objs
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter pull
 #' @importFrom rlang sym
 #' @importFrom sf st_transform
@@ -68,11 +68,11 @@ make_profiled_area_objs <- function(pa_r4){
                                                      group_by_var = group_by_var)
   main_sub_div_var <- ifelse(use_coord_lup(pa_r4),
                              pa_r4@lookup_tb@sp_uid_lup %>%
-                               ready4utils::data_get(lookup_variable = "spatial_unit",
+                               ready4fun::get_from_lup(lookup_variable = "spatial_unit",
                                                      lookup_reference = pa_r4@region_type,
                                                      target_variable = "var_name",
                                                      evaluate = F),#"STE_NAME16", ##
-                             ready4utils::data_get(data_lookup_tb = pa_r4 %>%
+                             ready4fun::get_from_lup(data_lookup_tb = pa_r4 %>%
                                                      lookup_tb() %>%
                                                      sp_starter_sf_lup() %>%
                                                      dplyr::filter(country == country(pa_r4)) %>%
@@ -140,14 +140,14 @@ make_profiled_area_objs <- function(pa_r4){
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{mutate}},\code{\link[dplyr]{select}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}}
 #'  \code{\link[nnet]{which.is.max}}
 #'  \code{\link[sf]{geos_measures}}
 #' @rdname extend_sp_data_list
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter mutate select
 #' @importFrom purrr map_dbl map map2
 #' @importFrom nnet which.is.max
@@ -161,7 +161,7 @@ extend_sp_data_list <- function(sp_data_list,
   travel_time_mins = drive_time_limit_mins(input_ls$pa_r4)
   group_by_var <- get_group_by_var_from_pai(input_ls$pa_r4)
   age_sex_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
-  age_sex_counts_grouped_by <- ready4utils::data_get(data_lookup_tb = lookup_tb(input_ls$pa_r4) %>%
+  age_sex_counts_grouped_by <- ready4fun::get_from_lup(data_lookup_tb = lookup_tb(input_ls$pa_r4) %>%
                                                        sp_uid_lup() %>%
                                                        dplyr::filter(year %in% c(data_year(input_ls$pa_r4))),
                                                      lookup_variable = "spatial_unit",
@@ -173,7 +173,7 @@ extend_sp_data_list <- function(sp_data_list,
     tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_ls$tot_pop_str) + 1]
     res_lup <- input_ls$pa_r4 %>% lookup_tb() %>% sp_resolution_lup()
     use_tot_pop_lgl <- c(age_sex_pop_resolution,tot_pop_resolution) %>%
-      purrr::map_dbl(~ready4utils::data_get(data_lookup_tb = res_lup,
+      purrr::map_dbl(~ready4fun::get_from_lup(data_lookup_tb = res_lup,
                                             lookup_variable = "area_type",
                                             lookup_reference = .x,
                                             target_variable = "mean_size",
@@ -442,11 +442,11 @@ drop_grouped_popl_vars <- function(profiled_sf,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[dplyr]{filter}}
 #' @rdname get_group_by_var
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter
 get_group_by_var <- function(profile_unit,
                              data_unit,
@@ -454,13 +454,13 @@ get_group_by_var <- function(profile_unit,
                              group_by_lookup_tb,
                              area_bound_year){ ### REPLACE ?????
   group_by <- ifelse(group_at_profile_unit,
-                     ready4utils::data_get(data_lookup_tb = group_by_lookup_tb %>% dplyr::filter(spatial_unit == profile_unit) %>%
+                     ready4fun::get_from_lup(data_lookup_tb = group_by_lookup_tb %>% dplyr::filter(spatial_unit == profile_unit) %>%
                                              dplyr::filter(as.numeric(year)==area_bound_year),
                                           lookup_variable = "spatial_unit",
                                           lookup_reference = profile_unit,
                                           target_variable = "var_name",
                                           evaluate = FALSE),
-                     ready4utils::data_get(data_lookup_tb = group_by_lookup_tb,
+                     ready4fun::get_from_lup(data_lookup_tb = group_by_lookup_tb,
                                           lookup_variable = "spatial_unit",
                                           lookup_reference = data_unit,
                                           target_variable = "var_name",
@@ -521,13 +521,13 @@ get_group_by_var_from_pai <- function(pa_r4){
 #' }
 #' @seealso
 #'  \code{\link[dplyr]{filter}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[sf]{st_crs<-}}
 #'  \code{\link[rlang]{sym}}
 #' @rdname get_starter_sf_for_profiled_area
 #' @export
 #' @importFrom dplyr filter
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom sf st_crs<-
 #' @importFrom rlang sym
 get_starter_sf_for_profiled_area <- function(pa_r4,
@@ -539,7 +539,7 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
   if(!is.na(area_bound_year(pa_r4)))
     sp_data_starter_sf_lup <- sp_data_starter_sf_lup %>%
     dplyr::filter(area_bound_yr == area_bound_year(pa_r4))
-  starter_sf_nm <- ready4utils::data_get(data_lookup_tb = sp_data_starter_sf_lup,
+  starter_sf_nm <- ready4fun::get_from_lup(data_lookup_tb = sp_data_starter_sf_lup,
                                      lookup_variable = "area_type",
                                      lookup_reference = ifelse(area_type(pa_r4) %in% sp_data_starter_sf_lup$area_type,
                                                                area_type(pa_r4),
@@ -547,7 +547,7 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
                                                                ),
                                      target_variable = "starter_sf",
                                      evaluate = FALSE)
-    # starter_sf <-  ready4utils::data_get(data_lookup_tb = pa_r4 %>%
+    # starter_sf <-  ready4fun::get_from_lup(data_lookup_tb = pa_r4 %>%
     #                         lookup_tb() %>%
     #                         sp_data_pack_lup(),
     #                       lookup_variable = "name",

@@ -30,7 +30,7 @@ if(interactive()){
 }
 }
 \seealso{
-\code{\link[ready4utils]{data_get}}
+\code{\link[ready4fun]{get_from_lup}}
  \code{\link[stats]{setNames}}
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 }

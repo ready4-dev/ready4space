@@ -16,13 +16,13 @@
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
 #'  \code{\link[stats]{setNames}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname get_spatial_data_list
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom purrr map map2 map_lgl prepend
 #' @importFrom stats setNames
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 get_spatial_data_list <- function(input_ls,
                                   sub_div_unit = NULL,
                                   require_year_match = TRUE,
@@ -44,7 +44,7 @@ get_spatial_data_list <- function(input_ls,
                                                                        included_years_vec = year_vec)) %>% #year %in% year_vec
                               #dplyr::filter(area_type == .x[2]) %>%
                               #dplyr::filter(region %in% region_lookup) %>%
-                              ready4utils::data_get(lookup_reference = .x[1],
+                              ready4fun::get_from_lup(lookup_reference = .x[1],
                                                     lookup_variable = "main_feature",
                                                     target_variable = "name",
                                                     evaluate = FALSE)) %>% #purrr::flatten_chr()
@@ -131,14 +131,14 @@ make_year_filter_logic_vec <- function(data_tb,
 #'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
 #'  \code{\link[stringr]{str_length}}
 #'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{flatten}},\code{\link[purrr]{reduce}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname get_spatial_data_names
 #' @export
 #' @importFrom lubridate year
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck map map_chr map2 flatten_chr map2_chr map_dbl reduce
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 get_spatial_data_names <- function(input_ls,
                                    sub_div_unit = NULL,
                                    require_year_match = TRUE,
@@ -183,7 +183,7 @@ get_spatial_data_names <- function(input_ls,
                                              dplyr::filter(area_type == .y))
   # if(!is.null(sub_div_unit)){
   #   region_lookup <- purrr::map_chr(sub_div_unit,
-  #                                   ~ ready4utils::data_get(data_lookup_tb = abbreviations_lookup_tb,
+  #                                   ~ ready4fun::get_from_lup(data_lookup_tb = abbreviations_lookup_tb,
   #                                                          lookup_reference = .,
   #                                                          lookup_variable = "long_name",
   #                                                          target_variable = "short_name",
@@ -202,7 +202,7 @@ get_spatial_data_names <- function(input_ls,
                                       target_year = data_year)
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
-                                   ~     ready4utils::data_get(data_lookup_tb = spatial_lookup_tb %>%
+                                   ~     ready4fun::get_from_lup(data_lookup_tb = spatial_lookup_tb %>%
                                                                 dplyr::filter(year == .y)
                                                               # %>%
                                                               #   dplyr::filter(region == region_lookup)
@@ -393,20 +393,20 @@ get_highest_res <- function(options_vec,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[stringr]{str_detect}}
 #'  \code{\link[magrittr]{extract}}
 #' @rdname check_if_ppr
 #' @export
 #' @importFrom purrr map_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_detect
 #' @importFrom magrittr is_greater_than
 check_if_ppr <- function(data_name_item,
                          data_lookup_tb,
                          pop_projs_str){
   purrr::map_chr(data_name_item,
-                 ~ ready4utils::data_get(data_lookup_tb = data_lookup_tb,
+                 ~ ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb,
                                         lookup_reference = .x,
                                         lookup_variable = "name",
                                         target_variable = "main_feature",

@@ -37,12 +37,12 @@ make_data_packs <- function(x,
 #' }
 #' @seealso
 #'  \code{\link[purrr]{reduce}}
-#'  \code{\link[ready4utils]{add_all_tbs_in_r4}}
+#'  \code{\link[ready4fun]{add_all_tbs_in_r4}}
 #'  \code{\link[dplyr]{slice}}
 #' @rdname make_data_packs.ready4_sp_import_lup
 #' @export
 #' @importFrom purrr reduce
-#' @importFrom ready4utils add_all_tbs_in_r4
+#' @importFrom ready4fun add_all_tbs_in_r4
 #' @importFrom dplyr slice
 make_data_packs.ready4_sp_import_lup <- function(x,
                                                  init_lookup_r4 = NULL,
@@ -58,7 +58,7 @@ make_data_packs.ready4_sp_import_lup <- function(x,
     order_tb()
   lookup_tbs_r4 <- purrr::reduce(1:nrow(x),
                                  .init = init_lookup_r4,
-                                 ~ ready4utils::add_all_tbs_in_r4(r4_1 = .x,
+                                 ~ ready4fun::add_all_tbs_in_r4(r4_1 = .x,
                                                                   r4_2 = x %>% dplyr::slice(.y) %>%
                                                                     make_data_pack_sngl(merge_with = get_merge_sf_str(lookup_r4 = .x,
                                                                                                                       sp_import_r3_slice = x %>% dplyr::slice(.y),
@@ -349,13 +349,13 @@ get_r_import_path_chr <- function(r_data_dir_chr,
 #' @seealso
 #'  \code{\link[dplyr]{mutate}}
 #'  \code{\link[purrr]{map2}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[stringr]{str_sub}}
 #' @rdname add_names
 #' @export
 #' @importFrom dplyr mutate
 #' @importFrom purrr pmap_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_sub
 #' @import ISOcodes
 add_names <- function(x){
@@ -367,7 +367,7 @@ add_names <- function(x){
                                               data_type,
                                               main_feature,
                                               year),
-                                         ~ paste0(ready4utils::data_get(data_lookup_tb = ISO_3166_1,
+                                         ~ paste0(ready4fun::get_from_lup(data_lookup_tb = ISO_3166_1,
                                                                         lookup_reference = ..1,
                                                                         lookup_variable = "Name",
                                                                         target_variable = "Alpha_3",
@@ -539,12 +539,12 @@ export_uid_lup <- function(lookup_tbs_r4){
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[dplyr]{mutate}}
 #' @rdname export_data_pack_lup
 #' @export
 #' @importFrom purrr map2 reduce map2_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr mutate
 export_data_pack_lup <- function(lookup_tbs_r4,
                                  tb_data_type = "Geometry",
@@ -554,43 +554,43 @@ export_data_pack_lup <- function(lookup_tbs_r4,
                                           names(template_ls),
                                           ~ list(.x, # remove (carefully)
                                                  .y,
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "area_type",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "area_bound_yr",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "region",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "year",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "year_start",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "year_end",
                                                                        lookup_variable = "name",
                                                                        lookup_reference = .y,
                                                                        evaluate = FALSE),
-                                                 ready4utils::data_get(data_lookup_tb = lookup_tbs_r4 %>%
+                                                 ready4fun::get_from_lup(data_lookup_tb = lookup_tbs_r4 %>%
                                                                          sp_import_lup(),
                                                                        target_variable = "main_feature",
                                                                        lookup_variable = "name",
@@ -630,13 +630,13 @@ export_data_pack_lup <- function(lookup_tbs_r4,
 #' @seealso
 #'  \code{\link[dplyr]{pull}}
 #'  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[stringr]{str_detect}}
 #' @rdname get_merge_sf_str
 #' @export
 #' @importFrom dplyr pull
 #' @importFrom purrr pluck map_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_detect
 get_merge_sf_str <- function(lookup_r4,
                              sp_import_r3_slice,
@@ -648,12 +648,12 @@ get_merge_sf_str <- function(lookup_r4,
       NA_character_
     }else{
       purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
-                     ~ ready4utils::data_get(data_lookup_tb = sp_import_lup(lookup_r4),
+                     ~ ready4fun::get_from_lup(data_lookup_tb = sp_import_lup(lookup_r4),
                                              lookup_reference = .x,
                                              lookup_variable = "uid",
                                              target_variable = "name",
                                              evaluate = FALSE) %>%
-                       ready4utils::data_get(data_lookup_tb = sp_data_pack_lup(lookup_r4),
+                       ready4fun::get_from_lup(data_lookup_tb = sp_data_pack_lup(lookup_r4),
                                              lookup_reference = .,
                                              lookup_variable = "name",
                                              target_variable = "source_reference",

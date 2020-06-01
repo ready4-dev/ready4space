@@ -38,6 +38,6 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map2}},\code{\link[purrr]{reduce}}
- \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4fun]{get_from_lup}}
  \code{\link[dplyr]{mutate}}
 }

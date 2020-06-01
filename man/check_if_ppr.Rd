@@ -31,7 +31,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{map}}
- \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4fun]{get_from_lup}}
  \code{\link[stringr]{str_detect}}
  \code{\link[magrittr]{extract}}
 }

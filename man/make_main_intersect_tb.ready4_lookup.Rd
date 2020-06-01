@@ -54,5 +54,5 @@ if(interactive()){
  \code{\link[sf]{geos_binary_ops}},\code{\link[sf]{geos_measures}},\code{\link[sf]{st_geometry}}
  \code{\link[units]{set_units}}
  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}}
- \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4fun]{get_from_lup}}
 }

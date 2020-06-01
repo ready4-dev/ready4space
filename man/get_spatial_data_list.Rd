@@ -40,5 +40,5 @@ if(interactive()){
 \code{\link[stringr]{str_sub}}
  \code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{prepend}}
  \code{\link[stats]{setNames}}
- \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4fun]{get_from_lup}}
 }

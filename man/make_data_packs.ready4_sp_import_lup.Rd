@@ -50,6 +50,6 @@ if(interactive()){
 }
 \seealso{
 \code{\link[purrr]{reduce}}
- \code{\link[ready4utils]{add_all_tbs_in_r4}}
+ \code{\link[ready4fun]{add_all_tbs_in_r4}}
  \code{\link[dplyr]{slice}}
 }

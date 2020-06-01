@@ -13,10 +13,10 @@
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname get_data.ready4_sp_data_pack_lup
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 get_data.ready4_sp_data_pack_lup <- function(x,
                                              col_chr = "main_feature",
                                              value_chr,
@@ -25,7 +25,7 @@ get_data.ready4_sp_data_pack_lup <- function(x,
     x <- add_path_col(x,
                       r_data_dir_chr = r_data_dir_chr)
   }
-  readRDS(ready4utils::data_get(data_lookup_tb = x, # boundary_year
+  readRDS(ready4fun::get_from_lup(data_lookup_tb = x, # boundary_year
                                 lookup_reference = value_chr,
                                 lookup_variable = col_chr,
                                 target_variable = "shiny_source",
@@ -46,14 +46,14 @@ get_data.ready4_sp_data_pack_lup <- function(x,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname get_data.ready4_sp_abbreviations_lup
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 get_data.ready4_sp_abbreviations_lup <- function(x,
                                           col_chr = "short_name",
                                           value_chr){
-  ready4utils::data_get(data_lookup_tb = x,
+  ready4fun::get_from_lup(data_lookup_tb = x,
                         lookup_reference = value_chr,
                         lookup_variable = col_chr,
                         target_variable = ifelse(col_chr == "short_name","long_name","short_name"),
@@ -75,17 +75,17 @@ get_data.ready4_sp_abbreviations_lup <- function(x,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[dplyr]{filter}}
 #' @rdname get_data.ready4_sp_uid_lup
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter
 get_data.ready4_sp_uid_lup <- function(x,
                                 col_chr = "spatial_unit",
                                 value_chr,
                                 area_bound_yr){
-  ready4utils::data_get(data_lookup_tb = x %>% dplyr::filter(year == area_bound_yr),
+  ready4fun::get_from_lup(data_lookup_tb = x %>% dplyr::filter(year == area_bound_yr),
                         lookup_reference = value_chr,
                         lookup_variable = col_chr,
                         target_variable = ifelse(col_chr == "spatial_unit","var_name","spatial_unit"),

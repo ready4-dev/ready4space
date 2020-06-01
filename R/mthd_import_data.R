@@ -138,18 +138,18 @@ methods::setMethod("import_data",
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}},\code{\link[purrr]{accumulate}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname data_import_get_dir_paths
 #' @export
 #' @importFrom purrr map_chr accumulate
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 data_import_get_dir_paths <- function(x,
                                       destination_directory,
                                       data_lookup_ref,
                                       lookup_variable,
                                       directory_sub_divs){
   directory_names <- purrr::map_chr(directory_sub_divs,
-                                    ~ ready4utils::data_get(data_lookup_tb = x,
+                                    ~ ready4fun::get_from_lup(data_lookup_tb = x,
                                                             lookup_reference = data_lookup_ref,
                                                             lookup_variable = lookup_variable,
                                                             target_variable = .x,
@@ -201,13 +201,13 @@ data_import_make_directories <- function(directory_paths){
 #' }
 #' @seealso
 #'  \code{\link[purrr]{map}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[ready4use]{get_data}}
 #'  \code{\link[utils]{download.file}},\code{\link[utils]{unzip}}
 #' @rdname data_import_save_files
 #' @export
 #' @importFrom purrr map_chr
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom ready4use get_data
 #' @importFrom utils download.file unzip
 data_import_save_files <- function(x,
@@ -222,7 +222,7 @@ data_import_save_files <- function(x,
                                               "inc_file_main",
                                               "local_file_src",
                                               "data_repo_db_ui"),
-                                            ~ ready4utils::data_get(data_lookup_tb = x,
+                                            ~ ready4fun::get_from_lup(data_lookup_tb = x,
                                                                     lookup_reference = data_lookup_ref,
                                                                     lookup_variable = lookup_variable,
                                                                     target_variable = .x,
@@ -282,23 +282,23 @@ data_import_save_files <- function(x,
 #'  }
 #' }
 #' @seealso
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[purrr]{map2}}
 #' @rdname data_import_rename_files
 #' @export
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom purrr walk2
 data_import_rename_files <- function(x,
                                      data_lookup_ref,
                                      lookup_variable,
                                      directory_path,
                                      overwrite_lgl = F){
-  old_names_list <- ready4utils::data_get(data_lookup_tb = x,
+  old_names_list <- ready4fun::get_from_lup(data_lookup_tb = x,
                                           lookup_reference = data_lookup_ref,
                                           lookup_variable = lookup_variable,
                                           target_variable = "inc_files_to_rename",
                                           evaluate = FALSE)
-  new_names_list <- ready4utils::data_get(data_lookup_tb = x,
+  new_names_list <- ready4fun::get_from_lup(data_lookup_tb = x,
                                           lookup_reference = data_lookup_ref,
                                           lookup_variable = lookup_variable,
                                           target_variable = "new_names_for_inc_files",
@@ -428,17 +428,17 @@ data_import_show_menu_of_type_names <- function(x,
 #' @seealso
 #'  \code{\link[purrr]{map}}
 #'  \code{\link[dplyr]{select}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #' @rdname data_import_get_one_path
 #' @export
 #' @importFrom purrr map_chr
 #' @importFrom dplyr select
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 data_import_get_one_path <- function(downloaded_data_tb,
                                      lookup_reference,
                                      data_directory) {
   path_element_vector <- purrr::map_chr(downloaded_data_tb %>% dplyr::select(-name) %>% names(),
-                                        ~ ready4utils::data_get(data_lookup_tb = downloaded_data_tb,
+                                        ~ ready4fun::get_from_lup(data_lookup_tb = downloaded_data_tb,
                                                                 lookup_variable = "name",
                                                                 lookup_reference = lookup_reference,
                                                                 target_variable = .x,
@@ -463,20 +463,20 @@ data_import_get_one_path <- function(downloaded_data_tb,
 #' @seealso
 #'  \code{\link[stringr]{str_sub}}
 #'  \code{\link[stringi]{stri_locate_all}}
-#'  \code{\link[ready4utils]{data_get}}
+#'  \code{\link[ready4fun]{get_from_lup}}
 #'  \code{\link[purrr]{map}}
 #' @rdname data_import_non_shape_items
 #' @export
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
-#' @importFrom ready4utils data_get
+#' @importFrom ready4fun get_from_lup
 #' @importFrom purrr map_chr
 data_import_non_shape_items <- function(path_str,
                                         x){
   file_name <-  get_name_from_path_chr(path_str)
   file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
                                                as.vector())
-  data_type <- ready4utils::data_get(data_lookup_tb = x,#data_import_show_menu_detail(x = x),
+  data_type <- ready4fun::get_from_lup(data_lookup_tb = x,#data_import_show_menu_detail(x = x),
                                      lookup_reference = file_name,
                                      lookup_variable = "inc_file_main",
                                      target_variable = "data_type",
@@ -487,20 +487,20 @@ data_import_non_shape_items <- function(path_str,
                     "year",
                     "region")
   var_val_vec <- purrr::map_chr(var_name_vec,
-                                ~ ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+                                ~ ready4fun::get_from_lup(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
                                                                                                               x = x),
                                                         lookup_reference = file_name,
                                                         lookup_variable = "inc_file_main",
                                                         target_variable = .x,
                                                         evaluate = FALSE))
-  # data_feature <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  # data_feature <- ready4fun::get_from_lup(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
   #                                                                                             x = x),
   #                                       lookup_reference = file_name,
   #                                       lookup_variable = "inc_file_main",
   #                                       target_variable = "main_feature",
   #                                       evaluate = FALSE) %>%
   #   stringr::str_sub(1,3)
-  # area_type <- ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  # area_type <- ready4fun::get_from_lup(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
   #                                                                                          x = x),
   #                                    lookup_reference = file_name,
   #                                    lookup_variable = "inc_file_main",
@@ -509,7 +509,7 @@ data_import_non_shape_items <- function(path_str,
   make_import_object(x,
                      var_val_vec = var_val_vec,
                      path_str = path_str)
-  # make_import_obj_for_context(context = ready4utils::data_get(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
+  # make_import_obj_for_context(context = ready4fun::get_from_lup(data_lookup_tb = data_import_show_menu_of_type_detail(data_type,
   #                                                                                                                   x = x),
   #                                                             lookup_reference = file_name,
   #                                                             lookup_variable = "inc_file_main",

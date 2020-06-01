@@ -325,7 +325,7 @@ sum_pop_by_multiple_groups_sf <- function(profiled_sf,
 #' @export
 #' @importFrom dplyr rename_at vars ends_with funs
 suffix_to_prefix <- function(data_tb,
-                             suffix){ ##### MOVE THIS TO READY4UTILS (AND UPDATE ALL REFERENCES TO THIS FUNCTION)
+                             suffix){ ##### MOVE THIS TO READY4FUN (AND UPDATE ALL REFERENCES TO THIS FUNCTION)
   data_tb %>%
     dplyr::rename_at(dplyr::vars(dplyr::ends_with(suffix)),
                      dplyr::funs(paste0(suffix,

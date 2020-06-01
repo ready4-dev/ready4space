@@ -41,5 +41,5 @@ if(interactive()){
  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
  \code{\link[stringr]{str_length}}
  \code{\link[purrr]{pluck}},\code{\link[purrr]{map}},\code{\link[purrr]{map2}},\code{\link[purrr]{flatten}},\code{\link[purrr]{reduce}}
- \code{\link[ready4utils]{data_get}}
+ \code{\link[ready4fun]{get_from_lup}}
 }
