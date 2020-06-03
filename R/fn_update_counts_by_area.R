@@ -213,15 +213,17 @@ sum_updated_pop_by_grp <- function(profiled_sf,
     group_totals <- group_totals %>%
       suffix_to_prefix(suffix = nse_objs_ls$grouping_1_concept_tot)
   group_totals <- group_totals %>%
-    dplyr::ungroup() %>%
-    dplyr::rename_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$grouping_1_concept_tot)),
-                     dplyr::funs(gsub(paste0(nse_objs_ls$popl_inc_unit,"_"),"",.)))
+    dplyr::ungroup()
   if(top_level){
     dplyr::bind_cols(profiled_sf,
-                     group_totals[rep(row.names(group_totals), nrow(profiled_sf)), ])
+                     group_totals[rep(row.names(group_totals), nrow(profiled_sf)), ] %>%
+                       dplyr::select(-!!rlang::sym(grp_var_name)))
   }else{
     profiled_sf %>%
-      dplyr::inner_join(.,group_totals)
+      dplyr::inner_join(.,
+                        group_totals %>%
+                          dplyr::rename_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$grouping_1_concept_tot)),
+                                           dplyr::funs(gsub(paste0(nse_objs_ls$popl_inc_unit,"_"),"",.))))
   }
 }
 
