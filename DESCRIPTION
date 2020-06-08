@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9200
+Version: 0.0.0.9202
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -33,9 +33,9 @@ Imports:
     nnet,
     osrm,
     purrr,
-    ready4class (>= 0.0.0.9047),
-    ready4fun (>= 0.0.0.9072),
-    ready4use (>= 0.0.0.9039),
+    ready4class (>= 0.0.0.9050),
+    ready4fun (>= 0.0.0.9077),
+    ready4use (>= 0.0.0.9041),
     rlang,
     rmapshaper,
     sf,
@@ -46,7 +46,7 @@ Imports:
     tidyr,
     units,
     utils
-Remotes:  
+Remotes: 
     orygennp/ready4class,
     orygennp/ready4fun,
     orygennp/ready4use
