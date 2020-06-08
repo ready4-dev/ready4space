@@ -193,6 +193,53 @@ get_set_diff_lon_lat_sf <- function(profile_sf,
     new_ls[[1]]
   }
 }
+
+#' @title make_each_uid_a_poly_sf
+#' @description FUNCTION_DESCRIPTION
+#' @param sf PARAM_DESCRIPTION
+#' @param uid_chr PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @seealso
+#'  \code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}},\code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{nth}}
+#'  \code{\link[sf]{valid}},\code{\link[sf]{sf}},\code{\link[sf]{st_geometry}},\code{\link[sf]{geos_combine}},\code{\link[sf]{sfc}}
+#'  \code{\link[rlang]{sym}}
+#'  \code{\link[purrr]{map}},\code{\link[purrr]{reduce}}
+#' @rdname make_each_uid_a_poly_sf
+#' @export
+#' @importFrom dplyr filter pull summarise_all first
+#' @importFrom sf st_is_valid st_sf st_set_geometry st_union st_sfc
+#' @importFrom rlang sym
+#' @importFrom purrr map reduce
+make_each_uid_a_poly_sf <- function(sf,
+                                    uid_chr){
+  sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
+  duplicate_chr_vec <- sf %>% dplyr::filter(!!rlang::sym(uid_chr) %>%
+                                              duplicated()) %>%
+    dplyr::pull(!!rlang::sym(uid_chr)) %>%
+    unique()
+  sf_1 <- sf %>% dplyr::filter(!(!!rlang::sym(uid_chr) %in%
+                                   duplicate_chr_vec))
+  sf_2 <- sf %>% dplyr::filter(!!rlang::sym(uid_chr) %in%
+                                 duplicate_chr_vec)
+  purrr::map(duplicate_chr_vec,
+             ~ sf::st_sf(sf_2 %>%
+                           dplyr::filter(!!rlang::sym(uid_chr) == .x) %>%
+                           sf::st_set_geometry(NULL) %>%
+                           dplyr::summarise_all(.funs = dplyr::first),
+                         geometry = sf_2 %>%
+                           dplyr::filter(!!rlang::sym(uid_chr) == .x) %>%
+                           sf::st_union() %>%
+                           sf::st_sfc())) %>%
+    append(list(sf_1))  %>%
+    purrr::reduce(~rbind(.x,.y))
+}
 #' @title make_valid_new_sf
 #' @description FUNCTION_DESCRIPTION
 #' @param sf PARAM_DESCRIPTION
