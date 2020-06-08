@@ -269,7 +269,8 @@ process_geom_import <- function(x,#lookup_tbs_r4 %>% sp_import_lup()
                                   ~ intersect_lon_lat_sfs(.x,
                                                           eval(parse(text=.y)),
                                                           crs_nbr_vec = crs_nbr_vec,
-                                                          validate_lgl = is.null(pnt_ls))) ## DUD REF TO PNT_LS
+                                                          validate_lgl = T #is.null(pnt_ls)
+                                                          ))
       if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
         starter_sf <- starter_sf %>%
           dplyr::mutate(area = sf::st_area(.)) %>%
