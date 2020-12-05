@@ -2,84 +2,19 @@
 % Please edit documentation in R/C3_ready4_sp_abbreviations_lup.R
 \name{ready4_sp_abbreviations_lup}
 \alias{ready4_sp_abbreviations_lup}
-\alias{new_ready4_sp_abbreviations_lup}
-\alias{make_prototype_ready4_sp_abbreviations_lup}
-\alias{validate_ready4_sp_abbreviations_lup}
-\alias{is_ready4_sp_abbreviations_lup}
-\title{ready4_sp_abbreviations_lup}
+\title{Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.}
 \usage{
-ready4_sp_abbreviations_lup(x = make_prototype_ready4_sp_abbreviations_lup())
-
-new_ready4_sp_abbreviations_lup(x)
-
-make_prototype_ready4_sp_abbreviations_lup()
-
-validate_ready4_sp_abbreviations_lup(x)
-
-is_ready4_sp_abbreviations_lup(x)
+ready4_sp_abbreviations_lup(x = make_pt_ready4_sp_abbreviations_lup())
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION}
+\item{x}{A prototype for the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations., Default: make_pt_ready4_sp_abbreviations_lup()}
 }
 \value{
-A validated instance of the ready4_sp_abbreviations_lup class
-
-An unvalidated instance of the ready4_sp_abbreviations_lup class
-
-A prototpe for ready4_sp_abbreviations_lup class
-
-A prototpe for ready4_sp_abbreviations_lup class
-
-A logical value, TRUE if a valid instance of the ready4_sp_abbreviations_lup class
+A validated instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
 }
 \description{
-Create a new valid instance of the S3 class: ready4_sp_abbreviations_lup
-
-Create a new unvalidated instance of the S3 class: new_ready4_sp_abbreviations_lup
-
-Create a new prototype for S3 class: make_prototype_ready4_sp_abbreviations_lup
-
-Validate an instance of the S3 class: validate_ready4_sp_abbreviations_lup
-
-Check whether an object is a valid instance of the S3 class: is_ready4_sp_abbreviations_lup
+Create a new valid instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
 }
 \details{
 Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-}
-\seealso{
-\code{\link[tibble]{is_tibble}}
-
-\code{\link[tibble]{tibble}}
-
-\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_c}}
- \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{arrange}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
- \code{\link[tidyr]{gather}}
- \code{\link[purrr]{map2}}
 }

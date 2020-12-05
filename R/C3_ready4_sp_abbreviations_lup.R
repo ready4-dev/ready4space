@@ -1,110 +1,79 @@
 
-#' ready4_sp_abbreviations_lup
-#' @name ready4_sp_abbreviations_lup
-#' @description Create a new valid instance of the S3 class: ready4_sp_abbreviations_lup
-#' @param x PARAM_DESCRIPTION, Default: make_prototype_ready4_sp_abbreviations_lup()
-#' @return A validated instance of the ready4_sp_abbreviations_lup class
+setOldClass(c("ready4_sp_abbreviations_lup","tbl_df", "tbl", "data.frame"))
+#' Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description Create a new valid instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @param x A prototype for the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations., Default: make_pt_ready4_sp_abbreviations_lup()
+#' @return A validated instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
 #' @rdname ready4_sp_abbreviations_lup
 #' @export 
 
-ready4_sp_abbreviations_lup <- function(x = make_prototype_ready4_sp_abbreviations_lup()){ 
-validate_ready4_sp_abbreviations_lup(new_ready4_sp_abbreviations_lup(x))
+ready4_sp_abbreviations_lup <- function(x = make_pt_ready4_sp_abbreviations_lup()){ 
+validate_ready4_sp_abbreviations_lup(make_new_ready4_sp_abbreviations_lup(x))
 }
-#' ready4_sp_abbreviations_lup
-#' @name new_ready4_sp_abbreviations_lup
-#' @description Create a new unvalidated instance of the S3 class: new_ready4_sp_abbreviations_lup
-#' @param x PARAM_DESCRIPTION
-#' @return An unvalidated instance of the ready4_sp_abbreviations_lup class
-#' 
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso 
-#'  \code{\link[tibble]{is_tibble}}
-#' @rdname ready4_sp_abbreviations_lup
+#' Make new Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description Create a new unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @param x A prototype for the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @return An unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @rdname make_new_ready4_sp_abbreviations_lup
 #' @export 
 #' @importFrom tibble is_tibble
-new_ready4_sp_abbreviations_lup <- function(x){ 
+make_new_ready4_sp_abbreviations_lup <- function(x){ 
 stopifnot(tibble::is_tibble(x))
-class(x) <- append(c("ready4_sp_abbreviations_lup",setdiff(make_prototype_ready4_sp_abbreviations_lup() %>% class(),class(x))),
+class(x) <- append(c("ready4_sp_abbreviations_lup",setdiff(make_pt_ready4_sp_abbreviations_lup() %>% class(),class(x))),
 class(x))
 x
 }
-#' ready4_sp_abbreviations_lup
-#' @name make_prototype_ready4_sp_abbreviations_lup
-#' @description Create a new prototype for S3 class: make_prototype_ready4_sp_abbreviations_lup
-
-#' @return A prototpe for ready4_sp_abbreviations_lup class
-#' 
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso 
-#'  \code{\link[tibble]{tibble}}
-#' @rdname ready4_sp_abbreviations_lup
+#' Make prototype Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description Create a new prototype for the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @param long_name PARAM_DESCRIPTION, Default: character(0)
+#' @param short_name PARAM_DESCRIPTION, Default: character(0)
+#' @return A prototype for Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @rdname make_pt_ready4_sp_abbreviations_lup
 #' @export 
+#' @importFrom ready4class update_pt_fn_args_ls
+#' @importFrom rlang exec
 #' @importFrom tibble tibble
-make_prototype_ready4_sp_abbreviations_lup <- function(){ 
-tibble::tibble(long_name = character(0),
-short_name = character(0))
+make_pt_ready4_sp_abbreviations_lup <- function(long_name = character(0),
+short_name = character(0)){ 
+args_ls <- list(long_name = long_name,
+short_name = short_name) %>% ready4class::update_pt_fn_args_ls()
+rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' ready4_sp_abbreviations_lup
-#' @name validate_ready4_sp_abbreviations_lup
-#' @description Validate an instance of the S3 class: validate_ready4_sp_abbreviations_lup
-#' @param x PARAM_DESCRIPTION
-#' @return A prototpe for ready4_sp_abbreviations_lup class
-#' 
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso 
-#'  \code{\link[stringr]{str_detect}},\code{\link[stringr]{str_c}}
-#'  \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{arrange}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
-#'  \code{\link[tidyr]{gather}}
-#'  \code{\link[purrr]{map2}}
-#' @rdname ready4_sp_abbreviations_lup
+#' Validate Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description Validate an instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @param x An unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @return A prototpe for Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @rdname validate_ready4_sp_abbreviations_lup
 #' @export 
 #' @importFrom stringr str_detect str_c
 #' @importFrom dplyr summarise_all arrange filter pull
 #' @importFrom tidyr gather
 #' @importFrom purrr map2_chr
 validate_ready4_sp_abbreviations_lup <- function(x){
-if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_prototype_ready4_sp_abbreviations_lup())],
-names(make_prototype_ready4_sp_abbreviations_lup())))!=length(names(make_prototype_ready4_sp_abbreviations_lup()))){
+if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_pt_ready4_sp_abbreviations_lup())],
+names(make_pt_ready4_sp_abbreviations_lup())))!=length(names(make_pt_ready4_sp_abbreviations_lup()))){
 stop(paste0("TIBBLE must include columns named: ",
-names(make_prototype_ready4_sp_abbreviations_lup()) %>% stringr::str_c(sep="", collapse = ", ")),
+names(make_pt_ready4_sp_abbreviations_lup()) %>% stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
- if(!identical(make_prototype_ready4_sp_abbreviations_lup() %>% 
+ if(!identical(make_pt_ready4_sp_abbreviations_lup() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
 dplyr::arrange(variable),
 x %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
-dplyr::filter(variable %in% names(make_prototype_ready4_sp_abbreviations_lup())) %>% dplyr::arrange(variable))){
+dplyr::filter(variable %in% names(make_pt_ready4_sp_abbreviations_lup())) %>% dplyr::arrange(variable))){
 stop(paste0("TIBBLE columns should be of the following classes: ",
-purrr::map2_chr(make_prototype_ready4_sp_abbreviations_lup() %>% 
+purrr::map2_chr(make_pt_ready4_sp_abbreviations_lup() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
 dplyr::pull(1),
- make_prototype_ready4_sp_abbreviations_lup() %>% 
+ make_pt_ready4_sp_abbreviations_lup() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
 dplyr::pull(2),
@@ -113,19 +82,12 @@ stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
 x}
-#' ready4_sp_abbreviations_lup
-#' @name is_ready4_sp_abbreviations_lup
-#' @description Check whether an object is a valid instance of the S3 class: is_ready4_sp_abbreviations_lup
-#' @param x PARAM_DESCRIPTION
-#' @return A logical value, TRUE if a valid instance of the ready4_sp_abbreviations_lup class
-#' 
-#' @examples 
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname ready4_sp_abbreviations_lup
+#' Is Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description Check whether an object is a valid instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @param x An object of any type
+#' @return A logical value, TRUE if a valid instance of the Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @details Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.
+#' @rdname is_ready4_sp_abbreviations_lup
 #' @export 
 
 is_ready4_sp_abbreviations_lup <- function(x) inherits(validate_ready4_sp_abbreviations_lup(x), "ready4_sp_abbreviations_lup")

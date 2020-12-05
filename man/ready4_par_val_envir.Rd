@@ -2,84 +2,19 @@
 % Please edit documentation in R/C3_ready4_par_val_envir.R
 \name{ready4_par_val_envir}
 \alias{ready4_par_val_envir}
-\alias{new_ready4_par_val_envir}
-\alias{make_prototype_ready4_par_val_envir}
-\alias{validate_ready4_par_val_envir}
-\alias{is_ready4_par_val_envir}
-\title{ready4_par_val_envir}
+\title{Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.}
 \usage{
-ready4_par_val_envir(x = make_prototype_ready4_par_val_envir())
-
-new_ready4_par_val_envir(x)
-
-make_prototype_ready4_par_val_envir()
-
-validate_ready4_par_val_envir(x)
-
-is_ready4_par_val_envir(x)
+ready4_par_val_envir(x = make_pt_ready4_par_val_envir())
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION}
+\item{x}{A prototype for the Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration., Default: make_pt_ready4_par_val_envir()}
 }
 \value{
-A validated instance of the ready4_par_val_envir class
-
-An unvalidated instance of the ready4_par_val_envir class
-
-A prototpe for ready4_par_val_envir class
-
-A prototpe for ready4_par_val_envir class
-
-A logical value, TRUE if a valid instance of the ready4_par_val_envir class
+A validated instance of the Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
 }
 \description{
-Create a new valid instance of the S3 class: ready4_par_val_envir
-
-Create a new unvalidated instance of the S3 class: new_ready4_par_val_envir
-
-Create a new prototype for S3 class: make_prototype_ready4_par_val_envir
-
-Validate an instance of the S3 class: validate_ready4_par_val_envir
-
-Check whether an object is a valid instance of the S3 class: is_ready4_par_val_envir
+Create a new valid instance of the Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
 }
 \details{
 Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-}
-\seealso{
-\code{\link[tibble]{is_tibble}}
-
-\code{\link[tibble]{tibble}}
-
-\code{\link[stringr]{str_detect}},\code{\link[stringr]{str_c}}
- \code{\link[dplyr]{summarise_all}},\code{\link[dplyr]{arrange}},\code{\link[dplyr]{filter}},\code{\link[dplyr]{pull}}
- \code{\link[tidyr]{gather}}
- \code{\link[purrr]{map2}}
 }

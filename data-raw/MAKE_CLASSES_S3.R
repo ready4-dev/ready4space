@@ -4,9 +4,9 @@
 ##    None
 ##
 ## 2. Make the ready4_class_make_tb object summarising the metadata about the S3 classes that we wish to create and export with this package.
-s3_classes_to_make_tb <- ready4class::ready4_class_make_tb() %>%
+s3_classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
   dplyr::bind_rows(tibble::tribble(
-    ~ make_s3, ~ name_stub, ~ prototype, ~ prototype_checker_prefix, ~ prototype_namespace, ~ values, ~ allowed_values, ~ min_max_values, ~ start_end_values, ~ class_desc, ~ parent_class, ~ class_slots, ~ meaningful_names, ~include_classes,
+    ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
      TRUE, "par_str_envir", list("tibble"), list("is_"), list("tibble"), list(param_name = "character(0)",
                                                                              deter_val = "numeric(0)",
                                                                              distribution = "character(0)",

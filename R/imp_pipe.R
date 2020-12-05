@@ -7,5 +7,6 @@
 #' @name %>%
 #' @rdname pipe
 #' @export
-#' @param lhs,rhs A visualisation and a function to apply to it
+#' @param lhs,rhs An object and a function to apply to it
+#' @keywords internal
 NULL
