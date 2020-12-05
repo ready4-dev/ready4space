@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Readyforwhatsnext Spatio-temporal Data Processing.
-Version: 0.0.0.9110
+Version: 0.0.0.9203
 Authors@R: c(
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
     person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-0071-130X")),
@@ -12,17 +12,11 @@ Authors@R: c(
     person("VicHealth", role = c("fnd")),
     person("Victoria University", role = c("fnd")))
 Description: Functions to process spatial data to create instances of readyforwhatsnext classes.
-Depends: R (>= 3.5.1)
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
-Remotes: 
-    matthewphamilton/ready4agents,
-    matthewphamilton/ready4s3,
-    matthewphamilton/ready4s4,
-    matthewphamilton/ready4utils
 Imports: 
     dplyr,
     geojsonio,
@@ -32,13 +26,15 @@ Imports:
     ISOcodes,
     jsonlite,
     lubridate,
-    lwgeom,
     magrittr,
+    mc2d,
     methods,
     nnet,
     osrm,
     purrr,
-    readxl,
+    ready4class (>= 0.0.0.9050),
+    ready4fun (>= 0.0.0.9077),
+    ready4use (>= 0.0.0.9041),
     rlang,
     rmapshaper,
     sf,
@@ -46,9 +42,96 @@ Imports:
     stringi,
     stringr,
     tibble,
+    tidyr,
     units,
-    utils,
-    ready4agents (>= 0.0.0.9021),
-    ready4s3 (>= 0.0.0.9145),
-    ready4s4 (>= 0.0.0.950),
-    ready4utils (>= 0.0.0.9034)
+    utils
+Remotes: 
+    orygennp/ready4class,
+    orygennp/ready4fun,
+    orygennp/ready4use
+Collate: 
+    'C3_ready4_par_str_envir.R'
+    'C3_ready4_par_val_envir.R'
+    'C3_ready4_sp_abbreviations_lup.R'
+    'C3_ready4_sp_data_pack_lup.R'
+    'C3_ready4_sp_import_lup.R'
+    'C3_ready4_sp_resolution_lup.R'
+    'C3_ready4_sp_site_coord_lup.R'
+    'C3_ready4_sp_starter_sf_lup.R'
+    'C3_ready4_sp_uid_lup.R'
+    'C4_ready4_env.R'
+    'C4_ready4_lookup.R'
+    'C4_ready4_macro.R'
+    'C4_ready4_meso_region.R'
+    'C4_ready4_meso_area.R'
+    'C4_ready4_micro.R'
+    'C4_ready4_profiled_area.R'
+    'C4_ready4_sp_local.R'
+    'C4_ready4_sp_local_proc.R'
+    'C4_ready4_sp_local_raw.R'
+    'fn_add_attr_to_data_pack.R'
+    'fn_add_attr_to_sf.R'
+    'fn_add_sp_resolution.R'
+    'fn_get_sp_data.R'
+    'fn_intersect_sfs_keep_counts.R'
+    'fn_intersect_sfs_update_counts.R'
+    'fn_make_env_param_tb.R'
+    'fn_make_sp_data_list.R'
+    'fn_reshape_pop_projs.R'
+    'fn_spatial_area_within_xkm_of_cluster.R'
+    'fn_spatial_area_within_xkm_of_points.R'
+    'fn_spatial_area_within_xmin_drive_of_points.R'
+    'fn_spatial_cases_coordinates.R'
+    'fn_spatial_create_agent_coordinates_tb.R'
+    'fn_travel_time_app_calc.R'
+    'fn_update_counts_by_area.R'
+    'gnrc_area.R'
+    'gnrc_area_bound_year.R'
+    'gnrc_area_type.R'
+    'gnrc_country.R'
+    'gnrc_country_bound_year.R'
+    'gnrc_crs_nbr.R'
+    'gnrc_data_year.R'
+    'gnrc_data_ymds.R'
+    'gnrc_drive_time_limit_mins.R'
+    'gnrc_env_sf.R'
+    'gnrc_features.R'
+    'gnrc_geom_dist_km_cuts.R'
+    'gnrc_geom_dist_limit_km.R'
+    'gnrc_global_region.R'
+    'gnrc_lookup_tb.R'
+    'gnrc_lup_tbs_r4.R'
+    'gnrc_nbr_bands.R'
+    'gnrc_par_vals.R'
+    'gnrc_region.R'
+    'gnrc_region_bound_year.R'
+    'gnrc_region_type.R'
+    'gnrc_sp_abbreviations_lup.R'
+    'gnrc_sp_data_pack_lup.R'
+    'gnrc_sp_import_lup.R'
+    'gnrc_sp_resolution_lup.R'
+    'gnrc_sp_site_coord_lup.R'
+    'gnrc_sp_starter_sf_lup.R'
+    'gnrc_sp_uid_lup.R'
+    'gnrc_st_data.R'
+    'gnrc_temporal_max.R'
+    'gnrc_temporal_min.R'
+    'gnrc_travel_mode.R'
+    'gnrc_travel_time_mins_cuts.R'
+    'gnrc_use_coord_lup.R'
+    'imp_methods.R'
+    'imp_pipe.R'
+    'mthd_add_path_col.R'
+    'mthd_download_data.R'
+    'mthd_gen_par_vals.R'
+    'mthd_get_data.R'
+    'mthd_import_data.R'
+    'mthd_make_data_pack.R'
+    'mthd_make_import_object.R'
+    'mthd_make_main_intersect_tb.R'
+    'mthd_make_ready4_local_proc_r4.R'
+    'mthd_order_tb.R'
+    'mthd_save_raw.R'
+    'mthd_updateAttrDataXx.R'
+    'mthd_update_this.R'
+    'pckg_ready4space.R'

@@ -79,7 +79,7 @@ input_data <- list(
   simulation_steps_ymwd = c(1,0,0,0),
   ## UNCERTAINTY INPUTS
   deterministic = FALSE,
-  nbr_its = 2,
+  n_its_int = 2,
   uncertainty_int = c(0.025,0.975),
   ## PARAMETER MATRIX
   env_str_par_tb = ready.sim::add_prev_to_env_str_par_tb(pref_source = ymh.epi.lit::pref_source,
@@ -113,7 +113,7 @@ grouping_for_sim <- ifelse(!is.na(input_data$profiled_area_input %>%
                                   "drive_times", "SA2_MAIN16"))
 #ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf %>% names()
 sim_results_ls <- ready.sim::runSimulation(x = sim_data,#simDataInput(),
-                                           nbr_its = input_data$nbr_its, #nbrItsInput(),
+                                           n_its_int = input_data$n_its_int, #nbrItsInput(),
                                            group_by = grouping_for_sim)
 ready.plot::plot_pop(profiled_sf = sim_results_ls[[1]], #ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf
                      plot_variable = "tx_prev_adhd_all",#inc_SA1_popl_y2016.Males.15.19
@@ -125,7 +125,7 @@ ggplot2::ggplot(sim_results_ls[[1]]) +
   viridis::scale_fill_viridis("Persons") + #TRUE) +
   ggplot2::theme_bw()
 # sim_results = ready.sim::runSimulation(x = sim_data,
-#                             nbr_its = nbr_its,
+#                             n_its_int = n_its_int,
 #                             group_by = "distance_km"
 #                             )
 ##runSimulation :: DONT group_by: pop_sp_unit_id
