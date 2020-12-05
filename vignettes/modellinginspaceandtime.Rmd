@@ -165,7 +165,7 @@ geelong_headspace_lat_long_tb = tibble::tibble(lat = -38.151004,
                                           cluster.name= NA,
                                           service.name= "Geelong Headspace")
 
-geelong_headspace_boundary_20k_sf <- rfwn.space.time::spatial_area_within_xkm_of_points(point_locations = geelong_headspace_lat_long_tb,
+geelong_headspace_boundary_20k_sf <- rfwn.space.time::make_geomc_dist_boundrs(point_locations = geelong_headspace_lat_long_tb,
                                                                        land_sf = vic_boundary_phns_sf,
                                                                        distance = 20000)
 
@@ -181,7 +181,7 @@ orygen_headspace_cluster_long_lat_10k_tb =  tibble::tibble(lat = c(-37.704890, -
                                            long = c(144.918099,144.831070,144.914055,144.662196))
 
 
-orygen_headspace_cluster_boundary_10k_sf <- rfwn.space.time::spatial_area_within_xkm_of_points(point_locations = orygen_headspace_cluster_long_lat_10k_tb,
+orygen_headspace_cluster_boundary_10k_sf <- rfwn.space.time::make_geomc_dist_boundrs(point_locations = orygen_headspace_cluster_long_lat_10k_tb,
                                               land_sf = vic_boundary_state_sf,
                                               distance = 10000)
 rfwn.analysis::plot_area_within_xkm_from_services(service_centre_locations_sf = orygen_headspace_cluster_boundary_10k_sf,

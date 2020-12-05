@@ -99,7 +99,7 @@ ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) 
   ggplot2::theme_bw()
 ggplot2::ggplot(sp_data_sf) +
   ggplot2::geom_sf(ggplot2::aes(fill=pop_sp_unit_id),colour=NA)
-# drop_grouped_popl_vars(profiled_sf = ready.sim::st_envir(sim_data) %>%
+# remove_grouped_popl_vars(profiled_sf = ready.sim::st_envir(sim_data) %>%
 #                          ready.sim::st_data() %>%
 #                          purrr::pluck("profiled_sf"),
 #                        age_sex_prefix = ready.sim::st_envir(sim_data) %>%
@@ -133,9 +133,9 @@ ggplot2::ggplot(sim_results_ls[[1]]) +
 ###
 ###
 # ready.data:::data_import_make_sp_lookup_tb()
-# test1<-ready.data::data_import_show_menu_of_type_detail("Attribute")
-# ready.data::data_import_show_menu_of_type_detail("Attribute")
-# attributes_to_import <- ready.data::data_import_show_menu_of_type_names("Attribute")
+# test1<-ready.data::get_menu_of_type_detail_for_imp("Attribute")
+# ready.data::get_menu_of_type_detail_for_imp("Attribute")
+# attributes_to_import <- ready.data::get_menu_of_type_nms_for_imp("Attribute")
 # ready.data::data_import_selected_downloads(required_data = attributes_to_import,
 #                                            destination_directory = "data-raw")
 # import_items(included_items_names = attributes_to_import,
