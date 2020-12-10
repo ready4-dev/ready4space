@@ -1,7 +1,7 @@
 Package: ready4space
 Title: Standardised Modeller Tools for Retrieving, Managing and
     Synthesising Spatial Data in Projects Developed with the Ready4 Suite
-Version: 0.0.0.9205
+Version: 0.0.0.9206
 Authors@R: 
     c(person(given = "Matthew",
              family = "Hamilton",
@@ -89,6 +89,7 @@ Collate:
     'C4_ready4_meso_area.R'
     'C4_ready4_micro.R'
     'db_abbreviations_lup.R'
+    'db_fn_type_lup_tb.R'
     'db_fns_dmt_tb.R'
     'fn_add.R'
     'fn_bind.R'
