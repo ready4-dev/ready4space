@@ -1,7 +1,7 @@
 Package: ready4space
 Title: Standardised Modeller Tools for Retrieving, Managing and
     Synthesising Spatial Data in Projects Developed with the Ready4 Suite
-Version: 0.0.0.9203
+Version: 0.0.0.9204
 Authors@R: 
     c(person(given = "Matthew",
              family = "Hamilton",
@@ -42,8 +42,89 @@ RoxygenNote: 7.1.1
 Imports: 
     testthat,
     knitr,
-    lifecycle
+    lifecycle,
+    ready4fun (>= 0.0.0.9262),
+    ready4use (>= 0.0.0.9101),
+    dplyr,
+    geojsonio,
+    googlePolylines,
+    googleway,
+    httr,
+    jsonlite,
+    lubridate,
+    magrittr,
+    mc2d,
+    methods,
+    nnet,
+    osrm,
+    purrr,
+    ready4class,
+    rlang,
+    rmapshaper,
+    sf,
+    stats,
+    stringi,
+    stringr,
+    tibble,
+    tidyr,
+    units,
+    utils
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Depends: 
     R (>= 2.10)
+Collate: 
+    'C3_ready4_par_str_envir.R'
+    'C3_ready4_par_val_envir.R'
+    'C3_ready4_sp_abbreviations_lup.R'
+    'C3_ready4_sp_data_pack_lup.R'
+    'C3_ready4_sp_import_lup.R'
+    'C3_ready4_sp_resolution_lup.R'
+    'C3_ready4_sp_site_coord_lup.R'
+    'C3_ready4_sp_starter_sf_lup.R'
+    'C3_ready4_sp_uid_lup.R'
+    'C4_ready4_env.R'
+    'C4_ready4_lookup.R'
+    'C4_ready4_macro.R'
+    'C4_ready4_meso_region.R'
+    'C4_ready4_meso_area.R'
+    'C4_ready4_micro.R'
+    'C4_ready4_profiled_area.R'
+    'C4_ready4_sp_local.R'
+    'C4_ready4_sp_local_proc.R'
+    'C4_ready4_sp_local_raw.R'
+    'db_abbreviations_lup.R'
+    'db_fn_type_lup_tb.R'
+    'db_fns_dmt_tb.R'
+    'db_prototype_lup.R'
+    'fn_add.R'
+    'fn_bind.R'
+    'fn_check.R'
+    'fn_gen.R'
+    'fn_get.R'
+    'fn_intersect.R'
+    'fn_make.R'
+    'fn_remove.R'
+    'fn_reorder.R'
+    'fn_reshape.R'
+    'fn_sample.R'
+    'fn_simplify.R'
+    'fn_subset.R'
+    'fn_transform.R'
+    'fn_union.R'
+    'fn_update.R'
+    'fn_write.R'
+    'gnrc_area_type.R'
+    'gs_features.R'
+    'gs_geom_dist_km_cuts.R'
+    'gs_global_region.R'
+    'gs_lup_tbs_r4.R'
+    'gs_region_type.R'
+    'gs_sp_abbreviations_lup.R'
+    'gs_st_data.R'
+    'imp_mthds.R'
+    'imp_pipe.R'
+    'pkg_ready4space.R'
+Remotes: 
+    ready4-dev/ready4fun,
+    ready4-dev/ready4use

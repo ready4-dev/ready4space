@@ -41,3 +41,4 @@
 ^data-raw/mthds/update_this\.R$
 ^data-raw/mthds/updateAttrDataXx\.R$
 ^\.github$
+^data-raw/r4/s4_methds\.R$
