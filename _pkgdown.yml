@@ -1,0 +1,31 @@
+development:
+  mode: auto
+reference:
+- title: "Datasets"
+- contents:
+  - abbreviations_lup
+  - class_pt_lup
+  - fn_type_lup_tb
+  - fns_dmt_tb
+  - prototype_lup
+- title: "Classes"
+- contents:
+  - ready4_par_str_envir
+  - ready4_par_val_envir
+  - ready4_sp_abbreviations_lup
+  - ready4_sp_data_pack_lup
+  - ready4_sp_import_lup
+  - ready4_sp_resolution_lup
+  - ready4_sp_site_coord_lup
+  - ready4_sp_starter_sf_lup
+  - ready4_sp_uid_lup
+  - ready4_lookup
+  - ready4_macro
+  - ready4_meso_region
+  - ready4_meso_area
+  - ready4_micro
+  - ready4_profiled_area
+  - ready4_env
+  - ready4_sp_local
+  - ready4_sp_local_raw
+  - ready4_sp_local_proc
