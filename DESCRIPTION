@@ -41,33 +41,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     testthat,
-    knitr,
-    ready4class (>= 0.0.0.9182),
-    ready4fun (>= 0.0.0.9265),
-    ready4use (>= 0.0.0.9101),
-    dplyr,
-    geojsonio,
-    googlePolylines,
-    googleway,
-    httr,
-    jsonlite,
-    lubridate,
-    magrittr,
-    mc2d,
-    methods,
-    nnet,
-    osrm,
-    purrr,
-    rlang,
-    rmapshaper,
-    sf,
-    stats,
-    stringi,
-    stringr,
-    tibble,
-    tidyr,
-    units,
-    utils
+    knitr
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
@@ -154,7 +128,3 @@ Collate:
     'mthd_order_tb.R'
     'mthd_save_raw.R'
     'pkg_ready4space.R'
-Remotes: 
-    ready4-dev/ready4class,
-    ready4-dev/ready4fun,
-    ready4-dev/ready4use

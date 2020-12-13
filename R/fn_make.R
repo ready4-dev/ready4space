@@ -9,7 +9,6 @@
 #' @rdname make_1_clstr_1_srvc_trvl_tm
 #' @export 
 #' @importFrom dplyr filter select pull
-#' @keywords internal
 make_1_clstr_1_srvc_trvl_tm <- function (cluster_tb, service, time_min, time_max, nbr_time_steps) 
 {
     one_service <- cluster_tb %>% dplyr::filter(service_name == 
@@ -36,7 +35,6 @@ make_1_clstr_1_srvc_trvl_tm <- function (cluster_tb, service, time_min, time_max
 #' @importFrom dplyr select pull filter
 #' @importFrom rlang sym
 #' @importFrom purrr map2_dfr
-#' @keywords internal
 make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "expected.incidence", 
     person_type = "p", resolution_unit) 
 {
@@ -65,7 +63,6 @@ make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "e
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter pull
-#' @keywords internal
 make_attr_data_xx <- function (lookup_tb_r4, lookup_ref, starter_sf) 
 {
     data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
@@ -114,7 +111,6 @@ make_attr_data_xx <- function (lookup_tb_r4, lookup_ref, starter_sf)
 #' @importFrom dplyr pull filter arrange
 #' @importFrom purrr map
 #' @importFrom stats setNames
-#' @keywords internal
 make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, service_cluster_tb, 
     profiled_sf, crs_nbr) 
 {
@@ -157,7 +153,6 @@ make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, se
 #' @importFrom sf st_is_valid st_sf st_set_geometry st_union st_sfc
 #' @importFrom rlang sym
 #' @importFrom purrr map reduce
-#' @keywords internal
 make_each_uid_a_poly_sf <- function (sf, uid_chr) 
 {
     sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
@@ -183,7 +178,6 @@ make_each_uid_a_poly_sf <- function (sf, uid_chr)
 #' @rdname make_env_param_tb
 #' @export 
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 make_env_param_tb <- function (n_its_int, env_str_par_tb, mape_str_par_tb, jt_dist) 
 {
     par_val_mape <- gen_par_vals(x = mape_str_par_tb, n_its_int = n_its_int, 
@@ -201,7 +195,6 @@ make_env_param_tb <- function (n_its_int, env_str_par_tb, mape_str_par_tb, jt_di
 #' @rdname make_geomc_dist_boundrs
 #' @export 
 #' @importFrom sf st_as_sf st_transform st_buffer st_union st_intersection st_sf
-#' @keywords internal
 make_geomc_dist_boundrs <- function (point_locations, land_sf, distance, crs_nbr) 
 {
     distance_from_pts_sf <- sf::st_as_sf(point_locations, coords = c("long", 
@@ -225,7 +218,6 @@ make_geomc_dist_boundrs <- function (point_locations, land_sf, distance, crs_nbr
 #' @importFrom osrm osrmIsochrone
 #' @importFrom sf st_as_sf
 #' @importFrom dplyr mutate arrange
-#' @keywords internal
 make_isochrs <- function (long, lat, time_min, time_max, nbr_time_steps) 
 {
     time_step <- (time_max - time_min)/nbr_time_steps
@@ -247,7 +239,6 @@ make_isochrs <- function (long, lat, time_min, time_max, nbr_time_steps)
 #' @rdname make_nse_objs_ls
 #' @export 
 
-#' @keywords internal
 make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 = NULL, 
     data_year, popl_var_prefix) 
 {
@@ -293,7 +284,6 @@ make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 =
 #' @importFrom dplyr filter pull
 #' @importFrom rlang sym
 #' @importFrom sf st_transform
-#' @keywords internal
 make_profiled_area_objs <- function (pa_r4) 
 {
     group_by_var <- get_group_by_var_from_pai(pa_r4 = pa_r4)
@@ -349,7 +339,6 @@ make_profiled_area_objs <- function (pa_r4)
 #' @rdname make_raw_format_dir_chr
 #' @export 
 
-#' @keywords internal
 make_raw_format_dir_chr <- function (raw_data_dir, category) 
 {
     paste0(raw_data_dir, "/", category)
@@ -368,7 +357,6 @@ make_raw_format_dir_chr <- function (raw_data_dir, category)
 #' @importFrom dplyr select pull
 #' @importFrom stats setNames
 #' @importFrom sf st_union st_difference
-#' @keywords internal
 make_servc_clstr_isochrs_ls <- function (cluster_tbs_list, look_up_ref, time_min = 0, time_max = 60, 
     nbr_time_steps = 5) 
 {
@@ -414,7 +402,6 @@ make_servc_clstr_isochrs_ls <- function (cluster_tbs_list, look_up_ref, time_min
 #' @export 
 #' @importFrom purrr map transpose map_chr map_dbl prepend
 #' @importFrom stats setNames
-#' @keywords internal
 make_sp_data_list <- function (input_ls, sub_div_units_vec) 
 {
     lists_to_merge <- purrr::map(sub_div_units_vec, ~get_spatial_data_list(input_ls = input_ls, 
@@ -441,7 +428,6 @@ make_sp_data_list <- function (input_ls, sub_div_units_vec)
 #' @export 
 #' @importFrom purrr map pluck
 #' @importFrom stats setNames
-#' @keywords internal
 make_srvc_clstr_geomc_dist_boundrs <- function (distance_km, clusters_vec, clusters_tbs_list, land_boundary_sf, 
     crs_nbr) 
 {
@@ -461,7 +447,6 @@ make_srvc_clstr_geomc_dist_boundrs <- function (distance_km, clusters_vec, clust
 #' @importFrom dplyr pull filter
 #' @importFrom stats setNames
 #' @importFrom stringr str_replace_all
-#' @keywords internal
 make_time_band_sf_ls <- function (look_up_ref, one_cluster_travel_time_sf_list) 
 {
     travel_time_bands <- one_cluster_travel_time_sf_list %>% 
@@ -488,7 +473,6 @@ make_time_band_sf_ls <- function (look_up_ref, one_cluster_travel_time_sf_list)
 #' @importFrom googleway encode_pl
 #' @importFrom dplyr pull
 #' @importFrom purrr map reduce
-#' @keywords internal
 make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport = "driving", 
     travel_time_hours, crs) 
 {
@@ -523,7 +507,6 @@ make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport = "dr
 #' @export 
 #' @importFrom dplyr filter distinct
 #' @importFrom sf st_is_valid st_make_valid st_geometry_type st_collection_extract st_cast
-#' @keywords internal
 make_valid_new_sf <- function (sf) 
 {
     valid_sf <- sf %>% dplyr::filter(sf::st_is_valid(.))
@@ -551,7 +534,6 @@ make_valid_new_sf <- function (sf)
 #' @rdname make_year_filter_logic_vec
 #' @export 
 #' @importFrom purrr map2_lgl
-#' @keywords internal
 make_year_filter_logic_vec <- function (data_tb, included_years_vec) 
 {
     purrr::map2_lgl(data_tb$year, data_tb$year_start, ~(.x %in% 
@@ -567,7 +549,6 @@ make_year_filter_logic_vec <- function (data_tb, included_years_vec)
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
-#' @keywords internal
 make_year_vec <- function (input_ls) 
 {
     data_year <- data_year(input_ls$pa_r4)

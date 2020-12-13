@@ -8,7 +8,6 @@
 #' @rdname write_attr_tb
 #' @export 
 
-#' @keywords internal
 write_attr_tb <- function (attr_tb, obj_name, processed_dir, overwrite_lgl) 
 {
     path_to_attr_tb_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir, 
@@ -23,7 +22,6 @@ write_attr_tb <- function (attr_tb, obj_name, processed_dir, overwrite_lgl)
 #' @rdname write_dirs_for_imp
 #' @export 
 #' @importFrom purrr walk
-#' @keywords internal
 write_dirs_for_imp <- function (directory_paths) 
 {
     purrr::walk(directory_paths, ~dir.create(.x))
@@ -42,7 +40,6 @@ write_dirs_for_imp <- function (directory_paths)
 #' @export 
 #' @importFrom ready4use assert_single_row_tb get_import_type_ls
 #' @importFrom rlang exec
-#' @keywords internal
 write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_data_dir, processed_dir, 
     crs_nbr_vec = NA_real_, overwrite_lgl = F) 
 {
@@ -80,7 +77,6 @@ write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_da
 #' @importFrom ready4fun get_from_lup
 #' @importFrom ready4use get_data
 #' @importFrom utils download.file unzip
-#' @keywords internal
 write_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, directory_path, 
     overwrite_lgl = F) 
 {
@@ -129,7 +125,6 @@ write_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, directory_pa
 #' @rdname write_fls_from_imp_and_upd_r4
 #' @export 
 #' @importFrom ready4use `proc_data_dir_chr<-`
-#' @keywords internal
 write_fls_from_imp_and_upd_r4 <- function (x, processed_dir_chr, crs_nbr_vec) 
 {
     save_raw(x, return_r4_lgl = T) %>% ready4use::`proc_data_dir_chr<-`(processed_dir_chr) %>% 
@@ -144,7 +139,6 @@ write_fls_from_imp_and_upd_r4 <- function (x, processed_dir_chr, crs_nbr_vec)
 #' @rdname write_fls_from_local_imp
 #' @export 
 #' @importFrom ready4use `save_lgl<-` `raw_data_dir_chr<-`
-#' @keywords internal
 write_fls_from_local_imp <- function (x, raw_data_dir_chr, save_lgl) 
 {
     x %>% ready4use::`save_lgl<-`(save_lgl) %>% ready4use::`raw_data_dir_chr<-`(raw_data_dir_chr)
@@ -159,7 +153,6 @@ write_fls_from_local_imp <- function (x, raw_data_dir_chr, save_lgl)
 #' @export 
 #' @importFrom ready4use assert_single_row_tb `path_to_starter_sf_chr<-` `import_this_ls<-`
 #' @importFrom stats setNames
-#' @keywords internal
 write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl = T) 
 {
     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
@@ -199,7 +192,6 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl 
 #' @importFrom sf st_geometry_type st_area
 #' @importFrom dplyr mutate filter pull
 #' @importFrom units set_units
-#' @keywords internal
 write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, merge_with_chr_vec, 
     crs_nbr_vec, overwrite_lgl) 
 {
@@ -239,7 +231,6 @@ write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, me
 #' @export 
 #' @importFrom dplyr pull
 #' @importFrom purrr walk2
-#' @keywords internal
 write_procsd_imp_xx <- function (x, import_this_ls, path_to_starter_sf_chr, merge_with, 
     pckg_name, raw_data_dir, processed_dir, crs_nbr_vec = NA_real_, 
     overwrite_lgl = F) 
@@ -263,7 +254,6 @@ write_procsd_imp_xx <- function (x, import_this_ls, path_to_starter_sf_chr, merg
 #' @rdname write_raw_data_from_sp_local_r4
 #' @export 
 #' @importFrom ready4use assert_single_row_tb
-#' @keywords internal
 write_raw_data_from_sp_local_r4 <- function (x, return_r4_lgl) 
 {
     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
@@ -286,7 +276,6 @@ write_raw_data_from_sp_local_r4 <- function (x, return_r4_lgl)
 #' @rdname write_raw_format_dir
 #' @export 
 
-#' @keywords internal
 write_raw_format_dir <- function (data_type_chr, raw_data_dir) 
 {
     directory_chr <- switch(data_type_chr, Geometry = "Geometries", 
@@ -309,7 +298,6 @@ write_raw_format_dir <- function (data_type_chr, raw_data_dir)
 #' @export 
 #' @importFrom ready4fun get_from_lup
 #' @importFrom purrr walk2
-#' @keywords internal
 write_to_rnm_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, directory_path, 
     overwrite_lgl = F) 
 {

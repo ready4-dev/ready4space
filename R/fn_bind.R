@@ -7,7 +7,6 @@
 #' @importFrom rlang dots_values
 #' @importFrom sf st_sfc st_set_geometry st_sf
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 bind_sf_rows_fn_from_web <- function (...) 
 {
     sf_list <- rlang::dots_values(...)[[1]]

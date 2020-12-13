@@ -7,7 +7,6 @@
 #' @rdname add_attr_list_to_sf
 #' @export 
 #' @importFrom ready4fun get_from_lup
-#' @keywords internal
 add_attr_list_to_sf <- function (x, y, lookup_tb_r4) 
 {
     attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4, 
@@ -30,7 +29,6 @@ add_attr_list_to_sf <- function (x, y, lookup_tb_r4)
 #' @importFrom dplyr filter
 #' @importFrom purrr map reduce
 #' @importFrom stats setNames
-#' @keywords internal
 add_attr_recrly_to_sf <- function (input_ls, sub_div_unit = NULL, area_unit, boundary_year, 
     attribute_data) 
 {
@@ -63,7 +61,6 @@ add_attr_recrly_to_sf <- function (input_ls, sub_div_unit = NULL, area_unit, bou
 #' @export 
 #' @importFrom tibble tibble
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 add_attr_tb_to_data_pack_lup <- function (data_pack_lup, attr_tb, object_name, area_type, area_bound_yr, 
     region, year, year_start, year_end, main_feature) 
 {
@@ -82,7 +79,6 @@ add_attr_tb_to_data_pack_lup <- function (data_pack_lup, attr_tb, object_name, a
 #' @rdname add_attr_tb_to_data_pack_lup_from_arg_list
 #' @export 
 
-#' @keywords internal
 add_attr_tb_to_data_pack_lup_from_arg_list <- function (x, y) 
 {
     add_attr_tb_to_data_pack_lup(data_pack_lup = x, attr_tb = y[[1]], 
@@ -99,7 +95,6 @@ add_attr_tb_to_data_pack_lup_from_arg_list <- function (x, y)
 #' @export 
 #' @importFrom purrr walk
 #' @importFrom stringr str_sub
-#' @keywords internal
 add_attr_to_global <- function (combined_ste_ppr_ls, object_name_stub) 
 {
     purrr::walk(names(combined_ste_ppr_ls), ~eval(parse(text = paste0(object_name_stub, 
@@ -117,7 +112,6 @@ add_attr_to_global <- function (combined_ste_ppr_ls, object_name_stub)
 #' @importFrom dplyr inner_join
 #' @importFrom stringr str_detect
 #' @importFrom sf st_as_sf
-#' @keywords internal
 add_attr_to_sf <- function (area_sf, attr_data_tb, attr_data_desc) 
 {
     if (attr_data_desc == "PPR") {
@@ -142,7 +136,6 @@ add_attr_to_sf <- function (area_sf, attr_data_tb, attr_data_desc)
 #' @export 
 #' @importFrom purrr walk
 #' @importFrom stringr str_sub
-#' @keywords internal
 add_attribute_to_data_pack <- function (combined_ste_ppr_ls, object_name_stub) 
 {
     add_attr_to_global(combined_ste_ppr_ls = combined_ste_ppr_ls, 
@@ -159,7 +152,6 @@ add_attribute_to_data_pack <- function (combined_ste_ppr_ls, object_name_stub)
 #' @rdname add_attribute_to_data_pack_from_tb
 #' @export 
 
-#' @keywords internal
 add_attribute_to_data_pack_from_tb <- function (attr_tb, object_name) 
 {
     eval(parse(text = paste0(object_name, "<<-attr_tb")))
@@ -178,7 +170,6 @@ add_attribute_to_data_pack_from_tb <- function (attr_tb, object_name)
 #' @importFrom purrr map2 reduce map2_chr
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_data_pack_lup <- function (lookup_tbs_r4, tb_data_type = "Geometry", template_ls = NULL, 
     pckg_name) 
 {
@@ -227,7 +218,6 @@ add_data_pack_lup <- function (lookup_tbs_r4, tb_data_type = "Geometry", templat
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @keywords internal
 add_dynamic_sp_vars_to_sf <- function (dynamic_sp_vars_sf, pop_attr_sf, age_sex_pop_resolution, 
     age_sex_var_name, popl_var_prefix, data_year, crs_nbr_vec) 
 {
@@ -258,7 +248,6 @@ add_dynamic_sp_vars_to_sf <- function (dynamic_sp_vars_sf, pop_attr_sf, age_sex_
 #' @importFrom rlang sym
 #' @importFrom sf st_area
 #' @importFrom units set_units
-#' @keywords internal
 add_kmsq_area_all_features <- function (sf, feature_nm, prefix = "whl_", suffix = "_area") 
 {
     sf %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(prefix, feature_nm, 
@@ -277,7 +266,6 @@ add_kmsq_area_all_features <- function (sf, feature_nm, prefix = "whl_", suffix 
 #' @importFrom dplyr group_by summarise ungroup
 #' @importFrom rlang sym
 #' @importFrom sf st_combine st_set_geometry
-#' @keywords internal
 add_kmsq_area_by_group <- function (sf, group_by_var, feature_nm, prefix = "whl_", suffix = "_area") 
 {
     merge(sf, sf %>% dplyr::group_by(!!rlang::sym(group_by_var)) %>% 
@@ -295,7 +283,6 @@ add_kmsq_area_by_group <- function (sf, group_by_var, feature_nm, prefix = "whl_
 #' @importFrom purrr pmap_chr
 #' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_sub
-#' @keywords internal
 add_names <- function (x) 
 {
     data(ISO_3166_1, package = "ISOcodes", envir = environment())
@@ -320,7 +307,6 @@ add_names <- function (x)
 #' @rdname add_ppr_ls_to_data_pack_lup
 #' @export 
 
-#' @keywords internal
 add_ppr_ls_to_data_pack_lup <- function (x, y) 
 {
     add_ppr_to_data_pack_lup(data_pack_lup = x, combined_ste_ppr_ls = y[[1]], 
@@ -341,7 +327,6 @@ add_ppr_ls_to_data_pack_lup <- function (x, y)
 #' @importFrom tibble tibble
 #' @importFrom stringr str_sub
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 add_ppr_to_data_pack_lup <- function (data_pack_lup, combined_ste_ppr_ls, object_name_stub, 
     area_type, area_bound_yr, region) 
 {
@@ -365,7 +350,6 @@ add_ppr_to_data_pack_lup <- function (data_pack_lup, combined_ste_ppr_ls, object
 #' @importFrom stringr str_which
 #' @importFrom purrr pmap_dfr
 #' @importFrom tibble tibble
-#' @keywords internal
 add_sp_resolution <- function (lookup_tbs_r4, processed_dir) 
 {
     dr_dp_tb <- sp_data_pack_lup(lookup_tbs_r4) %>% dplyr::filter(main_feature == 
@@ -400,7 +384,6 @@ add_sp_resolution <- function (lookup_tbs_r4, processed_dir)
 #' @export 
 #' @importFrom tibble add_row
 #' @importFrom dplyr pull
-#' @keywords internal
 add_starter_sf_to_lups <- function (lookup_tbs_r4, path_to_starter_sf_chr) 
 {
     starter_sf_name <- get_name_from_path_chr(path_to_starter_sf_chr, 
@@ -421,7 +404,6 @@ add_starter_sf_to_lups <- function (lookup_tbs_r4, path_to_starter_sf_chr)
 #' @export 
 #' @importFrom tibble add_row
 #' @importFrom dplyr pull
-#' @keywords internal
 add_uid_lup <- function (lookup_tbs_r4) 
 {
     uid_lup_r3 <- tibble::add_row(ready4_sp_uid_lup(), spatial_unit = sp_import_lup(lookup_tbs_r4) %>% 

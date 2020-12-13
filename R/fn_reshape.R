@@ -7,7 +7,6 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr mutate_if mutate_at
 #' @importFrom stringr str_trim
-#' @keywords internal
 reshape_pop_projs <- function (x) 
 {
     reshaped_tb <- t(x)

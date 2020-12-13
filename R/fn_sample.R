@@ -8,7 +8,6 @@
 #' @importFrom sf st_sample st_transform st_geometry
 #' @importFrom tibble as.tibble
 #' @importFrom stats setNames
-#' @keywords internal
 sample_agent_coords <- function (profiled_sf, incident_cases) 
 {
     print(incident_cases)

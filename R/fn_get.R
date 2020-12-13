@@ -7,7 +7,6 @@
 #' @importFrom dplyr mutate summarise pull
 #' @importFrom sf st_area
 #' @importFrom units set_units
-#' @keywords internal
 get_area_sqkm_sf <- function (data_sf) 
 {
     data_sf %>% dplyr::mutate(FT_AREA_SQKM = sf::st_area(.) %>% 
@@ -26,7 +25,6 @@ get_area_sqkm_sf <- function (data_sf)
 #' @export 
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
-#' @keywords internal
 get_closest_year <- function (data_lookup_tb, incl_main_ft_vec, target_year, target_area = NULL, 
     find_closest = "abs") 
 {
@@ -59,7 +57,6 @@ get_closest_year <- function (data_lookup_tb, incl_main_ft_vec, target_year, tar
 #' @rdname get_common_vars_sf_ls
 #' @export 
 #' @importFrom purrr map
-#' @keywords internal
 get_common_vars_sf_ls <- function (sf_ls) 
 {
     vec_ls <- purrr::map(sf_ls, ~names(.x))
@@ -72,7 +69,6 @@ get_common_vars_sf_ls <- function (sf_ls)
 #' @rdname get_common_yrs_sf_ls
 #' @export 
 #' @importFrom purrr map
-#' @keywords internal
 get_common_yrs_sf_ls <- function (sf_ls) 
 {
     vec_ls <- purrr::map(list_of_sfs, ~get_included_yrs_sf(.x))
@@ -85,7 +81,6 @@ get_common_yrs_sf_ls <- function (sf_ls)
 #' @rdname get_data_year_chr
 #' @export 
 #' @importFrom lubridate year
-#' @keywords internal
 get_data_year_chr <- function (data_ymdhms) 
 {
     data_ymdhms %>% lubridate::year() %>% as.character()
@@ -102,7 +97,6 @@ get_data_year_chr <- function (data_ymdhms)
 #' @export 
 #' @importFrom purrr map_chr accumulate
 #' @importFrom ready4fun get_from_lup
-#' @keywords internal
 get_dir_paths_for_data_imp <- function (x, destination_directory, data_lookup_ref, lookup_variable, 
     directory_sub_divs) 
 {
@@ -124,7 +118,6 @@ get_dir_paths_for_data_imp <- function (x, destination_directory, data_lookup_re
 #' @export 
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter
-#' @keywords internal
 get_group_by_var <- function (profile_unit, data_unit, group_at_profile_unit = TRUE, 
     group_by_lookup_tb, area_bound_year) 
 {
@@ -143,7 +136,6 @@ get_group_by_var <- function (profile_unit, data_unit, group_at_profile_unit = T
 #' @rdname get_group_by_var_from_pai
 #' @export 
 
-#' @keywords internal
 get_group_by_var_from_pai <- function (pa_r4) 
 {
     group_by_lookup_tb = sp_uid_lup(pa_r4 %>% lookup_tb())
@@ -170,7 +162,6 @@ get_group_by_var_from_pai <- function (pa_r4)
 #' @rdname get_highest_res
 #' @export 
 
-#' @keywords internal
 get_highest_res <- function (options_vec, year, resolution_lup_r3) 
 {
     if (!is.na(options_vec[1])) {
@@ -188,7 +179,6 @@ get_highest_res <- function (options_vec, year, resolution_lup_r3)
 #' @rdname get_import_chr_vec
 #' @export 
 #' @importFrom dplyr filter pull
-#' @keywords internal
 get_import_chr_vec <- function (lookup_tbs_r4, data_type_chr) 
 {
     if (data_type_chr == "Geometry") {
@@ -209,7 +199,6 @@ get_import_chr_vec <- function (lookup_tbs_r4, data_type_chr)
 #' @importFrom sf `st_geometry<-`
 #' @importFrom dplyr select starts_with
 #' @importFrom stringr str_sub
-#' @keywords internal
 get_included_yrs_sf <- function (sf) 
 {
     sf %>% sf::`st_geometry<-`(NULL) %>% dplyr::select(dplyr::starts_with("y2")) %>% 
@@ -224,7 +213,6 @@ get_included_yrs_sf <- function (sf)
 #' @rdname get_max_or_min_yr_of_sf
 #' @export 
 
-#' @keywords internal
 get_max_or_min_yr_of_sf <- function (sf, max = T) 
 {
     year_vec <- get_included_yrs_sf(sf)
@@ -239,7 +227,6 @@ get_max_or_min_yr_of_sf <- function (sf, max = T)
 #' @rdname get_menu_detail_for_imp
 #' @export 
 #' @importFrom dplyr select
-#' @keywords internal
 get_menu_detail_for_imp <- function (x) 
 {
     x %>% dplyr::select(c(1:8, 12))
@@ -251,7 +238,6 @@ get_menu_detail_for_imp <- function (x)
 #' @rdname get_menu_names_for_imp
 #' @export 
 #' @importFrom dplyr select pull
-#' @keywords internal
 get_menu_names_for_imp <- function (x) 
 {
     x %>% dplyr::select(name) %>% dplyr::pull()
@@ -264,7 +250,6 @@ get_menu_names_for_imp <- function (x)
 #' @rdname get_menu_of_type_detail_for_imp
 #' @export 
 #' @importFrom dplyr filter
-#' @keywords internal
 get_menu_of_type_detail_for_imp <- function (x, lookup_ref) 
 {
     x %>% dplyr::filter(data_type == lookup_ref)
@@ -277,7 +262,6 @@ get_menu_of_type_detail_for_imp <- function (x, lookup_ref)
 #' @rdname get_menu_of_type_nms_for_imp
 #' @export 
 #' @importFrom dplyr select pull
-#' @keywords internal
 get_menu_of_type_nms_for_imp <- function (x, lookup_ref) 
 {
     get_menu_of_type_detail_for_imp(x = x, lookup_ref = lookup_ref) %>% 
@@ -295,7 +279,6 @@ get_menu_of_type_nms_for_imp <- function (x, lookup_ref)
 #' @importFrom purrr pluck map_chr
 #' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_detect
-#' @keywords internal
 get_merge_sf_str <- function (lookup_r4, sp_import_r3_slice, processed_dir = NULL) 
 {
     if (is.null(sp_import_r3_slice %>% dplyr::pull(add_boundaries) %>% 
@@ -327,7 +310,6 @@ get_merge_sf_str <- function (lookup_r4, sp_import_r3_slice, processed_dir = NUL
 #' @rdname get_model_end_ymdhs
 #' @export 
 #' @importFrom lubridate years weeks days hours minutes seconds
-#' @keywords internal
 get_model_end_ymdhs <- function (input_ls) 
 {
     input_ls$model_start_ymdhms + lubridate::years(input_ls$simulation_steps_ymwd[1]) * 
@@ -348,7 +330,6 @@ get_model_end_ymdhs <- function (input_ls)
 #' @export 
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
-#' @keywords internal
 get_name_from_path_chr <- function (path_str, with_ext = TRUE) 
 {
     if (with_ext) {
@@ -372,7 +353,6 @@ get_name_from_path_chr <- function (path_str, with_ext = TRUE)
 #' @importFrom stringi stri_locate_last_regex
 #' @importFrom ready4fun get_from_lup
 #' @importFrom purrr map_chr
-#' @keywords internal
 get_non_shape_items_for_imp <- function (path_str, x) 
 {
     file_name <- get_name_from_path_chr(path_str)
@@ -396,7 +376,6 @@ get_non_shape_items_for_imp <- function (path_str, x)
 #' @rdname get_popl_var_prefix
 #' @export 
 
-#' @keywords internal
 get_popl_var_prefix <- function (age_sex_pop_resolution, tot_pop_resolution = NULL, 
     data_year) 
 {
@@ -422,7 +401,6 @@ get_popl_var_prefix <- function (age_sex_pop_resolution, tot_pop_resolution = NU
 #' @rdname get_r_import_path_chr
 #' @export 
 
-#' @keywords internal
 get_r_import_path_chr <- function (r_data_dir_chr, name_chr, data_type_chr) 
 {
     if (data_type_chr == "Geometry") 
@@ -439,7 +417,6 @@ get_r_import_path_chr <- function (r_data_dir_chr, name_chr, data_type_chr)
 #' @rdname get_res_specific_vars
 #' @export 
 
-#' @keywords internal
 get_res_specific_vars <- function (var_names, data_type, data_year, popl_var_prefix) 
 {
     if (data_type == "age_sex") {
@@ -467,7 +444,6 @@ get_res_specific_vars <- function (var_names, data_type, data_year, popl_var_pre
 #' @rdname get_resolution_hierarchy
 #' @export 
 #' @importFrom dplyr filter arrange desc pull
-#' @keywords internal
 get_resolution_hierarchy <- function (data_year, resolution_lup_r3, whole_area = TRUE) 
 {
     resolution_hierarchy <- resolution_lup_r3 %>% dplyr::filter(boundary_year == 
@@ -493,7 +469,6 @@ get_resolution_hierarchy <- function (data_year, resolution_lup_r3, whole_area =
 #' @importFrom sf st_difference st_transform st_union st_cast st_area
 #' @importFrom dplyr mutate n pull filter select
 #' @importFrom purrr map map_dfr
-#' @keywords internal
 get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_vec, validate_lgl = T, 
     min_poly_area_dbl = units::set_units(0.05, km^2)) 
 {
@@ -526,7 +501,6 @@ get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_vec, validate_l
 #' @importFrom purrr map_chr
 #' @importFrom dplyr select
 #' @importFrom ready4fun get_from_lup
-#' @keywords internal
 get_sngl_path_for_imp <- function (downloaded_data_tb, lookup_reference, data_directory) 
 {
     path_element_vector <- purrr::map_chr(downloaded_data_tb %>% 
@@ -549,7 +523,6 @@ get_sngl_path_for_imp <- function (downloaded_data_tb, lookup_reference, data_di
 #' @importFrom stats setNames
 #' @importFrom dplyr filter pull
 #' @importFrom ready4fun get_from_lup
-#' @keywords internal
 get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_match = TRUE, 
     excl_diff_bound_yr = TRUE) 
 {
@@ -612,7 +585,6 @@ get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_m
 #' @importFrom purrr map map_chr map2 flatten_chr map2_chr map_dbl reduce
 #' @importFrom dplyr filter pull
 #' @importFrom ready4fun get_from_lup
-#' @keywords internal
 get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_match = TRUE, 
     excl_diff_bound_yr = TRUE) 
 {
@@ -672,7 +644,6 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
 #' @importFrom stringr str_sub
 #' @importFrom sf `st_crs<-`
 #' @importFrom rlang sym
-#' @keywords internal
 get_starter_sf_for_profiled_area <- function (pa_r4, group_by_var) 
 {
     sp_data_starter_sf_lup <- pa_r4 %>% lookup_tb() %>% sp_starter_sf_lup() %>% 
@@ -703,7 +674,6 @@ get_starter_sf_for_profiled_area <- function (pa_r4, group_by_var)
 #' @rdname get_sys_data_tbs_ls
 #' @export 
 
-#' @keywords internal
 get_sys_data_tbs_ls <- function () 
 {
     list(aus_spatial_lookup_tb = aus_spatial_lookup_tb, aus_data_resolution_tb = aus_data_resolution_tb, 

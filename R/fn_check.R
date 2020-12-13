@@ -10,7 +10,6 @@
 #' @importFrom ready4fun get_from_lup
 #' @importFrom stringr str_detect
 #' @importFrom magrittr is_greater_than
-#' @keywords internal
 check_if_ppr <- function (data_name_item, data_lookup_tb, pop_projs_str) 
 {
     purrr::map_chr(data_name_item, ~ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb, 

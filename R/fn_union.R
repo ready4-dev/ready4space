@@ -8,7 +8,6 @@
 #' @importFrom purrr map pluck reduce
 #' @importFrom sf st_union
 #' @importFrom dplyr select
-#' @keywords internal
 union_one_travel_time_band_across_sites <- function (time_band_ref, one_cluster_time_bands_list) 
 {
     list_of_new_sfs <- purrr::map(one_cluster_time_bands_list, 

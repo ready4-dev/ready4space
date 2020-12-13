@@ -8,7 +8,6 @@
 #' @export 
 #' @importFrom purrr map pluck
 #' @importFrom dplyr mutate
-#' @keywords internal
 reorder_distance_list_by_cluster <- function (look_up_ref, clusters_by_distance_list, distances_vec) 
 {
     purrr::map(1:length(distances_vec), ~clusters_by_distance_list %>% 

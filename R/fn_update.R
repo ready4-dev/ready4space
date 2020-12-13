@@ -15,7 +15,6 @@
 #' @importFrom rlang sym
 #' @importFrom sf st_area
 #' @importFrom units set_units
-#' @keywords internal
 update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, age_sex_var_name = NULL, 
     age_sex_pop_resolution = NULL, tot_pop_col = NULL, popl_var_prefix) 
 {
@@ -58,7 +57,6 @@ update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, ag
 #' @rdname update_pop_count_by_areas
 #' @export 
 
-#' @keywords internal
 update_pop_count_by_areas <- function (profiled_sf, group_by_var, age_sex_var_name, data_year, 
     age_sex_pop_resolution, tot_pop_resolution, popl_var_prefix = "") 
 {
@@ -83,7 +81,6 @@ update_pop_count_by_areas <- function (profiled_sf, group_by_var, age_sex_var_na
 #' @importFrom stringr str_subset str_replace_all
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-#' @keywords internal
 update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list) 
 {
     max_var <- "max"
@@ -114,7 +111,6 @@ update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list)
 #' @importFrom purrr map_dbl map map2
 #' @importFrom nnet which.is.max
 #' @importFrom sf st_area
-#' @keywords internal
 update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_list) 
 {
     crs_nbr_vec <- input_ls$pa_r4 %>% crs_nbr()
@@ -171,7 +167,6 @@ update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_lis
 #' @rdname update_sp_local_proc_r4
 #' @export 
 #' @importFrom ready4use assert_single_row_tb
-#' @keywords internal
 update_sp_local_proc_r4 <- function (x) 
 {
     lookup_tbs_r4 <- x@lup_tbs_r4

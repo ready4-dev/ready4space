@@ -6,7 +6,6 @@
 #' @rdname gen_val_envir
 #' @export 
 #' @importFrom dplyr mutate
-#' @keywords internal
 gen_val_envir <- function (params_struc_tb, it_nbr) 
 {
     params_struc_tb %>% dplyr::mutate(`:=`(!!paste0("v_it_", 
@@ -24,7 +23,6 @@ gen_val_envir <- function (params_struc_tb, it_nbr)
 #' @rdname gen_val_envir_sgl
 #' @export 
 
-#' @keywords internal
 gen_val_envir_sgl <- function (distribution, dist_param_1, dist_param_2, dist_param_3, 
     transformation) 
 {
@@ -45,7 +43,6 @@ gen_val_envir_sgl <- function (distribution, dist_param_1, dist_param_2, dist_pa
 #' @rdname gen_val_envir_vect
 #' @export 
 #' @importFrom purrr map_dbl
-#' @keywords internal
 gen_val_envir_vect <- function (distribution, dist_param_1, dist_param_2, dist_param_3, 
     transformation) 
 {
@@ -64,7 +61,6 @@ gen_val_envir_vect <- function (distribution, dist_param_1, dist_param_2, dist_p
 #' @importFrom dplyr mutate select
 #' @importFrom mc2d qpert rpert
 #' @importFrom tidyr gather unite
-#' @keywords internal
 gen_val_mape <- function (params_struc_tb, it_nbr, jt_dist) 
 {
     if (jt_dist) {

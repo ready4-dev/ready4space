@@ -8,7 +8,6 @@
 #' @export 
 #' @importFrom dplyr filter pull
 #' @importFrom purrr walk
-#' @keywords internal
 simplify_geoms_in_lup <- function (lup_r4, r_data_dir, crs_nbr) 
 {
     lup_r4 %>% sp_data_pack_lup() %>% dplyr::filter(main_feature == 
@@ -27,7 +26,6 @@ simplify_geoms_in_lup <- function (lup_r4, r_data_dir, crs_nbr)
 #' @importFrom dplyr filter select
 #' @importFrom geojsonio geojson_json geojson_sf
 #' @importFrom rmapshaper ms_simplify
-#' @keywords internal
 simplify_sf <- function (sf, crs = NULL) 
 {
     if (is.null(crs)) 

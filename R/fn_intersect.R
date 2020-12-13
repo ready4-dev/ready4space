@@ -8,7 +8,6 @@
 #' @rdname intersect_lon_lat_sfs
 #' @export 
 #' @importFrom sf st_intersection st_transform
-#' @keywords internal
 intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_vec, validate_lgl = T) 
 {
     sf_3 <- sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_vec[2]), 
@@ -33,7 +32,6 @@ intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_vec, validate_lgl = T)
 #' @export 
 #' @importFrom dplyr select pull slice
 #' @importFrom stringr str_which
-#' @keywords internal
 intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profiled_rowref = NA, 
     attribute_sf, attribute_unit, data_type, data_year, crs_nbr_vec, 
     popl_var_prefix = NULL) 
@@ -72,7 +70,6 @@ intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profil
 #' @importFrom sf st_set_geometry
 #' @importFrom dplyr distinct select ends_with rename_at vars
 #' @importFrom stringi stri_replace_last_regex
-#' @keywords internal
 intersect_sfs_update_counts <- function (profiled_sf, profiled_colref = NA, profiled_rowref = NA, 
     sp_data_list, tot_pop_resolution, age_sex_pop_resolution, 
     group_by_var, age_sex_counts_grouped_by, data_year, crs_nbr_vec) 

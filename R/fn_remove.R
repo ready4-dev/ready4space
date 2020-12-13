@@ -6,7 +6,6 @@
 #' @rdname remove_grouped_popl_vars
 #' @export 
 #' @importFrom dplyr select
-#' @keywords internal
 remove_grouped_popl_vars <- function (profiled_sf, popl_var_prefix) 
 {
     var_names_vec <- profiled_sf %>% names()

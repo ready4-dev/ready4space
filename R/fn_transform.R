@@ -8,7 +8,6 @@
 #' @importFrom sf st_difference
 #' @importFrom dplyr select
 #' @importFrom stats setNames
-#' @keywords internal
 transform_circles_to_bands <- function (geom_distance_circle_sfs_list) 
 {
     purrr::map(1:(length(geom_distance_circle_sfs_list) - 1), 
@@ -27,7 +26,6 @@ transform_circles_to_bands <- function (geom_distance_circle_sfs_list)
 #' @rdname transform_sfx_to_pfx
 #' @export 
 #' @importFrom dplyr rename_at vars ends_with funs
-#' @keywords internal
 transform_sfx_to_pfx <- function (data_tb, suffix) 
 {
     data_tb %>% dplyr::rename_at(dplyr::vars(dplyr::ends_with(suffix)), 
@@ -44,7 +42,6 @@ transform_sfx_to_pfx <- function (data_tb, suffix)
 #' @rdname transform_sp_local_r4_to_local_proc_r4
 #' @export 
 
-#' @keywords internal
 transform_sp_local_r4_to_local_proc_r4 <- function (x, import_chr_vec, raw_data_dir_chr, save_lgl) 
 {
     ready4_sp_local_proc(lup_tbs_r4 = x@lup_tbs_r4, import_chr_vec = import_chr_vec, 
@@ -63,7 +60,6 @@ transform_sp_local_r4_to_local_proc_r4 <- function (x, import_chr_vec, raw_data_
 #' @importFrom googlePolylines decode
 #' @importFrom purrr pluck
 #' @importFrom sf st_polygon st_sfc st_sf
-#' @keywords internal
 transform_tt_polygon_to_sf <- function (tt_polyline, mode_of_transport, travel_time_hours, 
     crs) 
 {
