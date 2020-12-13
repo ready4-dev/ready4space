@@ -1,3 +1,18 @@
+write_gtr_str_mthds_for_slots(slot_names_chr = c("sp_abbreviations_lup",
+                                                 "sp_import_lup",
+                                                 "sp_data_pack_lup",
+                                                 "sp_resolution_lup",
+                                                 "sp_site_coord_lup",
+                                                 "sp_starter_sf_lup",
+                                                 "sp_uid_lup"),
+                              set_only_chr = c(""),
+                              parent_cls_nm_1L_chr = "",
+                              class_nm_1L_chr = "ready4_lookup",
+                              print_gtrs_strs_1L_lgl = TRUE,
+                              output_dir_1L_chr = "R",
+                              nss_to_ignore_chr = c(NA_character_),
+                              req_pkgs_chr = NA_character_)
+
 first_tb <- ready4class::make_pt_ready4_constructor_tbl(make_s3_lgl = FALSE,
                                                         name_stub_chr = "lookup", # rename to sp_lups
                                                         slots_ls = c("sp_abbreviations_lup","sp_import_lup","sp_data_pack_lup","sp_resolution_lup","sp_site_coord_lup","sp_starter_sf_lup","sp_uid_lup") %>% list() %>% list(),

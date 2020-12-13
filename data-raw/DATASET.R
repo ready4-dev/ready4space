@@ -138,7 +138,7 @@ pkg_dss_tb <- fns_dmt_tb %>%
 ##
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4use"),
+                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
                                 update_pkgdown_1L_lgl = T,
                                 path_to_dvpr_dmt_dir_1L_chr = "../../../../../Documentation/Code/Developer",
                                 path_to_user_dmt_dir_1L_chr = "../../../../../Documentation/Code/User")

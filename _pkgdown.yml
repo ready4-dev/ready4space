@@ -29,3 +29,12 @@ reference:
   - ready4_sp_local
   - ready4_sp_local_raw
   - ready4_sp_local_proc
+- title: "Methods"
+- contents:
+  - download_data.ready4_sp_import_lup
+  - get_data.ready4_sp_abbreviations_lup
+  - get_data.ready4_sp_data_pack_lup
+  - get_data.ready4_sp_uid_lup
+  - import_data.ready4_sp_import_lup
+  - order_tb.ready4_sp_import_lup
+  - save_raw.ready4_sp_import_lup
