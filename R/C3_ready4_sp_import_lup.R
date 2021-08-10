@@ -34,12 +34,12 @@ x
 #' @param data_repo_db_ui PARAM_DESCRIPTION, Default: character(0)
 #' @param data_repo_file_ext PARAM_DESCRIPTION, Default: character(0)
 #' @param data_repo_save_type PARAM_DESCRIPTION, Default: character(0)
-#' @param local_file_src PARAM_DESCRIPTION, Default: character(0)
-#' @param make_script_src PARAM_DESCRIPTION, Default: character(0)
-#' @param download_url PARAM_DESCRIPTION, Default: character(0)
-#' @param inc_file_main PARAM_DESCRIPTION, Default: character(0)
-#' @param inc_files_to_rename PARAM_DESCRIPTION, Default: list()
-#' @param new_names_for_inc_files PARAM_DESCRIPTION, Default: list()
+#' @param local_file_src_chr PARAM_DESCRIPTION, Default: character(0)
+#' @param path_to_make_script_chr PARAM_DESCRIPTION, Default: character(0)
+#' @param download_url_chr PARAM_DESCRIPTION, Default: character(0)
+#' @param inc_file_main_chr PARAM_DESCRIPTION, Default: character(0)
+#' @param inc_fls_to_rename_ls PARAM_DESCRIPTION, Default: list()
+#' @param new_nms_for_inc_fls_ls PARAM_DESCRIPTION, Default: list()
 #' @param name PARAM_DESCRIPTION, Default: character(0)
 #' @param country PARAM_DESCRIPTION, Default: character(0)
 #' @param area_type PARAM_DESCRIPTION, Default: character(0)
@@ -66,12 +66,12 @@ data_repo_ui = character(0),
 data_repo_db_ui = character(0),
 data_repo_file_ext = character(0),
 data_repo_save_type = character(0),
-local_file_src = character(0),
-make_script_src = character(0),
-download_url = character(0),
-inc_file_main = character(0),
-inc_files_to_rename = list(),
-new_names_for_inc_files = list(),
+local_file_src_chr = character(0),
+path_to_make_script_chr = character(0),
+download_url_chr = character(0),
+inc_file_main_chr = character(0),
+inc_fls_to_rename_ls = list(),
+new_nms_for_inc_fls_ls = list(),
 name = character(0),
 country = character(0),
 area_type = character(0),
@@ -91,12 +91,12 @@ data_repo_ui = data_repo_ui,
 data_repo_db_ui = data_repo_db_ui,
 data_repo_file_ext = data_repo_file_ext,
 data_repo_save_type = data_repo_save_type,
-local_file_src = local_file_src,
-make_script_src = make_script_src,
-download_url = download_url,
-inc_file_main = inc_file_main,
-inc_files_to_rename = inc_files_to_rename,
-new_names_for_inc_files = new_names_for_inc_files,
+local_file_src_chr = local_file_src_chr,
+path_to_make_script_chr = path_to_make_script_chr,
+download_url_chr = download_url_chr,
+inc_file_main_chr = inc_file_main_chr,
+inc_fls_to_rename_ls = inc_fls_to_rename_ls,
+new_nms_for_inc_fls_ls = new_nms_for_inc_fls_ls,
 name = name,
 country = country,
 area_type = area_type,

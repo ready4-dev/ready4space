@@ -4,10 +4,10 @@
 \alias{make_pt_ready4_par_val_envir}
 \title{Make prototype Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.}
 \usage{
-make_pt_ready4_par_val_envir(param_name = character(0), v_it_1 = numeric(0))
+make_pt_ready4_par_val_envir(param_name_chr = character(0), v_it_1 = numeric(0))
 }
 \arguments{
-\item{param_name}{PARAM_DESCRIPTION, Default: character(0)}
+\item{param_name_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
 \item{v_it_1}{PARAM_DESCRIPTION, Default: numeric(0)}
 }

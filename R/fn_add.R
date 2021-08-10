@@ -212,20 +212,20 @@ add_data_pack_lup <- function (lookup_tbs_r4, tb_data_type = "Geometry", templat
 #' @param age_sex_var_name PARAM_DESCRIPTION
 #' @param popl_var_prefix PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname add_dynamic_sp_vars_to_sf
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 add_dynamic_sp_vars_to_sf <- function (dynamic_sp_vars_sf, pop_attr_sf, age_sex_pop_resolution, 
-    age_sex_var_name, popl_var_prefix, data_year, crs_nbr_vec) 
+    age_sex_var_name, popl_var_prefix, data_year, crs_nbr_dbl) 
 {
     profiled_sf <- intersect_sfs_keep_counts(profiled_sf = dynamic_sp_vars_sf, 
         profiled_colref = NA, profiled_rowref = NA, attribute_sf = pop_attr_sf, 
         attribute_unit = age_sex_pop_resolution, data_type = "processed_age_sex", 
         data_year = data_year, popl_var_prefix = popl_var_prefix, 
-        crs_nbr_vec = crs_nbr_vec) %>% add_kmsq_area_by_group(group_by_var = age_sex_var_name, 
+        crs_nbr_dbl = crs_nbr_dbl) %>% add_kmsq_area_by_group(group_by_var = age_sex_var_name, 
         feature_nm = age_sex_pop_resolution)
     dyn_par_unit_id <- names(dynamic_sp_vars_sf)[1]
     profiled_sf <- profiled_sf %>% dplyr::mutate(`:=`(!!rlang::sym(age_sex_var_name), 

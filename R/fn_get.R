@@ -359,11 +359,11 @@ get_non_shape_items_for_imp <- function (path_str, x)
     file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, 
         "\\.")[, 2] %>% as.vector())
     data_type <- ready4fun::get_from_lup(data_lookup_tb = x, 
-        lookup_reference = file_name, lookup_variable = "inc_file_main", 
+        lookup_reference = file_name, lookup_variable = "inc_file_main_chr", 
         target_variable = "data_type", evaluate = FALSE)
     var_name_vec <- c("area_type", "main_feature", "year", "region")
     var_val_vec <- purrr::map_chr(var_name_vec, ~ready4fun::get_from_lup(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type, 
-        x = x), lookup_reference = file_name, lookup_variable = "inc_file_main", 
+        x = x), lookup_reference = file_name, lookup_variable = "inc_file_main_chr", 
         target_variable = .x, evaluate = FALSE))
     make_import_object(x, var_val_vec = var_val_vec, path_str = path_str)
 }
@@ -459,7 +459,7 @@ get_resolution_hierarchy <- function (data_year, resolution_lup_r3, whole_area =
 #' @description get_set_diff_lon_lat_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get set diff lon lat simple features object. Function argument profile_sf specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param profile_sf Profile (a simple features object)
 #' @param cut_sf Cut (a simple features object)
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @param validate_lgl Validate (a logical vector), Default: T
 #' @param min_poly_area_dbl Min poly area (a double vector), Default: units::set_units(0.05, km^2)
 #' @return NULL
@@ -469,12 +469,12 @@ get_resolution_hierarchy <- function (data_year, resolution_lup_r3, whole_area =
 #' @importFrom sf st_difference st_transform st_union st_cast st_area
 #' @importFrom dplyr mutate n pull filter select
 #' @importFrom purrr map map_dfr
-get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_vec, validate_lgl = T, 
+get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_dbl, validate_lgl = T, 
     min_poly_area_dbl = units::set_units(0.05, km^2)) 
 {
-    new_sf <- sf::st_difference(profile_sf %>% sf::st_transform(crs = crs_nbr_vec[2]), 
-        sf::st_union(cut_sf) %>% sf::st_transform(crs = crs_nbr_vec[2])) %>% 
-        sf::st_transform(crs = crs_nbr_vec[1])
+    new_sf <- sf::st_difference(profile_sf %>% sf::st_transform(crs = crs_nbr_dbl[2]), 
+        sf::st_union(cut_sf) %>% sf::st_transform(crs = crs_nbr_dbl[2])) %>% 
+        sf::st_transform(crs = crs_nbr_dbl[1])
     if (validate_lgl) 
         new_sf <- new_sf %>% make_valid_new_sf()
     new_sf <- new_sf %>% dplyr::mutate(feature_idx_int = 1:dplyr::n())

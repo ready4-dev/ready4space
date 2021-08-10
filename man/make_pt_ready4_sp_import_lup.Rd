@@ -12,12 +12,12 @@ make_pt_ready4_sp_import_lup(
   data_repo_db_ui = character(0),
   data_repo_file_ext = character(0),
   data_repo_save_type = character(0),
-  local_file_src = character(0),
-  make_script_src = character(0),
-  download_url = character(0),
-  inc_file_main = character(0),
-  inc_files_to_rename = list(),
-  new_names_for_inc_files = list(),
+  local_file_src_chr = character(0),
+  path_to_make_script_chr = character(0),
+  download_url_chr = character(0),
+  inc_file_main_chr = character(0),
+  inc_fls_to_rename_ls = list(),
+  new_nms_for_inc_fls_ls = list(),
   name = character(0),
   country = character(0),
   area_type = character(0),
@@ -47,17 +47,17 @@ make_pt_ready4_sp_import_lup(
 
 \item{data_repo_save_type}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{local_file_src}{PARAM_DESCRIPTION, Default: character(0)}
+\item{local_file_src_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{make_script_src}{PARAM_DESCRIPTION, Default: character(0)}
+\item{path_to_make_script_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{download_url}{PARAM_DESCRIPTION, Default: character(0)}
+\item{download_url_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{inc_file_main}{PARAM_DESCRIPTION, Default: character(0)}
+\item{inc_file_main_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{inc_files_to_rename}{PARAM_DESCRIPTION, Default: list()}
+\item{inc_fls_to_rename_ls}{PARAM_DESCRIPTION, Default: list()}
 
-\item{new_names_for_inc_files}{PARAM_DESCRIPTION, Default: list()}
+\item{new_nms_for_inc_fls_ls}{PARAM_DESCRIPTION, Default: list()}
 
 \item{name}{PARAM_DESCRIPTION, Default: character(0)}
 

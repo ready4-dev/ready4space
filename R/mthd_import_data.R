@@ -17,13 +17,13 @@ import_data.ready4_sp_import_lup <- function (x, included_items_names, item_data
     r_data_dir_chr, save_lgl = T) 
 {
     downloaded_data_tb <- x %>% dplyr::filter(data_type == item_data_type) %>% 
-        dplyr::mutate(inc_file_main = ifelse(is.null(x$new_names_for_inc_files[[1]]), 
-            inc_file_main, ifelse(is.na(new_names_for_inc_files %>% 
-                unlist()), inc_file_main, purrr::map_chr(new_names_for_inc_files, 
+        dplyr::mutate(inc_file_main_chr = ifelse(is.null(x$new_nms_for_inc_fls_ls[[1]]), 
+            inc_file_main_chr, ifelse(is.na(new_nms_for_inc_fls_ls %>% 
+                unlist()), inc_file_main_chr, purrr::map_chr(new_nms_for_inc_fls_ls, 
                 ~.x[[1]]))))
     path_vec <- purrr::map_chr(included_items_names, ~get_sngl_path_for_imp(downloaded_data_tb = downloaded_data_tb %>% 
         dplyr::select(c(name, country, area_type, region, main_feature, 
-            year, inc_file_main)), lookup_reference = .x, data_directory = data_directory))
+            year, inc_file_main_chr)), lookup_reference = .x, data_directory = data_directory))
     r_import_path_chr <- get_r_import_path_chr(r_data_dir_chr = r_data_dir_chr, 
         name_chr = x$name, data_type_chr = item_data_type)
     if (item_data_type == "Geometry") {

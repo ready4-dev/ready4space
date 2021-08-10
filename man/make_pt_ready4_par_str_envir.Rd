@@ -5,32 +5,32 @@
 \title{Make prototype Readyforwhatsnext S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.}
 \usage{
 make_pt_ready4_par_str_envir(
-  param_name = character(0),
+  param_name_chr = character(0),
   deter_val = numeric(0),
   distribution = character(0),
-  dist_param_1 = numeric(0),
-  dist_param_2 = numeric(0),
-  dist_param_3 = numeric(0),
-  dist_param_4 = numeric(0),
+  dstr_par_1 = numeric(0),
+  dstr_par_2 = numeric(0),
+  dstr_par_3 = numeric(0),
+  dstr_par_4 = numeric(0),
   transformation = character(0),
   use_in = character(0),
   source = character(0)
 )
 }
 \arguments{
-\item{param_name}{PARAM_DESCRIPTION, Default: character(0)}
+\item{param_name_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
 \item{deter_val}{PARAM_DESCRIPTION, Default: numeric(0)}
 
 \item{distribution}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{dist_param_1}{PARAM_DESCRIPTION, Default: numeric(0)}
+\item{dstr_par_1}{PARAM_DESCRIPTION, Default: numeric(0)}
 
-\item{dist_param_2}{PARAM_DESCRIPTION, Default: numeric(0)}
+\item{dstr_par_2}{PARAM_DESCRIPTION, Default: numeric(0)}
 
-\item{dist_param_3}{PARAM_DESCRIPTION, Default: numeric(0)}
+\item{dstr_par_3}{PARAM_DESCRIPTION, Default: numeric(0)}
 
-\item{dist_param_4}{PARAM_DESCRIPTION, Default: numeric(0)}
+\item{dstr_par_4}{PARAM_DESCRIPTION, Default: numeric(0)}
 
 \item{transformation}{PARAM_DESCRIPTION, Default: character(0)}
 

@@ -33,7 +33,7 @@ write_dirs_for_imp <- function (directory_paths)
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
+#' @param crs_nbr_dbl PARAM_DESCRIPTION, Default: NA
 #' @param overwrite_lgl Overwrite (a logical vector), Default: F
 #' @return NULL
 #' @rdname write_fls_and_mk_sngl_row_data_lup
@@ -41,7 +41,7 @@ write_dirs_for_imp <- function (directory_paths)
 #' @importFrom ready4use assert_single_row_tb get_import_type_ls
 #' @importFrom rlang exec
 write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_data_dir, processed_dir, 
-    crs_nbr_vec = NA_real_, overwrite_lgl = F) 
+    crs_nbr_dbl = NA_real_, overwrite_lgl = F) 
 {
     ready4use::assert_single_row_tb(x)
     lookup_tbs_r4 <- ready4_lookup()
@@ -52,7 +52,7 @@ write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_da
         script_args_ls <- list(lup_tbs_r4 = lookup_tbs_r4, merge_with_chr_vec = merge_with, 
             proc_data_dir_chr = processed_dir, raw_data_dir_chr = raw_data_dir, 
             pckg_chr = pckg_name, overwrite_lgl = overwrite_lgl, 
-            crs_nbr_vec = crs_nbr_vec)
+            crs_nbr_dbl = crs_nbr_dbl)
         script_data_r4 <- rlang::exec(make_class_fn_chr, !!!script_args_ls)
         import_data(script_data_r4)
     }
@@ -60,7 +60,7 @@ write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_da
         ready4_sp_local_raw(lup_tbs_r4 = lookup_tbs_r4, merge_with_chr_vec = merge_with, 
             raw_data_dir_chr = raw_data_dir, pckg_chr = pckg_name, 
             overwrite_lgl = overwrite_lgl) %>% write_fls_from_imp_and_upd_r4(processed_dir_chr = processed_dir, 
-            crs_nbr_vec = crs_nbr_vec)
+            crs_nbr_dbl = crs_nbr_dbl)
     }
 }
 #' Write files for import
@@ -82,7 +82,7 @@ write_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, directory_pa
 {
     save_lgl <- F
     download_components_vec <- purrr::map_chr(c("file_name", 
-        "file_type", "download_url", "inc_file_main", "local_file_src", 
+        "file_type", "download_url_chr", "inc_file_main_chr", "local_file_src_chr", 
         "data_repo_db_ui"), ~ready4fun::get_from_lup(data_lookup_tb = x, 
         lookup_reference = data_lookup_ref, lookup_variable = lookup_variable, 
         target_variable = .x, evaluate = FALSE))
@@ -120,15 +120,15 @@ write_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, directory_pa
 #' @description write_fls_from_imp_and_upd_r4() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write files from import and update ready4 s4. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param x PARAM_DESCRIPTION
 #' @param processed_dir_chr Processed directory (a character vector)
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname write_fls_from_imp_and_upd_r4
 #' @export 
 #' @importFrom ready4use `proc_data_dir_chr<-`
-write_fls_from_imp_and_upd_r4 <- function (x, processed_dir_chr, crs_nbr_vec) 
+write_fls_from_imp_and_upd_r4 <- function (x, processed_dir_chr, crs_nbr_dbl) 
 {
     save_raw(x, return_r4_lgl = T) %>% ready4use::`proc_data_dir_chr<-`(processed_dir_chr) %>% 
-        import_data(crs_nbr_vec = crs_nbr_vec) %>% update_this()
+        import_data(crs_nbr_dbl = crs_nbr_dbl) %>% update_this()
 }
 #' Write files from local import
 #' @description write_fls_from_local_imp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write files from local import. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
@@ -146,14 +146,14 @@ write_fls_from_local_imp <- function (x, raw_data_dir_chr, save_lgl)
 #' Write files from sp import and update import
 #' @description write_fls_from_sp_imp_and_upd_imp_ls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write files from sp import and update import list. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param x PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @param return_r4_lgl Return ready4 S4 (a logical vector), Default: T
 #' @return NULL
 #' @rdname write_fls_from_sp_imp_and_upd_imp_ls
 #' @export 
 #' @importFrom ready4use assert_single_row_tb `path_to_starter_sf_chr<-` `import_this_ls<-`
 #' @importFrom stats setNames
-write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl = T) 
+write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_dbl, return_r4_lgl = T) 
 {
     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
     ready4use::assert_single_row_tb(sp_import_lup)
@@ -170,7 +170,7 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl 
     }
     write_procsd_imp_xx(x = sp_import_lup, import_this_ls = import_this_ls, 
         path_to_starter_sf_chr = path_to_starter_sf_chr, merge_with = x@merge_with_chr_vec, 
-        processed_dir = x@proc_data_dir_chr, crs_nbr_vec = crs_nbr_vec, 
+        processed_dir = x@proc_data_dir_chr, crs_nbr_dbl = crs_nbr_dbl, 
         overwrite_lgl = x@overwrite_lgl)
     if (return_r4_lgl) 
         ready4use::`path_to_starter_sf_chr<-`(x, path_to_starter_sf_chr) %>% 
@@ -182,7 +182,7 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl 
 #' @param import_this_ls Import this (a list)
 #' @param path_to_starter_sf_chr Path to starter simple features object (a character vector)
 #' @param merge_with_chr_vec PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @param overwrite_lgl Overwrite (a logical vector)
 #' @return NULL
 #' @rdname write_procsd_geom_imp
@@ -193,7 +193,7 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_vec, return_r4_lgl 
 #' @importFrom dplyr mutate filter pull
 #' @importFrom units set_units
 write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, merge_with_chr_vec, 
-    crs_nbr_vec, overwrite_lgl) 
+    crs_nbr_dbl, overwrite_lgl) 
 {
     ready4use::assert_single_row_tb(x)
     if (overwrite_lgl | !file.exists(path_to_starter_sf_chr)) {
@@ -203,7 +203,7 @@ write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, me
         else {
             starter_sf <- purrr::reduce(merge_with_chr_vec, .init = import_this_ls[[1]], 
                 ~intersect_lon_lat_sfs(.x, eval(parse(text = .y)), 
-                  crs_nbr_vec = crs_nbr_vec, validate_lgl = T))
+                  crs_nbr_dbl = crs_nbr_dbl, validate_lgl = T))
             if ((sf::st_geometry_type(starter_sf) %>% as.character() != 
                 "POINT") %>% any()) {
                 starter_sf <- starter_sf %>% dplyr::mutate(area = sf::st_area(.)) %>% 
@@ -211,7 +211,7 @@ write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, me
             }
         }
         if (x %>% dplyr::pull(main_feature) == "Boundary") 
-            starter_sf <- starter_sf %>% simplify_sf(crs = crs_nbr_vec[1])
+            starter_sf <- starter_sf %>% simplify_sf(crs = crs_nbr_dbl[1])
         saveRDS(starter_sf, file = path_to_starter_sf_chr)
     }
 }
@@ -224,7 +224,7 @@ write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, me
 #' @param pckg_name PARAM_DESCRIPTION
 #' @param raw_data_dir PARAM_DESCRIPTION
 #' @param processed_dir PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION, Default: NA
+#' @param crs_nbr_dbl PARAM_DESCRIPTION, Default: NA
 #' @param overwrite_lgl Overwrite (a logical vector), Default: F
 #' @return NULL
 #' @rdname write_procsd_imp_xx
@@ -232,13 +232,13 @@ write_procsd_geom_imp <- function (x, import_this_ls, path_to_starter_sf_chr, me
 #' @importFrom dplyr pull
 #' @importFrom purrr walk2
 write_procsd_imp_xx <- function (x, import_this_ls, path_to_starter_sf_chr, merge_with, 
-    pckg_name, raw_data_dir, processed_dir, crs_nbr_vec = NA_real_, 
+    pckg_name, raw_data_dir, processed_dir, crs_nbr_dbl = NA_real_, 
     overwrite_lgl = F) 
 {
     if (x %>% dplyr::pull(data_type) == "Geometry") {
         write_procsd_geom_imp(x, import_this_ls = import_this_ls, 
             path_to_starter_sf_chr = path_to_starter_sf_chr, 
-            merge_with_chr_vec = merge_with, crs_nbr_vec = crs_nbr_vec, 
+            merge_with_chr_vec = merge_with, crs_nbr_dbl = crs_nbr_dbl, 
             overwrite_lgl = overwrite_lgl)
     }
     if (x %>% dplyr::pull(data_type) == "Attribute") {
@@ -303,10 +303,10 @@ write_to_rnm_fls_for_imp <- function (x, data_lookup_ref, lookup_variable, direc
 {
     old_names_list <- ready4fun::get_from_lup(data_lookup_tb = x, 
         lookup_reference = data_lookup_ref, lookup_variable = lookup_variable, 
-        target_variable = "inc_files_to_rename", evaluate = FALSE)
+        target_variable = "inc_fls_to_rename_ls", evaluate = FALSE)
     new_names_list <- ready4fun::get_from_lup(data_lookup_tb = x, 
         lookup_reference = data_lookup_ref, lookup_variable = lookup_variable, 
-        target_variable = "new_names_for_inc_files", evaluate = FALSE)
+        target_variable = "new_nms_for_inc_fls_ls", evaluate = FALSE)
     if (!is.na(old_names_list)) {
         purrr::walk2(old_names_list, new_names_list, ~if (overwrite_lgl | 
             !file.exists(paste0(directory_path, "/", .y))) 

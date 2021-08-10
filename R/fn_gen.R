@@ -9,25 +9,25 @@
 gen_val_envir <- function (params_struc_tb, it_nbr) 
 {
     params_struc_tb %>% dplyr::mutate(`:=`(!!paste0("v_it_", 
-        it_nbr), gen_val_envir_vect(distribution, dist_param_1, 
-        dist_param_2, dist_param_3, transformation)))
+        it_nbr), gen_val_envir_vect(distribution, dstr_par_1, 
+        dstr_par_2, dstr_par_3, transformation)))
 }
 #' Gen value envir sgl
 #' @description gen_val_envir_sgl() is a Gen function that generates values for a specified varaible or variables. Specifically, this function implements an algorithm to gen value envir sgl. The function is called for its side effects and does not return a value.
 #' @param distribution PARAM_DESCRIPTION
-#' @param dist_param_1 PARAM_DESCRIPTION
-#' @param dist_param_2 PARAM_DESCRIPTION
-#' @param dist_param_3 PARAM_DESCRIPTION
+#' @param dstr_par_1 PARAM_DESCRIPTION
+#' @param dstr_par_2 PARAM_DESCRIPTION
+#' @param dstr_par_3 PARAM_DESCRIPTION
 #' @param transformation PARAM_DESCRIPTION
 #' @return NA ()
 #' @rdname gen_val_envir_sgl
 #' @export 
 
-gen_val_envir_sgl <- function (distribution, dist_param_1, dist_param_2, dist_param_3, 
+gen_val_envir_sgl <- function (distribution, dstr_par_1, dstr_par_2, dstr_par_3, 
     transformation) 
 {
     if (distribution == "none") 
-        x <- dist_param_1
+        x <- dstr_par_1
     if (!is.na(transformation)) 
         x <- eval(parse(text = transformation))
     return(x)
@@ -35,19 +35,19 @@ gen_val_envir_sgl <- function (distribution, dist_param_1, dist_param_2, dist_pa
 #' Gen value envir vect
 #' @description gen_val_envir_vect() is a Gen function that generates values for a specified varaible or variables. Specifically, this function implements an algorithm to gen value envir vect. The function is called for its side effects and does not return a value.
 #' @param distribution PARAM_DESCRIPTION
-#' @param dist_param_1 PARAM_DESCRIPTION
-#' @param dist_param_2 PARAM_DESCRIPTION
-#' @param dist_param_3 PARAM_DESCRIPTION
+#' @param dstr_par_1 PARAM_DESCRIPTION
+#' @param dstr_par_2 PARAM_DESCRIPTION
+#' @param dstr_par_3 PARAM_DESCRIPTION
 #' @param transformation PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname gen_val_envir_vect
 #' @export 
 #' @importFrom purrr map_dbl
-gen_val_envir_vect <- function (distribution, dist_param_1, dist_param_2, dist_param_3, 
+gen_val_envir_vect <- function (distribution, dstr_par_1, dstr_par_2, dstr_par_3, 
     transformation) 
 {
     purrr::map_dbl(1:length(distribution), ~gen_val_envir_sgl(distribution[.x], 
-        dist_param_1[.x], dist_param_2[.x], dist_param_3[.x], 
+        dstr_par_1[.x], dstr_par_2[.x], dstr_par_3[.x], 
         transformation[.x]))
 }
 #' Gen value mape
@@ -64,30 +64,30 @@ gen_val_envir_vect <- function (distribution, dist_param_1, dist_param_2, dist_p
 gen_val_mape <- function (params_struc_tb, it_nbr, jt_dist) 
 {
     if (jt_dist) {
-        params_vals_tb <- params_struc_tb %>% dplyr::mutate(jt_dist_loc_2 = runif(1)) %>% 
-            dplyr::mutate(mape_05_yr = mc2d::qpert(p = jt_dist_loc_2, 
-                mode = mape_05_yr_mde, min = mape_05_yr_min, 
-                max = mape_05_yr_max, shape = mape_05_yr_shp), 
-                mape_10_yr = mc2d::qpert(p = jt_dist_loc_2, mode = mape_10_yr_mde, 
-                  min = mape_10_yr_min, max = mape_10_yr_max, 
-                  shape = mape_10_yr_shp), mape_15_yr = mc2d::qpert(p = jt_dist_loc_2, 
-                  mode = mape_15_yr_mde, min = mape_15_yr_min, 
-                  max = mape_15_yr_max, shape = mape_15_yr_shp))
+        params_vals_tb <- params_struc_tb %>% dplyr::mutate(jt_dstr_loc_2 = runif(1)) %>% 
+            dplyr::mutate(mape_05_yr = mc2d::qpert(p = jt_dstr_loc_2, 
+                mode = mape_05_yr_mde_dbl, min = mape_05_yr_min_dbl, 
+                max = mape_05_yr_max_dbl, shape = mape_05_yr_shp_dbl), 
+                mape_10_yr = mc2d::qpert(p = jt_dstr_loc_2, mode = mape_10_yr_mde_dbl, 
+                  min = mape_10_yr_min_dbl, max = mape_10_yr_max_dbl, 
+                  shape = mape_10_yr_shp_dbl), mape_15_yr = mc2d::qpert(p = jt_dstr_loc_2, 
+                  mode = mape_15_yr_mde_dbl, min = mape_15_yr_min_dbl, 
+                  max = mape_15_yr_max_dbl, shape = mape_15_yr_shp_dbl))
     }
     else {
         params_vals_tb <- params_struc_tb %>% dplyr::mutate(nbr_draws = 1) %>% 
             dplyr::mutate(mape_05_yr = mc2d::rpert(n = nbr_draws, 
-                mode = mape_05_yr_mde, min = mape_05_yr_min, 
-                max = mape_05_yr_max, shape = mape_05_yr_shp), 
-                mape_10_yr = mc2d::rpert(n = nbr_draws, mode = mape_10_yr_mde, 
-                  min = mape_10_yr_min, max = mape_10_yr_max, 
-                  shape = mape_10_yr_shp), mape_15_yr = mc2d::rpert(n = nbr_draws, 
-                  mode = mape_15_yr_mde, min = mape_15_yr_min, 
-                  max = mape_15_yr_max, shape = mape_15_yr_shp))
+                mode = mape_05_yr_mde_dbl, min = mape_05_yr_min_dbl, 
+                max = mape_05_yr_max_dbl, shape = mape_05_yr_shp_dbl), 
+                mape_10_yr = mc2d::rpert(n = nbr_draws, mode = mape_10_yr_mde_dbl, 
+                  min = mape_10_yr_min_dbl, max = mape_10_yr_max_dbl, 
+                  shape = mape_10_yr_shp_dbl), mape_15_yr = mc2d::rpert(n = nbr_draws, 
+                  mode = mape_15_yr_mde_dbl, min = mape_15_yr_min_dbl, 
+                  max = mape_15_yr_max_dbl, shape = mape_15_yr_shp_dbl))
     }
-    params_vals_tb %>% dplyr::select(sex_age_band, mape_05_yr, 
-        mape_10_yr, mape_15_yr) %>% tidyr::gather(key = "param_name", 
+    params_vals_tb %>% dplyr::select(sex_age_band_chr, mape_05_yr, 
+        mape_10_yr, mape_15_yr) %>% tidyr::gather(key = "param_name_chr", 
         value = !!paste0("v_it_", it_nbr), mape_05_yr, mape_10_yr, 
-        mape_15_yr) %>% tidyr::unite(param_name, sex_age_band, 
-        sep = "_", col = "param_name")
+        mape_15_yr) %>% tidyr::unite(param_name_chr, sex_age_band_chr, 
+        sep = "_", col = "param_name_chr")
 }

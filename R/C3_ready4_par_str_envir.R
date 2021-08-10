@@ -27,13 +27,13 @@ x
 }
 #' Make prototype Readyforwhatsnext S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @description Create a new prototype for the Readyforwhatsnext S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @param param_name PARAM_DESCRIPTION, Default: character(0)
+#' @param param_name_chr PARAM_DESCRIPTION, Default: character(0)
 #' @param deter_val PARAM_DESCRIPTION, Default: numeric(0)
 #' @param distribution PARAM_DESCRIPTION, Default: character(0)
-#' @param dist_param_1 PARAM_DESCRIPTION, Default: numeric(0)
-#' @param dist_param_2 PARAM_DESCRIPTION, Default: numeric(0)
-#' @param dist_param_3 PARAM_DESCRIPTION, Default: numeric(0)
-#' @param dist_param_4 PARAM_DESCRIPTION, Default: numeric(0)
+#' @param dstr_par_1 PARAM_DESCRIPTION, Default: numeric(0)
+#' @param dstr_par_2 PARAM_DESCRIPTION, Default: numeric(0)
+#' @param dstr_par_3 PARAM_DESCRIPTION, Default: numeric(0)
+#' @param dstr_par_4 PARAM_DESCRIPTION, Default: numeric(0)
 #' @param transformation PARAM_DESCRIPTION, Default: character(0)
 #' @param use_in PARAM_DESCRIPTION, Default: character(0)
 #' @param source PARAM_DESCRIPTION, Default: character(0)
@@ -44,23 +44,23 @@ x
 #' @importFrom ready4class update_pt_fn_args_ls
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
-make_pt_ready4_par_str_envir <- function(param_name = character(0),
+make_pt_ready4_par_str_envir <- function(param_name_chr = character(0),
 deter_val = numeric(0),
 distribution = character(0),
-dist_param_1 = numeric(0),
-dist_param_2 = numeric(0),
-dist_param_3 = numeric(0),
-dist_param_4 = numeric(0),
+dstr_par_1 = numeric(0),
+dstr_par_2 = numeric(0),
+dstr_par_3 = numeric(0),
+dstr_par_4 = numeric(0),
 transformation = character(0),
 use_in = character(0),
 source = character(0)){ 
-args_ls <- list(param_name = param_name,
+args_ls <- list(param_name_chr = param_name_chr,
 deter_val = deter_val,
 distribution = distribution,
-dist_param_1 = dist_param_1,
-dist_param_2 = dist_param_2,
-dist_param_3 = dist_param_3,
-dist_param_4 = dist_param_4,
+dstr_par_1 = dstr_par_1,
+dstr_par_2 = dstr_par_2,
+dstr_par_3 = dstr_par_3,
+dstr_par_4 = dstr_par_4,
 transformation = transformation,
 use_in = use_in,
 source = source) %>% ready4class::update_pt_fn_args_ls()

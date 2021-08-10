@@ -113,7 +113,7 @@ update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list)
 #' @importFrom sf st_area
 update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_list) 
 {
-    crs_nbr_vec <- input_ls$pa_r4 %>% crs_nbr()
+    crs_nbr_dbl <- input_ls$pa_r4 %>% crs_nbr()
     at_highest_res = input_ls$at_highest_res
     distance_km = geom_dist_limit_km(input_ls$pa_r4)
     travel_time_mins = drive_time_limit_mins(input_ls$pa_r4)
@@ -142,7 +142,7 @@ update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_lis
             profiled_rowref = NA, sp_data_list = sp_data_list, 
             tot_pop_resolution = tot_pop_resolution, age_sex_pop_resolution = age_sex_pop_resolution, 
             group_by_var = group_by_var, age_sex_counts_grouped_by = age_sex_counts_grouped_by, 
-            data_year = data_year(input_ls$pa_r4), crs_nbr_vec = crs_nbr_vec))
+            data_year = data_year(input_ls$pa_r4), crs_nbr_dbl = crs_nbr_dbl))
     by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls, 
         names(by_band_pop_counts_sf_ls), ~.x %>% dplyr::mutate(pop_sp_unit_id = paste0(.y, 
             "_", tolower(age_sex_pop_resolution), "_", rownames(.x))) %>% 
@@ -155,7 +155,7 @@ update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_lis
     profiled_sf <- add_dynamic_sp_vars_to_sf(dynamic_sp_vars_sf = sp_data_list[[sp_data_list$ppr_ref[1]]] %>% 
         dplyr::select(1), pop_attr_sf = profiled_sf, age_sex_pop_resolution = "UNIT_ID", 
         age_sex_var_name = "pop_sp_unit_id", popl_var_prefix = popl_var_prefix, 
-        data_year = input_ls$pa_r4@data_year, crs_nbr_vec = crs_nbr_vec)
+        data_year = input_ls$pa_r4@data_year, crs_nbr_dbl = crs_nbr_dbl)
     extended_sp_data_list <- append(sp_data_list, list(profiled_sf = profiled_sf, 
         popl_var_prefix = popl_var_prefix))
     return(extended_sp_data_list)

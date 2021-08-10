@@ -324,7 +324,7 @@ make_profiled_area_objs <- function (pa_r4)
                 sf::st_transform(crs_nbr(pa_r4)[1]) %>% simplify_sf()
         }
         sub_div_units_vec <- intersect_lon_lat_sfs(sf_1 = st_profiled_sf, 
-            sf_2 = profiled_sf, crs_nbr_vec = crs_nbr(pa_r4)) %>% 
+            sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(pa_r4)) %>% 
             dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% as.vector() %>% 
             unique()
     }

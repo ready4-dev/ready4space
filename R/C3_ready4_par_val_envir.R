@@ -27,7 +27,7 @@ x
 }
 #' Make prototype Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
 #' @description Create a new prototype for the Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @param param_name PARAM_DESCRIPTION, Default: character(0)
+#' @param param_name_chr PARAM_DESCRIPTION, Default: character(0)
 #' @param v_it_1 PARAM_DESCRIPTION, Default: numeric(0)
 #' @return A prototype for Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
 #' @details Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.
@@ -36,9 +36,9 @@ x
 #' @importFrom ready4class update_pt_fn_args_ls
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
-make_pt_ready4_par_val_envir <- function(param_name = character(0),
+make_pt_ready4_par_val_envir <- function(param_name_chr = character(0),
 v_it_1 = numeric(0)){ 
-args_ls <- list(param_name = param_name,
+args_ls <- list(param_name_chr = param_name_chr,
 v_it_1 = v_it_1) %>% ready4class::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }

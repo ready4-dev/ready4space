@@ -21,7 +21,7 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Standardised Modeller Tools For 
                             pkg_desc_1L_chr = "ready4space provides a set of classes and methods for spatial data management tasks throughout the ready4 suite of tools for mental health data synthesis and modelling projects.
   This development version of the ready4space package has been made available as part of the process of testing and documenting the package. The tools contained in this development release automate a number of tasks which MODIFY THE DIRECTORY STRUCTURE OF YOUR LOCAL MACHINE.
   Therefore you should only trial this software if you feel confident that you understand what it does and have created a sandpit area in which you can safely undertake testing. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
-                            authors_prsns = c(utils::person(
+                            authors_prsn = c(utils::person(
                               given = "Matthew",family = "Hamilton", email =
                                 "matthew.hamilton@orygen.org.au",role = c("aut",
                                                                           "cre"),comment = c(ORCID = "0000-0001-7407-9194")
@@ -40,7 +40,7 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Standardised Modeller Tools For 
                                          "https://github.com/ready4-dev/ready4space",
                                          "https://ready4-dev.github.io/ready4/")) %>%
   ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
-                                 delete_contents_of_R_dir = T,
+                                 delete_r_dir_cnts_1L_lgl = T,
                                  copyright_holders_chr = "Orygen",
                                  check_type_1L_chr = "gh",
                                  path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",
@@ -50,6 +50,7 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Standardised Modeller Tools For 
                                  addl_badges_ls = list(ready4 = "development"))
 ##
 ## 3. Run scripts to create the MAKE CLASS TABLE object with the metadata about the classes we will be creating.
+object_type_lup <- ready4fun::get_rds_from_dv("object_type_lup")
 source("data-raw/MAKE_CLASSES_S3.R")
 source("data-raw/MAKE_CLASSES_S4.R")
 classes_to_make_tb <- dplyr::bind_rows(s3_classes_to_make_tb, s4_classes_to_make_tb)
@@ -64,7 +65,8 @@ pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c(paste0(name_pfx_1L_ch
                                         # no_plural_chr = c(),
                                         #custom_plural_ls = list(utility = "utilities"),
                                         url_1L_chr = NA_character_,
-                                        seed_lup = map2aqol::abbreviations_lup) # CHANGE
+                                        seed_lup = map2aqol::abbreviations_lup,
+                                        object_type_lup = object_type_lup) # CHANGE
 utils::data("abbreviations_lup")
 pkg_dss_tb <- classes_to_make_tb %>%
   ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),
@@ -72,10 +74,13 @@ pkg_dss_tb <- classes_to_make_tb %>%
                                           output_dir_1L_chr = "R",
                                           file_exists_cdn_1L_chr = "overwrite",
                                           abbreviations_lup = abbreviations_lup,
-                                          init_class_pt_lup = ready4use::prototype_lup)  %>% # UPDATE TO READY4U WHEN CLASSES ARE ADDED
+                                          init_class_pt_lup = ready4fun::get_rds_from_dv("prototype_lup"),
+                                          object_type_lup = object_type_lup)  %>% # UPDATE TO READY4U WHEN CLASSES ARE ADDED
   ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
                               title_1L_chr = "Class prototype lookup table",
                               desc_1L_chr = "Metadata on classes used in ready4 suite",
+                              abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
@@ -83,12 +88,14 @@ data("fn_type_lup_tb",package = "ready4u")
 # fn_type_lup_tb %>%
 #   ready4fun::write_dmtd_fn_type_lup(url_1L_chr = NA_character_,
 #                                     abbreviations_lup = abbreviations_lup,
+#                                     object_type_lup = object_type_lup,
 #                                     pkg_dss_tb = pkg_dss_tb)
 # data("fn_type_lup_tb")
 # utils::data("fn_type_lup_tb",package = "ready4use")
 pkg_dss_tb <- fn_type_lup_tb %>%
   ready4fun::add_rows_to_fn_type_lup(fn_type_nm_chr = ready4fun::get_new_fn_types(abbreviations_lup = abbreviations_lup,
-                                                                                  fn_type_lup_tb = fn_type_lup_tb),
+                                                                                  fn_type_lup_tb = fn_type_lup_tb,
+                                                                                  object_type_lup = object_type_lup),
                                      fn_type_desc_chr = c("Adds a column to a data-frame type object for paths to data.",
                                                           "Binds rows to data-frame type objects.",
                                                           "Performs a validity check.",
@@ -115,6 +122,7 @@ pkg_dss_tb <- fn_type_lup_tb %>%
   dplyr::arrange(fn_type_nm_chr) %>%
   ready4fun::write_dmtd_fn_type_lup(url_1L_chr = NA_character_,
                                     abbreviations_lup = abbreviations_lup,
+                                    object_type_lup = object_type_lup,
                                     pkg_dss_tb = pkg_dss_tb)
 utils::data("fn_type_lup_tb")
 
@@ -127,7 +135,8 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(#paths_ls = ready4fun::make_fn_nms
                                                                                                    force_false_chr = NA_character_),
                                                                    args_ls_ls = NULL),
                                               fn_type_lup_tb = fn_type_lup_tb,
-                                              abbreviations_lup = abbreviations_lup)
+                                              abbreviations_lup = abbreviations_lup,
+                                              object_type_lup = object_type_lup)
 pkg_dss_tb <- fns_dmt_tb %>%
   ready4fun::write_and_doc_ds(db_1L_chr = "fns_dmt_tb",
                               title_1L_chr = "ready4space function documentation table",

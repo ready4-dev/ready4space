@@ -2,16 +2,16 @@
 #' @description intersect_lon_lat_sfs() is an Intersect function that gets the intersection between two or more data objects. Specifically, this function implements an algorithm to intersect lon lat sfs. The function is called for its side effects and does not return a value.
 #' @param sf_1 PARAM_DESCRIPTION
 #' @param sf_2 PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @param validate_lgl Validate (a logical vector), Default: T
 #' @return NULL
 #' @rdname intersect_lon_lat_sfs
 #' @export 
 #' @importFrom sf st_intersection st_transform
-intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_vec, validate_lgl = T) 
+intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_dbl, validate_lgl = T) 
 {
-    sf_3 <- sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_vec[2]), 
-        sf_2 %>% sf::st_transform(crs_nbr_vec[2])) %>% sf::st_transform(crs_nbr_vec[1])
+    sf_3 <- sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_dbl[2]), 
+        sf_2 %>% sf::st_transform(crs_nbr_dbl[2])) %>% sf::st_transform(crs_nbr_dbl[1])
     if (validate_lgl) 
         sf_3 %>% make_valid_new_sf()
     else sf_3
@@ -25,7 +25,7 @@ intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_vec, validate_lgl = T)
 #' @param attribute_unit PARAM_DESCRIPTION
 #' @param data_type PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @param popl_var_prefix PARAM_DESCRIPTION, Default: NULL
 #' @return Profiled (a simple features object)
 #' @rdname intersect_sfs_keep_counts
@@ -33,7 +33,7 @@ intersect_lon_lat_sfs <- function (sf_1, sf_2, crs_nbr_vec, validate_lgl = T)
 #' @importFrom dplyr select pull slice
 #' @importFrom stringr str_which
 intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profiled_rowref = NA, 
-    attribute_sf, attribute_unit, data_type, data_year, crs_nbr_vec, 
+    attribute_sf, attribute_unit, data_type, data_year, crs_nbr_dbl, 
     popl_var_prefix = NULL) 
 {
     if (!is.na(profiled_colref)) {
@@ -49,7 +49,7 @@ intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profil
         data_type = data_type, data_year = data_year, popl_var_prefix = popl_var_prefix, 
         feature_nm = attribute_unit)
     profiled_sf <- intersect_lon_lat_sfs(sf_1 = profiled_sf, 
-        sf_2 = attribute_sf, crs_nbr_vec = crs_nbr_vec)
+        sf_2 = attribute_sf, crs_nbr_dbl = crs_nbr_dbl)
     return(profiled_sf)
 }
 #' Intersect sfs update counts
@@ -63,7 +63,7 @@ intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profil
 #' @param group_by_var PARAM_DESCRIPTION
 #' @param age_sex_counts_grouped_by PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
-#' @param crs_nbr_vec PARAM_DESCRIPTION
+#' @param crs_nbr_dbl PARAM_DESCRIPTION
 #' @return Profiled (a simple features object)
 #' @rdname intersect_sfs_update_counts
 #' @export 
@@ -72,7 +72,7 @@ intersect_sfs_keep_counts <- function (profiled_sf, profiled_colref = NA, profil
 #' @importFrom stringi stri_replace_last_regex
 intersect_sfs_update_counts <- function (profiled_sf, profiled_colref = NA, profiled_rowref = NA, 
     sp_data_list, tot_pop_resolution, age_sex_pop_resolution, 
-    group_by_var, age_sex_counts_grouped_by, data_year, crs_nbr_vec) 
+    group_by_var, age_sex_counts_grouped_by, data_year, crs_nbr_dbl) 
 {
     if (!is.null(tot_pop_resolution)) {
         if (age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])) {
@@ -95,7 +95,7 @@ intersect_sfs_update_counts <- function (profiled_sf, profiled_colref = NA, prof
         profiled_colref = profiled_colref, profiled_rowref = profiled_rowref, 
         attribute_sf = sp_data_list[[age_sex_pop_resolution]], 
         attribute_unit = age_sex_pop_resolution, data_type = "age_sex", 
-        data_year = data_year, crs_nbr_vec = crs_nbr_vec)
+        data_year = data_year, crs_nbr_dbl = crs_nbr_dbl)
     if (!is.null(tot_pop_resolution)) {
         if (!age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])) {
             profiled_sf <- intersect_sfs_keep_counts(profiled_sf = profiled_sf, 
