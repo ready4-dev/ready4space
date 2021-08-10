@@ -1,0 +1,8 @@
+add_path_col.ready4_sp_data_pack_lup <- function(x,
+                                                 r_data_dir_chr){
+  x %>%
+    dplyr::mutate(start_from = purrr::map_dbl(source_reference, ~ 2 + stringr::str_locate(.x,":") %>% purrr::pluck(1))) %>%
+    dplyr::mutate(start_from = purrr::map_dbl(start_from, ~ ifelse(is.na(.x),1,.x))) %>%
+    dplyr::mutate(shiny_source = paste0(r_data_dir_chr,"/",stringr::str_sub(source_reference,start=start_from),".rds"))
+
+}
