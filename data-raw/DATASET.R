@@ -1,153 +1,82 @@
-## Script to make classes and save updated prototype table.
-##
-## NOTE: AFTER RUNNING THE BELOW SCRIPT I IMPLEMENTED SOME MANUAL CHANGES TO THE ready4_sp_local* CLASSES TO
-## ALLOW FOR MULTIPLE INHERITENCE. THIS IS A TEMPORARY FIX - ONCE READY4CLASS IS UPDATED TO MANAGE MULTIPLE
-## INHERITENCE, I WILL RERUN SCRIPT AND NO MANUAL EDIT WILL BE REQUIRED.
-##
-## Script to make classes and save updated prototype table.
-## This script creates the data files embedded with this package.
-# 1. Load magrittr package to that the pipe operator ("%>%") can be used in this script.
-library(magrittr)
-#
-# if(!dir.exists("man/figures"))
-#   dir.create("man/figures")
-# 2. Create "fns", "gnrcs" and "mthds" sub-directories.
+library(ready4fun)
+library(ready4use)
+library(ready4show)
+library(youthvars)
+library(scorz)
+library(specific)
 ready4fun::write_fn_type_dirs()
-#
-# 3. MANUAL STEP. Write all your functions to R files in the new "fns" directory.
-#
-# 4. Set-up package structure
-ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Standardised Modeller Tools For Retrieving, Managing and Synthesising Spatial Data In Projects Developed With The Ready4 Suite",
-                            pkg_desc_1L_chr = "ready4space provides a set of classes and methods for spatial data management tasks throughout the ready4 suite of tools for mental health data synthesis and modelling projects.
-  This development version of the ready4space package has been made available as part of the process of testing and documenting the package. The tools contained in this development release automate a number of tasks which MODIFY THE DIRECTORY STRUCTURE OF YOUR LOCAL MACHINE.
-  Therefore you should only trial this software if you feel confident that you understand what it does and have created a sandpit area in which you can safely undertake testing. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
-                            authors_prsn = c(utils::person(
-                              given = "Matthew",family = "Hamilton", email =
-                                "matthew.hamilton@orygen.org.au",role = c("aut",
-                                                                          "cre"),comment = c(ORCID = "0000-0001-7407-9194")
-                            ),
-                            utils::person("Glen", "Wiesner", email = "Glen.Wiesner@vu.edu.au",
-                                          role = c("aut"), comment = c(ORCID = "0000-0002-0071-130X")),
-                            #person("Alexandra", "Parker", email =  "Alex.Parker@vu.edu.au", role = c("rev"), comment = c(ORCID ="0000-0002-2398-6306")),
-                            #person("Cathrine", "Mihalopoulos",email = "cathy.mihalopoulos@deakin.edu.au", role = c("rev"), comment = c(ORCID = "0000-0002-7127-9462")),
-                            #person("Jonathan", "Karnon", email ="Jonathan.Karnon@flinders.edu.au", role = c("rev"), comment =c(ORCID = "0000-0003-3220-2099")),
-                            #person("Petra","Plencnerova", email = "Petra.Plencnerova@vu.edu.au", role =c("rev"), comment = c(ORCID = "0000-0001-9698-9084")),
-                            utils::person("Orygen", role = c("cph", "fnd")),
-                            utils::person("VicHealth",role = c("fnd")),
-                            utils::person("Victoria University", role =c("fnd"))
-                            ),
-                            urls_chr = c("https://ready4-dev.github.io/ready4space/",
-                                         "https://github.com/ready4-dev/ready4space",
-                                         "https://ready4-dev.github.io/ready4/")) %>%
-  ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
-                                 delete_r_dir_cnts_1L_lgl = T,
-                                 copyright_holders_chr = "Orygen",
-                                 check_type_1L_chr = "gh",
-                                 path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",
-                                 github_repo = "ready4-dev/ready4space",
-                                 lifecycle_stage_1L_chr = "experimental",
-                                 badges_lup = ready4fun::badges_lup,
-                                 addl_badges_ls = list(ready4 = "development"))
-##
-## 3. Run scripts to create the MAKE CLASS TABLE object with the metadata about the classes we will be creating.
-object_type_lup <- ready4fun::get_rds_from_dv("object_type_lup")
-source("data-raw/MAKE_CLASSES_S3.R")
-source("data-raw/MAKE_CLASSES_S4.R")
-classes_to_make_tb <- dplyr::bind_rows(s3_classes_to_make_tb, s4_classes_to_make_tb)
-##
-## 3. Merge the two MAKE CLASS TABLE objects and pass the merged object to the method to create the new classes and make an updated PROTOTYPE LOOKUP object.
-# prototype_lup <- dplyr::bind_rows(s3_classes_to_make_tb,
-#                                  s4_classes_to_make_tb)
-name_pfx_1L_chr <- "ready4_"
+# MANUAL STEP. Write all your functions to R files in the new "fns" directory.
+fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
+                                  fns_env = new.env(parent = globalenv()))
+x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes With Ready4",
+                                 pkg_desc_1L_chr = "Tools for developing geospatial models for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
+                            This development version of the ready4space package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
+                            If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
+                                 authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
+                                                  utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
+                                                  utils::person("Orygen", role = c("cph", "fnd")),
+                                                  utils::person("Headspace", role = c( "fnd")),
+                                                  utils::person("National Health and Medical Research Council", role = c( "fnd"))),
+                                 urls_chr = c("https://ready4-dev.github.io/ready4space/",
+                                              "https://github.com/ready4-dev/ready4space",
+                                              "https://ready4-dev.github.io/ready4/")) %>%
+  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("rmarkdown"),
+                                                                       imports_chr = c("knitrBootstrap")),
+                           build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
+                           check_type_1L_chr = "ready4",
+                           copyright_holders_chr = "Orygen",
+                           custom_dmt_ls = ready4fun::make_custom_dmt_ls(),##
+                           dev_pkgs_chr = c("ready4",
+                                            "ready4use"#,"ready4show",
+                                            ),
+                           lifecycle_stage_1L_chr = "experimental",
+                           path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",
+                           piggyback_to_1L_chr = "ready4-dev/ready4",
+                           ready4_type_1L_chr = "modelling"#, zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)"
+                           )
+y <- ready4class::ready4class_constructor() %>%
+  dplyr::bind_rows(
+    ready4class::make_pt_ready4_constructor(make_s3_lgl = FALSE,
+                                              name_stub_chr = "Lookup", # rename to sp_lups #capitalised
+                                              slots_ls = c("sp_abbreviations_lup","sp_import_lup","sp_data_pack_lup","sp_resolution_lup","sp_site_coord_lup","sp_starter_sf_lup","sp_uid_lup") %>% list() %>% list(),
+                                              pt_ls = c("ready4_sp_abbreviations_lup","ready4_sp_import_lup","ready4_sp_data_pack_lup","ready4_sp_resolution_lup","ready4_sp_site_coord_lup","ready4_sp_starter_sf_lup","ready4_sp_uid_lup") %>% list() %>% list(),
+                                              class_desc_chr = "Lookup Tables For Use in Geopspatial Modelling.",
+                                              parent_class_chr = NA_character_),
+    ready4class::make_pt_ready4_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Macro", #capitalised
+                                            class_desc_chr = "Macro level context",
+                                            pt_ls = list(c("character","character","numeric","ready4_lookup","numeric","POSIXt","POSIXt")) %>% list(),
+                                            slots_ls = list(c("global_region","country","country_bound_year","lookup_tb","crs_nbr","temporal_min", "temporal_max")) %>% list(),
+                                            parent_class_chr = NA_character_,
+                                            inc_clss_ls = list("Ready4spaceLookup"))
+    )
 
-pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c(paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr)),
-                                        long_name_chr = c(classes_to_make_tb$class_desc_chr),
-                                        # no_plural_chr = c(),
-                                        #custom_plural_ls = list(utility = "utilities"),
-                                        url_1L_chr = NA_character_,
-                                        seed_lup = map2aqol::abbreviations_lup,
-                                        object_type_lup = object_type_lup) # CHANGE
-utils::data("abbreviations_lup")
-pkg_dss_tb <- classes_to_make_tb %>%
-  ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),
-                                          name_pfx_1L_chr = name_pfx_1L_chr,
-                                          output_dir_1L_chr = "R",
-                                          file_exists_cdn_1L_chr = "overwrite",
-                                          abbreviations_lup = abbreviations_lup,
-                                          init_class_pt_lup = ready4fun::get_rds_from_dv("prototype_lup"),
-                                          object_type_lup = object_type_lup)  %>% # UPDATE TO READY4U WHEN CLASSES ARE ADDED
-  ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
-                              title_1L_chr = "Class prototype lookup table",
-                              desc_1L_chr = "Metadata on classes used in ready4 suite",
-                              abbreviations_lup = abbreviations_lup,
-                              object_type_lup = object_type_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-# 5. Create function types and generics look-up tables
-# 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
-data("fn_type_lup_tb",package = "ready4u")
-# fn_type_lup_tb %>%
-#   ready4fun::write_dmtd_fn_type_lup(url_1L_chr = NA_character_,
-#                                     abbreviations_lup = abbreviations_lup,
-#                                     object_type_lup = object_type_lup,
-#                                     pkg_dss_tb = pkg_dss_tb)
-# data("fn_type_lup_tb")
-# utils::data("fn_type_lup_tb",package = "ready4use")
-pkg_dss_tb <- fn_type_lup_tb %>%
-  ready4fun::add_rows_to_fn_type_lup(fn_type_nm_chr = ready4fun::get_new_fn_types(abbreviations_lup = abbreviations_lup,
-                                                                                  fn_type_lup_tb = fn_type_lup_tb,
-                                                                                  object_type_lup = object_type_lup),
-                                     fn_type_desc_chr = c("Adds a column to a data-frame type object for paths to data.",
-                                                          "Binds rows to data-frame type objects.",
-                                                          "Performs a validity check.",
-                                                          #"Downloads data.",
-                                                          "Generates values for a specified varaible or variables.",
-                                                          "Generates values for a specified parameter or parameter set.",
-                                                          #"Retrieves existing data from an object.",
-                                                          #"Imports data into R.",
-                                                          "Gets the intersection between two or more data objects.",
-                                                          "Creates a data pack object.",
-                                                          "Creates multiple data pack objects.",
-                                                          "Makes a manifest of data to import",
-                                                          "Makes a tibble containing the set intersection between two data objects.",
-                                                          #"Orders a tibble object.",
-                                                          "Changes ordering of an object.",
-                                                          "Modifies the shape of a data object.",
-                                                          "Samples values from specified distributions.",
-                                                          #"Writes a copy of a file in its raw (non-R) format.",
-                                                          "Simplifies an object.",
-                                                          "Subsets and object.",
-                                                          "Unions objects."),
-                                     is_generic_lgl = F,
-                                     is_method_lgl = F) %>% # Add to ready4fun template.
-  dplyr::arrange(fn_type_nm_chr) %>%
-  ready4fun::write_dmtd_fn_type_lup(url_1L_chr = NA_character_,
-                                    abbreviations_lup = abbreviations_lup,
-                                    object_type_lup = object_type_lup,
-                                    pkg_dss_tb = pkg_dss_tb)
-utils::data("fn_type_lup_tb")
-
-#
-# 6. Create a table of all functions to document
-fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(#paths_ls = ready4fun::make_fn_nms(),
-                                              #undocumented_fns_dir_chr = ready4fun::make_undmtd_fns_dir_chr()[1],
-                                              custom_dmt_ls = list(details_ls = NULL,
-                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = NA_character_,
-                                                                                                   force_false_chr = NA_character_),
-                                                                   args_ls_ls = NULL),
-                                              fn_type_lup_tb = fn_type_lup_tb,
-                                              abbreviations_lup = abbreviations_lup,
-                                              object_type_lup = object_type_lup)
-pkg_dss_tb <- fns_dmt_tb %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "fns_dmt_tb",
-                              title_1L_chr = "ready4space function documentation table",
-                              desc_1L_chr = "Meta-data on each ready4space function used to create package documentation",
-                              url_1L_chr = "https://ready4-dev.github.io/ready4space/",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-##
-ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
-                                r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
-                                update_pkgdown_1L_lgl = T,
-                                path_to_dvpr_dmt_dir_1L_chr = "../../../../../Documentation/Code/Developer",
-                                path_to_user_dmt_dir_1L_chr = "../../../../../Documentation/Code/User")
+z <- ready4pack::make_pt_ready4pack_manifest(x,
+                                             constructor_r3 = y#, pkg_ds_ls_ls = datasets_ls
+                                             ) %>%
+  ready4pack::ready4pack_manifest()
+z <- ready4::author(z)
+usethis::use_dev_package("youthvars",
+                         type = "Imports",#D?
+                         remote = "ready4-dev/youthvars")
+usethis::use_dev_package("scorz",
+                         type = "Imports",
+                         remote = "ready4-dev/scorz")
+devtools::build_vignettes()
+# usethis::use_dev_package("specific",
+#                          type = "Imports",
+#                          remote = "ready4-dev/specific")
+# usethis::use_package("readr")
+# MANUAL DELETION OF TRAILING INCLUDE
+# usethis::use_dev_package("ready4",
+#                          type = "Depends",
+#                          remote = "ready4-dev/ready4")
+# usethis::use_dev_package("specific",
+#                          type = "Depends",
+#                          remote = "ready4-dev/scorz")
+# usethis::use_package("rgl")
+# piggyback::pb_new_release("ready4-dev/TTU",
+#                           tag = paste0("v",desc::desc_get_version()),
+#                           body = "Version implemented following significant redevelopment of package dependencies.",
+#                           prerelease = F)
+# devtools::build_vignettes()

@@ -82,9 +82,9 @@ input_data <- list(
   n_its_int = 2,
   uncertainty_int = c(0.025,0.975),
   ## PARAMETER MATRIX
-  env_str_par_tb = ready.sim::add_prev_to_env_str_par_tb(pref_source = ymh.epi.lit::pref_source,
+  env_str_param_tb = ready.sim::add_prev_to_env_str_param_tb(pref_source = ymh.epi.lit::pref_source,
                                                           prev_rates = ymh.epi.lit::prev_rates,
-                                                          env_str_par_tb = ready.aus.prev::par_str_environment_tb,
+                                                          env_str_param_tb = ready.aus.prev::param_str_environment_tb,
                                                           Period = "Year",
                                                           disorder = "Any_Common",
                                                           age_range = c(12,25),

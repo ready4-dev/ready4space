@@ -14,6 +14,6 @@ An S4 class to represent Spatiotemporal environment
 
 \item{\code{env_sf}}{sf}
 
-\item{\code{par_vals}}{tbl_df}
+\item{\code{param_vals}}{tbl_df}
 }}
 

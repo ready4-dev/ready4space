@@ -10,7 +10,7 @@ disorder = "Anxiety"
 sexes = c("Female","Male")
 model_end_y_int = 2023
 n_its_int = 4
-env_str_par_tb = ready.aus.prev::par_str_environment_tb
+env_str_param_tb = ready.aus.prev::param_str_environment_tb
 deterministic = FALSE
 # if(state_territory != "Victoria")
 #   model_end_y_int = 2016
@@ -21,7 +21,7 @@ sim_data <- project_epi_for_area(state_territory = state_territory,
                           age_upper = age_upper,
                           model_end_y_int = model_end_y_int,
                           n_its_int = n_its_int,
-                          env_str_par_tb = env_str_par_tb,
+                          env_str_param_tb = env_str_param_tb,
                           deterministic = deterministic)
 ## 2. Simulate
 # sim_data <- ready.sim::runSimulation(sim_data)
@@ -62,7 +62,7 @@ estimate_prevalence(disorder = disorder,
 #                                          age1 = age_upper(sim_data),
 #                                          at_time = pre_model_date(sim_data),
 #                                          to_time = model_end_date(sim_data),
-#                                          param_tb = par_vals(st_envir(sim_data)),
+#                                          param_tb = param_vals(st_envir(sim_data)),
 #                                          it_nbr = 1,
 #                                          #sp_data_sf = sp_data_sf,
 #                                          ymwd_step_to_bl = NULL,#,
@@ -74,7 +74,7 @@ estimate_prevalence(disorder = disorder,
 #                                                          age1 = age_upper(sim_data),
 #                                                          at_time = pre_model_date(sim_data),
 #                                                          to_time = model_end_date(sim_data),
-#                                                          param_tb = par_vals(st_envir(sim_data)),
+#                                                          param_tb = param_vals(st_envir(sim_data)),
 #                                                          it_nbr = 1,
 #                                                          #sp_data_sf = sp_data_sf,
 #                                                          ymwd_step_to_bl = NULL,#,
@@ -129,7 +129,7 @@ estimate_prevalence(disorder = disorder,
 #                                            age1 = 18,
 #                                            #age_by_year = FALSE,
 #                                            #drop_projs = TRUE,
-#                                            param_tb = test_par_val_master,
+#                                            param_tb = test_param_val_master,
 #                                            it_nbr = 1)
 # ##
 #
@@ -142,7 +142,7 @@ estimate_prevalence(disorder = disorder,
 #                                                            acgr = FALSE,
 #                                                            age_by_year = TRUE,
 #                                                            drop_bands = TRUE,
-#                                                            param_tb = test_par_val_master,
+#                                                            param_tb = test_param_val_master,
 #                                                            it_nbr = 1)
 # ###
 # gen_age_sex_estimates_tx(profiled_sf = vic_merged_attr_by_age_sf,

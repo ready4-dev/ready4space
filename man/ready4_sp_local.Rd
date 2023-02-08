@@ -12,6 +12,6 @@ An S4 class to represent Object defining data to be saved in local directory.
 \describe{
 \item{\code{lup_tbs_r4}}{ready4_lookup}
 
-\item{\code{merge_with_chr_vec}}{character}
+\item{\code{merge_itms_chr}}{character}
 }}
 

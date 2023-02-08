@@ -4,20 +4,20 @@
 ##    None
 ##
 ## 2. Make the ready4_class_make_tb object summarising the metadata about the S3 classes that we wish to create and export with this package.
-s3_classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
+s3_classes_to_make_tb <- ready4class::ready4_constructor() %>%
   dplyr::bind_rows(tibble::tribble(
     ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
-     TRUE, "par_str_envir", list("tibble"), list("is_"), list("tibble"), list(param_name_chr = "character(0)",
+     TRUE, "param_str_envir", list("tibble"), list("is_"), list("tibble"), list(param_name_chr = "character(0)",
                                                                              deter_val = "numeric(0)",
                                                                              distribution = "character(0)",
-                                                                             dstr_par_1 = "numeric(0)",
-                                                                             dstr_par_2 = "numeric(0)",
-                                                                             dstr_par_3 = "numeric(0)",
-                                                                             dstr_par_4 = "numeric(0)",
+                                                                             dstr_param_1 = "numeric(0)",
+                                                                             dstr_param_2 = "numeric(0)",
+                                                                             dstr_param_3 = "numeric(0)",
+                                                                             dstr_param_4 = "numeric(0)",
                                                                              transformation = "character(0)",
                                                                              use_in = "character(0)",
                                                                              source = "character(0)"), NULL, NULL, NULL, "Readyforwhatsnext S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.", NA_character_, NULL, NULL, NULL,
-    TRUE, "par_val_envir", list("tibble"), list("is_"), list("tibble"),list(param_name_chr = "character(0)",
+    TRUE, "param_val_envir", list("tibble"), list("is_"), list("tibble"),list(param_name_chr = "character(0)",
                                                                             v_it_1 = "numeric(0)"), NULL, NULL, NULL, "Readyforwhatsnext S3 class for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL,
     TRUE, "sp_abbreviations_lup", list("tibble"), list("is_"), list("tibble"),list(long_name = "character(0)",
                                                                                    short_name = "character(0)"), NULL, NULL, NULL, "Readyforwhatsnext S3 class for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
@@ -44,7 +44,7 @@ s3_classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
                                                                             year_start = "character(0)",
                                                                             year_end = "character(0)",
                                                                             uid = "character(0)",
-                                                                            add_boundaries = "list()"), NULL, NULL, NULL, "Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4_all_import_lup", NULL, NULL, NULL,
+                                                                            add_boundaries = "list()"), NULL, NULL, NULL, "Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4_imports", NULL, NULL, NULL,
     TRUE, "sp_resolution_lup", list("tibble"), list("is_"), list("tibble"),list(parent_area = "character(0)",
                                                                                 boundary_year = "numeric(0)",
                                                                                 area_type = "character(0)",

@@ -5,13 +5,13 @@ reference:
 - contents:
   - abbreviations_lup
   - class_pt_lup
-  - fn_type_lup_tb
+  - fn_types_lup
   - fns_dmt_tb
   - prototype_lup
 - title: "Classes"
 - contents:
-  - ready4_par_str_envir
-  - ready4_par_val_envir
+  - ready4_param_str_envir
+  - ready4_param_val_envir
   - ready4_sp_abbreviations_lup
   - ready4_sp_data_pack_lup
   - ready4_sp_import_lup

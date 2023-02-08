@@ -29,7 +29,7 @@
 ^data-raw/MAKE_CLASSES_S4\.R$
 ^data-raw/mthds/add_path_col\.R$
 ^data-raw/mthds/download_data\.R$
-^data-raw/mthds/gen_par_vals\.R$
+^data-raw/mthds/gen_param_vals\.R$
 ^data-raw/mthds/get_data\.R$
 ^data-raw/mthds/import_data\.R$
 ^data-raw/mthds/make_data_pack\.R$

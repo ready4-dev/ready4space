@@ -11,7 +11,7 @@ make_pt_ready4_sp_import_lup(
   data_repo_ui = character(0),
   data_repo_db_ui = character(0),
   data_repo_file_ext = character(0),
-  data_repo_save_type = character(0),
+  data_repo_write_type_1L_chr = character(0),
   local_file_src_chr = character(0),
   path_to_make_script_chr = character(0),
   download_url_chr = character(0),
@@ -45,7 +45,7 @@ make_pt_ready4_sp_import_lup(
 
 \item{data_repo_file_ext}{PARAM_DESCRIPTION, Default: character(0)}
 
-\item{data_repo_save_type}{PARAM_DESCRIPTION, Default: character(0)}
+\item{data_repo_write_type_1L_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
 \item{local_file_src_chr}{PARAM_DESCRIPTION, Default: character(0)}
 
