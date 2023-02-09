@@ -5,6 +5,7 @@ library(youthvars)
 library(scorz)
 library(specific)
 ready4fun::write_fn_type_dirs()
+#
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
