@@ -32,6 +32,7 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9109),
     rlang,
+    sf,
     stringr,
     testthat,
     tibble,
