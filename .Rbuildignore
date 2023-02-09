@@ -156,3 +156,8 @@
 ^initial_setup\.R$
 ^doc$
 ^Meta$
+^data-raw/FROMVIGNETTES/exploratory\.R$
+^data-raw/FROMVIGNETTES/modellinginspaceandtime\.Rmd$
+^data-raw/FROMVIGNETTES/prev_sample\.R$
+^data-raw/FROMVIGNETTES/test\.R$
+^data-raw/FROMVIGNETTES/TESTS_R4\.R$

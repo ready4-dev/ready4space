@@ -34,11 +34,6 @@ Useful links:
 \author{
 \strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\href{https://orcid.org/0000-0001-7407-9194}{ORCID})
 
-Authors:
-\itemize{
-  \item Caroline Gao \email{caroline.gao@orygen.org.au} (\href{https://orcid.org/0000-0002-0987-2759}{ORCID})
-}
-
 Other contributors:
 \itemize{
   \item Orygen [copyright holder, funder]

@@ -8,6 +8,7 @@
 [![R-CMD-check](https://github.com/ready4-dev/vicinity/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ready4-dev/vicinity/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/ready4-dev/vicinity/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ready4-dev/vicinity/actions/workflows/test-coverage.yaml)
 [![codecov](https://codecov.io/gh/ready4-dev/vicinity/branch/main/graph/badge.svg)](https://codecov.io/gh/ready4-dev/vicinity)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7623630.svg)](https://doi.org/10.5281/zenodo.7623630)
 <!-- badges: end -->
 
 Tools for developing geospatial models for use with the
