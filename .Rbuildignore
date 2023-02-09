@@ -1,7 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^ready\.Rproj$
-^ready4space\.Rproj$
+^vicinity\.Rproj$
 ^LICENSE\.md$
 ^_pkgdown\.yml$
 ^docs$

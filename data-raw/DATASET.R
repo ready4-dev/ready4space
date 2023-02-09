@@ -11,15 +11,15 @@ fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes With Ready4",
                                  pkg_desc_1L_chr = "Tools for developing geospatial models for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
-                            This development version of the ready4space package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
+                            This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
                             If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
                                  authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
                                                   utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
                                                   utils::person("Orygen", role = c("cph", "fnd")),
                                                   utils::person("Headspace", role = c( "fnd")),
                                                   utils::person("National Health and Medical Research Council", role = c( "fnd"))),
-                                 urls_chr = c("https://ready4-dev.github.io/ready4space/",
-                                              "https://github.com/ready4-dev/ready4space",
+                                 urls_chr = c("https://ready4-dev.github.io/vicinity/",
+                                              "https://github.com/ready4-dev/vicinity",
                                               "https://ready4-dev.github.io/ready4/")) %>%
   ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("rmarkdown"),
                                                                        imports_chr = c("knitrBootstrap")),
@@ -31,7 +31,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes Wi
                                             "ready4use"#,"ready4show",
                                             ),
                            lifecycle_stage_1L_chr = "experimental",
-                           path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",
+                           path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",# UPDATE
                            piggyback_to_1L_chr = "ready4-dev/ready4",
                            ready4_type_1L_chr = "modelling"#, zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)"
                            )
@@ -119,7 +119,7 @@ y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(
     y,
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-                                            name_stub_chr = "env",
+                                            name_stub_chr = "SpaceTime",#"env"
                                             slots_ls = c("data_ls",#""st_data"
                                                          "env_sf",
                                                          "param_vals_tb"#"param_vals

@@ -1,10 +1,24 @@
+url: https://ready4-dev.github.io/vicinity/
+
+template:
+  bootstrap: 5
+  bootswatch: journal
+
+home:
+  links:
+  - text: Manual - User (PDF)
+    href: https://github.com/ready4-dev/vicinity/releases/download/Documentation_0.0/vicinity_User.pdf
+  - text: Manual - Developer (PDF)
+    href: https://github.com/ready4-dev/vicinity/releases/download/Documentation_0.0/vicinity_Developer.pdf
+  - text: Model
+    href:  https://ready4-dev.github.io/ready4/
 development:
   mode: auto
 reference:
 - title: "S3 Classes"
 - contents:
-  - ready4space_parameters
-  - ready4space_values
+  - vicinity_parameters
+  - vicinity_values
 - title: "S4 Classes"
 - contents:
-  - Ready4spaceenv
+  - VicinitySpaceTime

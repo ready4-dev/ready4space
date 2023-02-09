@@ -1,0 +1,20 @@
+---
+title: "vicinity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vicinity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(vicinity)
+```
+This development version of the vicinity package has been made available as part of the process of testing and documenting the package. Currently there are no vignettes available.
