@@ -34,7 +34,28 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_abbreviations.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_identifiers.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_points.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_processed.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_raw.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_resolutions.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_template.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_values.html</loc>
@@ -43,7 +64,28 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/pipe.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_abbreviations.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_identifiers.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_points.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_processed.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_raw.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_resolutions.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_template.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_values.html</loc>
@@ -52,7 +94,28 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity-package.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_abbreviations.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_identifiers.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_points.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_processed.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_raw.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_resolutions.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_template.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_values.html</loc>
