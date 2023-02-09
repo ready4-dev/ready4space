@@ -1,34 +1,21 @@
 Package: ready4space
-Title: Standardised Modeller Tools for Retrieving, Managing and
-    Synthesising Spatial Data in Projects Developed with the Ready4 Suite
-Version: 0.0.0.9208
-Authors@R: 
-    c(person(given = "Matthew",
-             family = "Hamilton",
-             role = c("aut", "cre"),
-             email = "matthew.hamilton@orygen.org.au",
-             comment = c(ORCID = "0000-0001-7407-9194")),
-      person(given = "Glen",
-             family = "Wiesner",
-             role = "aut",
-             email = "Glen.Wiesner@vu.edu.au",
-             comment = c(ORCID = "0000-0002-0071-130X")),
-      person(given = "Orygen",
-             role = c("cph", "fnd")),
-      person(given = "VicHealth",
-             role = "fnd"),
-      person(given = "Victoria University",
-             role = "fnd"))
-Description: ready4space provides a set of classes and
-    methods for spatial data management tasks throughout the ready4 suite
-    of tools for mental health data synthesis and modelling projects.
-    This development version of the ready4space package has been made
-    available as part of the process of testing and documenting the
-    package. The tools contained in this development release automate a
-    number of tasks which MODIFY THE DIRECTORY STRUCTURE OF YOUR LOCAL
-    MACHINE.  Therefore you should only trial this software if you feel
-    confident that you understand what it does and have created a sandpit
-    area in which you can safely undertake testing. If you have any
+Title: Model Spatial Attributes with Ready4
+Version: 0.0.0.9209
+Authors@R: c(
+    person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
+           comment = c(ORCID = "0000-0002-0987-2759")),
+    person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7407-9194")),
+    person("Orygen", role = c("cph", "fnd")),
+    person("Headspace", role = "fnd"),
+    person("National Health and Medical Research Council", role = "fnd")
+  )
+Description: Tools for developing geospatial models for use with the
+    ready4 youth mental health systems model
+    (https://ready4-dev.github.io/ready4/).  This development version of
+    the ready4space package has been made available as part of the process
+    of testing and documenting the package. It is currently highly
+    unstable and is not yet recommended for use.  If you have any
     questions, please contact the authors
     (matthew.hamilton@orygen.org.au).
 License: GPL-3 + file LICENSE
@@ -36,35 +23,24 @@ URL: https://ready4-dev.github.io/ready4space/,
     https://github.com/ready4-dev/ready4space,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
+    dplyr,
+    knitr,
+    knitrBootstrap,
+    lifecycle,
+    magrittr,
+    methods,
+    purrr,
+    ready4 (>= 0.0.0.9109),
+    rlang,
+    stringr,
     testthat,
-    knitr
+    tibble,
+    tidyr
 VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)
-Collate: 
-    'C3_ready4_par_str_envir.R'
-    'C3_ready4_par_val_envir.R'
-    'C3_ready4_sp_abbreviations_lup.R'
-    'C3_ready4_sp_data_pack_lup.R'
-    'C3_ready4_sp_import_lup.R'
-    'C3_ready4_sp_resolution_lup.R'
-    'C3_ready4_sp_site_coord_lup.R'
-    'C3_ready4_sp_starter_sf_lup.R'
-    'C3_ready4_sp_uid_lup.R'
-    'C4_ready4_env.R'
-    'C4_ready4_lookup.R'
-    'C4_ready4_macro.R'
-    'C4_ready4_meso_region.R'
-    'C4_ready4_meso_area.R'
-    'C4_ready4_micro.R'
-    'C4_ready4_profiled_area.R'
-    'C4_ready4_sp_local.R'
-    'C4_ready4_sp_local_proc.R'
-    'C4_ready4_sp_local_raw.R'
-    'imp_mthds.R'
-    'imp_pipe.R'
-    'pkg_ready4space.R'
+Suggests: 
+    rmarkdown
+Remotes: 
+    ready4-dev/ready4
