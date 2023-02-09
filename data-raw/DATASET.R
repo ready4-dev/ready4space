@@ -37,8 +37,6 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes Wi
                            ready4_type_1L_chr = "modelling",
                            zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7623630.svg)](https://doi.org/10.5281/zenodo.7623630)"
                            )
-
-###
 y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(tibble::tribble(
     ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
@@ -120,9 +118,6 @@ y <- ready4class::ready4class_constructor() %>%
                                                                          var_name_chr = "character(0)"# var_name
                                                      ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.", NA_character_, NULL, NULL, NULL
     ))
-
-###
-
 y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(
     y,
@@ -162,40 +157,81 @@ y <- ready4class::ready4class_constructor() %>%
                                                               )) %>% list(),
                                             parent_class_chr = NA_character_,
                                             inc_clss_ls = list("VicinityLookup") %>% list()),#?
-    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-    #                                         name_stub_chr = "MesoRegion", # meso_region
-    #                                         class_desc_chr = "Meso level context - region",
-    #                                         pt_ls = list(c("character","character","numeric")) %>% list(),
-    #                                         slots_ls = list(c("region_type","region","region_bound_year")) %>% list(),
-    #                                         parent_class_chr = "ready4_macro"),
-    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-    #                                         name_stub_chr = "MesoArea",# meso_area
-    #                                         class_desc_chr = "Meso level context - area",
-    #                                         pt_ls = list(c("character","character","numeric")) %>% list(),
-    #                                         slots_ls = list(c("area_type","area","area_bound_year")) %>% list(),
-    #                                         parent_class_chr = "ready4_meso_region"),
-    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-    #                                         name_stub_chr = "Micro",# micro
-    #                                         class_desc_chr = "Micro level context",
-    #                                         pt_ls = list(c("numeric","numeric","character")) %>% list(),
-    #                                         slots_ls = list(c("geom_dist_km_cuts","travel_time_mins_cuts", "travel_mode")) %>% list(),
-    #                                         parent_class_chr  = "ready4_meso_area"),
-    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-    #                                         name_stub_chr = "Profile",# profiled_area
-    #                                         class_desc_chr = "Information to create a profiled area object",
-    #                                         pt_ls = list(c("character","logical", "numeric", "numeric", "numeric", "character","POSIXt")) %>% list(),
-    #                                         slots_ls = list(c("features","use_coord_lup","geom_dist_limit_km", "drive_time_limit_mins", "nbr_bands", "data_year","data_ymds")) %>% list(),
-    #                                         parent_class_chr = "ready4_micro"),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "MesoRegion", # meso_region
+                                            class_desc_chr = "Meso level context - region",
+                                            pt_ls = list(c("character","character","numeric")) %>% list(),
+                                            slots_ls = list(c("region_type_chr",#"region_type"
+                                                              "region_chr",#"region"
+                                                              "region_bndy_yr_dbl"#""region_bound_year"
+                                                              )) %>% list(),
+                                            parent_class_chr = "VicinityMacro"), #"ready4_macro"
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "MesoArea",# meso_area
+                                            class_desc_chr = "Meso level context - area", #
+                                            pt_ls = list(c("character","character","numeric")) %>% list(),
+                                            slots_ls = list(c("area_type_chr",# area_type
+                                                              "area_chr",# area
+                                                              "area_bndy_yr_dbl"# area_bound_year
+                                                              )) %>% list(),
+                                            parent_class_chr = "VicinityMesoRegion"),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Micro",# micro
+                                            class_desc_chr = "Micro level context",
+                                            pt_ls = list(c("numeric","numeric","character")) %>% list(),
+                                            slots_ls = list(c("geom_dist_km_cuts_dbl",# geom_dist_km_cuts
+                                                              "travel_time_mins_cuts_dbl", # travel_time_mins_cuts
+                                                              "travel_mode_chr" # travel_mode
+                                                              )) %>% list(),
+                                            parent_class_chr  = "VicinityMesoArea"),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Profile",# profiled_area
+                                            class_desc_chr = "Information to create a profiled area object",
+                                            pt_ls = list(c("character","logical", "numeric", "numeric", "numeric", "character","POSIXt")) %>% list(),
+                                            slots_ls = list(c("features_chr",# features
+                                                              "use_coord_lup_lgl",# use_coord_lup
+                                                              "geom_dist_limit_km_dbl", # geom_dist_limit_km
+                                                              "drive_time_limit_mins_dbl", # drive_time_limit_mins
+                                                              "nbr_bands_dbl", # nbr_bands
+                                                              "data_year_chr",# data_yea
+                                                              "data_ymds_dtm" # data_ymd
+                                                              )) %>% list(),
+                                            parent_class_chr = "VicinityMicro"),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "SpaceTime",#"env"
                                             slots_ls = c("data_ls",#""st_data"
-                                                         "env_sf",
+                                                         "env_sf", #
                                                          "param_vals_tb"#"param_vals
                                                          ) %>% list() %>% list(),
                                             pt_ls = c("list","sf","tbl_df") %>% list() %>% list(),
                                             class_desc_chr = "Spatiotemporal environment",
-                                            parent_class_chr = NA_character_)
-
+                                            parent_class_chr = NA_character_),
+    # %>%
+      ##
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Local",# sp_local
+                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"ready4_lookup" #
+                                                      ) %>% list() %>% list(),
+                                            class_desc_chr = "Object defining data to be saved in local directory.",
+                                            parent_class_chr = "Ready4useFiles",
+                                            inc_clss_ls = list("VicinityLookup") %>% list()),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "LocalpRaw",#"spRaw"
+                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"ready4_lookup"
+                                                      ) %>% list() %>% list(),
+                                            class_desc_chr = "Object defining data to be saved in local directory in a raw (unprocessed) format.",
+                                            parent_class_chr = "Ready4useRaw",
+                                            inc_clss_ls = list("VicinityLookup") %>% list()),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "LocalProcessed", #spProcessed
+                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"ready4_lookup"
+                                                      ) %>% list() %>% list(),
+                                            class_desc_chr = "Object defining data to be saved in local directory in a processed (R) format.",
+                                            parent_class_chr = "Ready4useProcessed",
+                                            inc_clss_ls = list("VicinityLookup") %>% list())
     )
 
 z <- ready4pack::make_pt_ready4pack_manifest(x,

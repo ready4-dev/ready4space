@@ -30,4 +30,11 @@ reference:
 - contents:
   - VicinityLookup
   - VicinityMacro
+  - VicinityMesoRegion
+  - VicinityMesoArea
+  - VicinityMicro
+  - VicinityProfile
   - VicinitySpaceTime
+  - VicinityLocal
+  - VicinityLocalpRaw
+  - VicinityLocalProcessed
