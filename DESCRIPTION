@@ -1,6 +1,6 @@
 Package: vicinity
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9218
+Version: 0.0.0.9219
 Authors@R: c(
     person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7407-9194")),
@@ -32,12 +32,29 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9109),
     rlang,
-    sf,
     stringr,
     testthat,
     tibble,
     tidyr
 VignetteBuilder: knitr
+Collate: 
+    'C3_vicinity_abbreviations.R'
+    'C3_vicinity_identifiers.R'
+    'C3_vicinity_parameters.R'
+    'C3_vicinity_points.R'
+    'C3_vicinity_processed.R'
+    'C3_vicinity_raw.R'
+    'C3_vicinity_resolutions.R'
+    'C3_vicinity_template.R'
+    'C3_vicinity_values.R'
+    'C4_VicinityLookup.R'
+    'C4_VicinityMacro.R'
+    'C4_VicinitySpaceTime.R'
+    'fn_add.R'
+    'imp_fns.R'
+    'imp_mthds.R'
+    'pkg_vicinity.R'
+    'vicinity-package.R'
 Suggests: 
     rmarkdown
 Remotes: 
