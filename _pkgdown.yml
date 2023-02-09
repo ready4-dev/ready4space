@@ -29,4 +29,5 @@ reference:
 - title: "S4 Classes"
 - contents:
   - VicinityLookup
+  - VicinityMacro
   - VicinitySpaceTime

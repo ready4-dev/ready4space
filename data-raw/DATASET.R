@@ -146,22 +146,22 @@ y <- ready4class::ready4class_constructor() %>%
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Look up tables for spatiotemporal data",
                                             parent_class_chr = NA_character_),
-    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-    #                                         name_stub_chr = "Macro", # macro
-    #                                         class_desc_chr = "Macro level context",
-    #                                         pt_ls = list(c("character","character","numeric",
-    #                                                        "VicinityLookup",#ready4_lookup
-    #                                                        "numeric","POSIXt","POSIXt")) %>% list(),
-    #                                         slots_ls = list(c("global_region_chr",#global_region
-    #                                                           "country_chr",#country
-    #                                                           "country_bndy_yr_chr",#country_bound_year
-    #                                                           "lookup_r3",#lookup_tb
-    #                                                           "crs_dbl",#crs_nbr
-    #                                                           "temporal_min_dtm",# temporal_min
-    #                                                           "temporal_max_dtm"# temporal_max
-    #                                                           )) %>% list(),
-    #                                         parent_class_chr = NA_character_,
-    #                                         inc_clss_ls = list("VicinityLookup")),#?
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Macro", # macro
+                                            class_desc_chr = "Macro level context",
+                                            pt_ls = list(c("character","character","numeric",
+                                                           "VicinityLookup",#ready4_lookup
+                                                           "numeric","POSIXt","POSIXt")) %>% list(),
+                                            slots_ls = list(c("global_region_chr",#global_region
+                                                              "country_chr",#country
+                                                              "country_bndy_yr_dbl",#country_bound_year
+                                                              "lookup_r3",#lookup_tb
+                                                              "crs_dbl",#crs_nbr
+                                                              "temporal_min_dtm",# temporal_min
+                                                              "temporal_max_dtm"# temporal_max
+                                                              )) %>% list(),
+                                            parent_class_chr = NA_character_,
+                                            inc_clss_ls = list("VicinityLookup") %>% list()),#?
     # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
     #                                         name_stub_chr = "MesoRegion", # meso_region
     #                                         class_desc_chr = "Meso level context - region",
