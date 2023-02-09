@@ -1,6 +1,6 @@
 Package: ready4space
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9209
+Version: 0.0.0.9210
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -13,14 +13,13 @@ Authors@R: c(
 Description: Tools for developing geospatial models for use with the
     ready4 youth mental health systems model
     (https://ready4-dev.github.io/ready4/).  This development version of
-    the ready4space package has been made available as part of the process
-    of testing and documenting the package. It is currently highly
-    unstable and is not yet recommended for use.  If you have any
-    questions, please contact the authors
-    (matthew.hamilton@orygen.org.au).
+    the vicinity package has been made available as part of the process of
+    testing and documenting the package. It is currently highly unstable
+    and is not yet recommended for use.  If you have any questions, please
+    contact the authors (matthew.hamilton@orygen.org.au).
 License: GPL-3 + file LICENSE
-URL: https://ready4-dev.github.io/ready4space/,
-    https://github.com/ready4-dev/ready4space,
+URL: https://ready4-dev.github.io/vicinity/,
+    https://github.com/ready4-dev/vicinity,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
