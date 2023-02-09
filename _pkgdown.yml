@@ -19,6 +19,13 @@ reference:
 - contents:
   - vicinity_parameters
   - vicinity_values
+  - vicinity_abbreviations
+  - vicinity_processed
+  - vicinity_raw
+  - vicinity_resolutions
+  - vicinity_points
+  - vicinity_template
+  - vicinity_identifiers
 - title: "S4 Classes"
 - contents:
   - VicinitySpaceTime

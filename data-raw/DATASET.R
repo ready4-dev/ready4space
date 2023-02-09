@@ -4,6 +4,7 @@ library(ready4show)
 library(youthvars)
 library(scorz)
 library(specific)
+library(sf)
 ready4fun::write_fn_type_dirs()
 #
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
@@ -56,62 +57,68 @@ y <- ready4class::ready4class_constructor() %>%
     TRUE, "values",#"param_val_envir"
     list("tibble"), list("is_"), list("tibble"),list(param_name_chr = "character(0)",
                                                      iteration_1_dbl = "numeric(0)"), #v_it_1
-    NULL, NULL, NULL, "ready4 S3 class for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL#,
-    # TRUE, "abbreviations",#"sp_abbreviations_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(long_name = "character(0)",
-    #                                                                                short_name = "character(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
-    # TRUE, "processed",#"sp_data_pack_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(name = "character(0)",
-    #                                                                            country = "character(0)",
-    #                                                                            area_type = "character(0)",
-    #                                                                            area_bound_yr = "character(0)",
-    #                                                                            region = "character(0)",
-    #                                                                            data_type = "character(0)",
-    #                                                                            main_feature = "character(0)",
-    #                                                                            year = "character(0)",
-    #                                                                            year_start = "character(0)",
-    #                                                                            year_end = "character(0)",
-    #                                                                            source_reference = "character(0)",
-    #                                                                            additional_detail = "character(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).", NA_character_, NULL, NULL, NULL,
-    # TRUE, "raw", #"sp_import_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(name = "character(0)",
-    #                                                                         country = "character(0)",
-    #                                                                         area_type = "character(0)",
-    #                                                                         area_bound_yr = "character(0)",
-    #                                                                         region = "character(0)",
-    #                                                                         data_type = "character(0)",
-    #                                                                         main_feature = "character(0)",
-    #                                                                         year = "character(0)",
-    #                                                                         year_start = "character(0)",
-    #                                                                         year_end = "character(0)",
-    #                                                                         uid = "character(0)",
-    #                                                                         add_boundaries = "list()"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4_imports", NULL, NULL, NULL,
-    # TRUE, "resolutions",#"sp_resolution_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(parent_area = "character(0)",
-    #                                                                             boundary_year = "numeric(0)",
-    #                                                                             area_type = "character(0)",
-    #                                                                             area_count = "numeric(0)",
-    #                                                                             complete = "logical(0)",
-    #                                                                             summed_area = "numeric(0)",
-    #                                                                             mean_size = "numeric(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.", NA_character_, NULL, NULL, NULL,
-    # TRUE, "points",#"sp_site_coord_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(service_type = "character(0)",
-    #                                                                             cluster_name = "character(0)",
-    #                                                                             service_name = "character(0)",
-    #                                                                             lat = "numeric(0)",
-    #                                                                             long = "numeric(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.", NA_character_, NULL, NULL, NULL,
-    # TRUE, "template",#"sp_starter_sf_lup"
-    # list("tibble"), list("is_"),
-    # list("tibble"),list(country = "character(0)",
-    #                                                                             area_type = "character(0)",
-    #                                                                             area_bound_yr = "character(0)",
-    #                                                                             starter_sf = "character(0)",
-    #                                                                             subdivision_chr = #sf_main_sub_div =
-    #                       "character(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.", NA_character_, NULL, NULL, NULL,
-    # TRUE, "identifiers",#"sp_uid_lup"
-    # list("tibble"), list("is_"), list("tibble"),list(spatial_unit = "character(0)",
-    #                                                                      year = "character(0)",
-    #                                                                      var_name = "character(0)"), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.", NA_character_, NULL, NULL, NULL
+    NULL, NULL, NULL, "ready4 S3 class for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL,
+    TRUE, "abbreviations",#"sp_abbreviations_lup"
+    list("tibble"), list("is_"), list("tibble"),list(long_name_chr = "character(0)",#long_name
+                                                     short_name_chr = "character(0)"#short_name
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
+    TRUE, "processed",#"sp_data_pack_lup"
+    list("tibble"), list("is_"), list("tibble"),list(name_chr = "character(0)",#name
+                                                                               country_chr = "character(0)",#country
+                                                                               area_type_chr = "character(0)",#area_type
+                                                                               area_bndy_yr_chr = "character(0)",# area_bound_yr
+                                                                               region_chr = "character(0)",#region
+                                                                               data_type_chr = "character(0)",#data_type
+                                                                               main_feature_chr = "character(0)",#main_feature
+                                                                               year_chr = "character(0)",#year
+                                                                               year_start_chr = "character(0)",#year_start
+                                                                               year_end_chr = "character(0)",#year_end
+                                                                               source_reference_chr = "character(0)",#
+                                                                               additional_detail_chr = "character(0)"#
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).", NA_character_, NULL, NULL, NULL,
+    TRUE, "raw", #"sp_import_lup"
+    list("tibble"), list("is_"), list("tibble"),list(name = "character(0)",#name
+                                                                            country_chr = "character(0)",#country
+                                                                            area_type_chr = "character(0)",#area_type
+                                                                            area_bndy_yr_chr = "character(0)",#area_bound_yr
+                                                                            region_chr = "character(0)",#region
+                                                                            data_type_chr = "character(0)",#data_type
+                                                                            main_feature_chr = "character(0)",#main_feature
+                                                                            year_chr = "character(0)",#year
+                                                                            year_start_chr = "character(0)",#year_start
+                                                                            year_end_chr = "character(0)",#year_end
+                                                                            uid_chr = "character(0)",#
+                                                                            add_boundaries_chr = "list()"#
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4use_imports", NULL, NULL, NULL,
+    TRUE, "resolutions",#"sp_resolution_lup"
+    list("tibble"), list("is_"), list("tibble"),list(parent_area_chr = "character(0)",# parent_area
+                                                                                boundary_year_dbl = "numeric(0)",# boundary_year
+                                                                                area_type_chr = "character(0)",# area_type
+                                                                                area_count_chr_dbl = "numeric(0)",# area_count
+                                                                                complete_lgl = "logical(0)",# complete
+                                                                                summed_area_dbl = "numeric(0)",# summed_area
+                                                                                mean_size_dbl = "numeric(0)"# mean_size
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.", NA_character_, NULL, NULL, NULL,
+    TRUE, "points",#"sp_site_coord_lup"
+    list("tibble"), list("is_"), list("tibble"),list(service_type_chr = "character(0)",# service_type
+                                                                                cluster_name_chr = "character(0)",# cluster_name
+                                                                                service_name_chr = "character(0)",# service_name
+                                                                                lat_dbl = "numeric(0)",# lat
+                                                                                lng_dbl = "numeric(0)"# long
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.", NA_character_, NULL, NULL, NULL,
+    TRUE, "template",#"sp_starter_sf_lup"
+    list("tibble"), list("is_"),
+    list("tibble"),list(country_chr = "character(0)",#country
+                        area_type_chr = "character(0)",# area_type
+                        area_bndy_yr_chr = "character(0)",#area_bound_yr
+                        starter_sf = "character(0)",#starter_sf
+                        subdivision_chr = "character(0)"#sf_main_sub_div =
+                        ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.", NA_character_, NULL, NULL, NULL,
+    TRUE, "identifiers",#"sp_uid_lup"
+    list("tibble"), list("is_"), list("tibble"),list(spatial_unit_chr = "character(0)",#spatial_unit
+                                                                         year_chr = "character(0)",#year
+                                                                         var_name_chr = "character(0)"# var_name
+                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.", NA_character_, NULL, NULL, NULL
     ))
 
 ###
@@ -136,6 +143,10 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              ) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
+usethis::use_package("sf")
+ready4::write_extra_pkgs_to_actions()
+ready4::write_citation_cff(packageDescription("vicinity"),
+                           citation_chr = readLines("inst/CITATION"))
 # usethis::use_dev_package("youthvars",
 #                          type = "Imports",#D?
 #                          remote = "ready4-dev/youthvars")
