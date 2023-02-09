@@ -1,6 +1,6 @@
 Package: vicinity
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9219
+Version: 0.0.0.9220
 Authors@R: c(
     person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7407-9194")),
@@ -32,7 +32,6 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9109),
     rlang,
-    sf,
     stringr,
     testthat,
     tibble,
@@ -50,6 +49,10 @@ Collate:
     'C3_vicinity_values.R'
     'C4_VicinityLookup.R'
     'C4_VicinityMacro.R'
+    'C4_VicinityMesoRegion.R'
+    'C4_VicinityMesoArea.R'
+    'C4_VicinityMicro.R'
+    'C4_VicinityProfile.R'
     'C4_VicinitySpaceTime.R'
     'fn_add.R'
     'imp_fns.R'
