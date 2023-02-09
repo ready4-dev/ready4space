@@ -127,6 +127,66 @@ y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(
     y,
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                            name_stub_chr = "Lookup", # lookup
+                                            slots_ls = c("vicinity_abbreviations_r3",#"sp_abbreviations_lup",
+                                                         "vicinity_raw_r3",#"sp_import_lup",
+                                                         "vicinity_processed_r3",#"sp_data_pack_lup",
+                                                         "vicinity_resolutions_r3",#""sp_resolution_lup",
+                                                         "vicinity_points_r3",#""sp_site_coord_lup",
+                                                         "vicinity_template_r3",#"sp_starter_sf_lup",
+                                                         "vicinity_identifiers_r3"#"sp_uid_lup"
+                                                         ) %>% list() %>% list(),
+                                            pt_ls = c("vicinity_abbreviations",#"ready4_sp_abbreviations_lup",
+                                                      "vicinity_raw",#"ready4_sp_import_lup",
+                                                      "vicinity_processed",#"ready4_sp_data_pack_lup",
+                                                      "vicinity_resolutions",#"ready4_sp_resolution_lup",
+                                                      "vicinity_points",#"ready4_sp_site_coord_lup",
+                                                      "vicinity_template",#"ready4_sp_starter_sf_lup",
+                                                      "vicinity_identifiers"#"ready4_sp_uid_lup"
+                                                      ) %>% list() %>% list(),
+                                            class_desc_chr = "Look up tables for spatiotemporal data",
+                                            parent_class_chr = NA_character_),
+    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+    #                                         name_stub_chr = "Macro", # macro
+    #                                         class_desc_chr = "Macro level context",
+    #                                         pt_ls = list(c("character","character","numeric",
+    #                                                        "VicinityLookup",#ready4_lookup
+    #                                                        "numeric","POSIXt","POSIXt")) %>% list(),
+    #                                         slots_ls = list(c("global_region_chr",#global_region
+    #                                                           "country_chr",#country
+    #                                                           "country_bndy_yr_chr",#country_bound_year
+    #                                                           "lookup_r3",#lookup_tb
+    #                                                           "crs_dbl",#crs_nbr
+    #                                                           "temporal_min_dtm",# temporal_min
+    #                                                           "temporal_max_dtm"# temporal_max
+    #                                                           )) %>% list(),
+    #                                         parent_class_chr = NA_character_,
+    #                                         inc_clss_ls = list("VicinityLookup")),#?
+    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+    #                                         name_stub_chr = "MesoRegion", # meso_region
+    #                                         class_desc_chr = "Meso level context - region",
+    #                                         pt_ls = list(c("character","character","numeric")) %>% list(),
+    #                                         slots_ls = list(c("region_type","region","region_bound_year")) %>% list(),
+    #                                         parent_class_chr = "ready4_macro"),
+    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+    #                                         name_stub_chr = "MesoArea",# meso_area
+    #                                         class_desc_chr = "Meso level context - area",
+    #                                         pt_ls = list(c("character","character","numeric")) %>% list(),
+    #                                         slots_ls = list(c("area_type","area","area_bound_year")) %>% list(),
+    #                                         parent_class_chr = "ready4_meso_region"),
+    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+    #                                         name_stub_chr = "Micro",# micro
+    #                                         class_desc_chr = "Micro level context",
+    #                                         pt_ls = list(c("numeric","numeric","character")) %>% list(),
+    #                                         slots_ls = list(c("geom_dist_km_cuts","travel_time_mins_cuts", "travel_mode")) %>% list(),
+    #                                         parent_class_chr  = "ready4_meso_area"),
+    # ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+    #                                         name_stub_chr = "Profile",# profiled_area
+    #                                         class_desc_chr = "Information to create a profiled area object",
+    #                                         pt_ls = list(c("character","logical", "numeric", "numeric", "numeric", "character","POSIXt")) %>% list(),
+    #                                         slots_ls = list(c("features","use_coord_lup","geom_dist_limit_km", "drive_time_limit_mins", "nbr_bands", "data_year","data_ymds")) %>% list(),
+    #                                         parent_class_chr = "ready4_micro"),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "SpaceTime",#"env"
                                             slots_ls = c("data_ls",#""st_data"
                                                          "env_sf",
