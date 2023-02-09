@@ -22,10 +22,31 @@
     <loc>https://ready4-dev.github.io/vicinity/index.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityLocal-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityLocalProcessed-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityLocalpRaw-class.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/VicinityLookup-class.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/VicinityMacro-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityMesoArea-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityMesoRegion-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityMicro-class.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityProfile-class.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/VicinitySpaceTime-class.html</loc>
