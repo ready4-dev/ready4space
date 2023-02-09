@@ -1,6 +1,6 @@
 Package: vicinity
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9213
+Version: 0.0.0.9214
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
