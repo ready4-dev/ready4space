@@ -1,27 +1,25 @@
-# ready4space <img src="man/figures/fav120.png" align="right" />
+# ready4space
 
-## Standardised Modeller Tools for Retrieving, Managing and Synthesising Spatial Data in Projects Developed with the Ready4 Suite
+## Model Spatial Attributes with Ready4
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/ready4-dev/ready4space/workflows/R-CMD-check/badge.svg)](https://github.com/ready4-dev/ready4space/actions)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![ready4](https://img.shields.io/badge/ready4-development-maroon?style=flat&labelColor=black&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABdUlEQVQ4T42TO0gDQRCGv3tsLqawEwtBsbOws7ExIIrYi02sLATBUkFQrG1E8IEPUOwsLMS0Wola2AiawkcZLG2SQnNe7kY2dyHhzEW32WLm//af2RmjVEBwwXyBYABwaHuMIiAgfWGaUXpE0jkwnyEYBHc9WW8+gbMWAtwN8Mc14A7JjEQiIwxIggs7D/ZVmFvNwfeyBhQQtQv2KVRnwFtoOLBPwB8D6Y3sFsFZAqMMlX2Q/gigwzVAriFWO6COQLqhou8IojOsU/Cj3JqDOEBtgzpuwOKQtoD6y/FWNkMSAdIJzmryLwR9UDkH6yyphGlwFsG6/g2RNLhbEAz/1QPvN6RZ/K8m0gSJi1sCrEtQB+DNgz8R2fcgtQLVqdB27ZQhtQnmG3hz4I/qObhHMlnQr6Lg8xZIt26k2gN12Jjar7wGPCAdk2B8gHSBN6s3pDXAfAX7Ig4oIMY7WDfgZ0F62iyjgHUFeqmCoXoJ0SS2X+Lk6A8CAbAFEGOxOgAAAABJRU5ErkJggg==)](https://ready4-dev.github.io/ready4/index.html)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![ready4](https://img.shields.io/badge/ready4-modelling-indigo?style=flat&labelColor=black&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7OHOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAIXRFWHRDcmVhdGlvbiBUaW1lADIwMjI6MDM6MDcgMTY6MTM6NTPZeG5UAAABa0lEQVQ4T4WT607CQBCFpyUi3qIR0eAfNfCi/vENfEgENIAIlcJ6vr1oLaZOerJzdst0zpklc49nznqHZs6ZfWwDem1xM1sqXwtXkb8rL4SuOLEoLXPPXWfD01Dg9dPsrTQbngQ+EZ+LDyIfiy/FHyIfFZbbTslWKOOqxx/uWBPSfp07FahGlqlNfWGqL9HNfBO+CAfwdO55WS8g4MFML834sfJVA9e7vwsg50aGohncdmRojV9XeL+jArRNmZxVSJ4Acj3NHqARdyeFJqC2KJiCfKE9zsfxnNYTl5TcCtmNMcwY/ZXf+3wdzzVza2vj4iCaq3d1R/bvwVSH6IPjNIUHx0FSNZA7WquDqOVb35+eiO8h7Oe+vRfp0a3yGtFMDuiAIg2R20YaVwJ3Hj+4kehO/J/I7VJ/jHtpvBP6mrHnR4EzdyQ0xI8HhM8jUiChxVpDK3iVuadzx43yRdI4E2d0gNtX74TCs419AR8YEST/cHPBAAAAAElFTkSuQmCC)](https://www.ready4-dev.com/toolkits/)
+[![R-CMD-check](https://github.com/ready4-dev/ready4space/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ready4-dev/ready4space/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/ready4-dev/ready4space/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ready4-dev/ready4space/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/gh/ready4-dev/ready4space/branch/main/graph/badge.svg)](https://codecov.io/gh/ready4-dev/ready4space)
 <!-- badges: end -->
 
-ready4space provides a set of classes and
-methods for spatial data management tasks throughout the ready4 suite
-of tools for mental health data synthesis and modelling projects.
-This development version of the ready4space package has been made
-available as part of the process of testing and documenting the
-package. The tools contained in this development release automate a
-number of tasks which MODIFY THE DIRECTORY STRUCTURE OF YOUR LOCAL
-MACHINE.  Therefore you should only trial this software if you feel
-confident that you understand what it does and have created a sandpit
-area in which you can safely undertake testing. If you have any
+Tools for developing geospatial models for use with the
+ready4 youth mental health systems model
+(https://ready4-dev.github.io/ready4/).  This development version of
+the ready4space package has been made available as part of the process
+of testing and documenting the package. It is currently highly
+unstable and is not yet recommended for use.  If you have any
 questions, please contact the authors
 (matthew.hamilton@orygen.org.au).
 
-If you plan on testing this software you can install it by running the following commands in your R console:
+To install a development version of this software, run the following commands in your R console:
 
 ```r
 utils::install.packages("devtools")

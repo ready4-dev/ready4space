@@ -1,40 +1,10 @@
 development:
   mode: auto
 reference:
-- title: "Datasets"
+- title: "S3 Classes"
 - contents:
-  - abbreviations_lup
-  - class_pt_lup
-  - fn_types_lup
-  - fns_dmt_tb
-  - prototype_lup
-- title: "Classes"
+  - ready4space_parameters
+  - ready4space_values
+- title: "S4 Classes"
 - contents:
-  - ready4_param_str_envir
-  - ready4_param_val_envir
-  - ready4_sp_abbreviations_lup
-  - ready4_sp_data_pack_lup
-  - ready4_sp_import_lup
-  - ready4_sp_resolution_lup
-  - ready4_sp_site_coord_lup
-  - ready4_sp_starter_sf_lup
-  - ready4_sp_uid_lup
-  - ready4_lookup
-  - ready4_macro
-  - ready4_meso_region
-  - ready4_meso_area
-  - ready4_micro
-  - ready4_profiled_area
-  - ready4_env
-  - ready4_sp_local
-  - ready4_sp_local_raw
-  - ready4_sp_local_proc
-- title: "Methods"
-- contents:
-  - download_data.ready4_sp_import_lup
-  - get_data.ready4_sp_abbreviations_lup
-  - get_data.ready4_sp_data_pack_lup
-  - get_data.ready4_sp_uid_lup
-  - import_data.ready4_sp_import_lup
-  - order_tb.ready4_sp_import_lup
-  - save_raw.ready4_sp_import_lup
+  - Ready4spaceenv
