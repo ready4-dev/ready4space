@@ -7,12 +7,12 @@
 
 methods::setGeneric("data_ymds", function(x) standardGeneric("data_ymds"))
 #' data_ymds
-#' @name data_ymds-ready4_profiled_area
-#' @description Get the value of the slot data_ymds for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name data_ymds-VicinityProfile
+#' @description Get the value of the slot data_ymds for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname data_ymds-methods
-#' @aliases data_ymds,ready4_profiled_area-method
-methods::setMethod("data_ymds", methods::className("ready4_profiled_area"), function (x) 
+#' @aliases data_ymds,VicinityProfile-method
+methods::setMethod("data_ymds", methods::className("VicinityProfile"), function (x) 
 {
     x@data_ymds
 })
@@ -26,12 +26,12 @@ methods::setMethod("data_ymds", methods::className("ready4_profiled_area"), func
 
 methods::setGeneric("data_ymds<-", function(x, value) standardGeneric("data_ymds<-"))
 #' data_ymds<-
-#' @name data_ymds<--ready4_profiled_area
-#' @description Set the value of the slot data_ymds for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name data_ymds<--VicinityProfile
+#' @description Set the value of the slot data_ymds for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname data_ymds_set-methods
-#' @aliases data_ymds<-,ready4_profiled_area-method
-methods::setMethod("data_ymds<-", methods::className("ready4_profiled_area"), function (x, value) 
+#' @aliases data_ymds<-,VicinityProfile-method
+methods::setMethod("data_ymds<-", methods::className("VicinityProfile"), function (x, value) 
 {
     x@data_ymds <- value
     methods::validObject(x)

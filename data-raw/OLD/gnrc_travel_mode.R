@@ -7,12 +7,12 @@
 
 methods::setGeneric("travel_mode", function(x) standardGeneric("travel_mode"))
 #' travel_mode
-#' @name travel_mode-ready4_micro
-#' @description Get the value of the slot travel_mode for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name travel_mode-VicinityMicro
+#' @description Get the value of the slot travel_mode for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname travel_mode-methods
-#' @aliases travel_mode,ready4_micro-method
-methods::setMethod("travel_mode", methods::className("ready4_micro"), function (x) 
+#' @aliases travel_mode,VicinityMicro-method
+methods::setMethod("travel_mode", methods::className("VicinityMicro"), function (x) 
 {
     x@travel_mode
 })
@@ -26,12 +26,12 @@ methods::setMethod("travel_mode", methods::className("ready4_micro"), function (
 
 methods::setGeneric("travel_mode<-", function(x, value) standardGeneric("travel_mode<-"))
 #' travel_mode<-
-#' @name travel_mode<--ready4_micro
-#' @description Set the value of the slot travel_mode for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name travel_mode<--VicinityMicro
+#' @description Set the value of the slot travel_mode for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname travel_mode_set-methods
-#' @aliases travel_mode<-,ready4_micro-method
-methods::setMethod("travel_mode<-", methods::className("ready4_micro"), function (x, value) 
+#' @aliases travel_mode<-,VicinityMicro-method
+methods::setMethod("travel_mode<-", methods::className("VicinityMicro"), function (x, value) 
 {
     x@travel_mode <- value
     methods::validObject(x)

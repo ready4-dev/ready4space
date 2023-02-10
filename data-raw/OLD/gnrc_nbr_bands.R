@@ -7,12 +7,12 @@
 
 methods::setGeneric("nbr_bands", function(x) standardGeneric("nbr_bands"))
 #' nbr_bands
-#' @name nbr_bands-ready4_profiled_area
-#' @description Get the value of the slot nbr_bands for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name nbr_bands-VicinityProfile
+#' @description Get the value of the slot nbr_bands for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname nbr_bands-methods
-#' @aliases nbr_bands,ready4_profiled_area-method
-methods::setMethod("nbr_bands", methods::className("ready4_profiled_area"), function (x) 
+#' @aliases nbr_bands,VicinityProfile-method
+methods::setMethod("nbr_bands", methods::className("VicinityProfile"), function (x) 
 {
     x@nbr_bands
 })
@@ -26,12 +26,12 @@ methods::setMethod("nbr_bands", methods::className("ready4_profiled_area"), func
 
 methods::setGeneric("nbr_bands<-", function(x, value) standardGeneric("nbr_bands<-"))
 #' nbr_bands<-
-#' @name nbr_bands<--ready4_profiled_area
-#' @description Set the value of the slot nbr_bands for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name nbr_bands<--VicinityProfile
+#' @description Set the value of the slot nbr_bands for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname nbr_bands_set-methods
-#' @aliases nbr_bands<-,ready4_profiled_area-method
-methods::setMethod("nbr_bands<-", methods::className("ready4_profiled_area"), function (x, value) 
+#' @aliases nbr_bands<-,VicinityProfile-method
+methods::setMethod("nbr_bands<-", methods::className("VicinityProfile"), function (x, value) 
 {
     x@nbr_bands <- value
     methods::validObject(x)

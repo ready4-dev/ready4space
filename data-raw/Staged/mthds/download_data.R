@@ -1,4 +1,4 @@
-download_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
+download_data.vicinity_raw <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                                destination_directory,
                                                data_lookup_ref,
                                                lookup_variable = "name",
@@ -6,7 +6,7 @@ download_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPO
                                                overwrite_1L_lgl = F){
 
   if(is.null(directory_sub_divs))
-    directory_sub_divs <- names(ready4_sp_import_lup())[names(ready4_sp_import_lup()) %in% c("country","area_type","region","main_feature","year")] ## Could add boundary year as extra directory
+    directory_sub_divs <- names(vicinity_raw())[names(vicinity_raw()) %in% c("country_chr","area_type_chr","region_chr","main_feature_chr","year_chr")] ## Could add boundary year as extra directory
   directory_paths <- get_dir_paths_for_data_imp(x = x,
                                                destination_directory = destination_directory,
                                                data_lookup_ref = data_lookup_ref,

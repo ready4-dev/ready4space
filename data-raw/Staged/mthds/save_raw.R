@@ -1,4 +1,4 @@
-save_raw.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
+save_raw.vicinity_raw <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                           required_data,
                                           destination_directory,
                                           overwrite_1L_lgl = F){

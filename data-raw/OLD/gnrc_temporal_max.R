@@ -7,12 +7,12 @@
 
 methods::setGeneric("temporal_max", function(x) standardGeneric("temporal_max"))
 #' temporal_max
-#' @name temporal_max-ready4_macro
-#' @description Get the value of the slot temporal_max for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name temporal_max-VicinityMacro
+#' @description Get the value of the slot temporal_max for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname temporal_max-methods
-#' @aliases temporal_max,ready4_macro-method
-methods::setMethod("temporal_max", methods::className("ready4_macro"), function (x) 
+#' @aliases temporal_max,VicinityMacro-method
+methods::setMethod("temporal_max", methods::className("VicinityMacro"), function (x) 
 {
     x@temporal_max
 })
@@ -26,12 +26,12 @@ methods::setMethod("temporal_max", methods::className("ready4_macro"), function 
 
 methods::setGeneric("temporal_max<-", function(x, value) standardGeneric("temporal_max<-"))
 #' temporal_max<-
-#' @name temporal_max<--ready4_macro
-#' @description Set the value of the slot temporal_max for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name temporal_max<--VicinityMacro
+#' @description Set the value of the slot temporal_max for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname temporal_max_set-methods
-#' @aliases temporal_max<-,ready4_macro-method
-methods::setMethod("temporal_max<-", methods::className("ready4_macro"), function (x, value) 
+#' @aliases temporal_max<-,VicinityMacro-method
+methods::setMethod("temporal_max<-", methods::className("VicinityMacro"), function (x, value) 
 {
     x@temporal_max <- value
     methods::validObject(x)

@@ -7,12 +7,12 @@
 
 methods::setGeneric("area", function(x) standardGeneric("area"))
 #' area
-#' @name area-ready4_meso_area
-#' @description Get the value of the slot area for S4 objects of class ready4_meso_area
-#' @param x An object of class ready4_meso_area
+#' @name area-VicinityMesoArea
+#' @description Get the value of the slot area for S4 objects of class VicinityMesoArea
+#' @param x An object of class VicinityMesoArea
 #' @rdname area-methods
-#' @aliases area,ready4_meso_area-method
-methods::setMethod("area", methods::className("ready4_meso_area"), function (x) 
+#' @aliases area,VicinityMesoArea-method
+methods::setMethod("area", methods::className("VicinityMesoArea"), function (x) 
 {
     x@area
 })
@@ -26,12 +26,12 @@ methods::setMethod("area", methods::className("ready4_meso_area"), function (x)
 
 methods::setGeneric("area<-", function(x, value) standardGeneric("area<-"))
 #' area<-
-#' @name area<--ready4_meso_area
-#' @description Set the value of the slot area for S4 objects of class ready4_meso_area
-#' @param x An object of class ready4_meso_area
+#' @name area<--VicinityMesoArea
+#' @description Set the value of the slot area for S4 objects of class VicinityMesoArea
+#' @param x An object of class VicinityMesoArea
 #' @rdname area_set-methods
-#' @aliases area<-,ready4_meso_area-method
-methods::setMethod("area<-", methods::className("ready4_meso_area"), function (x, value) 
+#' @aliases area<-,VicinityMesoArea-method
+methods::setMethod("area<-", methods::className("VicinityMesoArea"), function (x, value) 
 {
     x@area <- value
     methods::validObject(x)

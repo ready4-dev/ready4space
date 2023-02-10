@@ -7,12 +7,12 @@
 
 methods::setGeneric("lup_tbs_r4", function(x) standardGeneric("lup_tbs_r4"))
 #' lup_tbs_r4
-#' @name lup_tbs_r4-ready4_sp_local
-#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class ready4_sp_local
-#' @param x An object of class ready4_sp_local
+#' @name lup_tbs_r4-VicinityLocal
+#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocal
+#' @param x An object of class VicinityLocal
 #' @rdname lup_tbs_r4-methods
-#' @aliases lup_tbs_r4,ready4_sp_local-method
-methods::setMethod("lup_tbs_r4", methods::className("ready4_sp_local"), function (x) 
+#' @aliases lup_tbs_r4,VicinityLocal-method
+methods::setMethod("lup_tbs_r4", methods::className("VicinityLocal"), function (x) 
 {
     x@lup_tbs_r4
 })
@@ -26,56 +26,56 @@ methods::setMethod("lup_tbs_r4", methods::className("ready4_sp_local"), function
 
 methods::setGeneric("lup_tbs_r4<-", function(x, value) standardGeneric("lup_tbs_r4<-"))
 #' lup_tbs_r4<-
-#' @name lup_tbs_r4<--ready4_sp_local
-#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class ready4_sp_local
-#' @param x An object of class ready4_sp_local
+#' @name lup_tbs_r4<--VicinityLocal
+#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocal
+#' @param x An object of class VicinityLocal
 #' @rdname lup_tbs_r4_set-methods
-#' @aliases lup_tbs_r4<-,ready4_sp_local-method
-methods::setMethod("lup_tbs_r4<-", methods::className("ready4_sp_local"), function (x, value) 
+#' @aliases lup_tbs_r4<-,VicinityLocal-method
+methods::setMethod("lup_tbs_r4<-", methods::className("VicinityLocal"), function (x, value) 
 {
     x@lup_tbs_r4 <- value
     methods::validObject(x)
     x
 })
 #' lup_tbs_r4
-#' @name lup_tbs_r4-ready4_spRaw
-#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class ready4_spRaw
-#' @param x An object of class ready4_spRaw
+#' @name lup_tbs_r4-VicinityLocalRaw
+#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocalRaw
+#' @param x An object of class VicinityLocalRaw
 #' @rdname lup_tbs_r4-methods
-#' @aliases lup_tbs_r4,ready4_spRaw-method
-methods::setMethod("lup_tbs_r4", methods::className("ready4_spRaw"), function (x) 
+#' @aliases lup_tbs_r4,VicinityLocalRaw-method
+methods::setMethod("lup_tbs_r4", methods::className("VicinityLocalRaw"), function (x) 
 {
     x@lup_tbs_r4
 })
 #' lup_tbs_r4<-
-#' @name lup_tbs_r4<--ready4_spRaw
-#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class ready4_spRaw
-#' @param x An object of class ready4_spRaw
+#' @name lup_tbs_r4<--VicinityLocalRaw
+#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocalRaw
+#' @param x An object of class VicinityLocalRaw
 #' @rdname lup_tbs_r4_set-methods
-#' @aliases lup_tbs_r4<-,ready4_spRaw-method
-methods::setMethod("lup_tbs_r4<-", methods::className("ready4_spRaw"), function (x, value) 
+#' @aliases lup_tbs_r4<-,VicinityLocalRaw-method
+methods::setMethod("lup_tbs_r4<-", methods::className("VicinityLocalRaw"), function (x, value) 
 {
     x@lup_tbs_r4 <- value
     methods::validObject(x)
     x
 })
 #' lup_tbs_r4
-#' @name lup_tbs_r4-ready4_spProcessed
-#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class ready4_spProcessed
-#' @param x An object of class ready4_spProcessed
+#' @name lup_tbs_r4-VicinityLocalProcessed
+#' @description Get the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocalProcessed
+#' @param x An object of class VicinityLocalProcessed
 #' @rdname lup_tbs_r4-methods
-#' @aliases lup_tbs_r4,ready4_spProcessed-method
-methods::setMethod("lup_tbs_r4", methods::className("ready4_spProcessed"), function (x) 
+#' @aliases lup_tbs_r4,VicinityLocalProcessed-method
+methods::setMethod("lup_tbs_r4", methods::className("VicinityLocalProcessed"), function (x) 
 {
     x@lup_tbs_r4
 })
 #' lup_tbs_r4<-
-#' @name lup_tbs_r4<--ready4_spProcessed
-#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class ready4_spProcessed
-#' @param x An object of class ready4_spProcessed
+#' @name lup_tbs_r4<--VicinityLocalProcessed
+#' @description Set the value of the slot lup_tbs_r4 for S4 objects of class VicinityLocalProcessed
+#' @param x An object of class VicinityLocalProcessed
 #' @rdname lup_tbs_r4_set-methods
-#' @aliases lup_tbs_r4<-,ready4_spProcessed-method
-methods::setMethod("lup_tbs_r4<-", methods::className("ready4_spProcessed"), function (x, value) 
+#' @aliases lup_tbs_r4<-,VicinityLocalProcessed-method
+methods::setMethod("lup_tbs_r4<-", methods::className("VicinityLocalProcessed"), function (x, value) 
 {
     x@lup_tbs_r4 <- value
     methods::validObject(x)

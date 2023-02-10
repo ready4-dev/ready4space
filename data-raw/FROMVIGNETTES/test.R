@@ -10,11 +10,11 @@ make_profiled_area_input_spine_exmpl <- function(profiled_area_type,
                               drive_time_limit_mins  = NA_real_)
   if(profiled_area_type == "Custom"){
     custom_tb <- ymh.epsos::hyepp_coordinates_tb %>%
-      dplyr::filter(cluster_name == "South East Melbourne")#"Eastern Melbourne" # profSfInput()
-    profiled_area_input$profiled_area = list(cluster_vec = custom_tb %>% dplyr::pull(cluster_name),
-                                             service_vec = custom_tb %>% dplyr::pull(service_name),
-                                             lat_vec = custom_tb %>% dplyr::pull(lat),
-                                             lon_vec = custom_tb %>% dplyr::pull(long))
+      dplyr::filter(cluster_name_chr == "South East Melbourne")#"Eastern Melbourne" # profSfInput()
+    profiled_area_input$profiled_area = list(cluster_vec = custom_tb %>% dplyr::pull(cluster_name_chr),
+                                             service_vec = custom_tb %>% dplyr::pull(service_name_chr),
+                                             lat_vec = custom_tb %>% dplyr::pull(lat_dbl),
+                                             lon_vec = custom_tb %>% dplyr::pull(long_dbl))
   }
   if(profiled_area_type == "Headspace"){
     profiled_area_input$profiled_area = "Glenroy"
@@ -118,7 +118,7 @@ sim_results_ls <- ready.sim::runSimulation(x = sim_data,#simDataInput(),
 ready.plot::plot_pop(profiled_sf = sim_results_ls[[1]], #ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf
                      plot_variable = "tx_prev_adhd_all",#inc_SA1_popl_y2016.Males.15.19
                      population_string = "bbb",
-                     year = "aaa")
+                     year_chr = "aaa")
 ggplot2::ggplot(sim_results_ls[[1]]) +
   ggplot2::geom_sf(ggplot2::aes(fill=tx_prev_adhd_all),colour=NA) +
   ggplot2::ggtitle("TITLE") +

@@ -1,4 +1,4 @@
-order_tb.ready4_sp_import_lup <- function(x){
+order_tb.vicinity_raw <- function(x){
   not_to_be_ordered_tb <- x %>% dplyr::filter(is.na(uid))
   x <- x %>% dplyr::filter(!is.na(uid))
   ordering_tb <- x %>%

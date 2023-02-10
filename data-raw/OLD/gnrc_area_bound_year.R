@@ -7,12 +7,12 @@
 
 methods::setGeneric("area_bound_year", function(x) standardGeneric("area_bound_year"))
 #' area_bound_year
-#' @name area_bound_year-ready4_meso_area
-#' @description Get the value of the slot area_bound_year for S4 objects of class ready4_meso_area
-#' @param x An object of class ready4_meso_area
+#' @name area_bound_year-VicinityMesoArea
+#' @description Get the value of the slot area_bound_year for S4 objects of class VicinityMesoArea
+#' @param x An object of class VicinityMesoArea
 #' @rdname area_bound_year-methods
-#' @aliases area_bound_year,ready4_meso_area-method
-methods::setMethod("area_bound_year", methods::className("ready4_meso_area"), function (x) 
+#' @aliases area_bound_year,VicinityMesoArea-method
+methods::setMethod("area_bound_year", methods::className("VicinityMesoArea"), function (x) 
 {
     x@area_bound_year
 })
@@ -26,12 +26,12 @@ methods::setMethod("area_bound_year", methods::className("ready4_meso_area"), fu
 
 methods::setGeneric("area_bound_year<-", function(x, value) standardGeneric("area_bound_year<-"))
 #' area_bound_year<-
-#' @name area_bound_year<--ready4_meso_area
-#' @description Set the value of the slot area_bound_year for S4 objects of class ready4_meso_area
-#' @param x An object of class ready4_meso_area
+#' @name area_bound_year<--VicinityMesoArea
+#' @description Set the value of the slot area_bound_year for S4 objects of class VicinityMesoArea
+#' @param x An object of class VicinityMesoArea
 #' @rdname area_bound_year_set-methods
-#' @aliases area_bound_year<-,ready4_meso_area-method
-methods::setMethod("area_bound_year<-", methods::className("ready4_meso_area"), function (x, value) 
+#' @aliases area_bound_year<-,VicinityMesoArea-method
+methods::setMethod("area_bound_year<-", methods::className("VicinityMesoArea"), function (x, value) 
 {
     x@area_bound_year <- value
     methods::validObject(x)

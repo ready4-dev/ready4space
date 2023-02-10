@@ -7,12 +7,12 @@
 
 methods::setGeneric("sp_import_lup", function(x) standardGeneric("sp_import_lup"))
 #' sp_import_lup
-#' @name sp_import_lup-ready4_lookup
-#' @description Get the value of the slot sp_import_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_import_lup-VicinityLookup
+#' @description Get the value of the slot sp_import_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_import_lup-methods
-#' @aliases sp_import_lup,ready4_lookup-method
-methods::setMethod("sp_import_lup", methods::className("ready4_lookup"), function (x) 
+#' @aliases sp_import_lup,VicinityLookup-method
+methods::setMethod("sp_import_lup", methods::className("VicinityLookup"), function (x) 
 {
     x@sp_import_lup
 })
@@ -26,12 +26,12 @@ methods::setMethod("sp_import_lup", methods::className("ready4_lookup"), functio
 
 methods::setGeneric("sp_import_lup<-", function(x, value) standardGeneric("sp_import_lup<-"))
 #' sp_import_lup<-
-#' @name sp_import_lup<--ready4_lookup
-#' @description Set the value of the slot sp_import_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_import_lup<--VicinityLookup
+#' @description Set the value of the slot sp_import_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_import_lup_set-methods
-#' @aliases sp_import_lup<-,ready4_lookup-method
-methods::setMethod("sp_import_lup<-", methods::className("ready4_lookup"), function (x, value) 
+#' @aliases sp_import_lup<-,VicinityLookup-method
+methods::setMethod("sp_import_lup<-", methods::className("VicinityLookup"), function (x, value) 
 {
     x@sp_import_lup <- value
     methods::validObject(x)

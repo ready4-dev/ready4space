@@ -7,12 +7,12 @@
 
 methods::setGeneric("features", function(x) standardGeneric("features"))
 #' features
-#' @name features-ready4_profiled_area
-#' @description Get the value of the slot features for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name features-VicinityProfile
+#' @description Get the value of the slot features for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname features-methods
-#' @aliases features,ready4_profiled_area-method
-methods::setMethod("features", methods::className("ready4_profiled_area"), function (x) 
+#' @aliases features,VicinityProfile-method
+methods::setMethod("features", methods::className("VicinityProfile"), function (x) 
 {
     x@features
 })
@@ -26,12 +26,12 @@ methods::setMethod("features", methods::className("ready4_profiled_area"), funct
 
 methods::setGeneric("features<-", function(x, value) standardGeneric("features<-"))
 #' features<-
-#' @name features<--ready4_profiled_area
-#' @description Set the value of the slot features for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name features<--VicinityProfile
+#' @description Set the value of the slot features for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname features_set-methods
-#' @aliases features<-,ready4_profiled_area-method
-methods::setMethod("features<-", methods::className("ready4_profiled_area"), function (x, value) 
+#' @aliases features<-,VicinityProfile-method
+methods::setMethod("features<-", methods::className("VicinityProfile"), function (x, value) 
 {
     x@features <- value
     methods::validObject(x)

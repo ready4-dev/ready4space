@@ -18,7 +18,7 @@ gen_param_vals.ready4_mapes <- function(x,
       rfwn_param_val_mape()
   }
 }
-gen_param_vals.ready4_param_str_envir <- function(x,
+gen_param_vals.vicinity_parameters <- function(x,
                                               n_its_int){
   if(n_its_int==1){
     gen_val_envir(params_struc_tb = x,

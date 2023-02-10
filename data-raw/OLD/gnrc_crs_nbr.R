@@ -7,12 +7,12 @@
 
 methods::setGeneric("crs_nbr", function(x) standardGeneric("crs_nbr"))
 #' crs_nbr
-#' @name crs_nbr-ready4_macro
-#' @description Get the value of the slot crs_nbr for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name crs_nbr-VicinityMacro
+#' @description Get the value of the slot crs_nbr for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname crs_nbr-methods
-#' @aliases crs_nbr,ready4_macro-method
-methods::setMethod("crs_nbr", methods::className("ready4_macro"), function (x) 
+#' @aliases crs_nbr,VicinityMacro-method
+methods::setMethod("crs_nbr", methods::className("VicinityMacro"), function (x) 
 {
     x@crs_nbr
 })
@@ -26,12 +26,12 @@ methods::setMethod("crs_nbr", methods::className("ready4_macro"), function (x)
 
 methods::setGeneric("crs_nbr<-", function(x, value) standardGeneric("crs_nbr<-"))
 #' crs_nbr<-
-#' @name crs_nbr<--ready4_macro
-#' @description Set the value of the slot crs_nbr for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name crs_nbr<--VicinityMacro
+#' @description Set the value of the slot crs_nbr for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname crs_nbr_set-methods
-#' @aliases crs_nbr<-,ready4_macro-method
-methods::setMethod("crs_nbr<-", methods::className("ready4_macro"), function (x, value) 
+#' @aliases crs_nbr<-,VicinityMacro-method
+methods::setMethod("crs_nbr<-", methods::className("VicinityMacro"), function (x, value) 
 {
     x@crs_nbr <- value
     methods::validObject(x)

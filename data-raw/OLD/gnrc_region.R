@@ -7,12 +7,12 @@
 
 methods::setGeneric("region", function(x) standardGeneric("region"))
 #' region
-#' @name region-ready4_meso_region
-#' @description Get the value of the slot region for S4 objects of class ready4_meso_region
-#' @param x An object of class ready4_meso_region
+#' @name region-VicinityMesoRegion
+#' @description Get the value of the slot region for S4 objects of class VicinityMesoRegion
+#' @param x An object of class VicinityMesoRegion
 #' @rdname region-methods
-#' @aliases region,ready4_meso_region-method
-methods::setMethod("region", methods::className("ready4_meso_region"), function (x) 
+#' @aliases region,VicinityMesoRegion-method
+methods::setMethod("region", methods::className("VicinityMesoRegion"), function (x) 
 {
     x@region
 })
@@ -26,12 +26,12 @@ methods::setMethod("region", methods::className("ready4_meso_region"), function 
 
 methods::setGeneric("region<-", function(x, value) standardGeneric("region<-"))
 #' region<-
-#' @name region<--ready4_meso_region
-#' @description Set the value of the slot region for S4 objects of class ready4_meso_region
-#' @param x An object of class ready4_meso_region
+#' @name region<--VicinityMesoRegion
+#' @description Set the value of the slot region for S4 objects of class VicinityMesoRegion
+#' @param x An object of class VicinityMesoRegion
 #' @rdname region_set-methods
-#' @aliases region<-,ready4_meso_region-method
-methods::setMethod("region<-", methods::className("ready4_meso_region"), function (x, value) 
+#' @aliases region<-,VicinityMesoRegion-method
+methods::setMethod("region<-", methods::className("VicinityMesoRegion"), function (x, value) 
 {
     x@region <- value
     methods::validObject(x)

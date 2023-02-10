@@ -11,7 +11,7 @@ Object defining data to be saved in local directory in a processed (R) format.
 \section{Slots}{
 
 \describe{
-\item{\code{lup_tbs_r4}}{Lookup table tibbles (a ready4 S4)}
+\item{\code{a_VicinityLookup}}{(an instance of the VicinityLookup class)}
 
 \item{\code{write_type_1L_chr}}{Write type (a character vector of length one)}
 

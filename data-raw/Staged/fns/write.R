@@ -21,7 +21,7 @@ write_fls_and_mk_sngl_row_data_lup <- function(x, ## MAKE METHOD
                                 crs_nbr_dbl = NA_real_,
                                 overwrite_1L_lgl = F){
   ready4use::assert_single_row_tb(x)
-  lookup_tbs_r4 <- ready4_lookup()
+  lookup_tbs_r4 <- VicinityLookup()
   lookup_tbs_r4 <- `sp_import_lup<-`(lookup_tbs_r4,x)
   import_type_ls <- ready4use::procure(x)
   if(names(import_type_ls) == "script_chr"){
@@ -36,7 +36,7 @@ write_fls_and_mk_sngl_row_data_lup <- function(x, ## MAKE METHOD
     script_data_r4 <- rlang::exec(make_class_fn_chr, !!!script_args_ls)
     import_data(script_data_r4)
   }else{
-    ready4_spRaw(lup_tbs_r4 = lookup_tbs_r4,
+    VicinityLocalRaw(lup_tbs_r4 = lookup_tbs_r4,
                         merge_itms_chr = merge_with,
                         raw_fls_dir_1L_chr = raw_data_dir,
                         pkg_1L_chr = pckg_name,
@@ -171,7 +171,7 @@ write_procsd_geom_imp <- function(x,
           dplyr::filter(area > units::set_units(0,m^2)) ## Note: Will discard points
       }
     }
-    if(x %>% dplyr::pull(main_feature) == "Boundary")
+    if(x %>% dplyr::pull(main_feature_chr) == "Boundary")
       starter_sf <- starter_sf %>%
         simplify_sf(crs = crs_nbr_dbl[1])
     saveRDS(starter_sf, file = path_to_seed_sf_1L_chr)
@@ -186,7 +186,7 @@ write_procsd_imp_xx <- function(x,
                                 processed_dir,
                                 crs_nbr_dbl = NA_real_,
                                 overwrite_1L_lgl = F){
-  if(x %>% dplyr::pull(data_type) == "Geometry"){
+  if(x %>% dplyr::pull(data_type_chr) == "Geometry"){
     write_procsd_geom_imp(x,
                           imports_ls = imports_ls,
                           path_to_seed_sf_1L_chr = path_to_seed_sf_1L_chr,
@@ -195,7 +195,7 @@ write_procsd_imp_xx <- function(x,
                           crs_nbr_dbl= crs_nbr_dbl,
                           overwrite_1L_lgl = overwrite_1L_lgl)
   }
-  if(x %>% dplyr::pull(data_type) == "Attribute"){
+  if(x %>% dplyr::pull(data_type_chr) == "Attribute"){
     purrr::walk2(imports_ls,
                  names(imports_ls),
                  ~ write_attr_tb(attr_tb = .x,
@@ -209,10 +209,10 @@ write_raw_data_from_sp_local_r4 <- function(x,
                                             return_r4_lgl){
   sp_import_lup <- x@lup_tbs_r4@sp_import_lup
   ready4use::assert_single_row_tb(sp_import_lup)
-  raw_format_sp_dir <- write_raw_format_dir(data_type_chr = sp_import_lup$data_type,
+  raw_format_sp_dir <- write_raw_format_dir(data_type_chr = sp_import_lup$data_type_chr,
                                             raw_data_dir = x@raw_fls_dir_1L_chr)
   imports_chr <- get_imports_chr(x@lup_tbs_r4,
-                                       data_type_chr = sp_import_lup$data_type)
+                                       data_type_chr = sp_import_lup$data_type_chr)
   write_1L_lgl <- save_raw(x = sp_import_lup,
                        required_data = imports_chr,
                        destination_directory = raw_format_sp_dir,

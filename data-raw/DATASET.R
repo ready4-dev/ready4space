@@ -68,8 +68,8 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                region_chr = "character(0)",#region
                                                                                data_type_chr = "character(0)",#data_type
                                                                                main_feature_chr = "character(0)",#main_feature
-                                                                               year_chr = "character(0)",#year
-                                                                               year_start_chr = "character(0)",#year_start
+                                                                               year_chr = "character(0)",#year # IS IT NUMERIC?
+                                                                               year_start_chr = "character(0)",#year_start # IS IT NUMERIC?
                                                                                year_end_chr = "character(0)",#year_end
                                                                                source_reference_chr = "character(0)",#
                                                                                additional_detail_chr = "character(0)"#
@@ -92,7 +92,7 @@ y <- ready4class::ready4class_constructor() %>%
     list("tibble"), list("is_"), list("tibble"),list(parent_area_chr = "character(0)",# parent_area
                                                                                 boundary_year_dbl = "numeric(0)",# boundary_year
                                                                                 area_type_chr = "character(0)",# area_type
-                                                                                area_count_chr_dbl = "numeric(0)",# area_count
+                                                                                area_count_dbl = "numeric(0)",# area_count
                                                                                 complete_lgl = "logical(0)",# complete
                                                                                 summed_area_dbl = "numeric(0)",# summed_area
                                                                                 mean_size_dbl = "numeric(0)"# mean_size
@@ -104,7 +104,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                 lat_dbl = "numeric(0)",# lat
                                                                                 lng_dbl = "numeric(0)"# long
                                                      ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.", NA_character_, NULL, NULL, NULL,
-    TRUE, "template",#"sp_starter_sf_lup"
+    TRUE, "templates",#"sp_starter_sf_lup"
     list("tibble"), list("is_"),
     list("tibble"),list(country_chr = "character(0)",#country
                         area_type_chr = "character(0)",# area_type
@@ -128,29 +128,31 @@ y <- ready4class::ready4class_constructor() %>%
                                                          "vicinity_processed_r3",#"sp_data_pack_lup",
                                                          "vicinity_resolutions_r3",#""sp_resolution_lup",
                                                          "vicinity_points_r3",#""sp_site_coord_lup",
-                                                         "vicinity_template_r3",#"sp_starter_sf_lup",
+                                                         "vicinity_templates_r3",#"sp_starter_sf_lup",
                                                          "vicinity_identifiers_r3"#"sp_uid_lup"
                                                          ) %>% list() %>% list(),
                                             pt_ls = c("vicinity_abbreviations",#"ready4_sp_abbreviations_lup",
-                                                      "vicinity_raw",#"ready4_sp_import_lup",
+                                                      "vicinity_raw",#"vicinity_raw",
                                                       "vicinity_processed",#"ready4_sp_data_pack_lup",
-                                                      "vicinity_resolutions",#"ready4_sp_resolution_lup",
-                                                      "vicinity_points",#"ready4_sp_site_coord_lup",
-                                                      "vicinity_template",#"ready4_sp_starter_sf_lup",
-                                                      "vicinity_identifiers"#"ready4_sp_uid_lup"
+                                                      "vicinity_resolutions",#"vicinity_resolutions",
+                                                      "vicinity_points",#"vicinity_points",
+                                                      "vicinity_templates",#"vicinity_templates",
+                                                      "vicinity_identifiers"#"vicinity_identifiers"
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Look up tables for spatiotemporal data",
                                             parent_class_chr = NA_character_),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "Macro", # macro
                                             class_desc_chr = "Macro level context",
-                                            pt_ls = list(c("character","character","numeric",
-                                                           "VicinityLookup",#ready4_lookup
+                                            pt_ls = list(c("VicinityLookup",#r$eady4_lookup, # From position 4
+                                                           "character","character","numeric",
+                                                           # MOVED TO FIRST
                                                            "numeric","POSIXt","POSIXt")) %>% list(),
-                                            slots_ls = list(c("global_region_chr",#global_region
+                                            slots_ls = list(c("a_VicinityLookup",#"lookup_r3",#lookup_tb # Moved from position 4
+                                                              "global_region_chr",#global_region
                                                               "country_chr",#country
                                                               "country_bndy_yr_dbl",#country_bound_year
-                                                              "lookup_r3",#lookup_tb
+                                                              # MOVED TO FIRST
                                                               "crs_dbl",#crs_nbr
                                                               "temporal_min_dtm",# temporal_min
                                                               "temporal_max_dtm"# temporal_max
@@ -165,7 +167,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                               "region_chr",#"region"
                                                               "region_bndy_yr_dbl"#""region_bound_year"
                                                               )) %>% list(),
-                                            parent_class_chr = "VicinityMacro"), #"ready4_macro"
+                                            parent_class_chr = "VicinityMacro"), #"r$eady4_macro"
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "MesoArea",# meso_area
                                             class_desc_chr = "Meso level context - area", #
@@ -190,7 +192,7 @@ y <- ready4class::ready4class_constructor() %>%
                                             pt_ls = list(c("character","logical", "numeric", "numeric", "numeric", "character","POSIXt")) %>% list(),
                                             slots_ls = list(c("features_chr",# features
                                                               "use_coord_lup_lgl",# use_coord_lup
-                                                              "geom_dist_limit_km_dbl", # geom_dist_limit_km
+                                                              "geomc_dist_limit_km_dbl", # geom_dist_limit_km
                                                               "drive_time_limit_mins_dbl", # drive_time_limit_mins
                                                               "nbr_bands_dbl", # nbr_bands
                                                               "data_year_chr",# data_yea
@@ -210,24 +212,27 @@ y <- ready4class::ready4class_constructor() %>%
       ##
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "Local",# sp_local
-                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
-                                            pt_ls = c("VicinityLookup"#"ready4_lookup" #
+                                            slots_ls = c("a_VicinityLookup"#"lup_tbs_r4"
+                                                         ) %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"r$eady4_lookup" #
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Object defining data to be saved in local directory.",
                                             parent_class_chr = "Ready4useFiles",
                                             inc_clss_ls = list("VicinityLookup") %>% list()),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-                                            name_stub_chr = "LocalpRaw",#"spRaw"
-                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
-                                            pt_ls = c("VicinityLookup"#"ready4_lookup"
+                                            name_stub_chr = "LocalRaw",#"spRaw"
+                                            slots_ls = c("a_VicinityLookup"#"lup_tbs_r4"
+                                                         ) %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"r$ady4_lookup"
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Object defining data to be saved in local directory in a raw (unprocessed) format.",
                                             parent_class_chr = "Ready4useRaw",
                                             inc_clss_ls = list("VicinityLookup") %>% list()),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "LocalProcessed", #spProcessed
-                                            slots_ls = c("lup_tbs_r4") %>% list() %>% list(),
-                                            pt_ls = c("VicinityLookup"#"ready4_lookup"
+                                            slots_ls = c("a_VicinityLookup"#"lup_tbs_r4"
+                                            ) %>% list() %>% list(),
+                                            pt_ls = c("VicinityLookup"#"r$eady4_lookup"
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Object defining data to be saved in local directory in a processed (R) format.",
                                             parent_class_chr = "Ready4useProcessed",

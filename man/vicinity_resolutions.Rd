@@ -12,7 +12,7 @@ make_pt_vicinity_resolutions(
   parent_area_chr = character(0),
   boundary_year_dbl = numeric(0),
   area_type_chr = character(0),
-  area_count_chr_dbl = numeric(0),
+  area_count_dbl = numeric(0),
   complete_lgl = logical(0),
   summed_area_dbl = numeric(0),
   mean_size_dbl = numeric(0)
@@ -29,7 +29,7 @@ is_vicinity_resolutions(x)
 
 \item{area_type_chr}{Area type (a character vector), Default: character(0)}
 
-\item{area_count_chr_dbl}{Area count character vector (a double vector), Default: numeric(0)}
+\item{area_count_dbl}{Area count (a double vector), Default: numeric(0)}
 
 \item{complete_lgl}{Complete (a logical vector), Default: logical(0)}
 

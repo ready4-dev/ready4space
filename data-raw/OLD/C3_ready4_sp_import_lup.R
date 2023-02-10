@@ -1,27 +1,27 @@
 
-setOldClass(c("ready4_sp_import_lup","tbl_df", "tbl", "data.frame"))
+setOldClass(c("vicinity_raw","tbl_df", "tbl", "data.frame"))
 #' Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @description Create a new valid instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @param x A prototype for the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import., Default: make_pt_ready4_sp_import_lup()
+#' @param x A prototype for the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import., Default: make_pt_vicinity_raw()
 #' @return A validated instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @rdname ready4_sp_import_lup
+#' @rdname vicinity_raw
 #' @export
 
-ready4_sp_import_lup <- function(x = make_pt_ready4_sp_import_lup()){
-validate_ready4_sp_import_lup(make_new_ready4_sp_import_lup(x))
+vicinity_raw <- function(x = make_pt_vicinity_raw()){
+validate_vicinity_raw(make_new_vicinity_raw(x))
 }
 #' Make new Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @description Create a new unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param x A prototype for the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @return An unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @rdname make_new_ready4_sp_import_lup
+#' @rdname make_new_vicinity_raw
 #' @export
 #' @importFrom tibble is_tibble
-make_new_ready4_sp_import_lup <- function(x){
+make_new_vicinity_raw <- function(x){
 stopifnot(tibble::is_tibble(x))
-class(x) <- append(c("ready4_sp_import_lup",setdiff(make_pt_ready4_sp_import_lup() %>% class(),class(x))),
+class(x) <- append(c("vicinity_raw",setdiff(make_pt_vicinity_raw() %>% class(),class(x))),
 class(x))
 x
 }
@@ -54,12 +54,12 @@ x
 #' @param add_boundaries PARAM_DESCRIPTION, Default: list()
 #' @return A prototype for Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @rdname make_pt_ready4_sp_import_lup
+#' @rdname make_pt_vicinity_raw
 #' @export
 #' @importFrom ready4 update_pt_fn_args_ls
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
-make_pt_ready4_sp_import_lup <- function(file_type = character(0),
+make_pt_vicinity_raw <- function(file_type = character(0),
 file_name = character(0),
 data_repo = character(0),
 data_repo_ui = character(0),
@@ -116,33 +116,33 @@ rlang::exec(tibble::tibble,!!!args_ls)
 #' @param x An unvalidated instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @return A prototpe for Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @rdname validate_ready4_sp_import_lup
+#' @rdname validate_vicinity_raw
 #' @export
 #' @importFrom stringr str_detect str_c
 #' @importFrom dplyr summarise_all arrange filter pull
 #' @importFrom tidyr gather
 #' @importFrom purrr map2_chr
-validate_ready4_sp_import_lup <- function(x){
-if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_pt_ready4_sp_import_lup())],
-names(make_pt_ready4_sp_import_lup())))!=length(names(make_pt_ready4_sp_import_lup()))){
+validate_vicinity_raw <- function(x){
+if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_pt_vicinity_raw())],
+names(make_pt_vicinity_raw())))!=length(names(make_pt_vicinity_raw()))){
 stop(paste0("TIBBLE must include columns named: ",
-names(make_pt_ready4_sp_import_lup()) %>% stringr::str_c(sep="", collapse = ", ")),
+names(make_pt_vicinity_raw()) %>% stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
- if(!identical(make_pt_ready4_sp_import_lup() %>%
+ if(!identical(make_pt_vicinity_raw() %>%
 dplyr::summarise_all(class) %>%
  tidyr::gather(variable,class) %>%
 dplyr::arrange(variable),
 x %>%
 dplyr::summarise_all(class) %>%
  tidyr::gather(variable,class) %>%
-dplyr::filter(variable %in% names(make_pt_ready4_sp_import_lup())) %>% dplyr::arrange(variable))){
+dplyr::filter(variable %in% names(make_pt_vicinity_raw())) %>% dplyr::arrange(variable))){
 stop(paste0("TIBBLE columns should be of the following classes: ",
-purrr::map2_chr(make_pt_ready4_sp_import_lup() %>%
+purrr::map2_chr(make_pt_vicinity_raw() %>%
 dplyr::summarise_all(class) %>%
  tidyr::gather(variable,class) %>%
 dplyr::pull(1),
- make_pt_ready4_sp_import_lup() %>%
+ make_pt_vicinity_raw() %>%
 dplyr::summarise_all(class) %>%
  tidyr::gather(variable,class) %>%
 dplyr::pull(2),
@@ -156,7 +156,7 @@ x}
 #' @param x An object of any type
 #' @return A logical value, TRUE if a valid instance of the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @details Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @rdname is_ready4_sp_import_lup
+#' @rdname is_vicinity_raw
 #' @export
 
-is_ready4_sp_import_lup <- function(x) inherits(validate_ready4_sp_import_lup(x), "ready4_sp_import_lup")
+is_vicinity_raw <- function(x) inherits(validate_vicinity_raw(x), "vicinity_raw")

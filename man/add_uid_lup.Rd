@@ -4,12 +4,15 @@
 \alias{add_uid_lup}
 \title{Add unique identifier lookup table}
 \usage{
-add_uid_lup(lookup_tbs_r4)
+add_uid_lup(x_VicinityLookup)
 }
 \arguments{
-\item{lookup_tbs_r4}{Lookup tibbles (a ready4 S4)}
+\item{x_VicinityLookup}{PARAM_DESCRIPTION}
+}
+\value{
+X (Look up tables for spatiotemporal data)
 }
 \description{
-add_uid_lup() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifier lookup table. Function argument lookup_tbs_r4 specifies the object to be updated. The function is called for its side effects and does not return a value.
+add_uid_lup() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifier lookup table. Function argument x_VicinityLookup specifies the object to be updated. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

@@ -7,12 +7,12 @@
 
 methods::setGeneric("data_year", function(x) standardGeneric("data_year"))
 #' data_year
-#' @name data_year-ready4_profiled_area
-#' @description Get the value of the slot data_year for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name data_year-VicinityProfile
+#' @description Get the value of the slot data_year for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname data_year-methods
-#' @aliases data_year,ready4_profiled_area-method
-methods::setMethod("data_year", methods::className("ready4_profiled_area"), function (x) 
+#' @aliases data_year,VicinityProfile-method
+methods::setMethod("data_year", methods::className("VicinityProfile"), function (x) 
 {
     x@data_year
 })
@@ -26,12 +26,12 @@ methods::setMethod("data_year", methods::className("ready4_profiled_area"), func
 
 methods::setGeneric("data_year<-", function(x, value) standardGeneric("data_year<-"))
 #' data_year<-
-#' @name data_year<--ready4_profiled_area
-#' @description Set the value of the slot data_year for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name data_year<--VicinityProfile
+#' @description Set the value of the slot data_year for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname data_year_set-methods
-#' @aliases data_year<-,ready4_profiled_area-method
-methods::setMethod("data_year<-", methods::className("ready4_profiled_area"), function (x, value) 
+#' @aliases data_year<-,VicinityProfile-method
+methods::setMethod("data_year<-", methods::className("VicinityProfile"), function (x, value) 
 {
     x@data_year <- value
     methods::validObject(x)

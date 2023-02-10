@@ -7,12 +7,12 @@
 
 methods::setGeneric("global_region", function(x) standardGeneric("global_region"))
 #' global_region
-#' @name global_region-ready4_macro
-#' @description Get the value of the slot global_region for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name global_region-VicinityMacro
+#' @description Get the value of the slot global_region for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname global_region-methods
-#' @aliases global_region,ready4_macro-method
-methods::setMethod("global_region", methods::className("ready4_macro"), function (x) 
+#' @aliases global_region,VicinityMacro-method
+methods::setMethod("global_region", methods::className("VicinityMacro"), function (x) 
 {
     x@global_region
 })
@@ -26,12 +26,12 @@ methods::setMethod("global_region", methods::className("ready4_macro"), function
 
 methods::setGeneric("global_region<-", function(x, value) standardGeneric("global_region<-"))
 #' global_region<-
-#' @name global_region<--ready4_macro
-#' @description Set the value of the slot global_region for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name global_region<--VicinityMacro
+#' @description Set the value of the slot global_region for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname global_region_set-methods
-#' @aliases global_region<-,ready4_macro-method
-methods::setMethod("global_region<-", methods::className("ready4_macro"), function (x, value) 
+#' @aliases global_region<-,VicinityMacro-method
+methods::setMethod("global_region<-", methods::className("VicinityMacro"), function (x, value) 
 {
     x@global_region <- value
     methods::validObject(x)

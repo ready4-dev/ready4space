@@ -7,12 +7,12 @@
 
 methods::setGeneric("sp_resolution_lup", function(x) standardGeneric("sp_resolution_lup"))
 #' sp_resolution_lup
-#' @name sp_resolution_lup-ready4_lookup
-#' @description Get the value of the slot sp_resolution_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_resolution_lup-VicinityLookup
+#' @description Get the value of the slot sp_resolution_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_resolution_lup-methods
-#' @aliases sp_resolution_lup,ready4_lookup-method
-methods::setMethod("sp_resolution_lup", methods::className("ready4_lookup"), function (x) 
+#' @aliases sp_resolution_lup,VicinityLookup-method
+methods::setMethod("sp_resolution_lup", methods::className("VicinityLookup"), function (x) 
 {
     x@sp_resolution_lup
 })
@@ -26,12 +26,12 @@ methods::setMethod("sp_resolution_lup", methods::className("ready4_lookup"), fun
 
 methods::setGeneric("sp_resolution_lup<-", function(x, value) standardGeneric("sp_resolution_lup<-"))
 #' sp_resolution_lup<-
-#' @name sp_resolution_lup<--ready4_lookup
-#' @description Set the value of the slot sp_resolution_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_resolution_lup<--VicinityLookup
+#' @description Set the value of the slot sp_resolution_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_resolution_lup_set-methods
-#' @aliases sp_resolution_lup<-,ready4_lookup-method
-methods::setMethod("sp_resolution_lup<-", methods::className("ready4_lookup"), function (x, value) 
+#' @aliases sp_resolution_lup<-,VicinityLookup-method
+methods::setMethod("sp_resolution_lup<-", methods::className("VicinityLookup"), function (x, value) 
 {
     x@sp_resolution_lup <- value
     methods::validObject(x)

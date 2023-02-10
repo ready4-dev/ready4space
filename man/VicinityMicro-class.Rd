@@ -29,13 +29,13 @@ Micro level context
 
 \item{\code{region_bndy_yr_dbl}}{Region boundary year (a double vector)}
 
+\item{\code{a_VicinityLookup}}{(an instance of the VicinityLookup class)}
+
 \item{\code{global_region_chr}}{Global region (a character vector)}
 
 \item{\code{country_chr}}{Country (a character vector)}
 
 \item{\code{country_bndy_yr_dbl}}{Country boundary year (a double vector)}
-
-\item{\code{lookup_r3}}{Lookup (a ready4 S3)}
 
 \item{\code{crs_dbl}}{Crs (a double vector)}
 

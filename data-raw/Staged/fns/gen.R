@@ -14,7 +14,7 @@ gen_val_envir_sngl <- function(distribution_1L_chr, # IS THIS CORRECT? LOOKS LIK
                               transformation_1L_chr){
   if(distribution_chr == "none")
     x <- dstr_param_1_1L_dbl
-  if(!is.na(transformation))
+  if(!is.na(transformation_1L_chr))
     x <- eval(parse(text=transformation_1L_chr))
   return(x)
 }

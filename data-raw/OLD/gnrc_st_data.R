@@ -7,12 +7,12 @@
 
 methods::setGeneric("st_data", function(x) standardGeneric("st_data"))
 #' st_data
-#' @name st_data-ready4_env
-#' @description Get the value of the slot st_data for S4 objects of class ready4_env
-#' @param x An object of class ready4_env
+#' @name st_data-VicinitySpaceTime
+#' @description Get the value of the slot st_data for S4 objects of class VicinitySpaceTime
+#' @param x An object of class VicinitySpaceTime
 #' @rdname st_data-methods
-#' @aliases st_data,ready4_env-method
-methods::setMethod("st_data", methods::className("ready4_env"), function (x) 
+#' @aliases st_data,VicinitySpaceTime-method
+methods::setMethod("st_data", methods::className("VicinitySpaceTime"), function (x) 
 {
     x@st_data
 })
@@ -26,12 +26,12 @@ methods::setMethod("st_data", methods::className("ready4_env"), function (x)
 
 methods::setGeneric("st_data<-", function(x, value) standardGeneric("st_data<-"))
 #' st_data<-
-#' @name st_data<--ready4_env
-#' @description Set the value of the slot st_data for S4 objects of class ready4_env
-#' @param x An object of class ready4_env
+#' @name st_data<--VicinitySpaceTime
+#' @description Set the value of the slot st_data for S4 objects of class VicinitySpaceTime
+#' @param x An object of class VicinitySpaceTime
 #' @rdname st_data_set-methods
-#' @aliases st_data<-,ready4_env-method
-methods::setMethod("st_data<-", methods::className("ready4_env"), function (x, value) 
+#' @aliases st_data<-,VicinitySpaceTime-method
+methods::setMethod("st_data<-", methods::className("VicinitySpaceTime"), function (x, value) 
 {
     x@st_data <- value
     methods::validObject(x)

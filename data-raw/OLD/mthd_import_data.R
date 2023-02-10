@@ -1,5 +1,5 @@
 #' Import data method applied toeadyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import..
-#' @description import_data.ready4_sp_import_lup() is an Import Data method that imports data from saved files and loads them into memory as R objects. This method is implemented for the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.. The function is called for its side effects and does not return a value.
+#' @description import_data.vicinity_raw() is an Import Data method that imports data from saved files and loads them into memory as R objects. This method is implemented for the Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.. The function is called for its side effects and does not return a value.
 #' @param x An instance of Readyforwhatsnext S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param included_items_names PARAM_DESCRIPTION
 #' @param item_data_type PARAM_DESCRIPTION
@@ -13,7 +13,7 @@
 #' @importFrom purrr map_chr map
 #' @importFrom sf st_read
 #' @importFrom stats setNames
-import_data.ready4_sp_import_lup <- function (x, included_items_names, item_data_type, data_directory, 
+import_data.vicinity_raw <- function (x, included_items_names, item_data_type, data_directory, 
     r_data_dir_chr, write_1L_lgl = T) 
 {
     downloaded_data_tb <- x %>% dplyr::filter(data_type == item_data_type) %>% 
@@ -50,5 +50,5 @@ import_data.ready4_sp_import_lup <- function (x, included_items_names, item_data
     return(item_list)
 }
 #' @rdname import_data-methods
-#' @aliases import_data,ready4_sp_import_lup-method
-methods::setMethod("import_data", "ready4_sp_import_lup", import_data.ready4_sp_import_lup)
+#' @aliases import_data,vicinity_raw-method
+methods::setMethod("import_data", "vicinity_raw", import_data.vicinity_raw)

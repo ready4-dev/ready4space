@@ -14,19 +14,19 @@ make_1_clstr_1_srvc_trvl_tm<- function(cluster_tb,
 }
 make_agt_coords_tb <- function(profiled_area_sf,
                                disorder,
-                               year,
+                               year_chr,
                                case_type = "expected.incidence",
                                person_type = "p",
                                resolution_unit){
   unit_col_name <- paste0(resolution_unit,
                           "_MAIN",
-                          stringr::str_sub(year,3,4))
+                          stringr::str_sub(year_chr,3,4))
   cases_col_name <- paste0("proj_",
                            disorder,
                            "_",
                            person_type,
                            "_",
-                           year)
+                           year_chr)
   profiled_area_df <- profiled_area_sf %>%
     sf::st_set_geometry(NULL) %>%
     dplyr::select(!!rlang::sym(unit_col_name),
@@ -49,40 +49,40 @@ make_attr_data_xx <- function(lookup_tb_r4,
     attr_data_xx <- list(attr_data_xx) %>%
       stats::setNames(ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb,
                                               lookup_reference = lookup_ref,
-                                              lookup_variable = "name",
-                                              target_variable = "year",
+                                              lookup_variable = "name_chr",
+                                              target_variable = "year_chr",
                                               evaluate = FALSE))
   }
   region_short_nm <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb,
                                              lookup_reference = lookup_ref,
-                                             lookup_variable = "name",
-                                             target_variable = "region",
+                                             lookup_variable = "name_chr",
+                                             target_variable = "region_chr",
                                              evaluate = FALSE)
   region_short_long_vec <- c(region_short_nm,
                              ready4fun::get_from_lup(data_lookup_tb = sp_abbreviations_lup(lookup_tb_r4),
                                                      lookup_reference = region_short_nm,
-                                                     lookup_variable = "short_name",
-                                                     target_variable = "long_name",
+                                                     lookup_variable = "short_name_chr",
+                                                     target_variable = "long_name_chr",
                                                      evaluate = FALSE))
   area_names_var_str <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb,
                                                 lookup_reference = lookup_ref,
-                                                lookup_variable = "name",
-                                                target_variable = "area_type",
+                                                lookup_variable = "name_chr",
+                                                target_variable = "area_type_chr",
                                                 evaluate = FALSE) %>%
     ready4fun::get_from_lup(data_lookup_tb = sp_starter_sf_lup(lookup_tb_r4),
                             lookup_reference = .,
-                            lookup_variable = "area_type",
-                            target_variable = "sf_main_sub_div",
+                            lookup_variable = "area_type_chr",
+                            target_variable = "subdivision_chr",
                             evaluate = FALSE)
   area_names_var_str <- area_names_var_str[area_names_var_str %in% names(starter_sf)]
   boundary_year <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb,
                                            lookup_reference = lookup_ref,
-                                           lookup_variable = "name",
-                                           target_variable = "area_bound_yr",
+                                           lookup_variable = "name_chr",
+                                           target_variable = "area_bndy_yr_chr",
                                            evaluate = F)
   area_names_var_str <- sp_uid_lup(lookup_tb_r4) %>%
     dplyr::filter(var_name %in% area_names_var_str) %>%
-    dplyr::filter(as.numeric(year) == max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>%
+    dplyr::filter(as.numeric(year_chr) == max(as.numeric(year_chr)[as.numeric(year_chr) <= as.numeric(boundary_year)])) %>%
     dplyr::pull(var_name)
   updateAttrDataXx(lookup_tb_r4,
                    attr_data_xx = attr_data_xx,
@@ -132,20 +132,20 @@ make_nse_objs_ls <- function(sp_unit,
                              concept,
                              tot_pop_col = NULL,
                              grouping_1 = NULL,
-                             data_year,
+                             data_year_chr,
                              popl_var_prefix){
   if(concept == "age_sex"){
     popl_multiplier <- paste0("inc_",sp_unit,"_prop")
-    whl_pop_str_1 <- paste0("whl_",sp_unit,"_",popl_var_prefix,"y",data_year,".Females.")
-    whl_pop_str_2 <- paste0("whl_",sp_unit,"_",popl_var_prefix,"y",data_year,".Males.")
+    whl_pop_str_1 <- paste0("whl_",sp_unit,"_",popl_var_prefix,"y",data_year_chr,".Females.")
+    whl_pop_str_2 <- paste0("whl_",sp_unit,"_",popl_var_prefix,"y",data_year_chr,".Males.")
     inc_str_to_delete <- paste0("whl_",sp_unit,"_")
     grouping_1_age_sex_pop_str <- NA_character_
   }
   if(concept == "tot_pop"){
     popl_multiplier <- "pop_prop_multiplier_tot_pop"
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
-    whl_pop_str_1 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Females.")
-    whl_pop_str_2 <- paste0(grouping_1_age_sex_pop_str,"y",data_year,".Males.")
+    whl_pop_str_1 <- paste0(grouping_1_age_sex_pop_str,"y",data_year_chr,".Females.")
+    whl_pop_str_2 <- paste0(grouping_1_age_sex_pop_str,"y",data_year_chr,".Males.")
     inc_str_to_delete <- grouping_1_age_sex_pop_str
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
   }
@@ -260,10 +260,10 @@ make_distance_based_bands <- function(distance_km_outer,
                        to = distance_km_outer,
                        by = distance_km_outer/nbr_distance_bands)
 
-  service_clusters_vec <- service_cluster_tb %>% dplyr::pull(cluster_name) %>% unique()
+  service_clusters_vec <- service_cluster_tb %>% dplyr::pull(cluster_name_chr) %>% unique()
   service_clusters_tbs_list <- purrr::map(service_clusters_vec,
                                           ~ service_cluster_tb %>%
-                                            dplyr::filter(cluster_name == .x)) %>%
+                                            dplyr::filter(cluster_name_chr == .x)) %>%
     stats::setNames(service_clusters_vec)
   service_clusters_by_distance_list <- purrr::map(distances_vec,
                                                   ~ make_srvc_clstr_geomc_dist_boundrs(distance_km = .x,
@@ -358,18 +358,18 @@ make_profiled_area_objs <- function(pa_r4){
                                                      group_by_var = group_by_var)
   main_sub_div_var <- ifelse(use_coord_lup(pa_r4),
                              pa_r4@lookup_tb@sp_uid_lup %>%
-                               ready4fun::get_from_lup(lookup_variable = "spatial_unit",
+                               ready4fun::get_from_lup(lookup_variable = "spatial_unit_chr",
                                                        lookup_reference = pa_r4@region_type,
-                                                       target_variable = "var_name",
+                                                       target_variable = "var_name_chr",
                                                        evaluate = F),
                              ready4fun::get_from_lup(data_lookup_tb = pa_r4 %>%
                                                        lookup_tb() %>%
                                                        sp_starter_sf_lup() %>%
-                                                       dplyr::filter(country == country(pa_r4)) %>%
-                                                       dplyr::filter(area_bound_yr == area_bound_year(pa_r4)),
-                                                     lookup_variable = "area_type",
-                                                     lookup_reference = area_type(pa_r4),
-                                                     target_variable = "sf_main_sub_div",
+                                                       dplyr::filter(country_chr == pa_r4@country_chr) %>%
+                                                       dplyr::filter(area_bndy_yr_dbl == pa_r4@area_bndy_yr_dbl),
+                                                     lookup_variable = "area_type_chr",
+                                                     lookup_reference = pa_r4@area_type_chr,
+                                                     target_variable = "subdivision_chr",
                                                      evaluate = FALSE))
   if(!use_coord_lup(pa_r4)){
     profiled_sf <- st_profiled_sf
@@ -497,17 +497,17 @@ make_valid_new_sf <- function(sf){
 }
 make_year_filter_logic_vec <- function(data_tb,
                                        included_years_vec){
-  purrr::map2_lgl(data_tb$year, data_tb$year_start, ~ (.x %in% included_years_vec | .y %in% included_years_vec))
+  purrr::map2_lgl(data_tb$year_chr, data_tb$year_start_chr, ~ (.x %in% included_years_vec | .y %in% included_years_vec))
 }
 make_year_vec <- function(input_ls){
-  data_year <- data_year(input_ls$pa_r4)
+  data_year_chr <- input_ls$pa_r4@data_year_chr
   lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
   spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
   pop_projs_str <- input_ls$pop_projs_str
   model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
   year_opts <- spatial_lookup_tb %>%
-    dplyr::filter(main_feature == pop_projs_str) %>%
-    dplyr::pull(year_end)
+    dplyr::filter(main_feature_chr == pop_projs_str) %>%
+    dplyr::pull(year_end_chr)
   year_opts <- year_opts[stringr::str_length(year_opts)==4]
   year_opts_ref <- which((year_opts %>%
                             as.numeric() %>%
@@ -516,5 +516,5 @@ make_year_vec <- function(input_ls){
     as.numeric() %>%
     sort() %>% purrr::pluck(year_opts_ref) %>%
     as.character()
-  as.character(as.numeric(data_year):as.numeric(model_end_year))
+  as.character(as.numeric(data_year_chr):as.numeric(model_end_year))
 }

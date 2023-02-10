@@ -1,11 +1,11 @@
-import_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
+import_data.vicinity_raw <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERIC
                                              included_items_names,
                                              item_data_type,
                                              data_directory,
                                              r_data_dir_chr,
                                              write_1L_lgl = T){
   downloaded_data_tb <- x %>%
-    dplyr::filter(data_type == item_data_type) %>%
+    dplyr::filter(data_type_chr == item_data_type) %>%
     dplyr::mutate(inc_file_main_chr = ifelse(is.null(x$new_nms_for_inc_fls_ls[[1]]),
                                          inc_file_main_chr,
                                          ifelse(is.na(new_nms_for_inc_fls_ls %>% unlist()),
@@ -14,9 +14,9 @@ import_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORT
                                                                ~ .x[[1]]))))
   path_vec <- purrr::map_chr(included_items_names,
                              ~ get_sngl_path_for_imp(downloaded_data_tb = downloaded_data_tb %>%
-                                                          dplyr::select(c(name, country, area_type, region,
-                                                                          #data_type,
-                                                                          main_feature, year, inc_file_main_chr)),
+                                                          dplyr::select(c(name_chr, country_chr, area_type_chr, region_chr,
+                                                                          #data_type_chr,
+                                                                          main_feature_chr, year_chr, inc_file_main_chr)),
                                                         lookup_reference = .x,
                                                         data_directory = data_directory))
   r_import_path_chr <- get_r_import_path_chr(r_data_dir_chr = r_data_dir_chr,
@@ -51,5 +51,5 @@ import_data.ready4_sp_import_lup <- function(x, # NOTE, WHEN DOCUMENTING: IMPORT
   return(item_list)
 }
 # methods::setMethod("import_data",
-#                    "ready4_sp_import_lup",import_data.ready4_sp_import_lup) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
+#                    "vicinity_raw",import_data.vicinity_raw) # NOTE, BOTH EXTENDS GENERIC FROM OTHER PACKAGE AND DEFAULTS TO S3 METHOD
  # NOTE, EXTENDS GENERIC FROM OTHER PACKAGE

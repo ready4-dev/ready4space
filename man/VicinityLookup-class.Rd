@@ -21,7 +21,7 @@ Look up tables for spatiotemporal data
 
 \item{\code{vicinity_points_r3}}{Vicinity points (a ready4 S3)}
 
-\item{\code{vicinity_template_r3}}{Vicinity template (a ready4 S3)}
+\item{\code{vicinity_templates_r3}}{Vicinity templates (a ready4 S3)}
 
 \item{\code{vicinity_identifiers_r3}}{Vicinity identifiers (a ready4 S3)}
 }}

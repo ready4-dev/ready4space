@@ -7,12 +7,12 @@
 
 methods::setGeneric("travel_time_mins_cuts", function(x) standardGeneric("travel_time_mins_cuts"))
 #' travel_time_mins_cuts
-#' @name travel_time_mins_cuts-ready4_micro
-#' @description Get the value of the slot travel_time_mins_cuts for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name travel_time_mins_cuts-VicinityMicro
+#' @description Get the value of the slot travel_time_mins_cuts for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname travel_time_mins_cuts-methods
-#' @aliases travel_time_mins_cuts,ready4_micro-method
-methods::setMethod("travel_time_mins_cuts", methods::className("ready4_micro"), function (x) 
+#' @aliases travel_time_mins_cuts,VicinityMicro-method
+methods::setMethod("travel_time_mins_cuts", methods::className("VicinityMicro"), function (x) 
 {
     x@travel_time_mins_cuts
 })
@@ -26,12 +26,12 @@ methods::setMethod("travel_time_mins_cuts", methods::className("ready4_micro"), 
 
 methods::setGeneric("travel_time_mins_cuts<-", function(x, value) standardGeneric("travel_time_mins_cuts<-"))
 #' travel_time_mins_cuts<-
-#' @name travel_time_mins_cuts<--ready4_micro
-#' @description Set the value of the slot travel_time_mins_cuts for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name travel_time_mins_cuts<--VicinityMicro
+#' @description Set the value of the slot travel_time_mins_cuts for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname travel_time_mins_cuts_set-methods
-#' @aliases travel_time_mins_cuts<-,ready4_micro-method
-methods::setMethod("travel_time_mins_cuts<-", methods::className("ready4_micro"), function (x, value) 
+#' @aliases travel_time_mins_cuts<-,VicinityMicro-method
+methods::setMethod("travel_time_mins_cuts<-", methods::className("VicinityMicro"), function (x, value) 
 {
     x@travel_time_mins_cuts <- value
     methods::validObject(x)

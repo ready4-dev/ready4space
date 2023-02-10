@@ -33,6 +33,7 @@ Imports:
     ready4 (>= 0.0.0.9109),
     ready4use (>= 0.0.0.9225),
     rlang,
+    sf,
     stringr,
     testthat,
     tibble,

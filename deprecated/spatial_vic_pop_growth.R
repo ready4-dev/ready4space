@@ -47,11 +47,11 @@
 spatial_vic_pop_growth_lga <- function(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
                                                                                            lookup_reference = "aus_lga_vic_att_ppr_2016",
                                                                                            lookup_variable = "name",
-                                                                                           target_variable = "source_reference"),
+                                                                                           target_variable = "source_reference_chr"),
                                        vic_pop_growth_by_age_lga_t1 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
                                                                                            lookup_reference = "aus_lga_vic_att_ppr_2021",
                                                                                            lookup_variable = "name",
-                                                                                           target_variable = "source_reference"),
+                                                                                           target_variable = "source_reference_chr"),
                                        t0 ="2016",
                                        t1 ="2021"){
   vic_pop_growth_by_age_lga_t0 <- spatial_select_rename_age_sex(population_tib = vic_pop_growth_by_age_lga_t0,

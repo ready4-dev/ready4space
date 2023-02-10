@@ -24,7 +24,7 @@ reference:
   - vicinity_raw
   - vicinity_resolutions
   - vicinity_points
-  - vicinity_template
+  - vicinity_templates
   - vicinity_identifiers
 - title: "S4 Classes"
 - contents:
@@ -36,5 +36,5 @@ reference:
   - VicinityProfile
   - VicinitySpaceTime
   - VicinityLocal
-  - VicinityLocalpRaw
+  - VicinityLocalRaw
   - VicinityLocalProcessed

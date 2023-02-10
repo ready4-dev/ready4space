@@ -7,12 +7,12 @@
 
 methods::setGeneric("region_bound_year", function(x) standardGeneric("region_bound_year"))
 #' region_bound_year
-#' @name region_bound_year-ready4_meso_region
-#' @description Get the value of the slot region_bound_year for S4 objects of class ready4_meso_region
-#' @param x An object of class ready4_meso_region
+#' @name region_bound_year-VicinityMesoRegion
+#' @description Get the value of the slot region_bound_year for S4 objects of class VicinityMesoRegion
+#' @param x An object of class VicinityMesoRegion
 #' @rdname region_bound_year-methods
-#' @aliases region_bound_year,ready4_meso_region-method
-methods::setMethod("region_bound_year", methods::className("ready4_meso_region"), function (x) 
+#' @aliases region_bound_year,VicinityMesoRegion-method
+methods::setMethod("region_bound_year", methods::className("VicinityMesoRegion"), function (x) 
 {
     x@region_bound_year
 })
@@ -26,12 +26,12 @@ methods::setMethod("region_bound_year", methods::className("ready4_meso_region")
 
 methods::setGeneric("region_bound_year<-", function(x, value) standardGeneric("region_bound_year<-"))
 #' region_bound_year<-
-#' @name region_bound_year<--ready4_meso_region
-#' @description Set the value of the slot region_bound_year for S4 objects of class ready4_meso_region
-#' @param x An object of class ready4_meso_region
+#' @name region_bound_year<--VicinityMesoRegion
+#' @description Set the value of the slot region_bound_year for S4 objects of class VicinityMesoRegion
+#' @param x An object of class VicinityMesoRegion
 #' @rdname region_bound_year_set-methods
-#' @aliases region_bound_year<-,ready4_meso_region-method
-methods::setMethod("region_bound_year<-", methods::className("ready4_meso_region"), function (x, value) 
+#' @aliases region_bound_year<-,VicinityMesoRegion-method
+methods::setMethod("region_bound_year<-", methods::className("VicinityMesoRegion"), function (x, value) 
 {
     x@region_bound_year <- value
     methods::validObject(x)

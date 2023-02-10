@@ -371,7 +371,7 @@ add_sp_resolution <- function (lookup_tbs_r4, processed_dir)
             as.double(), complete = T, summed_area = ifelse(..3 == 
             "National", nat_area, readRDS(..4) %>% get_area_sqkm_sf()), 
         mean_size = summed_area/area_count))
-    resolution_lup_r3 <- resolution_lup_r3 %>% ready4_sp_resolution_lup() %>% 
+    resolution_lup_r3 <- resolution_lup_r3 %>% vicinity_resolutions() %>% 
         dplyr::arrange(mean_size)
     `sp_resolution_lup<-`(lookup_tbs_r4, resolution_lup_r3)
 }
@@ -406,7 +406,7 @@ add_starter_sf_to_lups <- function (lookup_tbs_r4, path_to_seed_sf_1L_chr)
 #' @importFrom dplyr pull
 add_uid_lup <- function (lookup_tbs_r4) 
 {
-    uid_lup_r3 <- tibble::add_row(ready4_sp_uid_lup(), spatial_unit = sp_import_lup(lookup_tbs_r4) %>% 
+    uid_lup_r3 <- tibble::add_row(vicinity_identifiers(), spatial_unit = sp_import_lup(lookup_tbs_r4) %>% 
         dplyr::pull(area_type), year = sp_import_lup(lookup_tbs_r4) %>% 
         dplyr::pull(area_bound_yr), var_name = sp_import_lup(lookup_tbs_r4) %>% 
         dplyr::pull(uid))

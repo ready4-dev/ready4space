@@ -44,7 +44,7 @@ transform_sfx_to_pfx <- function (data_tb, suffix)
 
 transform_sp_local_r4_toProcessed_r4 <- function (x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl) 
 {
-    ready4_spProcessed(lup_tbs_r4 = x@lup_tbs_r4, imports_chr = imports_chr, 
+    VicinityLocalProcessed(lup_tbs_r4 = x@lup_tbs_r4, imports_chr = imports_chr, 
         merge_itms_chr = x@merge_itms_chr, overwrite_1L_lgl = x@overwrite_1L_lgl, 
         raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, write_1L_lgl = write_1L_lgl)
 }

@@ -7,12 +7,12 @@
 
 methods::setGeneric("drive_time_limit_mins", function(x) standardGeneric("drive_time_limit_mins"))
 #' drive_time_limit_mins
-#' @name drive_time_limit_mins-ready4_profiled_area
-#' @description Get the value of the slot drive_time_limit_mins for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name drive_time_limit_mins-VicinityProfile
+#' @description Get the value of the slot drive_time_limit_mins for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname drive_time_limit_mins-methods
-#' @aliases drive_time_limit_mins,ready4_profiled_area-method
-methods::setMethod("drive_time_limit_mins", methods::className("ready4_profiled_area"), function (x) 
+#' @aliases drive_time_limit_mins,VicinityProfile-method
+methods::setMethod("drive_time_limit_mins", methods::className("VicinityProfile"), function (x) 
 {
     x@drive_time_limit_mins
 })
@@ -26,12 +26,12 @@ methods::setMethod("drive_time_limit_mins", methods::className("ready4_profiled_
 
 methods::setGeneric("drive_time_limit_mins<-", function(x, value) standardGeneric("drive_time_limit_mins<-"))
 #' drive_time_limit_mins<-
-#' @name drive_time_limit_mins<--ready4_profiled_area
-#' @description Set the value of the slot drive_time_limit_mins for S4 objects of class ready4_profiled_area
-#' @param x An object of class ready4_profiled_area
+#' @name drive_time_limit_mins<--VicinityProfile
+#' @description Set the value of the slot drive_time_limit_mins for S4 objects of class VicinityProfile
+#' @param x An object of class VicinityProfile
 #' @rdname drive_time_limit_mins_set-methods
-#' @aliases drive_time_limit_mins<-,ready4_profiled_area-method
-methods::setMethod("drive_time_limit_mins<-", methods::className("ready4_profiled_area"), function (x, value) 
+#' @aliases drive_time_limit_mins<-,VicinityProfile-method
+methods::setMethod("drive_time_limit_mins<-", methods::className("VicinityProfile"), function (x, value) 
 {
     x@drive_time_limit_mins <- value
     methods::validObject(x)

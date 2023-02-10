@@ -44,7 +44,7 @@ write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_da
     crs_nbr_dbl = NA_real_, overwrite_1L_lgl = F) 
 {
     ready4use::assert_single_row_tb(x)
-    lookup_tbs_r4 <- ready4_lookup()
+    lookup_tbs_r4 <- VicinityLookup()
     lookup_tbs_r4 <- `sp_import_lup<-`(lookup_tbs_r4, x)
     import_type_ls <- ready4use::procure(x)
     if (names(import_type_ls) == "script_chr") {
@@ -57,7 +57,7 @@ write_fls_and_mk_sngl_row_data_lup <- function (x, merge_with, pckg_name, raw_da
         import_data(script_data_r4)
     }
     else {
-        ready4_spRaw(lup_tbs_r4 = lookup_tbs_r4, merge_itms_chr = merge_with, 
+        VicinityLocalRaw(lup_tbs_r4 = lookup_tbs_r4, merge_itms_chr = merge_with, 
             raw_fls_dir_1L_chr = raw_data_dir, pkg_1L_chr = pckg_name, 
             overwrite_1L_lgl = overwrite_1L_lgl) %>% write_fls_from_imp_and_upd_r4(processed_dir_chr = processed_dir, 
             crs_nbr_dbl = crs_nbr_dbl)

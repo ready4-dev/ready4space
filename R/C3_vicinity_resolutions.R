@@ -29,7 +29,7 @@ x
 #' @param parent_area_chr Parent area (a character vector), Default: character(0)
 #' @param boundary_year_dbl Boundary year (a double vector), Default: numeric(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
-#' @param area_count_chr_dbl Area count character vector (a double vector), Default: numeric(0)
+#' @param area_count_dbl Area count (a double vector), Default: numeric(0)
 #' @param complete_lgl Complete (a logical vector), Default: logical(0)
 #' @param summed_area_dbl Summed area (a double vector), Default: numeric(0)
 #' @param mean_size_dbl Mean size (a double vector), Default: numeric(0)
@@ -43,14 +43,14 @@ x
 make_pt_vicinity_resolutions <- function(parent_area_chr = character(0),
 boundary_year_dbl = numeric(0),
 area_type_chr = character(0),
-area_count_chr_dbl = numeric(0),
+area_count_dbl = numeric(0),
 complete_lgl = logical(0),
 summed_area_dbl = numeric(0),
 mean_size_dbl = numeric(0)){ 
 args_ls <- list(parent_area_chr = parent_area_chr,
 boundary_year_dbl = boundary_year_dbl,
 area_type_chr = area_type_chr,
-area_count_chr_dbl = area_count_chr_dbl,
+area_count_dbl = area_count_dbl,
 complete_lgl = complete_lgl,
 summed_area_dbl = summed_area_dbl,
 mean_size_dbl = mean_size_dbl) %>% ready4::update_pt_fn_args_ls()

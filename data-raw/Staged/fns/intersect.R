@@ -3,8 +3,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
                                       profiled_rowref = NA,
                                       attribute_sf,
                                       attribute_unit,
-                                      data_type,
-                                      data_year,
+                                      data_type_chr,
+                                      data_year_chr,
                                       crs_nbr_dbl,
                                       popl_var_prefix = NULL){
   if(!is.na(profiled_colref)){
@@ -21,8 +21,8 @@ intersect_sfs_keep_counts <- function(profiled_sf,
         dplyr::select(!!profiled_colref)
   }
   attribute_sf <- rename_vars_based_on_res(sf = attribute_sf,
-                                           data_type = data_type,
-                                           data_year = data_year,
+                                           data_type_chr = data_type_chr,
+                                           data_year_chr = data_year_chr,
                                            popl_var_prefix = popl_var_prefix,
                                            feature_nm = attribute_unit)
 
@@ -51,7 +51,7 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                         age_sex_pop_resolution,
                                         group_by_var,
                                         age_sex_counts_grouped_by,
-                                        data_year,
+                                        data_year_chr,
                                         crs_nbr_dbl){
   if(!is.null(tot_pop_resolution)){
     if(age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])){
@@ -63,8 +63,8 @@ intersect_sfs_update_counts <- function(profiled_sf,
         dplyr::rename_at(.vars = dplyr::vars(dplyr::ends_with(".y")),
                          ~ stringi::stri_replace_last_regex(.x,"\\.y$",""))
       sp_data_list[[age_sex_pop_resolution]] <- rename_vars_based_on_res(sf = sp_data_list[[age_sex_pop_resolution]],
-                                                                         data_type = "tot_pop",
-                                                                         data_year = data_year,
+                                                                         data_type_chr = "tot_pop",
+                                                                         data_year_chr = data_year_chr,
                                                                          feature_nm = tot_pop_resolution) %>%
         add_kmsq_area_all_features(feature_nm = tot_pop_resolution)
     }
@@ -77,8 +77,8 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                            profiled_rowref = profiled_rowref,
                                            attribute_sf = sp_data_list[[age_sex_pop_resolution]],
                                            attribute_unit = age_sex_pop_resolution,
-                                           data_type = "age_sex",
-                                           data_year = data_year,
+                                           data_type_chr = "age_sex",
+                                           data_year_chr = data_year_chr,
                                            crs_nbr_dbl = crs_nbr_dbl)
   if(!is.null(tot_pop_resolution)){
     if(!age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])){
@@ -88,13 +88,13 @@ intersect_sfs_update_counts <- function(profiled_sf,
                                                attribute_sf = sp_data_list[[tot_pop_resolution]] %>%
                                                  add_kmsq_area_all_features(feature_nm = tot_pop_resolution) ,
                                                attribute_unit = tot_pop_resolution,
-                                               data_type = "tot_pop")
+                                               data_type_chr = "tot_pop")
     }
   }
   profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
                                            group_by_var = group_by_var,
                                            age_sex_var_name = age_sex_counts_grouped_by,
-                                           data_year = data_year,
+                                           data_year_chr = data_year_chr,
                                            age_sex_pop_resolution = age_sex_pop_resolution,
                                            tot_pop_resolution = tot_pop_resolution)
 

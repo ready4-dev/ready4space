@@ -1,4 +1,4 @@
-make_data_packs.ready4_sp_import_lup <- function(x,
+make_data_packs.vicinity_raw <- function(x,
                                                  init_lookup_r4 = NULL,
                                                  pckg_name,
                                                  raw_data_dir,
@@ -7,7 +7,7 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                  crs_nbr_dbl = NA_real_,
                                                  overwrite_1L_lgl = F){
   if(is.null(init_lookup_r4))
-    init_lookup_r4 <- ready4_lookup()
+    init_lookup_r4 <- VicinityLookup()
   x <- x %>% add_names() %>%
     order_tb()
   lookup_tbs_r4 <- purrr::reduce(1:nrow(x),
@@ -22,6 +22,6 @@ make_data_packs.ready4_sp_import_lup <- function(x,
                                                                                         processed_dir = processed_dir,
                                                                                         crs_nbr_dbl = crs_nbr_dbl,
                                                                                         overwrite_1L_lgl = overwrite_1L_lgl),
-                                                                  r4_name = "ready4_lookup"))
+                                                                  r4_name = "VicinityLookup"))
   return(lookup_tbs_r4)
 }

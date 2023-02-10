@@ -7,12 +7,12 @@
 
 methods::setGeneric("lookup_tb", function(x) standardGeneric("lookup_tb"))
 #' lookup_tb
-#' @name lookup_tb-ready4_macro
-#' @description Get the value of the slot lookup_tb for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name lookup_tb-VicinityMacro
+#' @description Get the value of the slot lookup_tb for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname lookup_tb-methods
-#' @aliases lookup_tb,ready4_macro-method
-methods::setMethod("lookup_tb", methods::className("ready4_macro"), function (x) 
+#' @aliases lookup_tb,VicinityMacro-method
+methods::setMethod("lookup_tb", methods::className("VicinityMacro"), function (x) 
 {
     x@lookup_tb
 })
@@ -26,12 +26,12 @@ methods::setMethod("lookup_tb", methods::className("ready4_macro"), function (x)
 
 methods::setGeneric("lookup_tb<-", function(x, value) standardGeneric("lookup_tb<-"))
 #' lookup_tb<-
-#' @name lookup_tb<--ready4_macro
-#' @description Set the value of the slot lookup_tb for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name lookup_tb<--VicinityMacro
+#' @description Set the value of the slot lookup_tb for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname lookup_tb_set-methods
-#' @aliases lookup_tb<-,ready4_macro-method
-methods::setMethod("lookup_tb<-", methods::className("ready4_macro"), function (x, value) 
+#' @aliases lookup_tb<-,VicinityMacro-method
+methods::setMethod("lookup_tb<-", methods::className("VicinityMacro"), function (x, value) 
 {
     x@lookup_tb <- value
     methods::validObject(x)

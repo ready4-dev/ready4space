@@ -3,8 +3,8 @@ simplify_geoms_in_lup <- function(lup_r4,
                                   crs_nbr){
   lup_r4 %>%
     sp_data_pack_lup() %>%
-    dplyr::filter(main_feature =="Boundary") %>%
-    dplyr::pull(source_reference) %>%
+    dplyr::filter(main_feature_chr =="Boundary") %>%
+    dplyr::pull(source_reference_chr) %>%
     purrr::walk(~ readRDS(paste0(r_data_dir,"/",.x,".RDS")) %>%
                   simplify_sf(crs = crs_nbr[1]) %>%
                   saveRDS(paste0(r_data_dir,"/",.x,".RDS")))

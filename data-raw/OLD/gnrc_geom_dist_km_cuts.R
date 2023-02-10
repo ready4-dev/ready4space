@@ -7,12 +7,12 @@
 
 methods::setGeneric("geom_dist_km_cuts", function(x) standardGeneric("geom_dist_km_cuts"))
 #' geom_dist_km_cuts
-#' @name geom_dist_km_cuts-ready4_micro
-#' @description Get the value of the slot geom_dist_km_cuts for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name geom_dist_km_cuts-VicinityMicro
+#' @description Get the value of the slot geom_dist_km_cuts for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname geom_dist_km_cuts-methods
-#' @aliases geom_dist_km_cuts,ready4_micro-method
-methods::setMethod("geom_dist_km_cuts", methods::className("ready4_micro"), function (x) 
+#' @aliases geom_dist_km_cuts,VicinityMicro-method
+methods::setMethod("geom_dist_km_cuts", methods::className("VicinityMicro"), function (x) 
 {
     x@geom_dist_km_cuts
 })
@@ -26,12 +26,12 @@ methods::setMethod("geom_dist_km_cuts", methods::className("ready4_micro"), func
 
 methods::setGeneric("geom_dist_km_cuts<-", function(x, value) standardGeneric("geom_dist_km_cuts<-"))
 #' geom_dist_km_cuts<-
-#' @name geom_dist_km_cuts<--ready4_micro
-#' @description Set the value of the slot geom_dist_km_cuts for S4 objects of class ready4_micro
-#' @param x An object of class ready4_micro
+#' @name geom_dist_km_cuts<--VicinityMicro
+#' @description Set the value of the slot geom_dist_km_cuts for S4 objects of class VicinityMicro
+#' @param x An object of class VicinityMicro
 #' @rdname geom_dist_km_cuts_set-methods
-#' @aliases geom_dist_km_cuts<-,ready4_micro-method
-methods::setMethod("geom_dist_km_cuts<-", methods::className("ready4_micro"), function (x, value) 
+#' @aliases geom_dist_km_cuts<-,VicinityMicro-method
+methods::setMethod("geom_dist_km_cuts<-", methods::className("VicinityMicro"), function (x, value) 
 {
     x@geom_dist_km_cuts <- value
     methods::validObject(x)

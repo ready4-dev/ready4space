@@ -15,7 +15,7 @@ Information to create a profiled area object
 
 \item{\code{use_coord_lup_lgl}}{Use coord lookup table (a logical vector)}
 
-\item{\code{geom_dist_limit_km_dbl}}{Geometry distance limit kilometre (a double vector)}
+\item{\code{geomc_dist_limit_km_dbl}}{Geometric distance limit kilometre (a double vector)}
 
 \item{\code{drive_time_limit_mins_dbl}}{Drive time limit minimums (a double vector)}
 
@@ -43,13 +43,13 @@ Information to create a profiled area object
 
 \item{\code{region_bndy_yr_dbl}}{Region boundary year (a double vector)}
 
+\item{\code{a_VicinityLookup}}{(an instance of the VicinityLookup class)}
+
 \item{\code{global_region_chr}}{Global region (a character vector)}
 
 \item{\code{country_chr}}{Country (a character vector)}
 
 \item{\code{country_bndy_yr_dbl}}{Country boundary year (a double vector)}
-
-\item{\code{lookup_r3}}{Lookup (a ready4 S3)}
 
 \item{\code{crs_dbl}}{Crs (a double vector)}
 

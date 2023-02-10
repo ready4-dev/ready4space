@@ -7,12 +7,12 @@
 
 methods::setGeneric("sp_data_pack_lup", function(x) standardGeneric("sp_data_pack_lup"))
 #' sp_data_pack_lup
-#' @name sp_data_pack_lup-ready4_lookup
-#' @description Get the value of the slot sp_data_pack_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_data_pack_lup-VicinityLookup
+#' @description Get the value of the slot sp_data_pack_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_data_pack_lup-methods
-#' @aliases sp_data_pack_lup,ready4_lookup-method
-methods::setMethod("sp_data_pack_lup", methods::className("ready4_lookup"), function (x) 
+#' @aliases sp_data_pack_lup,VicinityLookup-method
+methods::setMethod("sp_data_pack_lup", methods::className("VicinityLookup"), function (x) 
 {
     x@sp_data_pack_lup
 })
@@ -26,12 +26,12 @@ methods::setMethod("sp_data_pack_lup", methods::className("ready4_lookup"), func
 
 methods::setGeneric("sp_data_pack_lup<-", function(x, value) standardGeneric("sp_data_pack_lup<-"))
 #' sp_data_pack_lup<-
-#' @name sp_data_pack_lup<--ready4_lookup
-#' @description Set the value of the slot sp_data_pack_lup for S4 objects of class ready4_lookup
-#' @param x An object of class ready4_lookup
+#' @name sp_data_pack_lup<--VicinityLookup
+#' @description Set the value of the slot sp_data_pack_lup for S4 objects of class VicinityLookup
+#' @param x An object of class VicinityLookup
 #' @rdname sp_data_pack_lup_set-methods
-#' @aliases sp_data_pack_lup<-,ready4_lookup-method
-methods::setMethod("sp_data_pack_lup<-", methods::className("ready4_lookup"), function (x, value) 
+#' @aliases sp_data_pack_lup<-,VicinityLookup-method
+methods::setMethod("sp_data_pack_lup<-", methods::className("VicinityLookup"), function (x, value) 
 {
     x@sp_data_pack_lup <- value
     methods::validObject(x)

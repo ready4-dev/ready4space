@@ -11,7 +11,7 @@ Object defining data to be saved in local directory.
 \section{Slots}{
 
 \describe{
-\item{\code{lup_tbs_r4}}{Lookup table tibbles (a ready4 S4)}
+\item{\code{a_VicinityLookup}}{(an instance of the VicinityLookup class)}
 
 \item{\code{merge_itms_chr}}{Merge items (a character vector)}
 

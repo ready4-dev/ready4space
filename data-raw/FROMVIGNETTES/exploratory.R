@@ -91,7 +91,7 @@ estimate_prevalence(disorder = disorder,
 # attribute_list <- purrr::map(attributes_to_import,
 #                              ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
 #                                                    lookup_reference = .,
-#                                                    lookup_variable = "name",
+#                                                    lookup_variable = "name_chr",
 #                                                    target_variable = "source_reference")) %>%
 #   stats::setNames(attributes_to_import)
 # boundaries_to_import <- c("aus_lga_nat_shp_bound_2016",
@@ -100,13 +100,13 @@ estimate_prevalence(disorder = disorder,
 # boundary_list <- purrr::map(boundaries_to_import,
 #                             ~ ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
 #                                                    lookup_reference = .,
-#                                                    lookup_variable = "name",
+#                                                    lookup_variable = "name_chr",
 #                                                    target_variable = "source_reference"))
 # boundary_list <- purrr::map(boundary_list,
 #                             ~ .x %>% dplyr::filter(STE_NAME16=="Victoria")) %>%
 #   stats::setNames(boundaries_to_import)
 # ##
-# vic_age_sex_seifa_sa2s_2006_2016_sf <- add_attr_recrly_to_sf(country = "Australia",
+# vic_age_sex_seifa_sa2s_2006_2016_sf <- add_attr_recrly_to_sf(country_chr = "Australia",
 #                                                             state = "Victoria",
 #                                                             area_unit = "SA2",
 #                                                             boundary_year = "2016",
@@ -115,7 +115,7 @@ estimate_prevalence(disorder = disorder,
 #                                                                                "aus_sa2_nat_att_seifa_2016"))
 #
 #
-# vic_pop_growth_projs_sf <- add_attr_recrly_to_sf(country = "Australia",
+# vic_pop_growth_projs_sf <- add_attr_recrly_to_sf(country_chr = "Australia",
 #                                                             state = "Victoria",
 #                                                             area_unit = "LGA",
 #                                                             boundary_year = "2016",

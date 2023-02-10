@@ -7,12 +7,12 @@
 
 methods::setGeneric("country", function(x) standardGeneric("country"))
 #' country
-#' @name country-ready4_macro
-#' @description Get the value of the slot country for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name country-VicinityMacro
+#' @description Get the value of the slot country for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname country-methods
-#' @aliases country,ready4_macro-method
-methods::setMethod("country", methods::className("ready4_macro"), function (x) 
+#' @aliases country,VicinityMacro-method
+methods::setMethod("country", methods::className("VicinityMacro"), function (x) 
 {
     x@country
 })
@@ -26,12 +26,12 @@ methods::setMethod("country", methods::className("ready4_macro"), function (x)
 
 methods::setGeneric("country<-", function(x, value) standardGeneric("country<-"))
 #' country<-
-#' @name country<--ready4_macro
-#' @description Set the value of the slot country for S4 objects of class ready4_macro
-#' @param x An object of class ready4_macro
+#' @name country<--VicinityMacro
+#' @description Set the value of the slot country for S4 objects of class VicinityMacro
+#' @param x An object of class VicinityMacro
 #' @rdname country_set-methods
-#' @aliases country<-,ready4_macro-method
-methods::setMethod("country<-", methods::className("ready4_macro"), function (x, value) 
+#' @aliases country<-,VicinityMacro-method
+methods::setMethod("country<-", methods::className("VicinityMacro"), function (x, value) 
 {
     x@country <- value
     methods::validObject(x)

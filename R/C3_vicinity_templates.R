@@ -1,31 +1,31 @@
 
-setOldClass(c("vicinity_template","tbl_df", "tbl", "data.frame"))
+setOldClass(c("vicinity_templates","tbl_df", "tbl", "data.frame"))
 #' ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects., Default: make_pt_vicinity_template()
+#' @param x A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects., Default: make_pt_vicinity_templates()
 #' @return A validated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @rdname vicinity_template
+#' @rdname vicinity_templates
 #' @export 
-vicinity_template <- function(x = make_pt_vicinity_template()){ 
-validate_vicinity_template(make_new_vicinity_template(x))
+vicinity_templates <- function(x = make_pt_vicinity_templates()){ 
+validate_vicinity_templates(make_new_vicinity_templates(x))
 }
-#' make new vicinity template ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' make new vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param x A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @rdname make_new_vicinity_template
+#' @rdname make_new_vicinity_templates
 #' @export 
 #' @importFrom tibble is_tibble
 #' @keywords internal
-make_new_vicinity_template <- function(x){ 
+make_new_vicinity_templates <- function(x){ 
 stopifnot(tibble::is_tibble(x))
-class(x) <- append(c("vicinity_template",setdiff(make_pt_vicinity_template() %>% class(),class(x))),
+class(x) <- append(c("vicinity_templates",setdiff(make_pt_vicinity_templates() %>% class(),class(x))),
 class(x))
 x
 }
-#' make prototype vicinity template ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' make prototype vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param country_chr Country (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
@@ -33,12 +33,12 @@ x
 #' @param subdivision_chr Subdivision (a character vector), Default: character(0)
 #' @return A prototype for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' 
-#' @rdname vicinity_template
+#' @rdname vicinity_templates
 #' @export 
 #' @importFrom ready4 update_pt_fn_args_ls
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
-make_pt_vicinity_template <- function(country_chr = character(0),
+make_pt_vicinity_templates <- function(country_chr = character(0),
 area_type_chr = character(0),
 area_bndy_yr_chr = character(0),
 starter_sf = character(0),
@@ -50,27 +50,27 @@ starter_sf = starter_sf,
 subdivision_chr = subdivision_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity template ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' validate vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @description Validate an instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @return A prototpe for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @rdname validate_vicinity_template
+#' @rdname validate_vicinity_templates
 #' @export 
 #' @importFrom stringr str_detect str_c
 #' @importFrom dplyr summarise_all filter arrange pull
 #' @importFrom tidyr gather
 #' @importFrom purrr map_chr map2_chr
 #' @keywords internal
-validate_vicinity_template <- function(x){
-if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_pt_vicinity_template())],
-names(make_pt_vicinity_template())))!=length(names(make_pt_vicinity_template()))){
+validate_vicinity_templates <- function(x){
+if(sum(stringr::str_detect(names(x)[names(x) %in% names(make_pt_vicinity_templates())],
+names(make_pt_vicinity_templates())))!=length(names(make_pt_vicinity_templates()))){
 stop(paste0("TIBBLE must include columns named: ",
-names(make_pt_vicinity_template()) %>% stringr::str_c(sep="", collapse = ", ")),
+names(make_pt_vicinity_templates()) %>% stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
 
- if(!identical(make_pt_vicinity_template() %>% 
+ if(!identical(make_pt_vicinity_templates() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
  dplyr::filter(!is.na(class)) %>% 
@@ -79,11 +79,11 @@ x %>%
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
  dplyr::filter(!is.na(class)) %>% 
-dplyr::filter(variable %in% names(make_pt_vicinity_template())) %>% dplyr::arrange(variable))){
+dplyr::filter(variable %in% names(make_pt_vicinity_templates())) %>% dplyr::arrange(variable))){
 stop(paste0("TIBBLE columns should be of the following classes: ",
 "",
 {
-class_lup <- make_pt_vicinity_template() %>% 
+class_lup <- make_pt_vicinity_templates() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
  dplyr::filter(!is.na(class))
@@ -99,10 +99,10 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity template ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' is vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param x An object of any type
 #' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' 
-#' @rdname vicinity_template
+#' @rdname vicinity_templates
 #' @export 
-is_vicinity_template <- function(x) inherits(validate_vicinity_template(x), "vicinity_template")
+is_vicinity_templates <- function(x) inherits(validate_vicinity_templates(x), "vicinity_templates")

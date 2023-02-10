@@ -161,3 +161,6 @@
 ^data-raw/FROMVIGNETTES/prev_sample\.R$
 ^data-raw/FROMVIGNETTES/test\.R$
 ^data-raw/FROMVIGNETTES/TESTS_R4\.R$
+^data-raw/Staged/tests/testthat\.R$
+^data-raw/Staged/tests/testthat/test_vic_growth\.R$
+^data-raw/Staged/tests/visualinspection/temp_test\.R$
