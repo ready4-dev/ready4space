@@ -1,3 +1,10 @@
+transform_sf_ls <- function(sf_ls){
+  common_vars_chr <- get_common_vars_sf_ls(sf_ls)
+  transformed_sf_ls <-purrr::map(sf_ls, ~ .x %>% dplyr::select(common_vars_chr))
+  return(transformed_sf_ls)
+}
+## Staged
+
 transform_circles_to_bands <- function(geom_distance_circle_sfs_list){
   purrr::map(1:(length(geom_distance_circle_sfs_list)-1),
              ~ sf::st_difference(geom_distance_circle_sfs_list %>%
@@ -12,6 +19,9 @@ transform_circles_to_bands <- function(geom_distance_circle_sfs_list){
                           purrr::pluck(1)))
 
 }
+
+
+
 transform_sfx_to_pfx <- function(data_tb,
                              suffix){ ##### MOVE THIS TO READY4FUN (AND UPDATE ALL REFERENCES TO THIS FUNCTION)
   data_tb %>%

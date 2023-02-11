@@ -104,7 +104,7 @@ ggplot2::ggplot(sp_data_sf) +
 #                          purrr::pluck("profiled_sf"),
 #                        age_sex_prefix = ready.sim::st_envir(sim_data) %>%
 #                          ready.sim::st_data() %>%
-#                          purrr::pluck("popl_var_prefix"))
+#                          purrr::pluck("featured_var_pfx_1L_chr"))
 grouping_for_sim <- ifelse(!is.na(input_data$profiled_area_input %>%
                                     ready.s4::geom_dist_limit_km()),
                            "distance_km",

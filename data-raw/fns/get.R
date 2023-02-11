@@ -49,15 +49,15 @@ get_data_year_chr <- function(data_ymdhms){
 }
 get_dir_paths_for_data_imp <- function(x,
                                        destination_directory,
-                                       data_lookup_ref,
-                                       lookup_variable,
+                                       data_match_value_xx,
+                                       match_var_nm_1L_chr,
                                        directory_sub_divs){
   directory_names <- purrr::map_chr(directory_sub_divs,
-                                    ~ ready4fun::get_from_lup(data_lookup_tb = x,
-                                                              lookup_reference = data_lookup_ref,
-                                                              lookup_variable = lookup_variable,
-                                                              target_variable = .x,
-                                                              evaluate = FALSE))
+                                    ~ ready4::get_from_lup_obj(data_lookup_tb = x,
+                                                              match_value_xx = data_match_value_xx,
+                                                              match_var_nm_1L_chr = match_var_nm_1L_chr,
+                                                              target_var_nm_1L_chr = .x,
+                                                              evaluate_1L_lgl = FALSE))
   purrr::accumulate(directory_names,
                     ~ paste0(.x,
                              "/",
@@ -72,34 +72,34 @@ get_group_by_var <- function(profile_unit,
                              group_by_lookup_tb,
                              area_bndy_yr_dbl){ ### REPLACE ?????
   group_by <- ifelse(group_at_profile_unit,
-                     ready4fun::get_from_lup(data_lookup_tb = group_by_lookup_tb %>% dplyr::filter(spatial_unit == profile_unit) %>%
+                     ready4::get_from_lup_obj(data_lookup_tb = group_by_lookup_tb %>% dplyr::filter(spatial_unit == profile_unit) %>%
                                                dplyr::filter(as.numeric(year_chr)==area_bndy_yr_dbl),
-                                             lookup_variable = "spatial_unit_chr",
-                                             lookup_reference = profile_unit,
-                                             target_variable = "var_name_chr",
-                                             evaluate = FALSE),
-                     ready4fun::get_from_lup(data_lookup_tb = group_by_lookup_tb,
-                                             lookup_variable = "spatial_unit_chr",
-                                             lookup_reference = data_unit,
-                                             target_variable = "var_name_chr",
-                                             evaluate = FALSE))
+                                             match_var_nm_1L_chr = "spatial_unit_chr",
+                                             match_value_xx = profile_unit,
+                                             target_var_nm_1L_chr = "var_name_chr",
+                                             evaluate_1L_lgl = FALSE),
+                     ready4::get_from_lup_obj(data_lookup_tb = group_by_lookup_tb,
+                                             match_var_nm_1L_chr = "spatial_unit_chr",
+                                             match_value_xx = data_unit,
+                                             target_var_nm_1L_chr = "var_name_chr",
+                                             evaluate_1L_lgl = FALSE))
   return(group_by)
 }
 get_group_by_var_from_pai <- function(pa_r4){
   group_by_lookup_tb = sp_uid_lup(pa_r4 %>% lookup_tb())
   if(!use_coord_lup(pa_r4)){
-    group_by_var <- get_group_by_var(profile_unit = pa_r4@ area_type_chr,
+    group_by_var_1L_chr <- get_group_by_var(profile_unit = pa_r4@ area_type_chr,
                                      group_by_lookup_tb = group_by_lookup_tb,
                                      area_bndy_yr_dbl = pa_r4@area_bndy_yr_dbl)
   }else{
     if(is.na(geom_dist_limit_km(pa_r4)))
-      group_by_var <- "drive_times"
+      group_by_var_1L_chr <- "drive_times"
     else
-      group_by_var <- "distance_km"
+      group_by_var_1L_chr <- "distance_km"
     get_group_by_var(profile_unit = "GEOMETRIC_DISTANCE",
                      group_by_lookup_tb = group_by_lookup_tb) ## MAY NEED REPLACING
   }
-  return(group_by_var)
+  return(group_by_var_1L_chr)
 }
 get_highest_res <- function(options_vec,
                             year_1L_dbl,
@@ -149,21 +149,21 @@ get_menu_names_for_imp <- function(x){
     dplyr::pull()
 }
 get_menu_of_type_detail_for_imp <- function(x,
-                                            lookup_ref){
+                                            match_value_xx){
   #get_menu_detail_for_imp(x = x) %>%
   x %>%
-    dplyr::filter(data_type_chr==lookup_ref)
+    dplyr::filter(data_type_chr==match_value_xx)
 }
 get_menu_of_type_nms_for_imp <- function(x,
-                                         lookup_ref){
+                                         match_value_xx){
   get_menu_of_type_detail_for_imp(x = x,
-                                       lookup_ref = lookup_ref) %>%
+                                       match_value_xx = match_value_xx) %>%
     dplyr::select(name) %>%
     dplyr::pull()
 }
 get_merge_sf_str <- function(lookup_r4,
                              sp_import_r3_slice,
-                             processed_dir = NULL){
+                             processed_fls_dir_1L_chr = NULL){
   if(is.null(sp_import_r3_slice %>% dplyr::pull(add_boundaries) %>% purrr::pluck(1))){
     NA_character_
   }else{
@@ -171,17 +171,17 @@ get_merge_sf_str <- function(lookup_r4,
       NA_character_
     }else{
       purrr::map_chr(sp_import_r3_slice %>% pull(add_boundaries) %>% purrr::pluck(1),
-                     ~ ready4fun::get_from_lup(data_lookup_tb = sp_import_lup(lookup_r4),
-                                               lookup_reference = .x,
-                                               lookup_variable = "uid_chr",
-                                               target_variable = "name_chr",
-                                               evaluate = FALSE) %>%
-                       ready4fun::get_from_lup(data_lookup_tb = sp_data_pack_lup(lookup_r4),
-                                               lookup_reference = .,
-                                               lookup_variable = "name_chr",
-                                               target_variable = "source_reference_chr",
-                                               evaluate = FALSE) %>%
-                       ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_dir,"/",.,".rds\")")))
+                     ~ ready4::get_from_lup_obj(data_lookup_tb = sp_import_lup(lookup_r4),
+                                               match_value_xx = .x,
+                                               match_var_nm_1L_chr = "uid_chr",
+                                               target_var_nm_1L_chr = "name_chr",
+                                               evaluate_1L_lgl = FALSE) %>%
+                       ready4::get_from_lup_obj(data_lookup_tb = sp_data_pack_lup(lookup_r4),
+                                               match_value_xx = .,
+                                               match_var_nm_1L_chr = "name_chr",
+                                               target_var_nm_1L_chr = "source_reference_chr",
+                                               evaluate_1L_lgl = FALSE) %>%
+                       ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_fls_dir_1L_chr,"/",.,".rds\")")))
     }
   }
 }
@@ -196,8 +196,8 @@ get_model_end_ymdhs <- function(input_ls){
     lubridate::seconds(input_ls$simulation_steps_ymwd[7]) * input_ls$nbr_steps_start_to_end
 }
 get_name_from_path_chr <- function(path_str,
-                                   with_ext = TRUE){
-  if(with_ext){
+                                   with_ext_1L_lgl = TRUE){
+  if(with_ext_1L_lgl){
     stringr::str_sub(path_str,
                      start = stringi::stri_locate_last_regex(path_str, "/")[,2] %>%
                        as.vector() +1)
@@ -214,28 +214,28 @@ get_non_shape_items_for_imp <- function(path_str,
   file_name <-  get_name_from_path_chr(path_str)
   file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
                                                as.vector())
-  data_type_chr <- ready4fun::get_from_lup(data_lookup_tb = x,
-                                       lookup_reference = file_name,
-                                       lookup_variable = "inc_file_main_chr",
-                                       target_variable = "data_type_chr",
-                                       evaluate = FALSE)
+  data_type_chr <- ready4::get_from_lup_obj(data_lookup_tb = x,
+                                       match_value_xx = file_name,
+                                       match_var_nm_1L_chr = "inc_file_main_chr",
+                                       target_var_nm_1L_chr = "data_type_chr",
+                                       evaluate_1L_lgl = FALSE)
   var_name_vec <- c("area_type_chr",
                     # #"area_bndy_yr_chr", ????
                     "main_feature_chr",
                     "year_chr",
                     "region")
   var_val_vec <- purrr::map_chr(var_name_vec,
-                                ~ ready4fun::get_from_lup(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type_chr,
+                                ~ ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type_chr,
                                                                                                                 x = x),
-                                                          lookup_reference = file_name,
-                                                          lookup_variable = "inc_file_main_chr",
-                                                          target_variable = .x,
-                                                          evaluate = FALSE))
+                                                          match_value_xx = file_name,
+                                                          match_var_nm_1L_chr = "inc_file_main_chr",
+                                                          target_var_nm_1L_chr = .x,
+                                                          evaluate_1L_lgl = FALSE))
   make_import_object(x,
                      var_val_vec = var_val_vec,
                      path_str = path_str)
 }
-get_popl_var_prefix <- function(age_sex_pop_resolution,
+get_featured_var_pfx_1L_chr <- function(dynamic_var_rsl_1L_chr,
                                 tot_pop_resolution = NULL,
                                 data_year_1L_dbl){
   if(!is.null(tot_pop_resolution)){
@@ -244,13 +244,13 @@ get_popl_var_prefix <- function(age_sex_pop_resolution,
                                              tot_pop_col = paste0("year_",
                                                                   data_year_1L_dbl,
                                                                   "pr"),
-                                             grouping_1 = age_sex_pop_resolution,
+                                             grouping_1 = dynamic_var_rsl_1L_chr,
                                              data_year_1L_dbl = data_year_1L_dbl)
   }else{
-    nse_names_ls <- make_nse_objs_ls(sp_unit = age_sex_pop_resolution,
+    nse_names_ls <- make_nse_objs_ls(sp_unit = dynamic_var_rsl_1L_chr,
 
                                              concept = "age_sex",
-                                             grouping_1 = age_sex_pop_resolution,
+                                             grouping_1 = dynamic_var_rsl_1L_chr,
                                              data_year_1L_dbl = data_year_1L_dbl)
   }
   paste0(nse_names_ls$popl_inc_unit,"_")
@@ -280,7 +280,7 @@ get_resolution_hierarchy <- function(data_year_1L_dbl,
 get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT SPECIFIC METHOD WITH THIS FUNCTION MOVED TO AusSPR4c
                                   data_type_chr,
                                   data_year_1L_dbl,
-                                  popl_var_prefix){
+                                  featured_var_pfx_1L_chr){
   if(data_type_chr == "age_sex"){
     res_sp_vars <- var_names[var_names %>% startsWith("AREASQKM") |
                                var_names %>%
@@ -307,7 +307,7 @@ get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT S
     res_sp_vars <-  var_names[var_names %>%
                                 startsWith("pop_sp_unit_area") |
                                 var_names %>%
-                                startsWith(popl_var_prefix)]
+                                startsWith(featured_var_pfx_1L_chr)]
   }
   return(res_sp_vars)
 }
@@ -340,14 +340,14 @@ get_set_diff_lon_lat_sf <- function(profile_sf,
   }
 }
 get_sngl_path_for_imp <- function(downloaded_data_tb,
-                                  lookup_reference,
+                                  match_value_xx,
                                   data_directory) {
   path_element_vector <- purrr::map_chr(downloaded_data_tb %>% dplyr::select(-name) %>% names(),
-                                        ~ ready4fun::get_from_lup(data_lookup_tb = downloaded_data_tb,
-                                                                  lookup_variable = "name_chr",
-                                                                  lookup_reference = lookup_reference,
-                                                                  target_variable = .x,
-                                                                  evaluate = FALSE))
+                                        ~ ready4::get_from_lup_obj(data_lookup_tb = downloaded_data_tb,
+                                                                  match_var_nm_1L_chr = "name_chr",
+                                                                  match_value_xx = match_value_xx,
+                                                                  target_var_nm_1L_chr = .x,
+                                                                  evaluate_1L_lgl = FALSE))
   paste0(data_directory,
          "/",
          paste(path_element_vector,collapse = "/"))
@@ -371,10 +371,10 @@ get_spatial_data_list <- function(input_ls,
                               dplyr::filter(main_feature_chr == .x[1]) %>%
                               dplyr::filter(make_year_filter_logic_vec(data_tb = .,
                                                                        included_years_vec = year_vec)) %>%
-                              ready4fun::get_from_lup(lookup_reference = .x[1],
-                                                      lookup_variable = "main_feature_chr",
-                                                      target_variable = "name_chr",
-                                                      evaluate = FALSE)) %>%
+                              ready4::get_from_lup_obj(match_value_xx = .x[1],
+                                                      match_var_nm_1L_chr = "main_feature_chr",
+                                                      target_var_nm_1L_chr = "name_chr",
+                                                      evaluate_1L_lgl = FALSE)) %>%
     stats::setNames(purrr::map_chr(input_ls$at_specified_res, ~.x[2]))
   res_to_merge <- names(extra_names)[names(extra_names) %in% boundary_res]
   if(!identical(res_to_merge,character(0))){
@@ -399,12 +399,12 @@ get_spatial_data_list <- function(input_ls,
                               data_names_list,
                               ~ add_attr_recrly_to_sf(input_ls = input_ls,
                                                       sub_div_unit = sub_div_unit,
-                                                      area_unit = .x,
+                                                      area_unit_1L_chr = .x,
                                                       boundary_year_1L_dbl = input_ls$pa_r4@a_VicinityLookup@vicinity_processed_r3 %>%
                                                         dplyr::filter(name_chr %in% .y) %>%
                                                         dplyr::pull(year_chr) %>%
                                                         min(as.numeric()),
-                                                      attribute_data = .y)) %>%
+                                                      attribute_data_chr = .y)) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ check_if_ppr(.x,
@@ -460,11 +460,11 @@ get_spatial_data_names <- function(input_ls,
                                              dplyr::filter(area_type_chr == .y))
   # if(!is.null(sub_div_unit)){
   #   region_lookup <- purrr::map_chr(sub_div_unit,
-  #                                   ~ ready4fun::get_from_lup(data_lookup_tb = abbreviations_lookup_tb,
-  #                                                          lookup_reference = .,
-  #                                                          lookup_variable = "long_name_chr",
-  #                                                          target_variable = "short_name_chr",
-  #                                                          evaluate = FALSE))
+  #                                   ~ ready4::get_from_lup_obj(data_lookup_tb = abbreviations_lookup_tb,
+  #                                                          match_value_xx = .,
+  #                                                          match_var_nm_1L_chr = "long_name_chr",
+  #                                                          target_var_nm_1L_chr = "short_name_chr",
+  #                                                          evaluate_1L_lgl = FALSE))
   #   matched_yr_lookup_tb_list <- purrr::map2(matched_yr_lookup_tb_list,
   #                                            region_lookup,
   #                                            ~  .x %>% dplyr::filter(region %in% .y))
@@ -479,15 +479,15 @@ get_spatial_data_names <- function(input_ls,
                                       target_year = data_year_chr)
     extra_names <- purrr::map2_chr(non_matched_year_vec,
                                    closest_years,
-                                   ~     ready4fun::get_from_lup(data_lookup_tb = spatial_lookup_tb %>%
+                                   ~     ready4::get_from_lup_obj(data_lookup_tb = spatial_lookup_tb %>%
                                                                    dplyr::filter(year_chr == .y)
                                                                  # %>%
                                                                  #   dplyr::filter(region == region_lookup)
                                                                  ,
-                                                                 lookup_reference = .x,
-                                                                 lookup_variable = "main_feature_chr",
-                                                                 target_variable = "name_chr",
-                                                                 evaluate = FALSE))
+                                                                 match_value_xx = .x,
+                                                                 match_var_nm_1L_chr = "main_feature_chr",
+                                                                 target_var_nm_1L_chr = "name_chr",
+                                                                 evaluate_1L_lgl = FALSE))
     non_matched_positions <- purrr::map_dbl(non_matched_year_vec,
                                             ~ which(at_highest_res==.x))
     names_of_data_vec <- purrr::reduce(1:length(non_matched_positions),
@@ -503,7 +503,7 @@ get_spatial_data_names <- function(input_ls,
 }
 
 get_starter_sf_for_profiled_area <- function(pa_r4,
-                                             group_by_var){
+                                             group_by_var_1L_chr){
   sp_data_starter_sf_lup <- pa_r4 %>%
     lookup_tb() %>%
     sp_starter_sf_lup() %>%
@@ -511,34 +511,34 @@ get_starter_sf_for_profiled_area <- function(pa_r4,
   if(!is.na(pa_r4@area_bndy_yr_dbl))
     sp_data_starter_sf_lup <- sp_data_starter_sf_lup %>%
       dplyr::filter(area_bndy_yr_chr == pa_r4@area_bndy_yr_chr)
-  starter_sf_nm <- ready4fun::get_from_lup(data_lookup_tb = sp_data_starter_sf_lup,
-                                           lookup_variable = "area_type_chr",
-                                           lookup_reference = ifelse(pa_r4@area_type_chr %in% sp_data_starter_sf_lup$area_type_chr,
+  starter_sf_nm <- ready4::get_from_lup_obj(data_lookup_tb = sp_data_starter_sf_lup,
+                                           match_var_nm_1L_chr = "area_type_chr",
+                                           match_value_xx = ifelse(pa_r4@area_type_chr %in% sp_data_starter_sf_lup$area_type_chr,
                                                                      pa_r4@area_type_chr,
                                                                      pa_r4@region_type_chr#region_type(pa_r4)#"STE"#"PNT"
                                            ),
-                                           target_variable = "starter_sf",
-                                           evaluate = FALSE)
-  # starter_sf <-  ready4fun::get_from_lup(data_lookup_tb = pa_r4 %>%
+                                           target_var_nm_1L_chr = "starter_sf",
+                                           evaluate_1L_lgl = FALSE)
+  # starter_sf <-  ready4::get_from_lup_obj(data_lookup_tb = pa_r4 %>%
   #                         lookup_tb() %>%
   #                         sp_data_pack_lup(),
-  #                       lookup_variable = "name",
-  #                       lookup_reference = starter_sf_nm %>% stringr::str_sub(end=-4),
-  #                       target_variable = "source_reference_chr",
-  #                       evaluate = FALSE) %>%
+  #                       match_var_nm_1L_chr = "name",
+  #                       match_value_xx = starter_sf_nm %>% stringr::str_sub(end=-4),
+  #                       target_var_nm_1L_chr = "source_reference_chr",
+  #                       evaluate_1L_lgl = FALSE) %>%
   # parse(file="",n=NULL,text = .) %>%
   # eval()
   starter_sf <- procure(pa_r4 %>%
                            lookup_tb() %>%
                            sp_data_pack_lup(),
-                         col_chr = "name_chr",
+                         col_nm_1L_chr = "name_chr",
                          value_chr = starter_sf_nm %>% stringr::str_sub(end=-4))
   if(use_coord_lup(pa_r4)){
     starter_sf <- starter_sf %>%
       sf::`st_crs<-`(crs_nbr(pa_r4)[1])
   }else{
     starter_sf <-  starter_sf %>%
-      dplyr::filter(!!rlang::sym(group_by_var) %in% features(pa_r4))
+      dplyr::filter(!!rlang::sym(group_by_var_1L_chr) %in% features(pa_r4))
   }
   return(starter_sf)
 }
@@ -546,6 +546,6 @@ get_sys_data_tbs_ls <- function(){
   list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
        aus_data_resolution_tb = aus_data_resolution_tb,
        aus_state_short_tb = aus_state_short_tb,
-       group_by_var_lookup_tb = group_by_var_lookup_tb)
+       group_by_var_1L_chr_lookup_tb = group_by_var_1L_chr_lookup_tb)
 }
 

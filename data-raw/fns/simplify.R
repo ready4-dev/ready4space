@@ -1,8 +1,7 @@
-simplify_geoms_in_lup <- function(lup_r4,
+simplify_geoms_in_lup <- function(x_VicinityLookup,
                                   r_data_dir,
                                   crs_nbr){
-  lup_r4 %>%
-    sp_data_pack_lup() %>%
+  x_VicinityLookup@vicinity_processed_r3 %>%
     dplyr::filter(main_feature_chr =="Boundary") %>%
     dplyr::pull(source_reference_chr) %>%
     purrr::walk(~ readRDS(paste0(r_data_dir,"/",.x,".RDS")) %>%

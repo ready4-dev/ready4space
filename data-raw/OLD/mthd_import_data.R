@@ -23,7 +23,7 @@ import_data.vicinity_raw <- function (x, included_items_names, item_data_type, d
                 ~.x[[1]]))))
     path_vec <- purrr::map_chr(included_items_names, ~get_sngl_path_for_imp(downloaded_data_tb = downloaded_data_tb %>% 
         dplyr::select(c(name, country, area_type, region, main_feature, 
-            year, inc_file_main_chr)), lookup_reference = .x, data_directory = data_directory))
+            year, inc_file_main_chr)), match_value_xx = .x, data_directory = data_directory))
     r_import_path_chr <- get_r_import_path_chr(r_data_dir_chr = r_data_dir_chr, 
         name_chr = x$name, data_type_chr = item_data_type)
     if (item_data_type == "Geometry") {
@@ -33,7 +33,7 @@ import_data.vicinity_raw <- function (x, included_items_names, item_data_type, d
             }
             else {
                 sf::st_read(dsn = .x, layer = get_name_from_path_chr(.x, 
-                  with_ext = FALSE))
+                  with_ext_1L_lgl = FALSE))
             }
         }) %>% stats::setNames(included_items_names)
     }

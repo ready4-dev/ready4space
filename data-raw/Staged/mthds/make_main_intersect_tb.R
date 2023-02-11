@@ -35,10 +35,10 @@ make_main_intersect_tb.VicinityLookup <- function(x,
   template_tb <- template_tb %>%
     dplyr::mutate(!!rlang::sym(tgt_var_chr) := !!rlang::sym(tb_ref_var_chr) %>% as.character() %>% purrr::map_chr(~ ifelse(is.na(.x),
                                                                                                                            NA_character_,
-                                                                                                                           ready4fun::get_from_lup(ref_sf  %>% sf::st_set_geometry(NULL),
-                                                                                                                                                 lookup_reference = .x,
-                                                                                                                                                 lookup_variable = ref_var_chr,
-                                                                                                                                                 target_variable = tgt_var_chr,
-                                                                                                                                                 evaluate = F))
+                                                                                                                           ready4::get_from_lup_obj(ref_sf  %>% sf::st_set_geometry(NULL),
+                                                                                                                                                 match_value_xx = .x,
+                                                                                                                                                 match_var_nm_1L_chr = ref_var_chr,
+                                                                                                                                                 target_var_nm_1L_chr = tgt_var_chr,
+                                                                                                                                                 evaluate_1L_lgl = F))
     ))
 }

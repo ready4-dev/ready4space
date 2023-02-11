@@ -55,7 +55,7 @@ make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "e
 #' Make attr data
 #' @description make_attr_data_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make attr data output object of multiple potential types. The function is called for its side effects and does not return a value.
 #' @param lookup_tb_r4 Lookup (a ready4 S4 collection of tibbles)
-#' @param lookup_ref PARAM_DESCRIPTION
+#' @param match_value_xx PARAM_DESCRIPTION
 #' @param starter_sf Starter (a simple features object)
 #' @return NULL
 #' @rdname make_attr_data_xx
@@ -63,40 +63,40 @@ make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "e
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter pull
-make_attr_data_xx <- function (lookup_tb_r4, lookup_ref, starter_sf) 
+make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf) 
 {
     data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-    attr_data_xx <- procure(data_lookup_tb, col_chr = "name", 
-        value_chr = lookup_ref)
+    attr_data_xx <- procure(data_lookup_tb, col_nm_1L_chr = "name", 
+        value_chr = match_value_xx)
     if (is.data.frame(attr_data_xx)) {
-        attr_data_xx <- list(attr_data_xx) %>% stats::setNames(ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb, 
-            lookup_reference = lookup_ref, lookup_variable = "name", 
-            target_variable = "year", evaluate = FALSE))
+        attr_data_xx <- list(attr_data_xx) %>% stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
+            match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
+            target_var_nm_1L_chr = "year", evaluate_1L_lgl = FALSE))
     }
-    region_short_nm <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb, 
-        lookup_reference = lookup_ref, lookup_variable = "name", 
-        target_variable = "region", evaluate = FALSE)
-    region_short_long_vec <- c(region_short_nm, ready4fun::get_from_lup(data_lookup_tb = sp_abbreviations_lup(lookup_tb_r4), 
-        lookup_reference = region_short_nm, lookup_variable = "short_name", 
-        target_variable = "long_name", evaluate = FALSE))
-    area_names_var_str <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb, 
-        lookup_reference = lookup_ref, lookup_variable = "name", 
-        target_variable = "area_type", evaluate = FALSE) %>% 
-        ready4fun::get_from_lup(data_lookup_tb = sp_starter_sf_lup(lookup_tb_r4), 
-            lookup_reference = ., lookup_variable = "area_type", 
-            target_variable = "sf_main_sub_div", evaluate = FALSE)
-    area_names_var_str <- area_names_var_str[area_names_var_str %in% 
+    region_short_nm <- ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
+        match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
+        target_var_nm_1L_chr = "region", evaluate_1L_lgl = FALSE)
+    region_short_long_chr <- c(region_short_nm, ready4::get_from_lup_obj(data_lookup_tb = sp_abbreviations_lup(lookup_tb_r4), 
+        match_value_xx = region_short_nm, match_var_nm_1L_chr = "short_name", 
+        target_var_nm_1L_chr = "long_name", evaluate_1L_lgl = FALSE))
+    area_names_var_chr <- ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
+        match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
+        target_var_nm_1L_chr = "area_type", evaluate_1L_lgl = FALSE) %>% 
+        ready4::get_from_lup_obj(data_lookup_tb = sp_starter_sf_lup(lookup_tb_r4), 
+            match_value_xx = ., match_var_nm_1L_chr = "area_type", 
+            target_var_nm_1L_chr = "sf_main_sub_div", evaluate_1L_lgl = FALSE)
+    area_names_var_chr <- area_names_var_chr[area_names_var_chr %in% 
         names(starter_sf)]
-    boundary_year <- ready4fun::get_from_lup(data_lookup_tb = data_lookup_tb, 
-        lookup_reference = lookup_ref, lookup_variable = "name", 
-        target_variable = "area_bound_yr", evaluate = F)
-    area_names_var_str <- sp_uid_lup(lookup_tb_r4) %>% dplyr::filter(var_name %in% 
-        area_names_var_str) %>% dplyr::filter(as.numeric(year) == 
+    boundary_year <- ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
+        match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
+        target_var_nm_1L_chr = "area_bound_yr", evaluate_1L_lgl = F)
+    area_names_var_chr <- sp_uid_lup(lookup_tb_r4) %>% dplyr::filter(var_name %in% 
+        area_names_var_chr) %>% dplyr::filter(as.numeric(year) == 
         max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>% 
         dplyr::pull(var_name)
     updateAttrDataXx(lookup_tb_r4, attr_data_xx = attr_data_xx, 
-        alt_names_sf = starter_sf, area_names_var_str = area_names_var_str, 
-        region_short_long_vec = region_short_long_vec, lookup_ref = lookup_ref)
+        alt_names_sf = starter_sf, area_names_var_chr = area_names_var_chr, 
+        region_short_long_chr = region_short_long_chr, match_value_xx = match_value_xx)
 }
 #' Make distance based bands
 #' @description make_distance_based_bands() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make distance based bands. The function is called for its side effects and does not return a value.
@@ -234,19 +234,19 @@ make_isochrs <- function (long, lat, time_min, time_max, nbr_time_steps)
 #' @param tot_pop_col PARAM_DESCRIPTION, Default: NULL
 #' @param grouping_1 PARAM_DESCRIPTION, Default: NULL
 #' @param data_year PARAM_DESCRIPTION
-#' @param popl_var_prefix PARAM_DESCRIPTION
+#' @param featured_var_pfx_1L_chr PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname make_nse_objs_ls
 #' @export 
 
 make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 = NULL, 
-    data_year, popl_var_prefix) 
+    data_year, featured_var_pfx_1L_chr) 
 {
     if (concept == "age_sex") {
         popl_multiplier <- paste0("inc_", sp_unit, "_prop")
-        whl_pop_str_1 <- paste0("whl_", sp_unit, "_", popl_var_prefix, 
+        whl_pop_str_1 <- paste0("whl_", sp_unit, "_", featured_var_pfx_1L_chr, 
             "y", data_year, ".Females.")
-        whl_pop_str_2 <- paste0("whl_", sp_unit, "_", popl_var_prefix, 
+        whl_pop_str_2 <- paste0("whl_", sp_unit, "_", featured_var_pfx_1L_chr, 
             "y", data_year, ".Males.")
         inc_str_to_delete <- paste0("whl_", sp_unit, "_")
         grouping_1_age_sex_pop_str <- NA_character_
@@ -286,21 +286,21 @@ make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 =
 #' @importFrom sf st_transform
 make_profiled_area_objs <- function (pa_r4) 
 {
-    group_by_var <- get_group_by_var_from_pai(pa_r4 = pa_r4)
+    group_by_var_1L_chr <- get_group_by_var_from_pai(pa_r4 = pa_r4)
     st_profiled_sf <- get_starter_sf_for_profiled_area(pa_r4 = pa_r4, 
-        group_by_var = group_by_var)
+        group_by_var_1L_chr = group_by_var_1L_chr)
     main_sub_div_var <- ifelse(use_coord_lup(pa_r4), pa_r4@lookup_tb@sp_uid_lup %>% 
-        ready4fun::get_from_lup(lookup_variable = "spatial_unit", 
-            lookup_reference = pa_r4@region_type, target_variable = "var_name", 
-            evaluate = F), ready4fun::get_from_lup(data_lookup_tb = pa_r4 %>% 
+        ready4::get_from_lup_obj(match_var_nm_1L_chr = "spatial_unit", 
+            match_value_xx = pa_r4@region_type, target_var_nm_1L_chr = "var_name", 
+            evaluate_1L_lgl = F), ready4::get_from_lup_obj(data_lookup_tb = pa_r4 %>% 
         lookup_tb() %>% sp_starter_sf_lup() %>% dplyr::filter(country == 
         country(pa_r4)) %>% dplyr::filter(area_bound_yr == area_bound_year(pa_r4)), 
-        lookup_variable = "area_type", lookup_reference = area_type(pa_r4), 
-        target_variable = "sf_main_sub_div", evaluate = FALSE))
+        match_var_nm_1L_chr = "area_type", match_value_xx = area_type(pa_r4), 
+        target_var_nm_1L_chr = "sf_main_sub_div", evaluate_1L_lgl = FALSE))
     if (!use_coord_lup(pa_r4)) {
         profiled_sf <- st_profiled_sf
-        profiled_area_bands_list <- subset_sf_by_feature(profiled_sf = profiled_sf, 
-            group_by_var = group_by_var)
+        profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf, 
+            group_by_var_1L_chr = group_by_var_1L_chr)
         sub_div_units_vec <- profiled_sf %>% dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% 
             as.character() %>% unique()
     }
@@ -311,8 +311,8 @@ make_profiled_area_objs <- function (pa_r4)
             profiled_sf <- make_distance_based_bands(distance_km_outer = geom_dist_limit_km(pa_r4), 
                 nbr_distance_bands = nbr_bands(pa_r4), service_cluster_tb = cluster_tb, 
                 profiled_sf = st_profiled_sf, crs_nbr = crs_nbr(pa_r4))[[1]]
-            profiled_area_bands_list <- subset_sf_by_feature(profiled_sf = profiled_sf, 
-                group_by_var = group_by_var)
+            profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf, 
+                group_by_var_1L_chr = group_by_var_1L_chr)
         }
         if (!is.na(drive_time_limit_mins(pa_r4))) {
             profiled_area_bands_list <- make_servc_clstr_isochrs_ls(cluster_tbs_list = list(cluster_tb), 
@@ -323,7 +323,7 @@ make_profiled_area_objs <- function (pa_r4)
             profiled_sf <- do.call(rbind, profiled_area_bands_list) %>% 
                 sf::st_transform(crs_nbr(pa_r4)[1]) %>% simplify_sf()
         }
-        sub_div_units_vec <- intersect_lon_lat_sfs(sf_1 = st_profiled_sf, 
+        sub_div_units_vec <- make_intersecting_geometries(sf_1 = st_profiled_sf, 
             sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(pa_r4)) %>% 
             dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% as.vector() %>% 
             unique()
@@ -333,15 +333,15 @@ make_profiled_area_objs <- function (pa_r4)
 }
 #' Make raw format directory
 #' @description make_raw_format_dir_chr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make raw format directory character vector. The function is called for its side effects and does not return a value.
-#' @param raw_data_dir PARAM_DESCRIPTION
+#' @param raw_fls_dir_1L_chr PARAM_DESCRIPTION
 #' @param category PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname make_raw_format_dir_chr
 #' @export 
 
-make_raw_format_dir_chr <- function (raw_data_dir, category) 
+make_raw_format_dir_chr <- function (raw_fls_dir_1L_chr, category) 
 {
-    paste0(raw_data_dir, "/", category)
+    paste0(raw_fls_dir_1L_chr, "/", category)
 }
 #' Make servc clstr isochrs
 #' @description make_servc_clstr_isochrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make servc clstr isochrs list. The function is called for its side effects and does not return a value.

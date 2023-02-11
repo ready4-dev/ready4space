@@ -10,11 +10,11 @@
 #' @details
 #'
 #' @param vic_pop_growth_by_age_lga_t0 PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-#'    lookup_reference = "aus_lga_vic_att_ppr_2016", lookup_variable = "name",
-#'    target_variable = "source_reference") %>% purrr::pluck("y2016")
+#'    match_value_xx = "aus_lga_vic_att_ppr_2016", match_var_nm_1L_chr = "name",
+#'    target_var_nm_1L_chr = "source_reference") %>% purrr::pluck("y2016")
 #' @param vic_pop_growth_by_age_lga_t1 PARAM_DESCRIPTION, Default: ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-#'    lookup_reference = "aus_lga_vic_att_ppr_2016", lookup_variable = "name",
-#'    target_variable = "source_reference") %>% purrr::pluck("y2021"), Default: '2016'
+#'    match_value_xx = "aus_lga_vic_att_ppr_2016", match_var_nm_1L_chr = "name",
+#'    target_var_nm_1L_chr = "source_reference") %>% purrr::pluck("y2021"), Default: '2016'
 #'
 #' @param t0 A String specifying the baseline year. This must match up with the years
 #' specified in the datasource specified in vic_pop_growth_by_age_lga_t0 (spaced at
@@ -45,13 +45,15 @@
 #' @importFrom dplyr rename inner_join
 
 spatial_vic_pop_growth_lga <- function(vic_pop_growth_by_age_lga_t0 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                                                           lookup_reference = "aus_lga_vic_att_ppr_2016",
-                                                                                           lookup_variable = "name",
-                                                                                           target_variable = "source_reference_chr"),
+                                                                                           match_value_xx = "aus_lga_vic_att_ppr_2016",
+                                                                                           match_var_nm_1L_chr = "name",
+                                                                                           target_var_nm_1L_chr = "source_reference_chr",
+                                                                                           evaluate_1L_lgl = T),
                                        vic_pop_growth_by_age_lga_t1 = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                                                           lookup_reference = "aus_lga_vic_att_ppr_2021",
-                                                                                           lookup_variable = "name",
-                                                                                           target_variable = "source_reference_chr"),
+                                                                                           match_value_xx = "aus_lga_vic_att_ppr_2021",
+                                                                                           match_var_nm_1L_chr = "name",
+                                                                                           target_var_nm_1L_chr = "source_reference_chr",
+                                                                                           evaluate_1L_lgl = T),
                                        t0 ="2016",
                                        t1 ="2021"){
   vic_pop_growth_by_age_lga_t0 <- spatial_select_rename_age_sex(population_tib = vic_pop_growth_by_age_lga_t0,

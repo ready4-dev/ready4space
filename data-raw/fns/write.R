@@ -1,8 +1,8 @@
 write_attr_tb <- function(attr_tb,
                           obj_name,
-                          processed_dir,
+                          processed_fls_dir_1L_chr,
                           overwrite_1L_lgl){
-  path_to_attr_tb_chr <- get_r_import_path_chr(r_data_dir_chr = processed_dir,
+  path_to_attr_tb_chr <- get_r_import_path_chr(r_data_dir_chr = processed_fls_dir_1L_chr,
                                                name_chr = obj_name,
                                                data_type_chr = "Attribute")
   if(overwrite_1L_lgl | !file.exists(path_to_attr_tb_chr))
@@ -14,40 +14,40 @@ write_dirs_for_imp <- function(directory_paths){
               ~ dir.create(.x))
 }
 write_fls_and_mk_sngl_row_data_lup <- function(x, ## MAKE METHOD
-                                merge_with,
-                                pckg_name,
-                                raw_data_dir,
-                                processed_dir,
+                                merge_itms_chr,
+                                package_1L_chr,
+                                raw_fls_dir_1L_chr,
+                                processed_fls_dir_1L_chr,
                                 crs_nbr_dbl = NA_real_,
                                 overwrite_1L_lgl = F){
   ready4use::assert_single_row_tb(x)
-  lookup_tbs_r4 <- VicinityLookup()
-  lookup_tbs_r4 <- `sp_import_lup<-`(lookup_tbs_r4,x)
-  import_type_ls <- ready4use::procure(x)
+  y_VicinityLookup <- VicinityLookup()
+  y_VicinityLookup <- renewSlot(y_VicinityLookup, "vicinity_raw_r3",x)
+  import_type_ls <- procure(x) ## NOT SURE IF THIS IS CORRECT / HAS BEEN DEFINED
   if(names(import_type_ls) == "script_chr"){
     make_class_fn_chr <- eval(parse(text = import_type_ls))
-    script_args_ls <- list(lup_tbs_r4 = lookup_tbs_r4,
-                           merge_itms_chr = merge_with,
-                           processed_fls_dir_1L_chr = processed_dir,
-                           raw_fls_dir_1L_chr = raw_data_dir,
-                           pkg_1L_chr = pckg_name,
+    script_args_ls <- list(lup_tbs_r4 = y_VicinityLookup,
+                           merge_itms_chr = merge_itms_chr,
+                           processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
+                           raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
+                           pkg_1L_chr = package_1L_chr,
                            overwrite_1L_lgl = overwrite_1L_lgl,
                            crs_nbr_dbl = crs_nbr_dbl)
     script_data_r4 <- rlang::exec(make_class_fn_chr, !!!script_args_ls)
     import_data(script_data_r4)
   }else{
-    VicinityLocalRaw(lup_tbs_r4 = lookup_tbs_r4,
-                        merge_itms_chr = merge_with,
-                        raw_fls_dir_1L_chr = raw_data_dir,
-                        pkg_1L_chr = pckg_name,
+    VicinityLocalRaw(lup_tbs_r4 = y_VicinityLookup,
+                        merge_itms_chr = merge_itms_chr,
+                        raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
+                        pkg_1L_chr = package_1L_chr,
                         overwrite_1L_lgl = overwrite_1L_lgl) %>% ## CLOSE CONDITIONAL, MOVE WHOLE CHUNK INTO REFORMED GET_IMPORT_TYPE_LS
-      write_fls_from_imp_and_upd_r4(processed_dir_chr = processed_dir,
+      write_fls_from_imp_and_upd_r4(processed_fls_dir_1L_chr_chr = processed_fls_dir_1L_chr,
                              crs_nbr_dbl = crs_nbr_dbl)
   }
 }
 write_fls_for_imp <- function(x,
-                              data_lookup_ref,
-                              lookup_variable,
+                              data_match_value_xx,
+                              match_var_nm_1L_chr,
                               directory_path,
                               overwrite_1L_lgl = F){
   write_1L_lgl <- F
@@ -57,11 +57,11 @@ write_fls_for_imp <- function(x,
                                               "inc_file_main_chr",
                                               "local_file_src_chr",
                                               "data_repo_db_ui_chr"),
-                                            ~ ready4fun::get_from_lup(data_lookup_tb = x,
-                                                                      lookup_reference = data_lookup_ref,
-                                                                      lookup_variable = lookup_variable,
-                                                                      target_variable = .x,
-                                                                      evaluate = FALSE))
+                                            ~ ready4::get_from_lup_obj(data_lookup_tb = x,
+                                                                      match_value_xx = data_match_value_xx,
+                                                                      match_var_nm_1L_chr = match_var_nm_1L_chr,
+                                                                      target_var_nm_1L_chr = .x,
+                                                                      evaluate_1L_lgl = FALSE))
   dest_file <- paste0(directory_path,
                       "/",
                       download_components_vec[1],
@@ -77,7 +77,7 @@ write_fls_for_imp <- function(x,
                                              "/",
                                              download_components_vec[4]))){
         if(!is.na(download_components_vec[6])){
-          ready4use::procure(x,
+          procure(x, # Does this need to be ingest / author
                               save_dir_path_chr = directory_path,
                               unlink_lgl = F)
 
@@ -91,8 +91,8 @@ write_fls_for_imp <- function(x,
                        exdir = directory_path)
         }
         write_to_rnm_fls_for_imp(x = x,
-                                 data_lookup_ref = data_lookup_ref,
-                                 lookup_variable = lookup_variable,
+                                 data_match_value_xx = data_match_value_xx,
+                                 match_var_nm_1L_chr = match_var_nm_1L_chr,
                                  directory_path = directory_path,
                                  overwrite_1L_lgl = overwrite_1L_lgl)
         write_1L_lgl <- T
@@ -102,11 +102,11 @@ write_fls_for_imp <- function(x,
   write_1L_lgl
 }
 write_fls_from_imp_and_upd_r4 <- function(x,
-                                          processed_dir_chr,
+                                          processed_fls_dir_1L_chr_chr,
                                           crs_nbr_dbl){
   save_raw(x,
            return_r4_lgl = T) %>%
-    ready4use::`processed_fls_dir_1L_chr<-`(processed_dir_chr) %>%
+    ready4use::`processed_fls_dir_1L_chr<-`(processed_fls_dir_1L_chr_chr) %>%
     import_data(crs_nbr_dbl = crs_nbr_dbl) %>%
     update_this()
 }
@@ -139,8 +139,8 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function(x,
   write_procsd_imp_xx(x = sp_import_lup,
                       imports_ls = imports_ls,
                       path_to_seed_sf_1L_chr = path_to_seed_sf_1L_chr,
-                      merge_with = x@merge_itms_chr,
-                      processed_dir = x@processed_fls_dir_1L_chr,
+                      merge_itms_chr = x@merge_itms_chr,
+                      processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr,
                       crs_nbr_dbl = crs_nbr_dbl,
                       overwrite_1L_lgl = x@overwrite_1L_lgl)
   if(return_r4_lgl)
@@ -160,7 +160,7 @@ write_procsd_geom_imp <- function(x,
     }else{
       starter_sf <- purrr::reduce(merge_itms_chr,
                                   .init = imports_ls[[1]],
-                                  ~ intersect_lon_lat_sfs(.x,
+                                  ~ make_intersecting_geometries(.x,
                                                           eval(parse(text=.y)),
                                                           crs_nbr_dbl = crs_nbr_dbl,
                                                           validate_lgl = T
@@ -180,18 +180,18 @@ write_procsd_geom_imp <- function(x,
 write_procsd_imp_xx <- function(x,
                                 imports_ls,
                                 path_to_seed_sf_1L_chr,
-                                merge_with,
-                                pckg_name,
-                                raw_data_dir,
-                                processed_dir,
+                                merge_itms_chr,
+                                package_1L_chr,
+                                raw_fls_dir_1L_chr,
+                                processed_fls_dir_1L_chr,
                                 crs_nbr_dbl = NA_real_,
                                 overwrite_1L_lgl = F){
   if(x %>% dplyr::pull(data_type_chr) == "Geometry"){
     write_procsd_geom_imp(x,
                           imports_ls = imports_ls,
                           path_to_seed_sf_1L_chr = path_to_seed_sf_1L_chr,
-                          #processed_dir = processed_dir,
-                          merge_itms_chr = merge_with,
+                          #processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
+                          merge_itms_chr = merge_itms_chr,
                           crs_nbr_dbl= crs_nbr_dbl,
                           overwrite_1L_lgl = overwrite_1L_lgl)
   }
@@ -200,7 +200,7 @@ write_procsd_imp_xx <- function(x,
                  names(imports_ls),
                  ~ write_attr_tb(attr_tb = .x,
                                  obj_name = .y,
-                                 processed_dir = processed_dir,
+                                 processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
                                  overwrite_1L_lgl = overwrite_1L_lgl))
 
   }
@@ -210,7 +210,7 @@ write_raw_data_from_sp_local_r4 <- function(x,
   sp_import_lup <- x@lup_tbs_r4@sp_import_lup
   ready4use::assert_single_row_tb(sp_import_lup)
   raw_format_sp_dir <- write_raw_format_dir(data_type_chr = sp_import_lup$data_type_chr,
-                                            raw_data_dir = x@raw_fls_dir_1L_chr)
+                                            raw_fls_dir_1L_chr = x@raw_fls_dir_1L_chr)
   imports_chr <- get_imports_chr(x@lup_tbs_r4,
                                        data_type_chr = sp_import_lup$data_type_chr)
   write_1L_lgl <- save_raw(x = sp_import_lup,
@@ -226,28 +226,28 @@ write_raw_data_from_sp_local_r4 <- function(x,
   }
 }
 write_raw_format_dir <- function(data_type_chr,
-                                 raw_data_dir){
+                                 raw_fls_dir_1L_chr){
   directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")
-  raw_format_sp_dir <- make_raw_format_dir_chr(raw_data_dir,directory_chr)
+  raw_format_sp_dir <- make_raw_format_dir_chr(raw_fls_dir_1L_chr,directory_chr)
   if(!dir.exists(raw_format_sp_dir))
     dir.create(raw_format_sp_dir)
   raw_format_sp_dir
 }
 write_to_rnm_fls_for_imp <- function(x,
-                                     data_lookup_ref,
-                                     lookup_variable,
+                                     data_match_value_xx,
+                                     match_var_nm_1L_chr,
                                      directory_path,
                                      overwrite_1L_lgl = F){
-  old_names_list <- ready4fun::get_from_lup(data_lookup_tb = x,
-                                            lookup_reference = data_lookup_ref,
-                                            lookup_variable = lookup_variable,
-                                            target_variable = "inc_fls_to_rename_ls",
-                                            evaluate = FALSE)
-  new_names_list <- ready4fun::get_from_lup(data_lookup_tb = x,
-                                            lookup_reference = data_lookup_ref,
-                                            lookup_variable = lookup_variable,
-                                            target_variable = "new_nms_for_inc_fls_ls",
-                                            evaluate = FALSE)
+  old_names_list <- ready4::get_from_lup_obj(data_lookup_tb = x,
+                                            match_value_xx = data_match_value_xx,
+                                            match_var_nm_1L_chr = match_var_nm_1L_chr,
+                                            target_var_nm_1L_chr = "inc_fls_to_rename_ls",
+                                            evaluate_1L_lgl = FALSE)
+  new_names_list <- ready4::get_from_lup_obj(data_lookup_tb = x,
+                                            match_value_xx = data_match_value_xx,
+                                            match_var_nm_1L_chr = match_var_nm_1L_chr,
+                                            target_var_nm_1L_chr = "new_nms_for_inc_fls_ls",
+                                            evaluate_1L_lgl = FALSE)
   if(!is.na(old_names_list)){
     purrr::walk2(old_names_list,
                  new_names_list,

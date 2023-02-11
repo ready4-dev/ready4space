@@ -17,7 +17,7 @@ import_data.vicinity_raw <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERI
                                                           dplyr::select(c(name_chr, country_chr, area_type_chr, region_chr,
                                                                           #data_type_chr,
                                                                           main_feature_chr, year_chr, inc_file_main_chr)),
-                                                        lookup_reference = .x,
+                                                        match_value_xx = .x,
                                                         data_directory = data_directory))
   r_import_path_chr <- get_r_import_path_chr(r_data_dir_chr = r_data_dir_chr,
                                              name_chr = x$name,
@@ -30,7 +30,7 @@ import_data.vicinity_raw <- function(x, # NOTE, WHEN DOCUMENTING: IMPORTS GENERI
                               }else{
                                 sf::st_read(dsn=.x,
                                             layer = get_name_from_path_chr(.x,
-                                                                                        with_ext = FALSE))
+                                                                                        with_ext_1L_lgl = FALSE))
                               }
                                 }
                             ) %>%

@@ -1,10 +1,10 @@
 # vic_lga_y_16_31 <- ready.space::spatial_vic_pop_growth_lga(
 #   vic_pop_growth_by_age_lga_t0 =
 #     ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-#                          lookup_reference = "vic_pop_growth_by_age_lga_2016_tb"),
+#                          match_value_xx = "vic_pop_growth_by_age_lga_2016_tb"),
 #   vic_pop_growth_by_age_lga_t1 =
 #     ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-#                          lookup_reference = "vic_pop_growth_by_age_lga_2031_tb"),
+#                          match_value_xx = "vic_pop_growth_by_age_lga_2031_tb"),
 #   t0 ="2016",
 #   t1 ="2031")
 #

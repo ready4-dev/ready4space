@@ -1,29 +1,29 @@
 vic_boundary_phns_sf <- ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                             lookup_reference = "aus_boundary_phns_sf") %>%
+                                             match_value_xx = "aus_boundary_phns_sf") %>%
   dplyr::filter(FIRST_STE1=="Victoria") %>%
   sf::st_as_sf()
 vic_boundary_sa2s_sf <- ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                             lookup_reference = "aus_boundary_sa2s_sf") %>%
+                                             match_value_xx = "aus_boundary_sa2s_sf") %>%
   dplyr::filter(STE_NAME16=="Victoria")
 vic_boundary_sa1s_sf <- ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                             lookup_reference = "aus_boundary_sa1s_sf") %>%
+                                             match_value_xx = "aus_boundary_sa1s_sf") %>%
   dplyr::filter(STE_NAME16=="Victoria")
 vic_boundary_state_sf <- vic_boundary_phns_sf %>%
   dplyr::group_by(FIRST_STE1) %>%
   dplyr::summarise(AREASQ = sum(SUM_AREASQ),
                    geometry = sf::st_union(geometry))
 ## Attribute Data
-res_sa2s_sf <- ready.data::spatial_merge_areas_attributes(area_unit="SA2",
+res_sa2s_sf <- ready.data::spatial_merge_areas_attributes(area_unit_1L_chr="SA2",
                                                                  area_sf = vic_boundary_sa2s_sf,
                                                                  child_youth_pop_t0_tb = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                                                                              lookup_reference = "aus_pop_age_sex_sa2_2006_tb"),
+                                                                                                              match_value_xx = "aus_pop_age_sex_sa2_2006_tb"),
                                                                  child_youth_pop_t1_tb = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                                                                              lookup_reference = "aus_pop_age_sex_sa2_2016_tb"),
+                                                                                                              match_value_xx = "aus_pop_age_sex_sa2_2016_tb"),
                                                                  seifa_deciles_by_unit = ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                                                                              lookup_reference = "aus_seifa_deciles_by_sa2_2016_tb"))
+                                                                                                              match_value_xx = "aus_seifa_deciles_by_sa2_2016_tb"))
 res_sa1s_sf <- merge(vic_boundary_sa1s_sf,
                                   ready.data::data_get(data_lookup_tb = aus_spatial_lookup_tb,
-                                                       lookup_reference = "aus_pop_proj_sa1_2011_2016_tb"),
+                                                       match_value_xx = "aus_pop_proj_sa1_2011_2016_tb"),
                                   by.x = c("SA1_7DIG16"),
                                   by.y = c("SA1"),
                                   all = FALSE) %>%

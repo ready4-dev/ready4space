@@ -11,7 +11,7 @@
 save_raw.vicinity_raw <- function (x, required_data, destination_directory, overwrite_1L_lgl = F) 
 {
     purrr::map_lgl(required_data, ~download_data(x = x, destination_directory = destination_directory, 
-        data_lookup_ref = .x, overwrite_1L_lgl = overwrite_1L_lgl))
+        data_match_value_xx = .x, overwrite_1L_lgl = overwrite_1L_lgl))
 }
 #' @rdname save_raw-methods
 #' @aliases save_raw,vicinity_raw-method
