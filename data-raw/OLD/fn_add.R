@@ -37,7 +37,7 @@ add_attr_recrly_to_sf <- function (input_ls, sub_div_unit = NULL, area_unit_1L_c
     boundary_file <- procure(data_lookup_tb %>% dplyr::filter(area_type == 
         area_unit_1L_chr) %>% dplyr::filter(main_feature == "Boundary") %>% 
         dplyr::filter(as.numeric(year_start) == max(as.numeric(year_start)[as.numeric(year_start) <= 
-            as.numeric(boundary_year)])), value_chr = "Boundary")
+            as.numeric(boundary_year)])), match_value_xx = "Boundary")
     attribute_data_list <- purrr::map(attribute_data, ~.x) %>% 
         stats::setNames(attribute_data)
     purrr::map(attribute_data_list, ~add_attr_list_to_sf(x = boundary_file, 
@@ -361,7 +361,7 @@ add_resolutions_lup <- function (lookup_tbs_r4, processed_fls_dir_1L_chr)
     if (any(dr_nt_vec == "National")) {
         nat_sf <- readRDS(dr_dp_vec[stringr::str_which(dr_nt_vec, 
             "National") %>% min()])
-        nat_area <- nat_sf %>% get_area_sqkm_sf()
+        nat_area <- nat_sf %>% make_km_sqd_dbl()
     }
     else {
         nat_area <- NA_real_
@@ -369,7 +369,7 @@ add_resolutions_lup <- function (lookup_tbs_r4, processed_fls_dir_1L_chr)
     resolution_lup_r3 <- purrr::pmap_dfr(dr_dp_tb, ~tibble::tibble(parent_area = ..2, 
         boundary_year = as.numeric(..5), area_type = ..1, area_count = nrow(readRDS(..4)) %>% 
             as.double(), complete = T, summed_area = ifelse(..3 == 
-            "National", nat_area, readRDS(..4) %>% get_area_sqkm_sf()), 
+            "National", nat_area, readRDS(..4) %>% make_km_sqd_dbl()), 
         mean_size = summed_area/area_count))
     resolution_lup_r3 <- resolution_lup_r3 %>% vicinity_resolutions() %>% 
         dplyr::arrange(mean_size)

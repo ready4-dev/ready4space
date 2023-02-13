@@ -67,7 +67,7 @@ make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf)
 {
     data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     attr_data_xx <- procure(data_lookup_tb, col_nm_1L_chr = "name", 
-        value_chr = match_value_xx)
+        match_value_xx = match_value_xx)
     if (is.data.frame(attr_data_xx)) {
         attr_data_xx <- list(attr_data_xx) %>% stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
             match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
@@ -173,16 +173,16 @@ make_each_uid_a_poly_sf <- function (sf, uid_chr)
 #' @param n_its_int N its (an integer vector)
 #' @param env_str_param_tb Env setter parameter (a tibble)
 #' @param mape_str_param_tb Mape setter parameter (a tibble)
-#' @param jt_dist PARAM_DESCRIPTION
+#' @param joint_dstr_1L_lgl PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname make_env_param_tb
 #' @export 
 #' @importFrom dplyr bind_rows
-make_env_param_tb <- function (n_its_int, env_str_param_tb, mape_str_param_tb, jt_dist) 
+make_env_param_tb <- function (n_its_int, env_str_param_tb, mape_str_param_tb, joint_dstr_1L_lgl) 
 {
-    param_val_mape <- gen_param_vals(x = mape_str_param_tb, n_its_int = n_its_int, 
-        jt_dist = jt_dist)
-    param_val_env <- gen_param_vals(x = env_str_param_tb, n_its_int = n_its_int)
+    param_val_mape <- reckon(x = mape_str_param_tb, n_its_int = n_its_int, 
+        joint_dstr_1L_lgl = joint_dstr_1L_lgl)
+    param_val_env <- reckon(x = env_str_param_tb, n_its_int = n_its_int)
     dplyr::bind_rows(param_val_env, param_val_mape)
 }
 #' Make geomc dist boundrs
@@ -554,11 +554,11 @@ make_year_vec <- function (input_ls)
     data_year <- data_year(input_ls$pa_r4)
     lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-    pop_projs_str <- input_ls$pop_projs_str
+    popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
     model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% 
         lubridate::year()
     year_opts <- spatial_lookup_tb %>% dplyr::filter(main_feature == 
-        pop_projs_str) %>% dplyr::pull(year_end)
+        popl_predns_var_1L_chr) %>% dplyr::pull(year_end)
     year_opts <- year_opts[stringr::str_length(year_opts) == 
         4]
     year_opts_ref <- which((year_opts %>% as.numeric() %>% sort()) >= 

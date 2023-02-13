@@ -1,31 +1,31 @@
 #' Get area sqkm
-#' @description get_area_sqkm_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get area sqkm simple features object. Function argument data_sf specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_km_sqd_dbl() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get area sqkm simple features object. Function argument data_sf specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param data_sf Data (a simple features object)
 #' @return NULL
-#' @rdname get_area_sqkm_sf
+#' @rdname make_km_sqd_dbl
 #' @export 
 #' @importFrom dplyr mutate summarise pull
 #' @importFrom sf st_area
 #' @importFrom units set_units
-get_area_sqkm_sf <- function (data_sf) 
+make_km_sqd_dbl <- function (data_sf) 
 {
     data_sf %>% dplyr::mutate(FT_AREA_SQKM = sf::st_area(.) %>% 
         units::set_units(km^2)) %>% dplyr::summarise(TOT_AREA_SQKM = sum(FT_AREA_SQKM)) %>% 
         dplyr::pull(TOT_AREA_SQKM)
 }
 #' Get closest year
-#' @description get_closest_year() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get closest year. Function argument data_lookup_tb specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_closest_yr_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get closest year. Function argument data_lookup_tb specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param data_lookup_tb Data lookup (a tibble)
 #' @param inc_main_ft_vec PARAM_DESCRIPTION
 #' @param target_year PARAM_DESCRIPTION
 #' @param target_area PARAM_DESCRIPTION, Default: NULL
 #' @param find_closest PARAM_DESCRIPTION, Default: 'abs'
 #' @return NA ()
-#' @rdname get_closest_year
+#' @rdname make_closest_yr_ls
 #' @export 
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
-get_closest_year <- function (data_lookup_tb, inc_main_ft_vec, target_year, target_area = NULL, 
+make_closest_yr_ls <- function (data_lookup_tb, inc_main_ft_vec, target_year, target_area = NULL, 
     find_closest = "abs") 
 {
     if (!is.null(target_area)) {
@@ -51,60 +51,60 @@ get_closest_year <- function (data_lookup_tb, inc_main_ft_vec, target_year, targ
     return(closest_year)
 }
 #' Get common vars
-#' @description get_common_vars_sf_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get common vars simple features object list. Function argument sf_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_common_sf_vars_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get common vars simple features object list. Function argument sf_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param sf_ls Simple features object list (a list of simple features objects)
 #' @return NULL
-#' @rdname get_common_vars_sf_ls
+#' @rdname make_common_sf_vars_ls
 #' @export 
 #' @importFrom purrr map
-get_common_vars_sf_ls <- function (sf_ls) 
+make_common_sf_vars_ls <- function (sf_ls) 
 {
     vec_ls <- purrr::map(sf_ls, ~names(.x))
     Reduce(intersect, vec_ls)
 }
 #' Get common yrs
-#' @description get_common_yrs_sf_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get common yrs simple features object list. Function argument sf_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_common_sf_yrs_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get common yrs simple features object list. Function argument sf_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param sf_ls Simple features object list (a list of simple features objects)
 #' @return NULL
-#' @rdname get_common_yrs_sf_ls
+#' @rdname make_common_sf_yrs_ls
 #' @export 
 #' @importFrom purrr map
-get_common_yrs_sf_ls <- function (sf_ls) 
+make_common_sf_yrs_ls <- function (sf_ls) 
 {
     vec_ls <- purrr::map(list_of_sfs, ~get_included_yrs_sf(.x))
     Reduce(intersect, vec_ls)
 }
 #' Get data year
-#' @description get_data_year_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get data year character vector. Function argument data_ymdhms specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_data_yrs_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get data year character vector. Function argument data_ymdhms specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param data_ymdhms PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname get_data_year_chr
+#' @rdname make_data_yrs_chr
 #' @export 
 #' @importFrom lubridate year
-get_data_year_chr <- function (data_ymdhms) 
+make_data_yrs_chr <- function (data_ymdhms) 
 {
     data_ymdhms %>% lubridate::year() %>% as.character()
 }
 #' Get directory paths for data import
-#' @description get_dir_paths_for_data_imp() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get directory paths for data import. Function argument x specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_write_paths_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get directory paths for data import. Function argument x specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param x PARAM_DESCRIPTION
-#' @param destination_directory PARAM_DESCRIPTION
+#' @param dir_1L_chr PARAM_DESCRIPTION
 #' @param data_match_value_xx PARAM_DESCRIPTION
 #' @param match_var_nm_1L_chr PARAM_DESCRIPTION
-#' @param directory_sub_divs PARAM_DESCRIPTION
+#' @param sub_dirs_chr PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname get_dir_paths_for_data_imp
+#' @rdname make_write_paths_chr
 #' @export 
 #' @importFrom purrr map_chr accumulate
 #' @importFrom ready4fun get_from_lup
-get_dir_paths_for_data_imp <- function (x, destination_directory, data_match_value_xx, match_var_nm_1L_chr, 
-    directory_sub_divs) 
+make_write_paths_chr <- function (x, dir_1L_chr, data_match_value_xx, match_var_nm_1L_chr, 
+    sub_dirs_chr) 
 {
-    directory_names <- purrr::map_chr(directory_sub_divs, ~ready4::get_from_lup_obj(data_lookup_tb = x, 
+    directory_names <- purrr::map_chr(sub_dirs_chr, ~ready4::get_from_lup_obj(data_lookup_tb = x, 
         match_value_xx = data_match_value_xx, match_var_nm_1L_chr = match_var_nm_1L_chr, 
         target_var_nm_1L_chr = .x, evaluate_1L_lgl = FALSE))
     purrr::accumulate(directory_names, ~paste0(.x, "/", .y)) %>% 
-        paste0(destination_directory, "/", .)
+        paste0(dir_1L_chr, "/", .)
 }
 #' Get group by var
 #' @description get_group_by_var() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get group by var. Function argument profile_unit specifies the where to look for the required object. The function is called for its side effects and does not return a value.
@@ -172,14 +172,14 @@ get_highest_res <- function (options_vec, year, resolution_lup_r3)
     else NA
 }
 #' Get import character vector vec
-#' @description get_imports_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get import character vector vec. Function argument lookup_tbs_r4 specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_imports_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get import character vector vec. Function argument lookup_tbs_r4 specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param lookup_tbs_r4 Lookup tibbles (a ready4 S4)
 #' @param data_type_chr Data type (a character vector)
 #' @return NULL
-#' @rdname get_imports_chr
+#' @rdname make_imports_chr
 #' @export 
 #' @importFrom dplyr filter pull
-get_imports_chr <- function (lookup_tbs_r4, data_type_chr) 
+make_imports_chr <- function (lookup_tbs_r4, data_type_chr) 
 {
     if (data_type_chr == "Geometry") {
         sp_import_lup(lookup_tbs_r4) %>% dplyr::filter(main_feature == 
@@ -393,19 +393,19 @@ get_featured_var_pfx_1L_chr <- function (dynamic_var_rsl_1L_chr, tot_pop_resolut
     paste0(nse_names_ls$popl_inc_unit, "_")
 }
 #' Get r import path
-#' @description get_r_import_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get r import path character vector. Function argument r_data_dir_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
-#' @param r_data_dir_chr R data directory (a character vector)
+#' @description get_r_import_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get r import path character vector. Function argument processed_fls_dir_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @param processed_fls_dir_1L_chr R data directory (a character vector)
 #' @param name_chr Name (a character vector)
 #' @param data_type_chr Data type (a character vector)
 #' @return NULL
 #' @rdname get_r_import_path_chr
 #' @export 
 
-get_r_import_path_chr <- function (r_data_dir_chr, name_chr, data_type_chr) 
+get_r_import_path_chr <- function (processed_fls_dir_1L_chr, name_chr, data_type_chr) 
 {
     if (data_type_chr == "Geometry") 
         name_chr <- paste0(name_chr, "_sf")
-    paste0(r_data_dir_chr, "/", name_chr, ".RDS")
+    paste0(processed_fls_dir_1L_chr, "/", name_chr, ".RDS")
 }
 #' Get res specific vars
 #' @description get_res_specific_vars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get res specific vars. Function argument var_names specifies the where to look for the required object. The function is called for its side effects and does not return a value.
@@ -494,20 +494,20 @@ get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_dbl, validate_l
 #' @description get_sngl_path_for_imp() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get sngl path for import. Function argument downloaded_data_tb specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param downloaded_data_tb Downloaded data (a tibble)
 #' @param match_value_xx PARAM_DESCRIPTION
-#' @param data_directory PARAM_DESCRIPTION
+#' @param raw_fls_dir_1L_chr PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname get_sngl_path_for_imp
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom dplyr select
 #' @importFrom ready4fun get_from_lup
-get_sngl_path_for_imp <- function (downloaded_data_tb, match_value_xx, data_directory) 
+get_sngl_path_for_imp <- function (downloaded_data_tb, match_value_xx, raw_fls_dir_1L_chr) 
 {
     path_element_vector <- purrr::map_chr(downloaded_data_tb %>% 
         dplyr::select(-name) %>% names(), ~ready4::get_from_lup_obj(data_lookup_tb = downloaded_data_tb, 
         match_var_nm_1L_chr = "name", match_value_xx = match_value_xx, 
         target_var_nm_1L_chr = .x, evaluate_1L_lgl = FALSE))
-    paste0(data_directory, "/", paste(path_element_vector, collapse = "/"))
+    paste0(raw_fls_dir_1L_chr, "/", paste(path_element_vector, collapse = "/"))
 }
 #' Get spatial data list
 #' @description get_spatial_data_list() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get spatial data list. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
@@ -566,9 +566,9 @@ get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_m
                 sp_data_pack_lup() %>% dplyr::filter(name %in% 
                 .y) %>% dplyr::pull(year) %>% min(as.numeric()), 
             attribute_data = .y)) %>% stats::setNames(boundary_res)
-    index_ppr <- purrr::map_lgl(data_names_list, ~check_if_ppr(.x, 
+    index_ppr <- purrr::map_lgl(data_names_list, ~validate_popl_predns_incld(.x, 
         data_lookup_tb = lookup_tb(input_ls$pa_r4) %>% sp_data_pack_lup(), 
-        pop_projs_str = input_ls$pop_projs_str)) %>% which() + 
+        popl_predns_var_1L_chr = input_ls$popl_predns_var_1L_chr)) %>% which() + 
         1
     data_sf_list <- purrr::prepend(data_sf_list, list(index_ppr = index_ppr))
     return(data_sf_list)
@@ -592,14 +592,14 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
     data_year <- data_year(input_ls$pa_r4)
     at_specified_res <- input_ls$at_specified_res
     country <- country(input_ls$pa_r4)
-    pop_projs_str <- input_ls$pop_projs_str
+    popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
     lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     abbreviations_lookup_tb <- sp_abbreviations_lup(lookup_tb_r4)
     year_vec <- make_year_vec(input_ls = input_ls)
     lookup_tb_list <- purrr::map(at_highest_res, ~spatial_lookup_tb %>% 
         dplyr::filter(main_feature == .x) %>% dplyr::filter(year %in% 
-        year_vec[if (.x == pop_projs_str) 
+        year_vec[if (.x == popl_predns_var_1L_chr) 
             1:length(year_vec)
         else 1]))
     data_res_vec <- purrr::map_chr(lookup_tb_list, ~.x %>% dplyr::pull(area_type) %>% 
@@ -617,7 +617,7 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
     names_of_data_vec <- purrr::map(matched_yr_lookup_tb_list, 
         ~.x %>% dplyr::pull(name)) %>% purrr::flatten_chr()
     if (!identical(non_matched_year_vec, character(0))) {
-        closest_years <- get_closest_year(data_lookup_tb = spatial_lookup_tb, 
+        closest_years <- make_closest_yr_ls(data_lookup_tb = spatial_lookup_tb, 
             inc_main_ft_vec = non_matched_year_vec, target_year = data_year)
         extra_names <- purrr::map2_chr(non_matched_year_vec, 
             closest_years, ~ready4::get_from_lup_obj(data_lookup_tb = spatial_lookup_tb %>% 
@@ -657,7 +657,7 @@ get_starter_sf_for_profiled_area <- function (pa_r4, group_by_var_1L_chr)
             region_type(pa_r4)), target_var_nm_1L_chr = "starter_sf", 
         evaluate_1L_lgl = FALSE)
     starter_sf <- procure(pa_r4 %>% lookup_tb() %>% sp_data_pack_lup(), 
-        col_nm_1L_chr = "name", value_chr = starter_sf_nm %>% stringr::str_sub(end = -4))
+        col_nm_1L_chr = "name", match_value_xx = starter_sf_nm %>% stringr::str_sub(end = -4))
     if (use_coord_lup(pa_r4)) {
         starter_sf <- starter_sf %>% sf::`st_crs<-`(crs_nbr(pa_r4)[1])
     }

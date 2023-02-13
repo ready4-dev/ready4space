@@ -1,5 +1,5 @@
 make_main_intersect_tb.VicinityLookup <- function(x,
-                                                 r_data_dir_chr,
+                                                 processed_fls_dir_1L_chr,
                                                  template_tb,
                                                  tb_ref_var_chr,
                                                  ref_bound_yr,
@@ -10,15 +10,15 @@ make_main_intersect_tb.VicinityLookup <- function(x,
                         dplyr::filter(area_bndy_yr_chr == ref_bound_yr),
                       "area_type_chr",
                       ref_unit_chr,
-                      r_data_dir_chr = r_data_dir_chr)
+                      processed_fls_dir_1L_chr = processed_fls_dir_1L_chr)
   tgt_sf <- procure(x@sp_data_pack_lup %>%
                        dplyr::filter(area_bndy_yr_chr == tgt_bound_yr),
                      "area_type_chr",
                      tgt_unit_chr,
-                     r_data_dir_chr = r_data_dir_chr)
-  ref_var_chr <- x@sp_uid_lup %>% procure(value_chr = ref_unit_chr,
+                     processed_fls_dir_1L_chr = processed_fls_dir_1L_chr)
+  ref_var_chr <- x@sp_uid_lup %>% procure(match_value_xx = ref_unit_chr,
                                            area_bndy_yr_chr = ref_bound_yr)
-  tgt_var_chr <- x@sp_uid_lup %>% procure(value_chr = tgt_unit_chr,
+  tgt_var_chr <- x@sp_uid_lup %>% procure(match_value_xx = tgt_unit_chr,
                                            area_bndy_yr_chr = tgt_bound_yr)
   ref_sf <- ref_sf %>%
     dplyr::filter(!!rlang::sym(ref_var_chr) %in% (template_tb %>% dplyr::pull(tb_ref_var_chr)))

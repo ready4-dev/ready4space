@@ -10,7 +10,7 @@
 
 write_attr_tb <- function (attr_tb, obj_name, processed_fls_dir_1L_chr, overwrite_1L_lgl) 
 {
-    path_to_attr_tb_chr <- get_r_import_path_chr(r_data_dir_chr = processed_fls_dir_1L_chr, 
+    path_to_attr_tb_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
         name_chr = obj_name, data_type_chr = "Attribute")
     if (overwrite_1L_lgl | !file.exists(path_to_attr_tb_chr)) 
         saveRDS(attr_tb, file = path_to_attr_tb_chr)
@@ -127,7 +127,7 @@ write_fls_for_imp <- function (x, data_match_value_xx, match_var_nm_1L_chr, dire
 #' @importFrom ready4use `processed_fls_dir_1L_chr<-`
 write_fls_from_imp_and_upd_r4 <- function (x, processed_fls_dir_1L_chr_chr, crs_nbr_dbl) 
 {
-    save_raw(x, return_r4_lgl = T) %>% ready4use::`processed_fls_dir_1L_chr<-`(processed_fls_dir_1L_chr_chr) %>% 
+    author(x, return_r4_1L_lgl = T) %>% ready4use::`processed_fls_dir_1L_chr<-`(processed_fls_dir_1L_chr_chr) %>% 
         import_data(crs_nbr_dbl = crs_nbr_dbl) %>% update_this()
 }
 #' Write files from local import
@@ -147,22 +147,22 @@ write_fls_from_local_imp <- function (x, raw_fls_dir_1L_chr, write_1L_lgl)
 #' @description write_fls_from_sp_imp_and_upd_imp_ls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write files from sp import and update import list. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param x PARAM_DESCRIPTION
 #' @param crs_nbr_dbl PARAM_DESCRIPTION
-#' @param return_r4_lgl Return ready4 S4 (a logical vector), Default: T
+#' @param return_r4_1L_lgl Return ready4 S4 (a logical vector), Default: T
 #' @return NULL
 #' @rdname write_fls_from_sp_imp_and_upd_imp_ls
 #' @export 
 #' @importFrom ready4use assert_single_row_tb `path_to_seed_sf_1L_chr<-` `imports_ls<-`
 #' @importFrom stats setNames
-write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_dbl, return_r4_lgl = T) 
+write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_dbl, return_r4_1L_lgl = T) 
 {
     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
     ready4use::assert_single_row_tb(sp_import_lup)
-    imports_ls <- import_data(x = sp_import_lup, included_items_names = x@imports_chr, 
-        item_data_type = sp_import_lup$data_type, data_directory = x@raw_fls_dir_1L_chr, 
-        r_data_dir_chr = x@processed_fls_dir_1L_chr, write_1L_lgl = x@write_1L_lgl) %>% 
+    imports_ls <- import_data(x = sp_import_lup, imports_chr = x@imports_chr, 
+        data_type_1L_chr = sp_import_lup$data_type, raw_fls_dir_1L_chr = x@raw_fls_dir_1L_chr, 
+        processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, write_1L_lgl = x@write_1L_lgl) %>% 
         stats::setNames(x@imports_chr)
     if (sp_import_lup$data_type == "Geometry") {
-        path_to_seed_sf_1L_chr <- get_r_import_path_chr(r_data_dir_chr = x@processed_fls_dir_1L_chr, 
+        path_to_seed_sf_1L_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, 
             name_chr = names(imports_ls)[1], data_type_chr = "Geometry")
     }
     else {
@@ -172,7 +172,7 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_dbl, return_r4_lgl 
         path_to_seed_sf_1L_chr = path_to_seed_sf_1L_chr, merge_itms_chr = x@merge_itms_chr, 
         processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, crs_nbr_dbl = crs_nbr_dbl, 
         overwrite_1L_lgl = x@overwrite_1L_lgl)
-    if (return_r4_lgl) 
+    if (return_r4_1L_lgl) 
         ready4use::`path_to_seed_sf_1L_chr<-`(x, path_to_seed_sf_1L_chr) %>% 
             ready4use::`imports_ls<-`(imports_ls)
 }
@@ -247,23 +247,23 @@ write_procsd_imp_xx <- function (x, imports_ls, path_to_seed_sf_1L_chr, merge_it
     }
 }
 #' Write raw data from sp local
-#' @description write_raw_data_from_sp_local_r4() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write raw data from sp local ready4 s4. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_raw_data_from_VicinityLocal() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write raw data from sp local ready4 s4. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param x PARAM_DESCRIPTION
-#' @param return_r4_lgl Return ready4 S4 (a logical vector)
+#' @param return_r4_1L_lgl Return ready4 S4 (a logical vector)
 #' @return NULL
-#' @rdname write_raw_data_from_sp_local_r4
+#' @rdname write_raw_data_from_VicinityLocal
 #' @export 
 #' @importFrom ready4use assert_single_row_tb
-write_raw_data_from_sp_local_r4 <- function (x, return_r4_lgl) 
+write_raw_data_from_VicinityLocal <- function (x, return_r4_1L_lgl) 
 {
     sp_import_lup <- x@lup_tbs_r4@sp_import_lup
     ready4use::assert_single_row_tb(sp_import_lup)
     raw_format_sp_dir <- write_raw_format_dir(data_type_chr = sp_import_lup$data_type, 
         raw_fls_dir_1L_chr = x@raw_fls_dir_1L_chr)
-    imports_chr <- get_imports_chr(x@lup_tbs_r4, data_type_chr = sp_import_lup$data_type)
-    write_1L_lgl <- save_raw(x = sp_import_lup, required_data = imports_chr, 
-        destination_directory = raw_format_sp_dir, overwrite_1L_lgl = x@overwrite_1L_lgl)
-    if (return_r4_lgl) {
+    imports_chr <- make_imports_chr(x@lup_tbs_r4, data_type_chr = sp_import_lup$data_type)
+    write_1L_lgl <- author(x = sp_import_lup, required_data = imports_chr, 
+        dir_1L_chr = raw_format_sp_dir, overwrite_1L_lgl = x@overwrite_1L_lgl)
+    if (return_r4_1L_lgl) {
         makeProcessed_r4(x, imports_chr = imports_chr, 
             raw_fls_dir_1L_chr = raw_format_sp_dir, write_1L_lgl = write_1L_lgl)
     }

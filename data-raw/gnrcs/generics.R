@@ -2,13 +2,13 @@
 #                          ...){
 #   UseMethod("add_path_col",x)
 # }
-# gen_param_vals <- function(x,
+# reckon <- function(x,
 #                          n_its_int,
-#                          jt_dist = FALSE,
+#                          joint_dstr_1L_lgl = FALSE,
 #                          ...){
 #   if(n_its_int < 1 | n_its_int %% 1 != 0)
 #     stop("n_its_int must be a positive integer")
-#   UseMethod("gen_param_vals",x)
+#   UseMethod("reckon",x)
 # }
 # make_data_packs <- function(x,
 #                             ...){

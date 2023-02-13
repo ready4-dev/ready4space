@@ -66,7 +66,7 @@ input_data <- list(
   group_at_profile_unit = TRUE,
   #nbr_time_steps = 3,
   #nbr_distance_steps = 3,
-  pop_projs_str = "Population projections",
+  popl_predns_var_1L_chr = "Population projections",
   profiled_area_input = profiled_area_input,
   #profiled_area = profiled_area,#"Gippsland",#"Glenroy"
   #profiled_area_type = profiled_area_type, #"PHN",#"Headspace"#"Custom"#"PHN"#"Headspace"
@@ -137,9 +137,9 @@ ggplot2::ggplot(sim_results_ls[[1]]) +
 # ready.data::get_menu_of_type_detail_for_imp("Attribute")
 # attributes_to_import <- ready.data::get_menu_of_type_nms_for_imp("Attribute")
 # ready.data::data_import_selected_downloads(required_data = attributes_to_import,
-#                                            destination_directory = "data-raw")
-# import_items(included_items_names = attributes_to_import,
-#              item_data_type = "Attribute")
+#                                            dir_1L_chr = "data-raw")
+# import_items(imports_chr = attributes_to_import,
+#              data_type_1L_chr = "Attribute")
 
 ## DATA INPUT: SPATIAL
 

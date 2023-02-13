@@ -161,21 +161,6 @@ update_sp_data_list <- function(sp_data_list,
                                        featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)) # Is pop_val_prefix needed in this list?
   return(extended_sp_data_list)
 }
-update_spProcessed_r4 <- function(x) {
-  lookup_tbs_r4 <- x@lup_tbs_r4
-  sp_import_lup <- lookup_tbs_r4@sp_import_lup
-  ready4use::assert_single_row_tb(sp_import_lup)
-  if(sp_import_lup$data_type_chr == "Geometry"){
-    lookup_tbs_r4 <- add_templates(lookup_tbs_r4,
-                                            path_to_seed_sf_1L_chr = x@path_to_seed_sf_1L_chr) %>%
-      add_uid_lup()
-  }
-  #}
-  lookup_tbs_r4 %>%
-    add_data_pack_lup(template_ls = x@imports_ls,
-                      tbl_data_type_1L_chr = sp_import_lup$data_type_chr,
-                      package_1L_chr = x@pkg_1L_chr)
 
-}
 
 

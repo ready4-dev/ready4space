@@ -1,8 +1,34 @@
 transform_sf_ls <- function(sf_ls){
-  common_vars_chr <- get_common_vars_sf_ls(sf_ls)
+  common_vars_chr <- make_common_sf_vars_ls(sf_ls)
   transformed_sf_ls <-purrr::map(sf_ls, ~ .x %>% dplyr::select(common_vars_chr))
   return(transformed_sf_ls)
 }
+transform_multiple_vals <- function(distribution_chr,
+                                    dstr_param_1_dbl,
+                                    dstr_param_2_dbl,
+                                    dstr_param_3_dbl,
+                                    transformation_chr){
+  tfd_vas_num <- purrr::map_dbl(1:length(distribution_chr),
+                                ~ transform_value(distribution_chr[.x],
+                                                  dstr_param_1_dbl[.x],
+                                                  dstr_param_2_dbl[.x],
+                                                  dstr_param_3_dbl[.x],
+                                                  transformation_chr[.x]))
+  return(tfd_vas_num)
+}
+transform_value <- function(distribution_1L_chr, # calculate_val_from_dstr_sngl
+                            dstr_param_1_1L_dbl,
+                            dstr_param_2_1L_dbl,
+                            dstr_param_3_1L_dbl,
+                            transformation_1L_chr){
+  if(distribution_chr == "none")
+    x <- dstr_param_1_1L_dbl
+  if(!is.na(transformation_1L_chr))
+    x <- eval(parse(text=transformation_1L_chr))
+  tfd_val_1L_num <- x
+  return(tfd_val_1L_num)
+}
+
 ## Staged
 
 transform_circles_to_bands <- function(geom_distance_circle_sfs_list){
@@ -31,17 +57,7 @@ transform_sfx_to_pfx <- function(data_tb,
                                         gsub(paste0("_",
                                                     suffix),"",.))))
 }
-transform_sp_local_r4_toProcessed_r4 <- function(x,
-                                                   imports_chr,
-                                                   raw_fls_dir_1L_chr,
-                                                   write_1L_lgl){
-  VicinityLocalProcessed(lup_tbs_r4 = x@lup_tbs_r4,
-                       imports_chr = imports_chr,
-                       merge_itms_chr = x@merge_itms_chr,
-                       overwrite_1L_lgl = x@overwrite_1L_lgl,
-                       raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
-                       write_1L_lgl = write_1L_lgl)
-}
+
 transform_tt_polygon_to_sf <- function(tt_polyline,
                                        mode_of_transport,
                                        travel_time_hours,

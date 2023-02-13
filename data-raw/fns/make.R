@@ -4,7 +4,7 @@ make_attr_data_xx <- function(x_VicinityLookup,
   data_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
   attr_data_xx <- ingest(data_lookup_tb,
                           col_nm_1L_chr = "name_chr",
-                          value_chr = match_1L_chr)
+                          match_value_xx = match_1L_chr)
   if(is.data.frame(attr_data_xx)){
     attr_data_xx <- list(attr_data_xx) %>%
       stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb,
@@ -44,13 +44,69 @@ make_attr_data_xx <- function(x_VicinityLookup,
     dplyr::filter(var_name_chr %in% area_names_var_chr) %>%
     dplyr::filter(as.numeric(year_chr) == max(as.numeric(year_chr)[as.numeric(year_chr) <= as.numeric(boundary_year_1L_chr)])) %>%
     dplyr::pull(var_name_chr)
-  attr_data_xx <- manufacture(x_VicinityLookup,# updateAttrDataXx - Needs definition foir manufacture method
+  attr_data_xx <- manufacture(x_VicinityLookup,# updateAttrDataXx
                               attr_data_xx = attr_data_xx,
                               alt_names_sf = starter_sf,
                               area_names_var_chr = area_names_var_chr,
                               region_short_long_chr = region_short_long_chr,
                               match_value_xx = match_1L_chr)
   return(attr_data_xx)
+}
+make_closest_yrs_ls <- function(data_lookup_tb,
+                                inc_main_ft_vec,
+                                target_year,
+                                target_area = NULL,
+                                find_closest = "abs"){
+  if(!is.null(target_area)){
+    data_lookup_tb <- data_lookup_tb %>%
+      dplyr::filter(area_type_chr == target_area)
+  }
+  available_yrs_ls <- purrr::map(inc_main_ft_vec,
+                                 ~ data_lookup_tb %>%
+                                   dplyr::filter(main_feature_chr == .x) %>%
+                                   dplyr::pull(year_chr) %>%
+                                   as.numeric())
+  if(find_closest == "abs"){
+    closest_yrs_ls <- purrr::map(available_yrs_ls,
+                                 ~ .x[which(abs(.x - as.numeric(target_year)) == min(abs(.x - as.numeric(target_year))))])
+  }
+  if(find_closest == "previous"){
+    closest_yrs_ls <- purrr::map(available_yrs_ls,
+                                 ~ .x[which(as.numeric(target_year) - .x == min(max(as.numeric(target_year) - .x,0)))])
+  }
+
+  if(find_closest == "next"){
+    closest_yrs_ls <- purrr::map(available_yrs_ls,
+                                 ~ .x[which(.x - as.numeric(target_year) == min(max(.x - as.numeric(target_year),0)))])
+  }
+  return(closest_yrs_ls)
+}
+make_common_sf_vars_ls <- function(sf_ls){
+  vec_ls <- purrr::map(sf_ls, ~ names(.x))
+  common_sf_vars_ls <- Reduce(intersect, vec_ls)
+  return(common_sf_vars_ls)
+}
+make_common_sf_yrs_ls <- function(sf_ls){
+  vec_ls <- purrr::map(list_of_sfs, ~ get_included_yrs_sf(.x))
+  common_sf_yrs_ls <- Reduce(intersect, vec_ls)
+  return(common_sf_yrs_ls)
+}
+make_data_yrs_chr <- function(data_dtm){
+  data_yrs_chr <- data_dtm %>%
+    lubridate::year() %>%
+    as.character()
+  return(data_yrs_chr)
+}
+make_imports_chr <- function(x_VicinityLookup,#lookup_tbs_r4,
+                             data_type_1L_chr){
+  if(data_type_1L_chr == "Geometry"){
+    imports_chr <- x_VicinityLookup@vicinity_raw_r3 %>%
+      dplyr::filter(main_feature_chr == "Boundary") %>% dplyr::pull(name_chr)
+  }else{
+    imports_chr <- x_VicinityLookup@vicinity_raw_r3 %>%
+      dplyr::filter(data_type_1L_chr == "Attribute") %>% dplyr::pull(name_chr)
+    return(imports_chr)
+  }
 }
 make_intersecting_profiled_area <- function(profiled_sf,
                                             profiled_sf_col_1L_chr = NA,
@@ -96,6 +152,38 @@ make_intersecting_geometries <- function(sf_1,
     sf_3 %>% make_valid_new_sf()
   else
     sf_3
+}
+make_km_sqd_dbl <- function(data_sf){
+  data_sf %>%
+    dplyr::mutate(FT_AREA_SQKM = sf::st_area(.) %>%
+                    units::set_units(km^2)) %>%
+    dplyr::summarise(TOT_AREA_SQKM = sum(FT_AREA_SQKM)) %>%
+    dplyr::pull(TOT_AREA_SQKM)
+}
+make_merge_sf_chr <- function(x_VicinityLookup,
+                              y_vicinity_raw,
+                              processed_fls_dir_1L_chr = NULL){
+  if(is.null(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1))){
+    merge_sf_chr <- NA_character_
+  }else{
+    if(is.na(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1)) %>% any()){
+      merge_sf_chr <- NA_character_
+    }else{
+      merge_sf_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_boundaries_chr) %>% purrr::pluck(1),
+                     ~ ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+                                                match_value_xx = .x,
+                                                match_var_nm_1L_chr = "uid_chr",
+                                                target_var_nm_1L_chr = "name_chr",
+                                                evaluate_1L_lgl = FALSE) %>%
+                       ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+                                                match_value_xx = .,
+                                                match_var_nm_1L_chr = "name_chr",
+                                                target_var_nm_1L_chr = "source_reference_chr",
+                                                evaluate_1L_lgl = FALSE) %>%
+                       ifelse(stringr::str_detect(.,"::"),.,paste0("readRDS(\"",processed_fls_dir_1L_chr,"/",.,".rds\")")))
+    }
+  }
+  return(merge_sf_chr)
 }
 make_reconciled_intersecting_area <- function(profiled_sf,
                                               profiled_sf_col_1L_chr = NA,
@@ -169,7 +257,10 @@ make_sf_ls <- function(profiled_sf,
 }
 ##### In Progress
 
+
+
 ##### STAGED
+
 make_1_clstr_1_srvc_trvl_tm<- function(cluster_tb,
                                        service,
                                        time_min,
@@ -441,11 +532,11 @@ make_each_uid_a_poly_sf <- function(sf,
 make_env_param_tb <- function(n_its_int,
                               env_str_param_tb,
                               mape_str_param_tb,
-                              jt_dist){
-  param_val_mape <- gen_param_vals(x = mape_str_param_tb,
+                              joint_dstr_1L_lgl){
+  param_val_mape <- reckon(x = mape_str_param_tb,
                                              n_its_int = n_its_int,
-                                             jt_dist = jt_dist)
-  param_val_env <- gen_param_vals(x = env_str_param_tb,
+                                             joint_dstr_1L_lgl = joint_dstr_1L_lgl)
+  param_val_env <- reckon(x = env_str_param_tb,
                                             n_its_int = n_its_int)
   dplyr::bind_rows(param_val_env,
                    param_val_mape)
@@ -623,10 +714,10 @@ make_year_vec <- function(input_ls){
   data_year_chr <- input_ls$pa_r4@data_year_chr
   x_VicinityLookup <- input_ls$pa_r4@a_VicinityLookup
   spatial_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
-  pop_projs_str <- input_ls$pop_projs_str
+  popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
   model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
   year_opts <- spatial_lookup_tb %>%
-    dplyr::filter(main_feature_chr == pop_projs_str) %>%
+    dplyr::filter(main_feature_chr == popl_predns_var_1L_chr) %>%
     dplyr::pull(year_end_chr)
   year_opts <- year_opts[stringr::str_length(year_opts)==4]
   year_opts_ref <- which((year_opts %>%
@@ -638,3 +729,11 @@ make_year_vec <- function(input_ls){
     as.character()
   as.character(as.numeric(data_year_chr):as.numeric(model_end_year))
 }
+# make_sf_rows_fn <- function(...){
+#   attribution_1L_chr <- "Based on: https://github.com/r-spatial/sf/issues/49"
+#   sf_list <- rlang::dots_values(...)[[1]]
+#   sfg_list_column <- lapply(sf_list, function(sf) sf$geometry[[1]]) %>% sf::st_sfc()
+#   df <- lapply(sf_list, function(sf) sf::st_set_geometry(sf, NULL)) %>% dplyr::bind_rows()
+#   sf_appended_fn <- sf::st_sf(data.frame(df, geom=sfg_list_column))
+#   return(sf_appended_fn)
+# }

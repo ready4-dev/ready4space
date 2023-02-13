@@ -58,7 +58,7 @@ add_attr_recrly_to_sf <- function(input_ls,
                           dplyr::filter(area_type_chr == area_unit_1L_chr) %>%
                           dplyr::filter(main_feature_chr == "Boundary") %>%
                           dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
-                        value_chr = "Boundary")
+                        match_value_xx = "Boundary")
   attribute_data_ls <- purrr::map(attribute_data_chr,
                                   ~ .x) %>%
     stats::setNames(attribute_data_chr)
@@ -259,7 +259,7 @@ add_resolutions_lup <- function(x_VicinityLookup,
     dplyr::pull(region_chr)
   if(any(dr_nt_vec=="National")){
     nat_sf <- readRDS(dr_dp_vec[stringr::str_which(dr_nt_vec,"National") %>% min()])
-    nat_area <- nat_sf %>% get_area_sqkm_sf()
+    nat_area <- nat_sf %>% make_km_sqd_dbl()
   }else{
     nat_area <- NA_real_
   }
@@ -271,7 +271,7 @@ add_resolutions_lup <- function(x_VicinityLookup,
                                                         complete_lgl = T,
                                                         summed_area_dbl = ifelse(..3=="National",
                                                                                  nat_area,
-                                                                                 readRDS(..4) %>% get_area_sqkm_sf()),
+                                                                                 readRDS(..4) %>% make_km_sqd_dbl()),
                                                         mean_size_dbl =  summed_area_dbl / area_count_dbl))
   resolution_lup_r3 <- resolution_lup_r3 %>%
     vicinity_resolutions() %>%

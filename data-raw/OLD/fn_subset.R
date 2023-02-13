@@ -26,6 +26,6 @@ make_sf_ls <- function (profiled_sf, group_by_var_1L_chr)
 #' @importFrom dplyr select
 transform_sf_ls <- function (sf_ls) 
 {
-    common_vars_vec <- get_common_vars_sf_ls(sf_ls)
+    common_vars_vec <- make_common_sf_vars_ls(sf_ls)
     purrr::map(sf_ls, ~.x %>% dplyr::select(common_vars_vec))
 }
