@@ -582,7 +582,8 @@ make_sp_data_list <- function(input_ls,
   return(sp_data_list)
 }
 make_profiled_area_objs <- function(x_VicinityProfile){
-  group_by_var_1L_chr <- get_group_by_var_from_VicinityProfile(x_VicinityProfile = x_VicinityProfile)
+  group_by_var_1L_chr <- procure(x_VicinityProfile,
+                                 what_1L_chr = "grouping")
   st_profiled_sf <- get_starter_sf_for_profiled_area(x_VicinityProfile = x_VicinityProfile,
                                                      group_by_var_1L_chr = group_by_var_1L_chr)
   main_sub_div_var <- ifelse(use_coord_lup(x_VicinityProfile),

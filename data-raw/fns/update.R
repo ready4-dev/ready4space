@@ -94,7 +94,8 @@ update_sp_data_list <- function(sp_data_list,
   at_highest_res = input_ls$at_highest_res
   distance_km = geom_dist_limit_km(input_ls$x_VicinityProfile)
   travel_time_mins = drive_time_limit_mins(input_ls$x_VicinityProfile)
-  group_by_var_1L_chr <- get_group_by_var_from_VicinityProfile(input_ls$x_VicinityProfile)
+  group_by_var_1L_chr <- procure(input_ls$x_VicinityProfile,#get_group_by_var_from_VicinityProfile
+                                 what_1L_chr = "grouping")
   dynamic_var_rsl_1L_chr <- names(sp_data_list)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
   age_sex_counts_grouped_by <- ready4::get_from_lup_obj(data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>%
                                                        sp_uid_lup() %>%

@@ -1,38 +1,3 @@
-get_group_by_var <- function(geometry_rsl_1L_chr,
-                             data_rsl_1L_chr,
-                             group_at_geom_unit_1L_lgl = TRUE,
-                             x_vicinity_identifiers, # "x_vicinity_identifiers ???
-                             area_bndy_yr_dbl){ ### REPLACE ?????
-  group_by_1L_chr <- ifelse(group_at_geom_unit_1L_lgl,
-                     ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_identifiers %>% dplyr::filter(spatial_unit_chr == geometry_rsl_1L_chr) %>%
-                                               dplyr::filter(as.numeric(year_chr)==area_bndy_yr_dbl),
-                                             match_var_nm_1L_chr = "spatial_unit_chr",
-                                             match_value_xx = geometry_rsl_1L_chr,
-                                             target_var_nm_1L_chr = "var_name_chr",
-                                             evaluate_1L_lgl = FALSE),
-                     ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_identifiers,
-                                             match_var_nm_1L_chr = "spatial_unit_chr",
-                                             match_value_xx = data_rsl_1L_chr,
-                                             target_var_nm_1L_chr = "var_name_chr",
-                                             evaluate_1L_lgl = FALSE))
-  return(group_by_1L_chr)
-}
-get_group_by_var_from_VicinityProfile <- function(x_VicinityProfile){
-  y_vicinity_identifiers = x_VicinityProfile@a_VicinityLookup@vicinity_identifiers_r3
-  if(!x_VicinityProfile@use_coord_lup_lgl){
-    group_by_var_1L_chr <- get_group_by_var(geometry_rsl_1L_chr = x_VicinityProfile@area_type_chr,
-                                     x_vicinity_identifiers = y_vicinity_identifiers,
-                                     area_bndy_yr_dbl = x_VicinityProfile@area_bndy_yr_dbl)
-  }else{
-    if(is.na(x_VicinityProfile@geomc_dist_limit_km_dbl))
-      group_by_var_1L_chr <- "drive_times"
-    else
-      group_by_var_1L_chr <- "distance_km"
-    get_group_by_var(geometry_rsl_1L_chr = "GEOMETRIC_DISTANCE",
-                     x_vicinity_identifiers = y_vicinity_identifiers) ## MAY NEED REPLACING
-  }
-  return(group_by_var_1L_chr)
-}
 ### PAUSED HERE
 get_highest_res <- function(options_vec,
                             year_1L_dbl,
@@ -443,10 +408,47 @@ get_starter_sf_for_profiled_area <- function(x_VicinityProfile,
   }
   return(starter_sf)
 }
-get_sys_data_tbs_ls <- function(){
-  list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
-       aus_data_resolution_tb = aus_data_resolution_tb,
-       aus_state_short_tb = aus_state_short_tb,
-       group_by_var_1L_chr_lookup_tb = group_by_var_1L_chr_lookup_tb)
-}
+# get_group_by_var <- function(geometry_rsl_1L_chr, ## procure
+#                              data_rsl_1L_chr,
+#                              group_at_geom_unit_1L_lgl = TRUE,
+#                              x_vicinity_identifiers, # "x_vicinity_identifiers ???
+#                              area_bndy_yr_dbl){ ### REPLACE ?????
+#   group_by_1L_chr <- ifelse(group_at_geom_unit_1L_lgl,
+#                             ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_identifiers %>% dplyr::filter(spatial_unit_chr == geometry_rsl_1L_chr) %>%
+#                                                        dplyr::filter(as.numeric(year_chr)==area_bndy_yr_dbl),
+#                                                      match_var_nm_1L_chr = "spatial_unit_chr",
+#                                                      match_value_xx = geometry_rsl_1L_chr,
+#                                                      target_var_nm_1L_chr = "var_name_chr",
+#                                                      evaluate_1L_lgl = FALSE),
+#                             ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_identifiers,
+#                                                      match_var_nm_1L_chr = "spatial_unit_chr",
+#                                                      match_value_xx = data_rsl_1L_chr,
+#                                                      target_var_nm_1L_chr = "var_name_chr",
+#                                                      evaluate_1L_lgl = FALSE))
+#   return(group_by_1L_chr)
+# }
+# get_group_by_var_from_VicinityProfile <- function(x_VicinityProfile){ Now procire mthd
+#   y_vicinity_identifiers = x_VicinityProfile@a_VicinityLookup@vicinity_identifiers_r3
+#   if(!x_VicinityProfile@use_coord_lup_lgl){
+#     group_by_var_1L_chr <- procure.vicinity_identifiers(y_vicinity_identifiers,#get_group_by_var
+#                                                         geometry_rsl_1L_chr = x_VicinityProfile@area_type_chr,#get_group_by_var
+#                                                         area_bndy_yr_chr = as.character(x_VicinityProfile@area_bndy_yr_dbl))
+#   }else{
+#     if(is.na(x_VicinityProfile@geomc_dist_limit_km_dbl))
+#       group_by_var_1L_chr <- "drive_times"
+#     else
+#       group_by_var_1L_chr <- "distance_km"
+#     # procure.vicinity_identifiers(y_vicinity_identifiers,#get_group_by_var
+#     #                              geometry_rsl_1L_chr = "GEOMETRIC_DISTANCE",
+#     #                              area_bndy_yr_chr = as.character(x_VicinityProfile@area_bndy_yr_dbl) ## Addition - Not sure if correct.
+#     #                              ) ## MAY NEED REPLACING
+#   }
+#   return(group_by_var_1L_chr)
+# }
+# get_sys_data_tbs_ls <- function(){
+#   list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
+#        aus_data_resolution_tb = aus_data_resolution_tb,
+#        aus_state_short_tb = aus_state_short_tb,
+#        group_by_var_1L_chr_lookup_tb = group_by_var_1L_chr_lookup_tb)
+# }
 
