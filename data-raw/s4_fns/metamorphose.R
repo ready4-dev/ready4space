@@ -15,9 +15,10 @@ metamorphose_VicinityLocalProcessed <- function(x) { #update_this #update_spProc
   vicinity_raw_r3 <- y_VicinityLookup@vicinity_raw_r3
   ready4use::assert_single_row_tb(vicinity_raw_r3)
   if(vicinity_raw_r3$data_type_chr == "Geometry"){
-    y_VicinityLookup <- add_templates(y_VicinityLookup,
-                                      path_to_seed_sf_1L_chr = x@path_to_seed_sf_1L_chr) %>%
-      add_uid_lup()
+    y_VicinityLookup <- renew(y_VicinityLookup,
+                                      path_1L_chr = x@path_to_seed_sf_1L_chr,
+                              what_1L_chr = "templates") %>%
+      renew(what_1L_chr = "identifiers")#add_uid_lup()
   }
   #}
   y_VicinityLookup <- y_VicinityLookup %>%

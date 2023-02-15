@@ -8,7 +8,8 @@ metamorphose.vicinity_raw <- function(x,#make_data_packs
                                       overwrite_1L_lgl = F){
   if(is.null(y_VicinityLookup))
     y_VicinityLookup <- VicinityLookup()
-  x <- x %>% add_names() %>%
+  x <- renew(x,
+             what_1L_chr = "names") %>% #add_names() %>%
     order_tb()
   z_VicinityLookup <- purrr::reduce(1:nrow(x),
                                  .init = y_VicinityLookup,

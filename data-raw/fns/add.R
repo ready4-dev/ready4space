@@ -17,67 +17,6 @@ add_attr_to_sf <- function(area_sf,
   }
   return(updated_area_sf)
 }
-add_data_pack_lup <- function(x_VicinityLookup,
-                              tbl_data_type_1L_chr = "Geometry",
-                              template_ls = NULL,
-                              package_1L_chr){
-  data_pk_lup_arguments_ls <- purrr::map2(template_ls, # remove (carefully)
-                                          names(template_ls),
-                                          ~ list(.x, # remove (carefully)
-                                                 .y,
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "area_type_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "area_bndy_yr_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "region_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "year_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "year_start_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "year_end_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE),
-                                                 ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
-                                                                          target_var_nm_1L_chr = "main_feature_chr",
-                                                                          match_var_nm_1L_chr = "name_chr",
-                                                                          match_value_xx = .y,
-                                                                          evaluate_1L_lgl = FALSE))) # Set names here to allow names based referencing in destination function.
-  data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls,
-                                    .init = x_VicinityLookup@vicinity_processed_r3,
-                                    ~ add_attr_tb_to_processed_lup(.x,.y)) %>%
-    dplyr::mutate(data_type_chr = tbl_data_type_1L_chr)
-  package_1L_chr <- ifelse(package_1L_chr ==""|is.na(package_1L_chr),"", paste0(package_1L_chr,"::"))
-  data_pack_lup_r3 <- data_pack_lup_r3 %>%
-    dplyr::mutate(source_reference_chr = paste0(package_1L_chr,source_reference_chr))  %>%
-    dplyr::mutate(source_reference_chr = purrr::map2_chr(main_feature_chr,
-                                                         source_reference_chr,
-                                                         ~ ifelse(.x == "Boundary",
-                                                                  paste0(.y,
-                                                                         "_sf"),
-                                                                  .y)))
-  x_VicinityLookup <- renewSlot(x_VicinityLookup,
-                                "vicinity_processed_r3",#"vicinity_raw_r3",# Correct?
-                                data_pack_lup_r3)
-  return(x_VicinityLookup)
-}
 add_dynamic_vars_to_sf <- function(dynamic_vars_sf,
                                    profiled_sf,
                                    dynamic_var_rsl_1L_chr,
@@ -99,13 +38,14 @@ add_dynamic_vars_to_sf <- function(dynamic_vars_sf,
   dyn_param_unit_id_1L_chr <- names(dynamic_vars_sf)[1] # Should be read from lookup
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(dynamic_var_nm_1L_chr) := paste0(!!rlang::sym(dyn_param_unit_id_1L_chr),"_",!!rlang::sym(dynamic_var_nm_1L_chr)))
-  update_pop_count_by_areas(profiled_sf = profiled_sf,
+  profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
                             group_by_var_1L_chr = group_by_var_1L_chr,
                             dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr,
                             data_year_chr = data_year_chr,
                             dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                             tot_pop_resolution = NULL,
                             featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
+  return(profiled_sf)
 
 }
 add_km_sqd <- function(geometry_sf,
@@ -166,75 +106,6 @@ add_names <- function(ds_tb){
                                                                                                              .x)))
   return(ds_tb)
 }
-add_resolutions_lup <- function(x_VicinityLookup,
-                                processed_fls_dir_1L_chr){
-  dr_dp_tb <- x_VicinityLookup@vicinity_processed_r3 %>%
-    dplyr::filter(main_feature_chr == "Boundary") %>%
-    dplyr::select(area_type_chr,country_chr,region_chr,source_reference_chr,year_chr) %>%
-    dplyr::mutate(source_reference_chr = paste0(processed_fls_dir_1L_chr,
-                                                "/",
-                                                source_reference_chr,
-                                                ".RDS"))
-  dr_dp_vec <- dr_dp_tb  %>%
-    dplyr::pull(source_reference_chr)
-  dr_nt_vec <- dr_dp_tb  %>%
-    dplyr::pull(region_chr)
-  if(any(dr_nt_vec=="National")){
-    nat_sf <- readRDS(dr_dp_vec[stringr::str_which(dr_nt_vec,"National") %>% min()])
-    nat_area <- nat_sf %>% make_km_sqd_dbl()
-  }else{
-    nat_area <- NA_real_
-  }
-  resolution_lup_r3 <- purrr::pmap_dfr(dr_dp_tb,
-                                       ~ tibble::tibble(parent_area_chr= ..2,
-                                                        boundary_year_dbl = as.numeric(..5),
-                                                        area_type_chr = ..1,
-                                                        area_count_dbl = nrow(readRDS(..4)) %>% as.double(),
-                                                        complete_lgl = T,
-                                                        summed_area_dbl = ifelse(..3=="National",
-                                                                                 nat_area,
-                                                                                 readRDS(..4) %>% make_km_sqd_dbl()),
-                                                        mean_size_dbl =  summed_area_dbl / area_count_dbl))
-  resolution_lup_r3 <- resolution_lup_r3 %>%
-    vicinity_resolutions() %>%
-    dplyr::arrange(mean_size_dbl)
-  x_VicinityLookup <- renewSlot(x_VicinityLookup,
-                                "vicinity_resolutions_r3",
-                                resolution_lup_r3)
-  return(x_VicinityLookup)
-}
-add_templates <- function(x_VicinityLookup,
-                          path_to_seed_sf_1L_chr){
-  starter_sf_nm_1L_chr <- get_name_from_path_chr(path_to_seed_sf_1L_chr, with_ext_1L_lgl = F)
-  starter_sf_lup_r3 <- tibble::add_row(x_VicinityLookup@vicinity_templates_r3 ,
-                                       country_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(country_chr),
-                                       area_type_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(area_type_chr),
-                                       area_bndy_yr_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(area_bndy_yr_chr),
-                                       starter_sf = starter_sf_nm_1L_chr,
-                                       subdivision_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(uid_chr)) ## Assumes length one list
-  x_VicinityLookup <- renewSlot(x_VicinityLookup,
-                                "vicinity_templates_r3",
-                                starter_sf_lup_r3)
-  return(x_VicinityLookup)
-}
-add_uid_lup <- function(x_VicinityLookup#lookup_tbs_r4
-                        ){
-  uid_lup_r3 <- tibble::add_row(vicinity_identifiers(),
-                                spatial_unit_chr = x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
-                                  dplyr::pull(area_type_chr),
-                                year_chr =   x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
-                                  dplyr::pull(area_bndy_yr_chr), ## "All".
-                                var_name_chr =  x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
-                                  dplyr::pull(uid_chr))
-  x_VicinityLookup <- renewSlot(x_VicinityLookup,"vicinity_identifiers_r3", uid_lup_r3) #`sp_uid_lup<-`(x_VicinityLookup, uid_lup_r3)
-  return(x_VicinityLookup)
-}
-
-
-##### In progress
-
-##### STAGED
-
 # add_attribute_to_data_pack_from_tb <- function(attr_tb,
 #                                                object_name_1L_chr){
 #   eval(parse(text = paste0(object_name_1L_chr,
@@ -343,4 +214,128 @@ add_uid_lup <- function(x_VicinityLookup#lookup_tbs_r4
 #     transform_sf_ls() %>%
 #     purrr::reduce(~rbind(.x,.y))
 #   return(sf_ls)
+# }
+# add_data_pack_lup <- function(x_VicinityLookup, # Now a renew mthd
+#                               tbl_data_type_1L_chr = "Geometry",
+#                               template_ls = NULL,
+#                               package_1L_chr){
+#   data_pk_lup_arguments_ls <- purrr::map2(template_ls, # remove (carefully)
+#                                           names(template_ls),
+#                                           ~ list(.x, # remove (carefully)
+#                                                  .y,
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "area_type_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "area_bndy_yr_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "region_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "year_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "year_start_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "year_end_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE),
+#                                                  ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
+#                                                                           target_var_nm_1L_chr = "main_feature_chr",
+#                                                                           match_var_nm_1L_chr = "name_chr",
+#                                                                           match_value_xx = .y,
+#                                                                           evaluate_1L_lgl = FALSE))) # Set names here to allow names based referencing in destination function.
+#   data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls,
+#                                     .init = x_VicinityLookup@vicinity_processed_r3,
+#                                     ~ add_attr_tb_to_processed_lup(.x,.y)) %>%
+#     dplyr::mutate(data_type_chr = tbl_data_type_1L_chr)
+#   package_1L_chr <- ifelse(package_1L_chr ==""|is.na(package_1L_chr),"", paste0(package_1L_chr,"::"))
+#   data_pack_lup_r3 <- data_pack_lup_r3 %>%
+#     dplyr::mutate(source_reference_chr = paste0(package_1L_chr,source_reference_chr))  %>%
+#     dplyr::mutate(source_reference_chr = purrr::map2_chr(main_feature_chr,
+#                                                          source_reference_chr,
+#                                                          ~ ifelse(.x == "Boundary",
+#                                                                   paste0(.y,
+#                                                                          "_sf"),
+#                                                                   .y)))
+#   x_VicinityLookup <- renewSlot(x_VicinityLookup,
+#                                 "vicinity_processed_r3",#"vicinity_raw_r3",# Correct?
+#                                 data_pack_lup_r3)
+#   return(x_VicinityLookup)
+# }
+# add_resolutions_lup <- function(x_VicinityLookup, ## NOW RENEW MTHD
+#                                 processed_fls_dir_1L_chr){
+#   dr_dp_tb <- x_VicinityLookup@vicinity_processed_r3 %>%
+#     dplyr::filter(main_feature_chr == "Boundary") %>%
+#     dplyr::select(area_type_chr,country_chr,region_chr,source_reference_chr,year_chr) %>%
+#     dplyr::mutate(source_reference_chr = paste0(processed_fls_dir_1L_chr,
+#                                                 "/",
+#                                                 source_reference_chr,
+#                                                 ".RDS"))
+#   dr_dp_vec <- dr_dp_tb  %>%
+#     dplyr::pull(source_reference_chr)
+#   dr_nt_vec <- dr_dp_tb  %>%
+#     dplyr::pull(region_chr)
+#   if(any(dr_nt_vec=="National")){
+#     nat_sf <- readRDS(dr_dp_vec[stringr::str_which(dr_nt_vec,"National") %>% min()])
+#     nat_area <- nat_sf %>% make_km_sqd_dbl()
+#   }else{
+#     nat_area <- NA_real_
+#   }
+#   resolution_lup_r3 <- purrr::pmap_dfr(dr_dp_tb,
+#                                        ~ tibble::tibble(parent_area_chr= ..2,
+#                                                         boundary_year_dbl = as.numeric(..5),
+#                                                         area_type_chr = ..1,
+#                                                         area_count_dbl = nrow(readRDS(..4)) %>% as.double(),
+#                                                         complete_lgl = T,
+#                                                         summed_area_dbl = ifelse(..3=="National",
+#                                                                                  nat_area,
+#                                                                                  readRDS(..4) %>% make_km_sqd_dbl()),
+#                                                         mean_size_dbl =  summed_area_dbl / area_count_dbl))
+#   resolution_lup_r3 <- resolution_lup_r3 %>%
+#     vicinity_resolutions() %>%
+#     dplyr::arrange(mean_size_dbl)
+#   x_VicinityLookup <- renewSlot(x_VicinityLookup,
+#                                 "vicinity_resolutions_r3",
+#                                 resolution_lup_r3)
+#   return(x_VicinityLookup)
+# }
+# add_templates <- function(x_VicinityLookup, #NOW RENEW METHOD
+#                           path_to_seed_sf_1L_chr){
+#   starter_sf_nm_1L_chr <- get_name_from_path_chr(path_to_seed_sf_1L_chr, with_ext_1L_lgl = F)
+#   starter_sf_lup_r3 <- tibble::add_row(x_VicinityLookup@vicinity_templates_r3 ,
+#                                        country_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(country_chr),
+#                                        area_type_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(area_type_chr),
+#                                        area_bndy_yr_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(area_bndy_yr_chr),
+#                                        starter_sf = starter_sf_nm_1L_chr,
+#                                        subdivision_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(uid_chr)) ## Assumes length one list
+#   x_VicinityLookup <- renewSlot(x_VicinityLookup,
+#                                 "vicinity_templates_r3",
+#                                 starter_sf_lup_r3)
+#   return(x_VicinityLookup)
+# }
+# add_uid_lup <- function(x_VicinityLookup#lookup_tbs_r4 # NOW renew mthd
+# ){
+#   uid_lup_r3 <- tibble::add_row(vicinity_identifiers(),
+#                                 spatial_unit_chr = x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
+#                                   dplyr::pull(area_type_chr),
+#                                 year_chr =   x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
+#                                   dplyr::pull(area_bndy_yr_chr), ## "All".
+#                                 var_name_chr =  x_VicinityLookup@vicinity_raw_r3 %>% # sp_import_lup(x_VicinityLookup) %>%
+#                                   dplyr::pull(uid_chr))
+#   x_VicinityLookup <- renewSlot(x_VicinityLookup,"vicinity_identifiers_r3", uid_lup_r3) #`sp_uid_lup<-`(x_VicinityLookup, uid_lup_r3)
+#   return(x_VicinityLookup)
 # }
