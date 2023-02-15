@@ -32,7 +32,7 @@ add_attr_list_to_sf <- function (x, y, lookup_tb_r4)
 add_attr_recrly_to_sf <- function (input_ls, sub_div_unit = NULL, area_unit_1L_chr, boundary_year, 
     attribute_data) 
 {
-    lookup_tb_r4 <- lookup_tb(input_ls$pa_r4)
+    lookup_tb_r4 <- lookup_tb(input_ls$x_VicinityProfile)
     data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     boundary_file <- procure(data_lookup_tb %>% dplyr::filter(area_type == 
         area_unit_1L_chr) %>% dplyr::filter(main_feature == "Boundary") %>% 

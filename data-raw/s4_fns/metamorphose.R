@@ -21,9 +21,10 @@ metamorphose_VicinityLocalProcessed <- function(x) { #update_this #update_spProc
   }
   #}
   y_VicinityLookup <- y_VicinityLookup %>%
-    add_data_pack_lup(template_ls = x@imports_ls,
-                      tbl_data_type_1L_chr = vicinity_raw_r3$data_type_chr,
-                      package_1L_chr = x@pkg_1L_chr)
+    renew(template_ls = x@imports_ls,#add_data_pack_lup
+          tbl_data_type_1L_chr = vicinity_raw_r3$data_type_chr,
+          package_1L_chr = x@pkg_1L_chr,
+          what_1L_chr = "processed")
   return(y_VicinityLookup)
 
 }

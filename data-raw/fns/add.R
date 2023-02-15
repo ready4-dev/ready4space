@@ -1,35 +1,6 @@
-add_attr_list_to_sf <- function(area_sf,#x,
-                                match_1L_chr,#y,
-                                x_VicinityLookup#lookup_tb_r4
-){
-  attr_data_xx <- make_attr_data_xx(x_VicinityLookup = x_VicinityLookup,
-                                    match_value_xx = match_1L_chr,
-                                    starter_sf = area_sf)
-  updated_area_sf <- add_attr_to_sf(area_sf = area_sf,
-                                    attr_data_tb = attr_data_xx,
-                                    attr_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_processed_r3,
-                                                                              match_value_xx = match_1L_chr,
-                                                                              match_var_nm_1L_chr = "name_chr",
-                                                                              target_var_nm_1L_chr = "main_feature_chr"))
-  return(updated_area_sf)
-}
-add_attr_tb_to_processed_lup <- function(x,y){ ## Replace with names based referencing.
-  add_attrs_to_processed_lup(data_pack_lup = x,
-                             #attr_tb = y[[1]], # remove (carefully)
-                             object_name_1L_chr = y[[2]],
-                             area_type_chr = y[[3]],
-                             area_bndy_yr_chr = y[[4]],
-                             region_chr = y[[5]],
-                             year_chr = y[[6]],
-                             year_start_chr = y[[7]],
-                             year_end_chr = y[[8]],
-                             main_feature_chr = y[[9]])
-}
-
 add_attr_to_sf <- function(area_sf,
                            attr_data_tb,
-                           attr_data_desc_1L_chr,#
-){
+                           attr_data_desc_1L_chr){
   if(attr_data_desc_1L_chr == "PPR"){ # "Population projections"
     updated_area_sf <- dplyr::inner_join(area_sf,
                                       attr_data_tb)
@@ -46,55 +17,6 @@ add_attr_to_sf <- function(area_sf,
   }
   return(updated_area_sf)
 }
-add_attr_recrly_to_sf <- function(input_ls,
-                                  sub_div_unit = NULL,
-                                  area_unit_1L_chr,
-                                  boundary_year_1L_chr,
-                                  attribute_data_chr
-){
-  x_VicinityLookup <- input_ls$pa_r4@a_VicinityLookup
-  data_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
-  boundary_sf <- ingest(data_lookup_tb %>%
-                          dplyr::filter(area_type_chr == area_unit_1L_chr) %>%
-                          dplyr::filter(main_feature_chr == "Boundary") %>%
-                          dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
-                        match_value_xx = "Boundary")
-  attribute_data_ls <- purrr::map(attribute_data_chr,
-                                  ~ .x) %>%
-    stats::setNames(attribute_data_chr)
-  sf_ls <- purrr::map(attribute_data_ls,
-                      ~ add_attr_list_to_sf(x = boundary_sf,
-                                            y = .x,
-                                            x_VicinityLookup = x_VicinityLookup)) %>%
-    transform_sf_ls() %>%
-    purrr::reduce(~rbind(.x,.y))
-  return(sf_ls)
-}
-add_attrs_to_processed_lup <- function(data_pack_lup,
-                                       #attr_tb, # remove (carefully)
-                                       object_name_1L_chr,
-                                       area_type_chr,
-                                       area_bndy_yr_chr,
-                                       region_chr,
-                                       year_chr,
-                                       year_start_chr,
-                                       year_end_chr,
-                                       main_feature_chr){ # replace with names based referencing
-  tibble::tibble(name_chr = object_name_1L_chr, #name
-                 country_chr = "Australia", # Pull this from context data.
-                 area_type_chr = area_type_chr,
-                 area_bndy_yr_chr = area_bndy_yr_chr,
-                 region_chr = region_chr,
-                 data_type_chr = "Attribute",
-                 main_feature_chr = main_feature_chr,
-                 year_chr = year_chr,
-                 year_start_chr = year_start_chr,
-                 year_end_chr = year_end_chr,
-                 source_reference_chr = object_name_1L_chr) %>%
-    dplyr::bind_rows(data_pack_lup,
-                     .)
-}
-
 add_data_pack_lup <- function(x_VicinityLookup,
                               tbl_data_type_1L_chr = "Geometry",
                               template_ls = NULL,
@@ -217,7 +139,7 @@ add_km_sqd_by_group <- function(geometry_sf,
 add_names <- function(ds_tb){
   data(ISO_3166_1, package = "ISOcodes", envir = environment())
   ds_tb <- ds_tb %>%
-    dplyr::mutate(name = purrr::pmap_chr(list(country_chr,
+    dplyr::mutate(name_chr = purrr::pmap_chr(list(country_chr,
                                               area_type_chr,
                                               region_chr,
                                               data_type_chr,
@@ -237,7 +159,7 @@ add_names <- function(ds_tb){
                                                          paste0("_",tolower(..5),"_")),
                                                   ..6
                                          )))
-  ds_tb <- ds_tb %>% dplyr::mutate(name = make.unique(name)) %>% dplyr::mutate(name = map_chr(name, ~ ifelse(stringr::str_sub(.x,start = -2, end = -2) == ".",
+  ds_tb <- ds_tb %>% dplyr::mutate(name_chr = make.unique(name_chr)) %>% dplyr::mutate(name_chr = map_chr(name_chr, ~ ifelse(stringr::str_sub(.x,start = -2, end = -2) == ".",
                                                                                                              paste0(stringr::str_sub(.x, end = 11),
                                                                                                                     stringr::str_sub(.x,start = -1),
                                                                                                                     stringr::str_sub(.x, start = 12, end = -3)),
@@ -282,7 +204,7 @@ add_resolutions_lup <- function(x_VicinityLookup,
   return(x_VicinityLookup)
 }
 add_templates <- function(x_VicinityLookup,
-                                   path_to_seed_sf_1L_chr){
+                          path_to_seed_sf_1L_chr){
   starter_sf_nm_1L_chr <- get_name_from_path_chr(path_to_seed_sf_1L_chr, with_ext_1L_lgl = F)
   starter_sf_lup_r3 <- tibble::add_row(x_VicinityLookup@vicinity_templates_r3 ,
                                        country_chr = x_VicinityLookup@vicinity_raw_r3 %>% dplyr::pull(country_chr),
@@ -334,7 +256,6 @@ add_uid_lup <- function(x_VicinityLookup#lookup_tbs_r4
 #               ~ eval(parse(text = paste0(object_name_stub,.x %>% stringr::str_sub(start = 2),
 #                                          "<<-combined_ste_ppr_ls$",.x))))
 # }
-
 # add_popl_predn_ls <- function(x,y){ ## update with names and check calling function(s).
 #   add_popl_predn(data_pack_lup = x,
 #                            combined_ste_ppr_ls = y[[1]],
@@ -361,12 +282,65 @@ add_uid_lup <- function(x_VicinityLookup#lookup_tbs_r4
 #     dplyr::bind_rows(data_pack_lup,
 #                      .)
 # }
-
-
-# add_uid_lup <- function(lookup_tbs_r4){
-#   uid_lup_r3 <- tibble::add_row(vicinity_identifiers(),
-#                                 spatial_unit_chr = lookup_tbs_r4@vicinity_raw_r3 %>% dplyr::pull(area_type_chr),
-#                                 year_chr =  lookup_tbs_r4@vicinity_raw_r3 %>% dplyr::pull(area_bndy_yr_chr), ## "All".
-#                                 var_name_chr = lookup_tbs_r4@vicinity_raw_r3 %>% dplyr::pull(uid_chr))
-#   `sp_uid_lup<-`(lookup_tbs_r4, uid_lup_r3)
+# add_attrs_to_processed_lup <- function(data_pack_lup, # NOW renew method
+#                                        #attr_tb, # remove (carefully)
+#                                        object_name_1L_chr,
+#                                        area_type_chr,
+#                                        area_bndy_yr_chr,
+#                                        region_chr,
+#                                        year_chr,
+#                                        year_start_chr,
+#                                        year_end_chr,
+#                                        main_feature_chr){ # replace with names based referencing
+#   tibble::tibble(name_chr = object_name_1L_chr, #name
+#                  country_chr = "Australia", # Pull this from context data.
+#                  area_type_chr = area_type_chr,
+#                  area_bndy_yr_chr = area_bndy_yr_chr,
+#                  region_chr = region_chr,
+#                  data_type_chr = "Attribute",
+#                  main_feature_chr = main_feature_chr,
+#                  year_chr = year_chr,
+#                  year_start_chr = year_start_chr,
+#                  year_end_chr = year_end_chr,
+#                  source_reference_chr = object_name_1L_chr) %>%
+#     dplyr::bind_rows(data_pack_lup,
+#                      .)
+# }
+# add_attr_list_to_sf <- function(area_sf,#x, ## NOW manufacture
+#                                 match_1L_chr,#y,
+#                                 x_VicinityLookup#lookup_tb_r4
+# ){
+#   attr_data_xx <- make_attr_data_xx(x_VicinityLookup = x_VicinityLookup,
+#                                     match_value_xx = match_1L_chr,
+#                                     starter_sf = area_sf)
+#   updated_area_sf <- add_attr_to_sf(area_sf = area_sf,
+#                                     attr_data_tb = attr_data_xx,
+#                                     attr_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_processed_r3,
+#                                                                               match_value_xx = match_1L_chr,
+#                                                                               match_var_nm_1L_chr = "name_chr",
+#                                                                               target_var_nm_1L_chr = "main_feature_chr"))
+#   return(updated_area_sf)
+# }
+# add_attr_recrly_to_sf <- function(input_ls, # Now Manufacture
+#                                   sub_div_unit = NULL,
+#                                   area_unit_1L_chr,
+#                                   boundary_year_1L_chr,
+#                                   attribute_data_chr){
+#   x_VicinityLookup <- input_ls$x_VicinityProfile@a_VicinityLookup
+#   data_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
+#   boundary_sf <- ingest(data_lookup_tb %>%
+#                           dplyr::filter(area_type_chr == area_unit_1L_chr) %>%
+#                           dplyr::filter(main_feature_chr == "Boundary") %>%
+#                           dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
+#                         match_value_xx = "Boundary")
+#   attribute_data_ls <- purrr::map(attribute_data_chr,
+#                                   ~ .x) %>%
+#     stats::setNames(attribute_data_chr)
+#   sf_ls <- purrr::map(attribute_data_ls,
+#                       ~ manufacture(x_VicinityLookup,
+#                                     area_sf = boundary_sf, #add_attr_list_to_sf
+#                                     match_1L_chr = .x)) %>%
+#     transform_sf_ls() %>%
+#     purrr::reduce(~rbind(.x,.y))
+#   return(sf_ls)
 # }

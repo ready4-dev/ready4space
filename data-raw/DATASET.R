@@ -75,7 +75,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                additional_detail_chr = "character(0)"#
                                                      ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).", NA_character_, NULL, NULL, NULL,
     TRUE, "raw", #"sp_import_lup"
-    list("tibble"), list("is_"), list("tibble"),list(name = "character(0)",#name
+    list("tibble"), list("is_"), list("tibble"),list(name_chr = "character(0)",#name
                                                                             country_chr = "character(0)",#country
                                                                             area_type_chr = "character(0)",#area_type
                                                                             area_bndy_yr_chr = "character(0)",#area_bound_yr
@@ -109,7 +109,7 @@ y <- ready4class::ready4class_constructor() %>%
     list("tibble"),list(country_chr = "character(0)",#country
                         area_type_chr = "character(0)",# area_type
                         area_bndy_yr_chr = "character(0)",#area_bound_yr
-                        starter_sf = "character(0)",#starter_sf
+                        starter_sf_nm_chr = "character(0)",#starter_sf ### NOT YET UPDATED
                         subdivision_chr = "character(0)"#sf_main_sub_div =
                         ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.", NA_character_, NULL, NULL, NULL,
     TRUE, "identifiers",#"sp_uid_lup"

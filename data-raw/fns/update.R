@@ -90,15 +90,15 @@ update_sf_boundary_descr <- function(look_up_ref,
 update_sp_data_list <- function(sp_data_list,
                                 input_ls,
                                 profiled_area_bands_list){
-  crs_nbr_dbl <-  input_ls$pa_r4 %>% crs_nbr()
+  crs_nbr_dbl <-  input_ls$x_VicinityProfile %>% crs_nbr()
   at_highest_res = input_ls$at_highest_res
-  distance_km = geom_dist_limit_km(input_ls$pa_r4)
-  travel_time_mins = drive_time_limit_mins(input_ls$pa_r4)
-  group_by_var_1L_chr <- get_group_by_var_from_pai(input_ls$pa_r4)
+  distance_km = geom_dist_limit_km(input_ls$x_VicinityProfile)
+  travel_time_mins = drive_time_limit_mins(input_ls$x_VicinityProfile)
+  group_by_var_1L_chr <- get_group_by_var_from_VicinityProfile(input_ls$x_VicinityProfile)
   dynamic_var_rsl_1L_chr <- names(sp_data_list)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
-  age_sex_counts_grouped_by <- ready4::get_from_lup_obj(data_lookup_tb = lookup_tb(input_ls$pa_r4) %>%
+  age_sex_counts_grouped_by <- ready4::get_from_lup_obj(data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>%
                                                        sp_uid_lup() %>%
-                                                       dplyr::filter(year_chr %in% c(input_ls$pa_r4@data_year_chr)),
+                                                       dplyr::filter(year_chr %in% c(input_ls$x_VicinityProfile@data_year_chr)),
                                                      match_var_nm_1L_chr = "spatial_unit_chr",
                                                      match_value_xx = dynamic_var_rsl_1L_chr,
                                                      target_var_nm_1L_chr = "var_name_chr",
@@ -106,7 +106,7 @@ update_sp_data_list <- function(sp_data_list,
   tot_pop_resolution <- NULL
   if(!is.null(input_ls$tot_pop_str)){
     tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_ls$tot_pop_str) + 1]
-    res_lup <- input_ls$pa_r4 %>% lookup_tb() %>% sp_resolution_lup()
+    res_lup <- input_ls$x_VicinityProfile %>% lookup_tb() %>% sp_resolution_lup()
     use_tot_pop_lgl <- c(dynamic_var_rsl_1L_chr,tot_pop_resolution) %>%
       purrr::map_dbl(~ready4::get_from_lup_obj(data_lookup_tb = res_lup,
                                             match_var_nm_1L_chr = "area_type_chr",
@@ -118,10 +118,10 @@ update_sp_data_list <- function(sp_data_list,
       tot_pop_resolution <- NULL
 
   }
-  # if(use_coord_lup(input_ls$pa_r4))
+  # if(use_coord_lup(input_ls$x_VicinityProfile))
   #   profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
   #                                          ~ .x %>%
-  #                                            sf::st_transform(crs_nbr(input_ls$pa_r4)[1]))
+  #                                            sf::st_transform(crs_nbr(input_ls$x_VicinityProfile)[1]))
   by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
                                          ~ make_reconciled_intersecting_area(profiled_sf = .x,
                                                                        profiled_sf_col_1L_chr = NA,
@@ -131,7 +131,7 @@ update_sp_data_list <- function(sp_data_list,
                                                                        dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                                                                        group_by_var_1L_chr = group_by_var_1L_chr,
                                                                        age_sex_counts_grouped_by = age_sex_counts_grouped_by,
-                                                                       data_year_chr = input_ls$pa_r4@data_year_chr,
+                                                                       data_year_chr = input_ls$x_VicinityProfile@data_year_chr,
                                                                        crs_nbr_dbl = crs_nbr_dbl))
   by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
                                           names(by_band_pop_counts_sf_ls),
@@ -145,7 +145,7 @@ update_sp_data_list <- function(sp_data_list,
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
   featured_var_pfx_1L_chr <- get_featured_var_pfx_1L_chr(dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                                          tot_pop_resolution = tot_pop_resolution,
-                                         data_year_chr = input_ls$pa_r4@data_year_chr)
+                                         data_year_chr = input_ls$x_VicinityProfile@data_year_chr)
   profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
                                         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
   profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = sp_data_list[[sp_data_list$ppr_ref[1]]] %>%
@@ -154,7 +154,7 @@ update_sp_data_list <- function(sp_data_list,
                                            dynamic_var_rsl_1L_chr = "UNIT_ID",
                                            dynamic_var_nm_1L_chr = "pop_sp_unit_id",
                                            featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
-                                           data_year_chr = input_ls$pa_r4@data_year_chr,
+                                           data_year_chr = input_ls$x_VicinityProfile@data_year_chr,
                                            crs_nbr_dbl = crs_nbr_dbl)
   extended_sp_data_list <- append(sp_data_list,
                                   list(profiled_sf = profiled_sf,

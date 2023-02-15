@@ -17,7 +17,7 @@ authorData.vicinity_raw <- function (x, dir_1L_chr, data_match_value_xx, match_v
         sub_dirs_chr <- names(vicinity_raw())[names(vicinity_raw()) %in% 
             c("country", "area_type", "region", "main_feature", 
                 "year")]
-    directory_paths <- make_write_paths_chr(x = x, dir_1L_chr = dir_1L_chr, 
+    directory_paths <- make_paths_chr(x = x, dir_1L_chr = dir_1L_chr, 
         data_match_value_xx = data_match_value_xx, match_var_nm_1L_chr = match_var_nm_1L_chr, 
         sub_dirs_chr = sub_dirs_chr)
     write_dirs_for_imp(directory_paths = directory_paths)

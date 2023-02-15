@@ -86,18 +86,18 @@ make_data_yrs_chr <- function (data_ymdhms)
     data_ymdhms %>% lubridate::year() %>% as.character()
 }
 #' Get directory paths for data import
-#' @description make_write_paths_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get directory paths for data import. Function argument x specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_paths_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get directory paths for data import. Function argument x specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param x PARAM_DESCRIPTION
 #' @param dir_1L_chr PARAM_DESCRIPTION
 #' @param data_match_value_xx PARAM_DESCRIPTION
 #' @param match_var_nm_1L_chr PARAM_DESCRIPTION
 #' @param sub_dirs_chr PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname make_write_paths_chr
+#' @rdname make_paths_chr
 #' @export 
 #' @importFrom purrr map_chr accumulate
 #' @importFrom ready4fun get_from_lup
-make_write_paths_chr <- function (x, dir_1L_chr, data_match_value_xx, match_var_nm_1L_chr, 
+make_paths_chr <- function (x, dir_1L_chr, data_match_value_xx, match_var_nm_1L_chr, 
     sub_dirs_chr) 
 {
     directory_names <- purrr::map_chr(sub_dirs_chr, ~ready4::get_from_lup_obj(data_lookup_tb = x, 
@@ -130,22 +130,22 @@ get_group_by_var <- function (profile_unit, data_unit, group_at_profile_unit = T
     return(group_by)
 }
 #' Get group by var from pai
-#' @description get_group_by_var_from_pai() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get group by var from pai. Function argument pa_r4 specifies the where to look for the required object. The function is called for its side effects and does not return a value.
-#' @param pa_r4 Pa (a ready4 S4)
+#' @description get_group_by_var_from_VicinityProfile() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get group by var from pai. Function argument x_VicinityProfile specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @param x_VicinityProfile Pa (a ready4 S4)
 #' @return NA ()
-#' @rdname get_group_by_var_from_pai
+#' @rdname get_group_by_var_from_VicinityProfile
 #' @export 
 
-get_group_by_var_from_pai <- function (pa_r4) 
+get_group_by_var_from_VicinityProfile <- function (x_VicinityProfile) 
 {
-    group_by_lookup_tb = sp_uid_lup(pa_r4 %>% lookup_tb())
-    if (!use_coord_lup(pa_r4)) {
-        group_by_var_1L_chr <- get_group_by_var(profile_unit = pa_r4 %>% 
+    group_by_lookup_tb = sp_uid_lup(x_VicinityProfile %>% lookup_tb())
+    if (!use_coord_lup(x_VicinityProfile)) {
+        group_by_var_1L_chr <- get_group_by_var(profile_unit = x_VicinityProfile %>% 
             area_type(), group_by_lookup_tb = group_by_lookup_tb, 
-            area_bound_year = area_bound_year(pa_r4))
+            area_bound_year = area_bound_year(x_VicinityProfile))
     }
     else {
-        if (is.na(geom_dist_limit_km(pa_r4))) 
+        if (is.na(geom_dist_limit_km(x_VicinityProfile))) 
             group_by_var_1L_chr <- "drive_times"
         else group_by_var_1L_chr <- "distance_km"
         get_group_by_var(profile_unit = "GEOMETRIC_DISTANCE", 
@@ -534,7 +534,7 @@ get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_m
     data_names_list <- purrr::map(boundary_res, ~attributes_to_import[stringr::str_sub(attributes_to_import, 
         5, 7) == tolower(.x)]) %>% stats::setNames(boundary_res)
     year_vec <- make_year_vec(input_ls = input_ls)
-    extra_names <- purrr::map(input_ls$at_specified_res, ~lookup_tb(input_ls$pa_r4) %>% 
+    extra_names <- purrr::map(input_ls$at_specified_res, ~lookup_tb(input_ls$x_VicinityProfile) %>% 
         sp_data_pack_lup() %>% dplyr::filter(main_feature == 
         .x[1]) %>% dplyr::filter(make_year_filter_logic_vec(data_tb = ., 
         included_years_vec = year_vec)) %>% ready4::get_from_lup_obj(match_value_xx = .x[1], 
@@ -562,12 +562,12 @@ get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_m
     }
     data_sf_list <- purrr::map2(boundary_res, data_names_list, 
         ~add_attr_recrly_to_sf(input_ls = input_ls, sub_div_unit = sub_div_unit, 
-            area_unit_1L_chr = .x, boundary_year = lookup_tb(input_ls$pa_r4) %>% 
+            area_unit_1L_chr = .x, boundary_year = lookup_tb(input_ls$x_VicinityProfile) %>% 
                 sp_data_pack_lup() %>% dplyr::filter(name %in% 
                 .y) %>% dplyr::pull(year) %>% min(as.numeric()), 
             attribute_data = .y)) %>% stats::setNames(boundary_res)
     index_ppr <- purrr::map_lgl(data_names_list, ~validate_popl_predns_incld(.x, 
-        data_lookup_tb = lookup_tb(input_ls$pa_r4) %>% sp_data_pack_lup(), 
+        data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>% sp_data_pack_lup(), 
         popl_predns_var_1L_chr = input_ls$popl_predns_var_1L_chr)) %>% which() + 
         1
     data_sf_list <- purrr::prepend(data_sf_list, list(index_ppr = index_ppr))
@@ -589,11 +589,11 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
     excl_diff_bound_yr = TRUE) 
 {
     at_highest_res <- input_ls$at_highest_res
-    data_year <- data_year(input_ls$pa_r4)
+    data_year <- data_year(input_ls$x_VicinityProfile)
     at_specified_res <- input_ls$at_specified_res
-    country <- country(input_ls$pa_r4)
+    country <- country(input_ls$x_VicinityProfile)
     popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
-    lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
+    lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     abbreviations_lookup_tb <- sp_abbreviations_lup(lookup_tb_r4)
     year_vec <- make_year_vec(input_ls = input_ls)
@@ -633,8 +633,8 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
     names_of_data_vec
 }
 #' Get starter simple features object for profiled area
-#' @description get_starter_sf_for_profiled_area() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get starter simple features object for profiled area. Function argument pa_r4 specifies the where to look for the required object. The function returns Starter (a simple features object).
-#' @param pa_r4 Pa (a ready4 S4)
+#' @description get_starter_sf_for_profiled_area() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get starter simple features object for profiled area. Function argument x_VicinityProfile specifies the where to look for the required object. The function returns Starter (a simple features object).
+#' @param x_VicinityProfile Pa (a ready4 S4)
 #' @param group_by_var_1L_chr PARAM_DESCRIPTION
 #' @return Starter (a simple features object)
 #' @rdname get_starter_sf_for_profiled_area
@@ -644,26 +644,26 @@ get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_
 #' @importFrom stringr str_sub
 #' @importFrom sf `st_crs<-`
 #' @importFrom rlang sym
-get_starter_sf_for_profiled_area <- function (pa_r4, group_by_var_1L_chr) 
+get_starter_sf_for_profiled_area <- function (x_VicinityProfile, group_by_var_1L_chr) 
 {
-    sp_data_starter_sf_lup <- pa_r4 %>% lookup_tb() %>% sp_starter_sf_lup() %>% 
-        dplyr::filter(country == country(pa_r4))
-    if (!is.na(area_bound_year(pa_r4))) 
+    sp_data_starter_sf_lup <- x_VicinityProfile %>% lookup_tb() %>% sp_starter_sf_lup() %>% 
+        dplyr::filter(country == country(x_VicinityProfile))
+    if (!is.na(area_bound_year(x_VicinityProfile))) 
         sp_data_starter_sf_lup <- sp_data_starter_sf_lup %>% 
-            dplyr::filter(area_bound_yr == area_bound_year(pa_r4))
+            dplyr::filter(area_bound_yr == area_bound_year(x_VicinityProfile))
     starter_sf_nm <- ready4::get_from_lup_obj(data_lookup_tb = sp_data_starter_sf_lup, 
-        match_var_nm_1L_chr = "area_type", match_value_xx = ifelse(area_type(pa_r4) %in% 
-            sp_data_starter_sf_lup$area_type, area_type(pa_r4), 
-            region_type(pa_r4)), target_var_nm_1L_chr = "starter_sf", 
+        match_var_nm_1L_chr = "area_type", match_value_xx = ifelse(area_type(x_VicinityProfile) %in% 
+            sp_data_starter_sf_lup$area_type, area_type(x_VicinityProfile), 
+            region_type(x_VicinityProfile)), target_var_nm_1L_chr = "starter_sf", 
         evaluate_1L_lgl = FALSE)
-    starter_sf <- procure(pa_r4 %>% lookup_tb() %>% sp_data_pack_lup(), 
+    starter_sf <- procure(x_VicinityProfile %>% lookup_tb() %>% sp_data_pack_lup(), 
         col_nm_1L_chr = "name", match_value_xx = starter_sf_nm %>% stringr::str_sub(end = -4))
-    if (use_coord_lup(pa_r4)) {
-        starter_sf <- starter_sf %>% sf::`st_crs<-`(crs_nbr(pa_r4)[1])
+    if (use_coord_lup(x_VicinityProfile)) {
+        starter_sf <- starter_sf %>% sf::`st_crs<-`(crs_nbr(x_VicinityProfile)[1])
     }
     else {
         starter_sf <- starter_sf %>% dplyr::filter(!!rlang::sym(group_by_var_1L_chr) %in% 
-            features(pa_r4))
+            features(x_VicinityProfile))
     }
     return(starter_sf)
 }

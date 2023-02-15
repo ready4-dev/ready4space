@@ -276,7 +276,7 @@ make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 =
 }
 #' Make profiled area objects
 #' @description make_profiled_area_objs() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make profiled area objects. The function is called for its side effects and does not return a value.
-#' @param pa_r4 Pa (a ready4 S4)
+#' @param x_VicinityProfile Pa (a ready4 S4)
 #' @return NULL
 #' @rdname make_profiled_area_objs
 #' @export 
@@ -284,20 +284,20 @@ make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 =
 #' @importFrom dplyr filter pull
 #' @importFrom rlang sym
 #' @importFrom sf st_transform
-make_profiled_area_objs <- function (pa_r4) 
+make_profiled_area_objs <- function (x_VicinityProfile) 
 {
-    group_by_var_1L_chr <- get_group_by_var_from_pai(pa_r4 = pa_r4)
-    st_profiled_sf <- get_starter_sf_for_profiled_area(pa_r4 = pa_r4, 
+    group_by_var_1L_chr <- get_group_by_var_from_VicinityProfile(x_VicinityProfile = x_VicinityProfile)
+    st_profiled_sf <- get_starter_sf_for_profiled_area(x_VicinityProfile = x_VicinityProfile, 
         group_by_var_1L_chr = group_by_var_1L_chr)
-    main_sub_div_var <- ifelse(use_coord_lup(pa_r4), pa_r4@lookup_tb@sp_uid_lup %>% 
+    main_sub_div_var <- ifelse(use_coord_lup(x_VicinityProfile), x_VicinityProfile@lookup_tb@sp_uid_lup %>% 
         ready4::get_from_lup_obj(match_var_nm_1L_chr = "spatial_unit", 
-            match_value_xx = pa_r4@region_type, target_var_nm_1L_chr = "var_name", 
-            evaluate_1L_lgl = F), ready4::get_from_lup_obj(data_lookup_tb = pa_r4 %>% 
+            match_value_xx = x_VicinityProfile@region_type, target_var_nm_1L_chr = "var_name", 
+            evaluate_1L_lgl = F), ready4::get_from_lup_obj(data_lookup_tb = x_VicinityProfile %>% 
         lookup_tb() %>% sp_starter_sf_lup() %>% dplyr::filter(country == 
-        country(pa_r4)) %>% dplyr::filter(area_bound_yr == area_bound_year(pa_r4)), 
-        match_var_nm_1L_chr = "area_type", match_value_xx = area_type(pa_r4), 
+        country(x_VicinityProfile)) %>% dplyr::filter(area_bound_yr == area_bound_year(x_VicinityProfile)), 
+        match_var_nm_1L_chr = "area_type", match_value_xx = area_type(x_VicinityProfile), 
         target_var_nm_1L_chr = "sf_main_sub_div", evaluate_1L_lgl = FALSE))
-    if (!use_coord_lup(pa_r4)) {
+    if (!use_coord_lup(x_VicinityProfile)) {
         profiled_sf <- st_profiled_sf
         profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf, 
             group_by_var_1L_chr = group_by_var_1L_chr)
@@ -305,26 +305,26 @@ make_profiled_area_objs <- function (pa_r4)
             as.character() %>% unique()
     }
     else {
-        cluster_tb = lookup_tb(pa_r4) %>% sp_site_coord_lup() %>% 
-            dplyr::filter(service_name %in% features(pa_r4))
-        if (!is.na(geom_dist_limit_km(pa_r4))) {
-            profiled_sf <- make_distance_based_bands(distance_km_outer = geom_dist_limit_km(pa_r4), 
-                nbr_distance_bands = nbr_bands(pa_r4), service_cluster_tb = cluster_tb, 
-                profiled_sf = st_profiled_sf, crs_nbr = crs_nbr(pa_r4))[[1]]
+        cluster_tb = lookup_tb(x_VicinityProfile) %>% sp_site_coord_lup() %>% 
+            dplyr::filter(service_name %in% features(x_VicinityProfile))
+        if (!is.na(geom_dist_limit_km(x_VicinityProfile))) {
+            profiled_sf <- make_distance_based_bands(distance_km_outer = geom_dist_limit_km(x_VicinityProfile), 
+                nbr_distance_bands = nbr_bands(x_VicinityProfile), service_cluster_tb = cluster_tb, 
+                profiled_sf = st_profiled_sf, crs_nbr = crs_nbr(x_VicinityProfile))[[1]]
             profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf, 
                 group_by_var_1L_chr = group_by_var_1L_chr)
         }
-        if (!is.na(drive_time_limit_mins(pa_r4))) {
+        if (!is.na(drive_time_limit_mins(x_VicinityProfile))) {
             profiled_area_bands_list <- make_servc_clstr_isochrs_ls(cluster_tbs_list = list(cluster_tb), 
-                look_up_ref = 1, time_min = 0, time_max = drive_time_limit_mins(pa_r4), 
-                nbr_time_steps = nbr_bands(pa_r4))
+                look_up_ref = 1, time_min = 0, time_max = drive_time_limit_mins(x_VicinityProfile), 
+                nbr_time_steps = nbr_bands(x_VicinityProfile))
             names(profiled_area_bands_list) <- paste0("dt_band_", 
                 1:length(profiled_area_bands_list))
             profiled_sf <- do.call(rbind, profiled_area_bands_list) %>% 
-                sf::st_transform(crs_nbr(pa_r4)[1]) %>% simplify_sf()
+                sf::st_transform(crs_nbr(x_VicinityProfile)[1]) %>% simplify_sf()
         }
         sub_div_units_vec <- make_intersecting_geometries(sf_1 = st_profiled_sf, 
-            sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(pa_r4)) %>% 
+            sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(x_VicinityProfile)) %>% 
             dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% as.vector() %>% 
             unique()
     }
@@ -551,8 +551,8 @@ make_year_filter_logic_vec <- function (data_tb, included_years_vec)
 #' @importFrom purrr pluck
 make_year_vec <- function (input_ls) 
 {
-    data_year <- data_year(input_ls$pa_r4)
-    lookup_tb_r4 <- input_ls$pa_r4 %>% lookup_tb()
+    data_year <- data_year(input_ls$x_VicinityProfile)
+    lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
     model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% 
