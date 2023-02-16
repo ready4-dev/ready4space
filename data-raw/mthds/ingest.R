@@ -69,7 +69,7 @@ ingest.vicinity_raw <- function(x,
     }
     ingest_xx <- ingest_ls
   }
-  if(what_1L_chr == "non-shape"){
+  if(what_1L_chr == "non-shape"){ #get_non_shape_items_for_imp
     file_name <-  get_name_from_path_chr(path_1L_chr)
     file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
                                                  as.vector())
@@ -84,8 +84,9 @@ ingest.vicinity_raw <- function(x,
                       "year_chr",
                       "region")
     var_val_chr <- purrr::map_chr(var_name_vec,
-                                  ~ ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type_chr,
-                                                                                                              x = x),
+                                  ~ ready4::get_from_lup_obj(data_lookup_tb = procure.vicinity_raw(x,
+                                                                                                   match_value_xx = data_type_chr,
+                                                                                                   what_1L_chr=="match"),
                                                              match_value_xx = file_name,
                                                              match_var_nm_1L_chr = "inc_file_main_chr",
                                                              target_var_nm_1L_chr = .x,

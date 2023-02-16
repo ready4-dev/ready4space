@@ -304,13 +304,13 @@ get_merge_sf_str <- function (lookup_r4, sp_import_r3_slice, processed_fls_dir_1
     }
 }
 #' Get model end ymdhs
-#' @description get_model_end_ymdhs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model end ymdhs. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description calculate_end_date() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model end ymdhs. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
 #' @return NULL
-#' @rdname get_model_end_ymdhs
+#' @rdname calculate_end_date
 #' @export 
 #' @importFrom lubridate years weeks days hours minutes seconds
-get_model_end_ymdhs <- function (input_ls) 
+calculate_end_date <- function (input_ls) 
 {
     input_ls$model_start_ymdhms + lubridate::years(input_ls$simulation_steps_ymwd[1]) * 
         input_ls$nbr_steps_start_to_end + months(input_ls$simulation_steps_ymwd[2]) * 
@@ -368,15 +368,15 @@ get_non_shape_items_for_imp <- function (path_1L_chr, x)
     make_import_object(x, var_val_chr = var_val_chr, path_1L_chr = path_1L_chr)
 }
 #' Get popl var prefix
-#' @description get_featured_var_pfx_1L_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get popl var prefix. Function argument dynamic_var_rsl_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_featured_var_pfx() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get popl var prefix. Function argument dynamic_var_rsl_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param dynamic_var_rsl_1L_chr PARAM_DESCRIPTION
 #' @param tot_pop_resolution PARAM_DESCRIPTION, Default: NULL
 #' @param data_year PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname get_featured_var_pfx_1L_chr
+#' @rdname make_featured_var_pfx
 #' @export 
 
-get_featured_var_pfx_1L_chr <- function (dynamic_var_rsl_1L_chr, tot_pop_resolution = NULL, 
+make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, tot_pop_resolution = NULL, 
     data_year) 
 {
     if (!is.null(tot_pop_resolution)) {
@@ -430,7 +430,7 @@ get_res_specific_vars <- function (var_names, data_type, data_year, featured_var
         res_sp_vars <- var_names[var_names %>% startsWith("year_")]
     }
     if (data_type == "processed_age_sex") {
-        res_sp_vars <- var_names[var_names %>% startsWith("pop_sp_unit_area") | 
+        res_sp_vars <- var_names[var_names %>% startsWith("popl_spatial_unit_area_dbl") | 
             var_names %>% startsWith(featured_var_pfx_1L_chr)]
     }
     return(res_sp_vars)

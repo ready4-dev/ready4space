@@ -25,50 +25,27 @@ get_max_or_min_yr_of_sf <- function(geometry_sf,
     year_1L_dbl <- min(years_dbl)
   return(year_1L_dbl)
 }
-get_menu_of_type_detail_for_imp <- function(x,
-                                            match_value_xx){
-  #get_menu_detail_for_imp(x = x) %>%
-  x %>%
-    dplyr::filter(data_type_chr==match_value_xx)
-}
-get_menu_of_type_nms_for_imp <- function(x,
-                                         match_value_xx){
-  get_menu_of_type_detail_for_imp(x = x,
-                                       match_value_xx = match_value_xx) %>%
-    dplyr::select(name) %>%
-    dplyr::pull()
-}
-
-get_model_end_ymdhs <- function(input_ls){
-  input_ls$model_start_ymdhms +
-    lubridate::years(input_ls$simulation_steps_ymwd[1]) * input_ls$nbr_steps_start_to_end +
-    months(input_ls$simulation_steps_ymwd[2]) * input_ls$nbr_steps_start_to_end +
-    lubridate::weeks(input_ls$simulation_steps_ymwd[3]) * input_ls$nbr_steps_start_to_end +
-    lubridate::days(input_ls$simulation_steps_ymwd[4]) * input_ls$nbr_steps_start_to_end +
-    lubridate::hours(input_ls$simulation_steps_ymwd[5]) * input_ls$nbr_steps_start_to_end +
-    lubridate::minutes(input_ls$simulation_steps_ymwd[6]) * input_ls$nbr_steps_start_to_end +
-    lubridate::seconds(input_ls$simulation_steps_ymwd[7]) * input_ls$nbr_steps_start_to_end
-}
 get_name_from_path_chr <- function(path_1L_chr,
                                    with_ext_1L_lgl = TRUE){
   if(with_ext_1L_lgl){
-    stringr::str_sub(path_1L_chr,
+    name_1L_chr <- stringr::str_sub(path_1L_chr,
                      start = stringi::stri_locate_last_regex(path_1L_chr, "/")[,2] %>%
                        as.vector() +1)
   }else{
-    stringr::str_sub(path_1L_chr,
+    name_1L_chr <-stringr::str_sub(path_1L_chr,
                      start = stringi::stri_locate_last_regex(path_1L_chr, "/")[,2] %>%
                        as.vector() +1,
                      end = stringi::stri_locate_last_regex(path_1L_chr, "\\.")[,2] %>%
                        as.vector() -1)
   }
+  return(name_1L_chr)
 }
 
-get_featured_var_pfx_1L_chr <- function(dynamic_var_rsl_1L_chr,
+make_featured_var_pfx <- function(dynamic_var_rsl_1L_chr,
                                 tot_pop_resolution = NULL,
                                 data_year_1L_dbl){
   if(!is.null(tot_pop_resolution)){
-    nse_names_ls <- make_nse_objs_ls(sp_unit = tot_pop_resolution,
+    nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = tot_pop_resolution,
                                              concept = "tot_pop",
                                              tot_pop_col = paste0("year_",
                                                                   data_year_1L_dbl,
@@ -76,7 +53,7 @@ get_featured_var_pfx_1L_chr <- function(dynamic_var_rsl_1L_chr,
                                              grouping_1 = dynamic_var_rsl_1L_chr,
                                              data_year_1L_dbl = data_year_1L_dbl)
   }else{
-    nse_names_ls <- make_nse_objs_ls(sp_unit = dynamic_var_rsl_1L_chr,
+    nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = dynamic_var_rsl_1L_chr,
 
                                              concept = "age_sex",
                                              grouping_1 = dynamic_var_rsl_1L_chr,
@@ -122,7 +99,7 @@ get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT S
   }
   if(data_type_chr == "processed_age_sex"){
     res_sp_vars <-  var_names[var_names %>%
-                                startsWith("pop_sp_unit_area") |
+                                startsWith("popl_spatial_unit_area_dbl") |
                                 var_names %>%
                                 startsWith(featured_var_pfx_1L_chr)]
   }
@@ -466,4 +443,18 @@ get_starter_sf_for_profiled_area <- function(x_VicinityProfile,
 #                            var_val_chr = var_val_chr,
 #                            path_1L_chr = path_1L_chr)
 #   return(items_xx)
+# }
+# get_menu_of_type_detail_for_imp <- function(x,#procure.vicinity_raw
+#                                             match_value_xx){
+#   #get_menu_detail_for_imp(x = x) %>%
+#   x %>%
+#     dplyr::filter(data_type_chr==match_value_xx)
+# }
+# get_menu_of_type_nms_for_imp <- function(x,
+#                                          match_value_xx){
+#   procure.vicinity_raw(x = x,#get_menu_of_type_detail_for_imp #get_menu_of_type_nms_for_imp
+#                                        match_value_xx = match_value_xx,
+#                        what_1L_chr = "match") %>%
+#     dplyr::select(name) %>%
+#     dplyr::pull()
 # }

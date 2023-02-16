@@ -357,17 +357,17 @@ make_isochrs <- function(long,
 
   return(iso_sf)
 }
-make_nse_objs_ls <- function(sp_unit,
+make_nse_objs_ls <- function(spatial_unit_1L_chr,
                              concept,
                              tot_pop_col = NULL,
                              grouping_1 = NULL,
                              data_year_chr,
                              featured_var_pfx_1L_chr){
   if(concept == "age_sex"){
-    popl_multiplier <- paste0("inc_",sp_unit,"_prop")
-    whl_pop_str_1 <- paste0("whl_",sp_unit,"_",featured_var_pfx_1L_chr,"y",data_year_chr,".Females.")
-    whl_pop_str_2 <- paste0("whl_",sp_unit,"_",featured_var_pfx_1L_chr,"y",data_year_chr,".Males.")
-    inc_str_to_delete <- paste0("whl_",sp_unit,"_")
+    popl_multiplier <- paste0("inc_",spatial_unit_1L_chr,"_prop")
+    whl_pop_str_1 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_chr,".Females.")
+    whl_pop_str_2 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_chr,".Males.")
+    inc_str_to_delete <- paste0("whl_",spatial_unit_1L_chr,"_")
     grouping_1_age_sex_pop_str <- NA_character_
   }
   if(concept == "tot_pop"){
@@ -378,11 +378,11 @@ make_nse_objs_ls <- function(sp_unit,
     inc_str_to_delete <- grouping_1_age_sex_pop_str
     grouping_1_age_sex_pop_str <- paste0("grp_by_",grouping_1,"_inc_age_sex_")
   }
-  list(area_whl_unit = paste0("whl_",sp_unit,"_area"),
-       area_inc_unit = paste0("inc_",sp_unit,"_area"),
-       prop_inc_unit = paste0("inc_",sp_unit,"_prop"),
-       popl_inc_unit = paste0("inc_",sp_unit,"_popl"),
-       popl_whl_unit = paste0("whl_",sp_unit,"_",tot_pop_col),
+  list(area_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_area"),
+       area_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_area"),
+       prop_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_prop"),
+       popl_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_popl"),
+       popl_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_",tot_pop_col),
        popl_multiplier = popl_multiplier,
        popl_whl_starts_with_1 = ifelse(is.null(whl_pop_str_1),
                                        NA_character_,
@@ -734,7 +734,7 @@ make_year_vec <- function(input_ls){
   x_VicinityLookup <- input_ls$x_VicinityProfile@a_VicinityLookup
   spatial_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
   popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
-  model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% lubridate::year()
+  model_end_year <- calculate_end_date(input_ls = input_ls) %>% lubridate::year()
   year_opts <- spatial_lookup_tb %>%
     dplyr::filter(main_feature_chr == popl_predns_var_1L_chr) %>%
     dplyr::pull(year_end_chr)

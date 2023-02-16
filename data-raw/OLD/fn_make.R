@@ -555,7 +555,7 @@ make_year_vec <- function (input_ls)
     lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
-    model_end_year <- get_model_end_ymdhs(input_ls = input_ls) %>% 
+    model_end_year <- calculate_end_date(input_ls = input_ls) %>% 
         lubridate::year()
     year_opts <- spatial_lookup_tb %>% dplyr::filter(main_feature == 
         popl_predns_var_1L_chr) %>% dplyr::pull(year_end)

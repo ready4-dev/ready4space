@@ -144,17 +144,17 @@ update_sp_data_list <- function (sp_data_list, input_ls, profiled_area_bands_lis
             group_by_var_1L_chr = group_by_var_1L_chr, age_sex_counts_grouped_by = age_sex_counts_grouped_by,
             data_year = data_year(input_ls$x_VicinityProfile), crs_nbr_dbl = crs_nbr_dbl))
     by_band_pop_counts_sf_ls <- purrr::map2(by_band_pop_counts_sf_ls,
-        names(by_band_pop_counts_sf_ls), ~.x %>% dplyr::mutate(pop_sp_unit_id = paste0(.y,
+        names(by_band_pop_counts_sf_ls), ~.x %>% dplyr::mutate(popl_spatial_unit_chr = paste0(.y,
             "_", tolower(dynamic_var_rsl_1L_chr), "_", rownames(.x))) %>%
-            dplyr::mutate(pop_sp_unit_area = sf::st_area(.)))
+            dplyr::mutate(popl_spatial_unit_area_dbl = sf::st_area(.)))
     profiled_sf <- do.call(rbind, by_band_pop_counts_sf_ls)
-    featured_var_pfx_1L_chr <- get_featured_var_pfx_1L_chr(dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
+    featured_var_pfx_1L_chr <- make_featured_var_pfx(dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
         tot_pop_resolution = tot_pop_resolution, data_year = data_year(input_ls$x_VicinityProfile))
     profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
     profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = sp_data_list[[sp_data_list$ppr_ref[1]]] %>%
         dplyr::select(1), profiled_sf = profiled_sf, dynamic_var_rsl_1L_chr = "UNIT_ID",
-        dynamic_var_nm_1L_chr = "pop_sp_unit_id", featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
+        dynamic_var_nm_1L_chr = "popl_spatial_unit_chr", featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
         data_year = input_ls$x_VicinityProfile@data_year, crs_nbr_dbl = crs_nbr_dbl)
     extended_sp_data_list <- append(sp_data_list, list(profiled_sf = profiled_sf,
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr))

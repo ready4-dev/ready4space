@@ -43,6 +43,7 @@ procure.vicinity_identifiers <- function(x,
 procure.vicinity_raw <- function(x, # From ready4use procure::ready4use_import
                                  inc_script_1L_lgl = T,
                                  forced_choice_chr = NA_character_,
+                                 match_value_xx = NULL,
                                  what_1L_chr = "source"){
   if(what_1L_chr == "source"){
     ready4use::assert_single_row_tb(x)
@@ -58,6 +59,17 @@ procure.vicinity_raw <- function(x, # From ready4use procure::ready4use_import
       source_ls <- source_ls[names(source_ls) == forced_choice_chr]
     }
     object_xx <- source_ls[1]
+  }
+  if(what_1L_chr=="match"){#get_menu_of_type_detail_for_imp
+    object_xx <- x %>%
+      dplyr::filter(data_type_chr==match_value_xx)
+  }
+  if(what_1L_chr == "match_names"){#get_menu_of_type_nms_for_imp
+    object_xx <- procure.vicinity_raw(x,#get_menu_of_type_detail_for_imp
+                         match_value_xx = match_value_xx,
+                         what_1L_chr="match") %>%
+      dplyr::select(name_chr) %>%
+      dplyr::pull()
   }
   return(object_xx)
 }

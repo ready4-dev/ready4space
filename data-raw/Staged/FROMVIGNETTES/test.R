@@ -98,7 +98,7 @@ ggplot2::ggplot(ready.sim::st_data(ready.sim::st_envir(sim_data))$profiled_sf ) 
   viridis::scale_fill_viridis("Persons") + #TRUE) +
   ggplot2::theme_bw()
 ggplot2::ggplot(sp_data_sf) +
-  ggplot2::geom_sf(ggplot2::aes(fill=pop_sp_unit_id),colour=NA)
+  ggplot2::geom_sf(ggplot2::aes(fill=popl_spatial_unit_chr),colour=NA)
 # remove_grouped_popl_vars(profiled_sf = ready.sim::st_envir(sim_data) %>%
 #                          ready.sim::st_data() %>%
 #                          purrr::pluck("profiled_sf"),
@@ -128,7 +128,7 @@ ggplot2::ggplot(sim_results_ls[[1]]) +
 #                             n_its_int = n_its_int,
 #                             group_by = "distance_km"
 #                             )
-##runSimulation :: DONT group_by: pop_sp_unit_id
+##runSimulation :: DONT group_by: popl_spatial_unit_chr
 ## group_by <- "distance_km2"
 ###
 ###
