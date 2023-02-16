@@ -1,41 +1,29 @@
-### PAUSED HERE
-get_highest_res <- function(options_vec,
-                            year_1L_dbl,
-                            resolution_lup_r3){
-  if(!is.na(options_vec[1])){
-    res_hierarchy <- get_resolution_hierarchy(data_year_1L_dbl = as.numeric(year_1L_dbl),
-                                              resolution_lup_r3 = resolution_lup_r3)
-    res_hierarchy[min(which(res_hierarchy %in% options_vec))]
-  }else
-    NA
-}
+get_included_yrs <- function(geometry_sf,
+                             pfx_1L_chr = "y2"){
+  geometry_sf <- geometry_sf %>%
+    sf::`st_geometry<-`(NULL)
+  if(pfx_1L_chr!="")
+    geometry_sf <- geometry_sf %>%
+    dplyr::select(dplyr::starts_with(pfx_1L_chr))
 
-get_included_yrs_sf <- function(sf){
-  sf %>%
-    sf::`st_geometry<-`(NULL) %>%
-    dplyr::select(dplyr::starts_with("y2")) %>%
+  years_dbl <- geometry_sf %>%
     names() %>%
     stringr::str_sub(start = 2, end = 5) %>%
     unique() %>%
     as.numeric()
+
+  return(years_dbl)
 }
-get_max_or_min_yr_of_sf <- function(sf,
-                                    max = T){
-  year_vec <- get_included_yrs_sf(sf)
-  if(max)
-     max(year_vec)
+get_max_or_min_yr_of_sf <- function(geometry_sf,
+                                    max_1L_lgl = T,
+                                    pfx_1L_chr = "y2"){
+  years_dbl <- get_included_yrs(geometry_sf,
+                               pfx_1L_chr = pfx_1L_chr)
+  if(max_1L_lgl)
+    year_1L_dbl <- max(years_dbl)
   else
-    min(year_vec)
-}
-get_menu_detail_for_imp <- function(x){
-  x %>%
-    dplyr::select(c(1:8,12))
-}
-get_menu_names_for_imp <- function(x){
-  # get_menu_detail_for_imp(x = x) %>%
-  x %>%
-    dplyr::select(name) %>%
-    dplyr::pull()
+    year_1L_dbl <- min(years_dbl)
+  return(year_1L_dbl)
 }
 get_menu_of_type_detail_for_imp <- function(x,
                                             match_value_xx){
@@ -61,46 +49,21 @@ get_model_end_ymdhs <- function(input_ls){
     lubridate::minutes(input_ls$simulation_steps_ymwd[6]) * input_ls$nbr_steps_start_to_end +
     lubridate::seconds(input_ls$simulation_steps_ymwd[7]) * input_ls$nbr_steps_start_to_end
 }
-get_name_from_path_chr <- function(path_str,
+get_name_from_path_chr <- function(path_1L_chr,
                                    with_ext_1L_lgl = TRUE){
   if(with_ext_1L_lgl){
-    stringr::str_sub(path_str,
-                     start = stringi::stri_locate_last_regex(path_str, "/")[,2] %>%
+    stringr::str_sub(path_1L_chr,
+                     start = stringi::stri_locate_last_regex(path_1L_chr, "/")[,2] %>%
                        as.vector() +1)
   }else{
-    stringr::str_sub(path_str,
-                     start = stringi::stri_locate_last_regex(path_str, "/")[,2] %>%
+    stringr::str_sub(path_1L_chr,
+                     start = stringi::stri_locate_last_regex(path_1L_chr, "/")[,2] %>%
                        as.vector() +1,
-                     end = stringi::stri_locate_last_regex(path_str, "\\.")[,2] %>%
+                     end = stringi::stri_locate_last_regex(path_1L_chr, "\\.")[,2] %>%
                        as.vector() -1)
   }
 }
-get_non_shape_items_for_imp <- function(path_str,
-                                        x){
-  file_name <-  get_name_from_path_chr(path_str)
-  file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
-                                               as.vector())
-  data_type_chr <- ready4::get_from_lup_obj(data_lookup_tb = x,
-                                       match_value_xx = file_name,
-                                       match_var_nm_1L_chr = "inc_file_main_chr",
-                                       target_var_nm_1L_chr = "data_type_chr",
-                                       evaluate_1L_lgl = FALSE)
-  var_name_vec <- c("area_type_chr",
-                    # #"area_bndy_yr_chr", ????
-                    "main_feature_chr",
-                    "year_chr",
-                    "region")
-  var_val_vec <- purrr::map_chr(var_name_vec,
-                                ~ ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type_chr,
-                                                                                                                x = x),
-                                                          match_value_xx = file_name,
-                                                          match_var_nm_1L_chr = "inc_file_main_chr",
-                                                          target_var_nm_1L_chr = .x,
-                                                          evaluate_1L_lgl = FALSE))
-  make_import_object(x,
-                     var_val_vec = var_val_vec,
-                     path_str = path_str)
-}
+
 get_featured_var_pfx_1L_chr <- function(dynamic_var_rsl_1L_chr,
                                 tot_pop_resolution = NULL,
                                 data_year_1L_dbl){
@@ -130,19 +93,7 @@ get_r_import_path_chr <- function(processed_fls_dir_1L_chr,
   paste0(processed_fls_dir_1L_chr,"/",name_chr,".RDS")
 
 }
-get_resolution_hierarchy <- function(data_year_1L_dbl,
-                                     resolution_lup_r3,
-                                     whole_area = TRUE){
-  resolution_hierarchy <- resolution_lup_r3  %>%
-    dplyr::filter(boundary_year_dbl == data_year_1L_dbl)
-  if(whole_area){
-    resolution_hierarchy <- resolution_hierarchy %>%
-      dplyr::filter(complete_lgl==TRUE)
-  }
-  resolution_hierarchy %>%
-    dplyr::arrange(dplyr::desc(area_count_dbl)) %>%
-    dplyr::pull(area_type_chr)
-}
+
 get_res_specific_vars <- function(var_names, # THIS NEEDS TO BE MADE A CONTEXT SPECIFIC METHOD WITH THIS FUNCTION MOVED TO AusSPR4c
                                   data_type_chr,
                                   data_year_1L_dbl,
@@ -232,7 +183,7 @@ get_spatial_data_list <- function(input_ls,
     stats::setNames(boundary_res)
   year_vec <- make_year_vec(input_ls = input_ls)
   extra_names <- purrr::map(input_ls$at_specified_res,
-                            ~ lookup_tb(input_ls$x_VicinityProfile) %>%
+                            ~ lookup_tb(X) %>%
                               sp_data_pack_lup() %>%
                               dplyr::filter(main_feature_chr == .x[1]) %>%
                               dplyr::filter(make_year_filter_logic_vec(data_tb = .,
@@ -261,20 +212,21 @@ get_spatial_data_list <- function(input_ls,
     boundary_res <- c(boundary_res, extra_res)
   }
   ##
+  X <- input_ls$x_VicinityProfile
   data_sf_list <- purrr::map2(boundary_res,
                               data_names_list,
-                              ~ manufacture(input_ls$x_VicinityProfile@a_VicinityLookup,#input_ls = input_ls, # add_attr_recrly_to_sf
+                              ~ manufacture(X@a_VicinityLookup,#input_ls = input_ls, # add_attr_recrly_to_sf
                                             #sub_div_unit = sub_div_unit,
                                             area_unit_1L_chr = .x,
                                             attr_data_xx = .y,
-                                            boundary_year_1L_dbl = input_ls$x_VicinityProfile@a_VicinityLookup@vicinity_processed_r3 %>%
+                                            boundary_year_1L_dbl = X@a_VicinityLookup@vicinity_processed_r3 %>%
                                                         dplyr::filter(name_chr %in% .y) %>%
                                                         dplyr::pull(year_chr) %>%
                                                         min(as.numeric()))) %>%
     stats::setNames(boundary_res)
   index_ppr <- purrr::map_lgl(data_names_list,
                               ~ validate_popl_predns_incld(.x,
-                                             data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>%
+                                             data_lookup_tb = lookup_tb(X) %>%
                                                sp_data_pack_lup(),#aus_spatial_lookup_tb,
                                              popl_predns_var_1L_chr = input_ls$popl_predns_var_1L_chr)) %>%
     which() + 1
@@ -288,15 +240,15 @@ get_spatial_data_names <- function(input_ls,
                                    excl_diff_bound_yr = TRUE){
   #### NEED TO WORK ON SECOND HALF
   at_highest_res <- input_ls$at_highest_res
-  data_year_chr <- input_ls$x_VicinityProfile@data_year_chr
+  X <- input_ls$x_VicinityProfile
+  data_year_chr <- X@data_year_chr
   at_specified_res <- input_ls$at_specified_res
-  country_chr <- input_ls$x_VicinityProfile@country_chr
+  country_chr <- X@country_chr
   #sub_div_unit = NULL
   popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
 
-  lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
-  spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-  abbreviations_lookup_tb <- sp_abbreviations_lup(lookup_tb_r4)
+  spatial_lookup_tb <- X@a_VicinityLookup@vicinity_processed_r3 #sp_data_pack_lup(Y)
+  abbreviations_lookup_tb <- X@a_VicinityLookup@vicinity_abbreviations_r3 # sp_abbreviations_lup(lookup_tb_r4)
   # if(excl_diff_bound_yr){
   #   spatial_lookup_tb <- spatial_lookup_tb %>%
   #     dplyr::filter(is.na(additional_detail_chr) | additional_detail_chr != " for 2016 boundaries")
@@ -311,8 +263,8 @@ get_spatial_data_names <- function(input_ls,
                                  ~ .x %>%
                                    dplyr::pull(area_type_chr) %>%
                                    unique() %>%
-                                   get_highest_res(year_1L_dbl = data_year_chr,
-                                                   resolution_lup_r3 = sp_resolution_lup(lookup_tb_r4)))
+                                   procure.vicinity_resolutions(x = X@a_VicinityLookup@vicinity_resolutions_r3,
+                                                                year_1L_dbl = data_year_chr))
   data_unavail_for_year <-  is.na(data_res_vec)
   if(require_year_match & sum(data_unavail_for_year) > 0)
     stop("Data not available for specified year for all data requested")
@@ -408,6 +360,24 @@ get_starter_sf_for_profiled_area <- function(x_VicinityProfile,
   }
   return(starter_sf)
 }
+
+# get_sys_data_tbs_ls <- function(){
+#   list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
+#        aus_data_resolution_tb = aus_data_resolution_tb,
+#        aus_state_short_tb = aus_state_short_tb,
+#        group_by_var_1L_chr_lookup_tb = group_by_var_1L_chr_lookup_tb)
+# }
+# get_menu_detail_for_imp <- function(x){
+#   x %>%
+#     dplyr::select(c(1:8,12))
+# }
+# get_menu_names_for_imp <- function(x){
+#   # get_menu_detail_for_imp(x = x) %>%
+#   x %>%
+#     dplyr::select(name) %>%
+#     dplyr::pull()
+# }
+
 # get_group_by_var <- function(geometry_rsl_1L_chr, ## procure
 #                              data_rsl_1L_chr,
 #                              group_at_geom_unit_1L_lgl = TRUE,
@@ -445,10 +415,55 @@ get_starter_sf_for_profiled_area <- function(x_VicinityProfile,
 #   }
 #   return(group_by_var_1L_chr)
 # }
-# get_sys_data_tbs_ls <- function(){
-#   list(aus_spatial_lookup_tb = aus_spatial_lookup_tb,
-#        aus_data_resolution_tb = aus_data_resolution_tb,
-#        aus_state_short_tb = aus_state_short_tb,
-#        group_by_var_1L_chr_lookup_tb = group_by_var_1L_chr_lookup_tb)
+
+# get_highest_res <- function(options_vec, Now procure mthd
+#                             year_1L_dbl,
+#                             resolution_lup_r3){
+#   if(!is.na(options_vec[1])){
+#     res_hierarchy <- get_resolution_hierarchy(data_year_1L_dbl = as.numeric(year_1L_dbl),
+#                                               resolution_lup_r3 = resolution_lup_r3)
+#     res_hierarchy[min(which(res_hierarchy %in% options_vec))]
+#   }else
+#     NA
 # }
 
+# get_resolution_hierarchy <- function(data_year_1L_dbl, # NOW PROCURE MTHD
+#                                      resolution_lup_r3,
+#                                      whole_area = TRUE){
+#   resolution_hierarchy <- resolution_lup_r3  %>%
+#     dplyr::filter(boundary_year_dbl == data_year_1L_dbl)
+#   if(whole_area){
+#     resolution_hierarchy <- resolution_hierarchy %>%
+#       dplyr::filter(complete_lgl==TRUE)
+#   }
+#   resolution_hierarchy %>%
+#     dplyr::arrange(dplyr::desc(area_count_dbl)) %>%
+#     dplyr::pull(area_type_chr)
+# }
+# get_non_shape_items_for_imp <- function(path_1L_chr, # now ingest mthd
+#                                         x){
+#   file_name <-  get_name_from_path_chr(path_1L_chr)
+#   file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, "\\.")[,2] %>%
+#                                                as.vector())
+#   data_type_chr <- ready4::get_from_lup_obj(data_lookup_tb = x,
+#                                        match_value_xx = file_name,
+#                                        match_var_nm_1L_chr = "inc_file_main_chr",
+#                                        target_var_nm_1L_chr = "data_type_chr",
+#                                        evaluate_1L_lgl = FALSE)
+#   var_name_vec <- c("area_type_chr",
+#                     # #"area_bndy_yr_chr", ????
+#                     "main_feature_chr",
+#                     "year_chr",
+#                     "region")
+#   var_val_chr <- purrr::map_chr(var_name_vec,
+#                                 ~ ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type_chr,
+#                                                                                                                 x = x),
+#                                                           match_value_xx = file_name,
+#                                                           match_var_nm_1L_chr = "inc_file_main_chr",
+#                                                           target_var_nm_1L_chr = .x,
+#                                                           evaluate_1L_lgl = FALSE))
+#   items_xx <- manufacture.vicinity_raw(x,#make_import_object # could pass custom fn to this method
+#                            var_val_chr = var_val_chr,
+#                            path_1L_chr = path_1L_chr)
+#   return(items_xx)
+# }

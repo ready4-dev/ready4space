@@ -9,7 +9,6 @@ author_VicinityLocalRaw <- function(x, #write_fls_from_imp_and_upd_r4
     metamorphose() #update_this
     return(y_VicinityLookup)
 }
-
 author_VicinityLocalProcessed <- function(x,#import_data #write_fls_from_sp_imp_and_upd_imp_ls
                                           crs_nbr_dbl,
                                           return_r4_1L_lgl = T) {

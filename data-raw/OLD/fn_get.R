@@ -322,29 +322,29 @@ get_model_end_ymdhs <- function (input_ls)
         input_ls$nbr_steps_start_to_end
 }
 #' Get name from path
-#' @description get_name_from_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get name from path character vector. Function argument path_str specifies the where to look for the required object. The function is called for its side effects and does not return a value.
-#' @param path_str PARAM_DESCRIPTION
+#' @description get_name_from_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get name from path character vector. Function argument path_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @param path_1L_chr PARAM_DESCRIPTION
 #' @param with_ext_1L_lgl PARAM_DESCRIPTION, Default: TRUE
 #' @return NULL
 #' @rdname get_name_from_path_chr
 #' @export 
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
-get_name_from_path_chr <- function (path_str, with_ext_1L_lgl = TRUE) 
+get_name_from_path_chr <- function (path_1L_chr, with_ext_1L_lgl = TRUE) 
 {
     if (with_ext_1L_lgl) {
-        stringr::str_sub(path_str, start = stringi::stri_locate_last_regex(path_str, 
+        stringr::str_sub(path_1L_chr, start = stringi::stri_locate_last_regex(path_1L_chr, 
             "/")[, 2] %>% as.vector() + 1)
     }
     else {
-        stringr::str_sub(path_str, start = stringi::stri_locate_last_regex(path_str, 
-            "/")[, 2] %>% as.vector() + 1, end = stringi::stri_locate_last_regex(path_str, 
+        stringr::str_sub(path_1L_chr, start = stringi::stri_locate_last_regex(path_1L_chr, 
+            "/")[, 2] %>% as.vector() + 1, end = stringi::stri_locate_last_regex(path_1L_chr, 
             "\\.")[, 2] %>% as.vector() - 1)
     }
 }
 #' Get non shape items for import
-#' @description get_non_shape_items_for_imp() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get non shape items for import. Function argument path_str specifies the where to look for the required object. The function is called for its side effects and does not return a value.
-#' @param path_str PARAM_DESCRIPTION
+#' @description get_non_shape_items_for_imp() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get non shape items for import. Function argument path_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @param path_1L_chr PARAM_DESCRIPTION
 #' @param x PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname get_non_shape_items_for_imp
@@ -353,19 +353,19 @@ get_name_from_path_chr <- function (path_str, with_ext_1L_lgl = TRUE)
 #' @importFrom stringi stri_locate_last_regex
 #' @importFrom ready4fun get_from_lup
 #' @importFrom purrr map_chr
-get_non_shape_items_for_imp <- function (path_str, x) 
+get_non_shape_items_for_imp <- function (path_1L_chr, x) 
 {
-    file_name <- get_name_from_path_chr(path_str)
+    file_name <- get_name_from_path_chr(path_1L_chr)
     file_ext <- file_name %>% stringr::str_sub(start = stringi::stri_locate_last_regex(file_name, 
         "\\.")[, 2] %>% as.vector())
     data_type <- ready4::get_from_lup_obj(data_lookup_tb = x, 
         match_value_xx = file_name, match_var_nm_1L_chr = "inc_file_main_chr", 
         target_var_nm_1L_chr = "data_type", evaluate_1L_lgl = FALSE)
     var_name_vec <- c("area_type", "main_feature", "year", "region")
-    var_val_vec <- purrr::map_chr(var_name_vec, ~ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type, 
+    var_val_chr <- purrr::map_chr(var_name_vec, ~ready4::get_from_lup_obj(data_lookup_tb = get_menu_of_type_detail_for_imp(data_type, 
         x = x), match_value_xx = file_name, match_var_nm_1L_chr = "inc_file_main_chr", 
         target_var_nm_1L_chr = .x, evaluate_1L_lgl = FALSE))
-    make_import_object(x, var_val_vec = var_val_vec, path_str = path_str)
+    make_import_object(x, var_val_chr = var_val_chr, path_1L_chr = path_1L_chr)
 }
 #' Get popl var prefix
 #' @description get_featured_var_pfx_1L_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get popl var prefix. Function argument dynamic_var_rsl_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.

@@ -87,7 +87,7 @@ make_common_sf_vars_ls <- function(sf_ls){
   return(common_sf_vars_ls)
 }
 make_common_sf_yrs_ls <- function(sf_ls){
-  vec_ls <- purrr::map(list_of_sfs, ~ get_included_yrs_sf(.x))
+  vec_ls <- purrr::map(list_of_sfs, ~ get_included_yrs(.x))
   common_sf_yrs_ls <- Reduce(intersect, vec_ls)
   return(common_sf_yrs_ls)
 }
@@ -582,7 +582,7 @@ make_sp_data_list <- function(input_ls,
   return(sp_data_list)
 }
 make_profiled_area_objs <- function(x_VicinityProfile){
-  group_by_var_1L_chr <- procure(x_VicinityProfile,
+  group_by_var_1L_chr <- procure(x_VicinityProfile,#get_group_by_var_from_VicinityProfile
                                  what_1L_chr = "grouping")
   st_profiled_sf <- get_starter_sf_for_profiled_area(x_VicinityProfile = x_VicinityProfile,
                                                      group_by_var_1L_chr = group_by_var_1L_chr)
