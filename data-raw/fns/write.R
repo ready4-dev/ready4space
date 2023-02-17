@@ -1,5 +1,4 @@
 write_dirs_for_imp <- function(paths_chr){
-
   purrr::walk(paths_chr,
               ~ dir.create(.x))
 }
@@ -94,18 +93,12 @@ write_attr_tb <- function(attr_tb,
                           obj_name,
                           processed_fls_dir_1L_chr,
                           overwrite_1L_lgl){
-  path_to_attr_tb_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
+  path_to_attr_tb_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
                                                name_chr = obj_name,
                                                data_type_chr = "Attribute")
   if(overwrite_1L_lgl | !file.exists(path_to_attr_tb_chr))
     saveRDS(attr_tb, file = path_to_attr_tb_chr)
 }
-
-
-
-
-
-
 write_procsd_geom_imp <- function(x,
                                   imports_ls,
                                   path_to_seed_sf_1L_chr,
@@ -122,7 +115,7 @@ write_procsd_geom_imp <- function(x,
                                   ~ make_intersecting_geometries(.x,
                                                           eval(parse(text=.y)),
                                                           crs_nbr_dbl = crs_nbr_dbl,
-                                                          validate_lgl = T
+                                                          validate_1L_lgl = T
                                   ))
       if((sf::st_geometry_type(starter_sf) %>% as.character()!="POINT") %>% any()){
         starter_sf <- starter_sf %>%
@@ -164,7 +157,6 @@ write_procsd_imp_xx <- function(x,
 
   }
 }
-
 write_raw_format_dir <- function(data_type_chr,
                                  raw_fls_dir_1L_chr){
   directory_chr <- switch(data_type_chr, "Geometry" = "Geometries","Attribute" = "Attributes")

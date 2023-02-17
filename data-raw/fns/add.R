@@ -43,7 +43,7 @@ add_dynamic_vars_to_sf <- function(dynamic_vars_sf,
                             dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr,
                             data_year_chr = data_year_chr,
                             dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
-                            tot_pop_resolution = NULL,
+                            reference_var_rsl_1L_chr = NULL,
                             featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
   return(profiled_sf)
 
@@ -193,7 +193,7 @@ add_names <- function(ds_tb){
 #   return(updated_area_sf)
 # }
 # add_attr_recrly_to_sf <- function(input_ls, # Now Manufacture
-#                                   sub_div_unit = NULL,
+#                                   subdivision_1L_chr = NULL,
 #                                   area_unit_1L_chr,
 #                                   boundary_year_1L_chr,
 #                                   attribute_data_chr){

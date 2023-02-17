@@ -3,12 +3,12 @@ update_pop_count_by_areas <-function(profiled_sf,
                                      dynamic_var_nm_1L_chr,
                                      data_year_chr,
                                      dynamic_var_rsl_1L_chr,
-                                     tot_pop_resolution,
+                                     reference_var_rsl_1L_chr,
                                      featured_var_pfx_1L_chr = ""){
   profiled_sf <- update_pop_by_inc_area(profiled_sf = profiled_sf,
                                         spatial_unit_1L_chr = dynamic_var_rsl_1L_chr,
                                         data_year_chr = data_year_chr,
-                                        concept = "age_sex",
+                                        concept_1L_chr = "age_sex",
                                         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
   if(featured_var_pfx_1L_chr == "")
     profiled_sf <- sum_pop_by_multiple_groups_sf(profiled_sf = profiled_sf,
@@ -16,7 +16,7 @@ update_pop_count_by_areas <-function(profiled_sf,
                                                  dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr,
                                                  data_year_chr = data_year_chr,
                                                  dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
-                                                 tot_pop_resolution = tot_pop_resolution,
+                                                 reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
                                                  featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
 
   return(profiled_sf)
@@ -24,15 +24,15 @@ update_pop_count_by_areas <-function(profiled_sf,
 update_pop_by_inc_area <- function(profiled_sf,
                                    spatial_unit_1L_chr,
                                    data_year_chr,
-                                   concept,
+                                   concept_1L_chr,
                                    dynamic_var_nm_1L_chr = NULL,
                                    dynamic_var_rsl_1L_chr = NULL,
-                                   tot_pop_col = NULL,
+                                   reference_var_nm_1L_chr = NULL,
                                    featured_var_pfx_1L_chr){
   nse_objs_ls <- make_nse_objs_ls(spatial_unit_1L_chr = spatial_unit_1L_chr,
-                                          concept = concept,
-                                          tot_pop_col = tot_pop_col,
-                                          grouping_1 = dynamic_var_rsl_1L_chr,
+                                          concept_1L_chr = concept_1L_chr,
+                                          reference_var_nm_1L_chr = reference_var_nm_1L_chr,
+                                          grouping_var_1L_chr = dynamic_var_rsl_1L_chr,
                                           data_year_chr = data_year_chr,
                                           featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
   profiled_sf <- profiled_sf %>%
@@ -40,7 +40,7 @@ update_pop_by_inc_area <- function(profiled_sf,
                     units::set_units(km^2))
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(nse_objs_ls$prop_inc_unit) := as.numeric(!!rlang::sym(nse_objs_ls$area_inc_unit)/!!rlang::sym(nse_objs_ls$area_whl_unit)))
-  if(!is.null(tot_pop_col)){
+  if(!is.null(reference_var_nm_1L_chr)){
     profiled_sf <- profiled_sf %>%
       dplyr::mutate(!!rlang::sym(nse_objs_ls$popl_inc_unit) := !!rlang::sym(nse_objs_ls$popl_whl_unit) * !!rlang::sym(nse_objs_ls$prop_inc_unit))
     profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
@@ -104,11 +104,11 @@ update_sp_data_list <- function(sp_data_list,
                                                      match_value_xx = dynamic_var_rsl_1L_chr,
                                                      target_var_nm_1L_chr = "var_name_chr",
                                                      evaluate_1L_lgl = FALSE)
-  tot_pop_resolution <- NULL
+  reference_var_rsl_1L_chr <- NULL
   if(!is.null(input_ls$tot_pop_str)){
-    tot_pop_resolution <- names(sp_data_list)[which(at_highest_res == input_ls$tot_pop_str) + 1]
+    reference_var_rsl_1L_chr <- names(sp_data_list)[which(at_highest_res == input_ls$tot_pop_str) + 1]
     res_lup <- input_ls$x_VicinityProfile %>% lookup_tb() %>% sp_resolution_lup()
-    use_tot_pop_lgl <- c(dynamic_var_rsl_1L_chr,tot_pop_resolution) %>%
+    use_tot_pop_lgl <- c(dynamic_var_rsl_1L_chr,reference_var_rsl_1L_chr) %>%
       purrr::map_dbl(~ready4::get_from_lup_obj(data_lookup_tb = res_lup,
                                             match_var_nm_1L_chr = "area_type_chr",
                                             match_value_xx = .x,
@@ -116,7 +116,7 @@ update_sp_data_list <- function(sp_data_list,
                                             evaluate_1L_lgl = F)) %>%
       nnet::which.is.max() == 1
     if(!use_tot_pop_lgl)
-      tot_pop_resolution <- NULL
+      reference_var_rsl_1L_chr <- NULL
 
   }
   # if(use_coord_lup(input_ls$x_VicinityProfile))
@@ -128,7 +128,7 @@ update_sp_data_list <- function(sp_data_list,
                                                                        profiled_sf_col_1L_chr = NA,
                                                                        profiled_sf_row_1L_chr = NA,
                                                                        sp_data_list = sp_data_list,
-                                                                       tot_pop_resolution = tot_pop_resolution,
+                                                                       reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
                                                                        dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                                                                        group_by_var_1L_chr = group_by_var_1L_chr,
                                                                        age_sex_counts_grouped_by = age_sex_counts_grouped_by,
@@ -145,7 +145,7 @@ update_sp_data_list <- function(sp_data_list,
                                             dplyr::mutate(popl_spatial_unit_area_dbl = sf::st_area(.)))
   profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
   featured_var_pfx_1L_chr <- make_featured_var_pfx(dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
-                                         tot_pop_resolution = tot_pop_resolution,
+                                         reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
                                          data_year_chr = input_ls$x_VicinityProfile@data_year_chr)
   profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
                                         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)

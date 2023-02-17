@@ -95,7 +95,7 @@ make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf)
         max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>% 
         dplyr::pull(var_name)
     updateAttrDataXx(lookup_tb_r4, attr_data_xx = attr_data_xx, 
-        alt_names_sf = starter_sf, area_names_var_chr = area_names_var_chr, 
+        altv_names_sf= starter_sf, area_names_var_chr = area_names_var_chr, 
         region_short_long_chr = region_short_long_chr, match_value_xx = match_value_xx)
 }
 #' Make distance based bands
@@ -231,7 +231,7 @@ make_isochrs <- function (long, lat, time_min, time_max, nbr_time_steps)
 #' @description make_nse_objs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make nse objects list. The function is called for its side effects and does not return a value.
 #' @param sp_unit PARAM_DESCRIPTION
 #' @param concept PARAM_DESCRIPTION
-#' @param tot_pop_col PARAM_DESCRIPTION, Default: NULL
+#' @param reference_var_nm_1L_chr PARAM_DESCRIPTION, Default: NULL
 #' @param grouping_1 PARAM_DESCRIPTION, Default: NULL
 #' @param data_year PARAM_DESCRIPTION
 #' @param featured_var_pfx_1L_chr PARAM_DESCRIPTION
@@ -239,7 +239,7 @@ make_isochrs <- function (long, lat, time_min, time_max, nbr_time_steps)
 #' @rdname make_nse_objs_ls
 #' @export 
 
-make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 = NULL, 
+make_nse_objs_ls <- function (sp_unit, concept, reference_var_nm_1L_chr = NULL, grouping_1 = NULL, 
     data_year, featured_var_pfx_1L_chr) 
 {
     if (concept == "age_sex") {
@@ -266,7 +266,7 @@ make_nse_objs_ls <- function (sp_unit, concept, tot_pop_col = NULL, grouping_1 =
     list(area_whl_unit = paste0("whl_", sp_unit, "_area"), area_inc_unit = paste0("inc_", 
         sp_unit, "_area"), prop_inc_unit = paste0("inc_", sp_unit, 
         "_prop"), popl_inc_unit = paste0("inc_", sp_unit, "_popl"), 
-        popl_whl_unit = paste0("whl_", sp_unit, "_", tot_pop_col), 
+        popl_whl_unit = paste0("whl_", sp_unit, "_", reference_var_nm_1L_chr), 
         popl_multiplier = popl_multiplier, popl_whl_starts_with_1 = ifelse(is.null(whl_pop_str_1), 
             NA_character_, whl_pop_str_1), popl_whl_starts_with_2 = ifelse(is.null(whl_pop_str_2), 
             NA_character_, whl_pop_str_2), grouping_1_concept_tot = ifelse(is.null(grouping_1), 
@@ -301,7 +301,7 @@ make_profiled_area_objs <- function (x_VicinityProfile)
         profiled_sf <- st_profiled_sf
         profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf, 
             group_by_var_1L_chr = group_by_var_1L_chr)
-        sub_div_units_vec <- profiled_sf %>% dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% 
+        subdivisions_chr <- profiled_sf %>% dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% 
             as.character() %>% unique()
     }
     else {
@@ -323,12 +323,12 @@ make_profiled_area_objs <- function (x_VicinityProfile)
             profiled_sf <- do.call(rbind, profiled_area_bands_list) %>% 
                 sf::st_transform(crs_nbr(x_VicinityProfile)[1]) %>% simplify_sf()
         }
-        sub_div_units_vec <- make_intersecting_geometries(sf_1 = st_profiled_sf, 
+        subdivisions_chr <- make_intersecting_geometries(sf_1 = st_profiled_sf, 
             sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(x_VicinityProfile)) %>% 
             dplyr::pull(!!rlang::sym(main_sub_div_var)) %>% as.vector() %>% 
             unique()
     }
-    return(list(sub_div_units_vec = sub_div_units_vec, profiled_sf = profiled_sf, 
+    return(list(subdivisions_chr = subdivisions_chr, profiled_sf = profiled_sf, 
         profiled_area_bands_list = profiled_area_bands_list))
 }
 #' Make raw format directory
@@ -396,16 +396,16 @@ make_servc_clstr_isochrs_ls <- function (cluster_tbs_list, look_up_ref, time_min
 #' Make sp data list
 #' @description make_sp_data_list() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make sp data list. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
-#' @param sub_div_units_vec PARAM_DESCRIPTION
+#' @param subdivisions_chr PARAM_DESCRIPTION
 #' @return NA ()
 #' @rdname make_sp_data_list
 #' @export 
 #' @importFrom purrr map transpose map_chr map_dbl prepend
 #' @importFrom stats setNames
-make_sp_data_list <- function (input_ls, sub_div_units_vec) 
+make_sp_data_list <- function (input_ls, subdivisions_chr) 
 {
-    lists_to_merge <- purrr::map(sub_div_units_vec, ~get_spatial_data_list(input_ls = input_ls, 
-        sub_div_unit = .x, require_year_match = FALSE, excl_diff_bound_yr = TRUE))
+    lists_to_merge <- purrr::map(subdivisions_chr, ~make_attributes_ls(input_ls = input_ls, 
+        subdivision_1L_chr = .x, match_year_1L_lgl = FALSE, exclude_dif_bndy_yr_1L_lgl = TRUE))
     lists_to_merge <- purrr::transpose(lists_to_merge)
     merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)], 
         ~do.call(rbind, .x))
@@ -540,25 +540,25 @@ make_year_filter_logic_vec <- function (data_tb, included_years_vec)
         included_years_vec | .y %in% included_years_vec))
 }
 #' Make year vec
-#' @description make_year_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make year vec. The function is called for its side effects and does not return a value.
+#' @description make_years_chr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make year vec. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
 #' @return NULL
-#' @rdname make_year_vec
+#' @rdname make_years_chr
 #' @export 
 #' @importFrom lubridate year
 #' @importFrom dplyr filter pull
 #' @importFrom stringr str_length
 #' @importFrom purrr pluck
-make_year_vec <- function (input_ls) 
+make_years_chr <- function (input_ls) 
 {
     data_year <- data_year(input_ls$x_VicinityProfile)
     lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-    popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
+    key_var_1L_chr <- input_ls$key_var_1L_chr
     model_end_year <- calculate_end_date(input_ls = input_ls) %>% 
         lubridate::year()
     year_opts <- spatial_lookup_tb %>% dplyr::filter(main_feature == 
-        popl_predns_var_1L_chr) %>% dplyr::pull(year_end)
+        key_var_1L_chr) %>% dplyr::pull(year_end)
     year_opts <- year_opts[stringr::str_length(year_opts) == 
         4]
     year_opts_ref <- which((year_opts %>% as.numeric() %>% sort()) >= 

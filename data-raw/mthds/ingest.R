@@ -31,13 +31,11 @@ ingest.vicinity_raw <- function(x,
                                                       purrr::map_chr(new_nms_for_inc_fls_ls,
                                                                      ~ .x[[1]]))))
     path_vec <- purrr::map_chr(imports_chr,
-                               ~ get_sngl_path_for_imp(downloaded_data_tb = downloaded_data_tb %>%
-                                                         dplyr::select(c(name_chr, country_chr, area_type_chr, region_chr,
-                                                                         #data_type_chr,
-                                                                         main_feature_chr, year_chr, inc_file_main_chr)),
+                               ~ manufacture.vicinity_raw(downloaded_data_tb,
                                                        match_value_xx = .x,
-                                                       raw_fls_dir_1L_chr = raw_fls_dir_1L_chr))
-    r_import_path_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
+                                                       raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
+                                                       what_1L_chr = "path"))
+    r_import_path_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
                                                name_chr = x$name,
                                                data_type_chr = data_type_1L_chr)
     if(data_type_1L_chr=="Geometry"){

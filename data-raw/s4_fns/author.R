@@ -22,7 +22,7 @@ author_VicinityLocalProcessed <- function(x,#import_data #write_fls_from_sp_imp_
                             write_1L_lgl = x@write_1L_lgl) %>%
     stats::setNames(x@imports_chr)
   if(vicinity_raw_r3$data_type == "Geometry"){
-    path_to_seed_sf_1L_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr,
+    path_to_seed_sf_1L_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr,
                                                     name_chr = names(imports_ls)[1],
                                                     data_type_chr = "Geometry")
   }else{

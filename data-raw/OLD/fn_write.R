@@ -10,7 +10,7 @@
 
 write_attr_tb <- function (attr_tb, obj_name, processed_fls_dir_1L_chr, overwrite_1L_lgl) 
 {
-    path_to_attr_tb_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
+    path_to_attr_tb_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
         name_chr = obj_name, data_type_chr = "Attribute")
     if (overwrite_1L_lgl | !file.exists(path_to_attr_tb_chr)) 
         saveRDS(attr_tb, file = path_to_attr_tb_chr)
@@ -162,7 +162,7 @@ write_fls_from_sp_imp_and_upd_imp_ls <- function (x, crs_nbr_dbl, return_r4_1L_l
         processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, write_1L_lgl = x@write_1L_lgl) %>% 
         stats::setNames(x@imports_chr)
     if (sp_import_lup$data_type == "Geometry") {
-        path_to_seed_sf_1L_chr <- get_r_import_path_chr(processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, 
+        path_to_seed_sf_1L_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr, 
             name_chr = names(imports_ls)[1], data_type_chr = "Geometry")
     }
     else {
@@ -203,7 +203,7 @@ write_procsd_geom_imp <- function (x, imports_ls, path_to_seed_sf_1L_chr, merge_
         else {
             starter_sf <- purrr::reduce(merge_itms_chr, .init = imports_ls[[1]], 
                 ~make_intersecting_geometries(.x, eval(parse(text = .y)), 
-                  crs_nbr_dbl = crs_nbr_dbl, validate_lgl = T))
+                  crs_nbr_dbl = crs_nbr_dbl, validate_1L_lgl = T))
             if ((sf::st_geometry_type(starter_sf) %>% as.character() != 
                 "POINT") %>% any()) {
                 starter_sf <- starter_sf %>% dplyr::mutate(area = sf::st_area(.)) %>% 

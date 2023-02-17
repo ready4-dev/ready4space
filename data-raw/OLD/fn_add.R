@@ -19,7 +19,7 @@ add_attr_list_to_sf <- function (x, y, lookup_tb_r4)
 #' Add attr recrly to
 #' @description add_attr_recrly_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr recrly to simple features object. Function argument input_ls specifies the object to be updated. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
-#' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
+#' @param subdivision_1L_chr PARAM_DESCRIPTION, Default: NULL
 #' @param area_unit_1L_chr PARAM_DESCRIPTION
 #' @param boundary_year PARAM_DESCRIPTION
 #' @param attribute_data PARAM_DESCRIPTION
@@ -29,7 +29,7 @@ add_attr_list_to_sf <- function (x, y, lookup_tb_r4)
 #' @importFrom dplyr filter
 #' @importFrom purrr map reduce
 #' @importFrom stats setNames
-add_attr_recrly_to_sf <- function (input_ls, sub_div_unit = NULL, area_unit_1L_chr, boundary_year, 
+add_attr_recrly_to_sf <- function (input_ls, subdivision_1L_chr = NULL, area_unit_1L_chr, boundary_year, 
     attribute_data) 
 {
     lookup_tb_r4 <- lookup_tb(input_ls$x_VicinityProfile)
@@ -232,7 +232,7 @@ add_dynamic_vars_to_sf <- function (dynamic_vars_sf, profiled_sf, dynamic_var_rs
         paste0(!!rlang::sym(dyn_param_unit_id), "_", !!rlang::sym(dynamic_var_nm_1L_chr))))
     update_pop_count_by_areas(profiled_sf = profiled_sf, group_by_var_1L_chr = group_by_var_1L_chr, 
         dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr, data_year = data_year, 
-        dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr, tot_pop_resolution = NULL, 
+        dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr = NULL, 
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
 }
 #' Add kmsq area all features

@@ -1,5 +1,6 @@
 manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
                                      crs_nbr_dbl = NA_real_,
+                                     match_value_xx = NULL,
                                      merge_itms_chr = character(0),
                                      overwrite_1L_lgl = F,
                                      package_1L_chr  = character(0),
@@ -38,7 +39,7 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
   }
   if(what_1L_chr == "source"){
     assert_single_row_tb(x)
-    import_type_ls <- ready4::procure(x,
+    import_type_ls <- procure(x,
                                       inc_script_1L_lgl = !is.null(script_args_ls),
                                       forced_choice_chr = forced_choice_chr,
                                       what_1L_chr = "source")
@@ -55,6 +56,19 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
   if(what_1L_chr == "ingest"){ #make_import_object
     object_xx <- NULL  # could pass custom fn to this method
     stop("A Make Import Object Method needs to be defined for the child class of vicinity_raw.") # Remove?
+  }
+  if(what_1L_chr == "path"){ # get_sngl_path_for_imp
+    # x <- x %>%
+    #   dplyr::select(c(name_chr, country_chr, area_type_chr, region_chr,
+    #                   main_feature_chr, year_chr, inc_file_main_chr))
+      path_element_chr <- purrr::map_chr(c("country_chr", "area_type_chr", "region_chr",
+                                           "main_feature_chr", "year_chr", "inc_file_main_chr"),
+                                            ~ ready4::get_from_lup_obj(data_lookup_tb = x,
+                                                                       match_var_nm_1L_chr = "name_chr",
+                                                                       match_value_xx = match_value_xx,
+                                                                       target_var_nm_1L_chr = .x,
+                                                                       evaluate_1L_lgl = FALSE))
+      object_xx <- paste0(raw_fls_dir_1L_chr, "/", paste(path_element_chr,collapse = "/"))
   }
 
   return(object_xx)

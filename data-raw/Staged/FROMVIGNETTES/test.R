@@ -66,7 +66,7 @@ input_data <- list(
   group_at_profile_unit = TRUE,
   #nbr_time_steps = 3,
   #nbr_distance_steps = 3,
-  popl_predns_var_1L_chr = "Population projections",
+  key_var_1L_chr = "Population projections",
   profiled_area_input = profiled_area_input,
   #profiled_area = profiled_area,#"Gippsland",#"Glenroy"
   #profiled_area_type = profiled_area_type, #"PHN",#"Headspace"#"Custom"#"PHN"#"Headspace"

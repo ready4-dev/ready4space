@@ -370,18 +370,18 @@ get_non_shape_items_for_imp <- function (path_1L_chr, x)
 #' Get popl var prefix
 #' @description make_featured_var_pfx() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get popl var prefix. Function argument dynamic_var_rsl_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param dynamic_var_rsl_1L_chr PARAM_DESCRIPTION
-#' @param tot_pop_resolution PARAM_DESCRIPTION, Default: NULL
+#' @param reference_var_rsl_1L_chr PARAM_DESCRIPTION, Default: NULL
 #' @param data_year PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname make_featured_var_pfx
 #' @export 
 
-make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, tot_pop_resolution = NULL, 
+make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr = NULL, 
     data_year) 
 {
-    if (!is.null(tot_pop_resolution)) {
-        nse_names_ls <- make_nse_objs_ls(sp_unit = tot_pop_resolution, 
-            concept = "tot_pop", tot_pop_col = paste0("year_", 
+    if (!is.null(reference_var_rsl_1L_chr)) {
+        nse_names_ls <- make_nse_objs_ls(sp_unit = reference_var_rsl_1L_chr, 
+            concept = "tot_pop", reference_var_nm_1L_chr = paste0("year_", 
                 data_year, "pr"), grouping_1 = dynamic_var_rsl_1L_chr, 
             data_year = data_year)
     }
@@ -393,15 +393,15 @@ make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, tot_pop_resolution = 
     paste0(nse_names_ls$popl_inc_unit, "_")
 }
 #' Get r import path
-#' @description get_r_import_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get r import path character vector. Function argument processed_fls_dir_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_paths_to_fls_for_ingest() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get r import path character vector. Function argument processed_fls_dir_1L_chr specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param processed_fls_dir_1L_chr R data directory (a character vector)
 #' @param name_chr Name (a character vector)
 #' @param data_type_chr Data type (a character vector)
 #' @return NULL
-#' @rdname get_r_import_path_chr
+#' @rdname make_paths_to_fls_for_ingest
 #' @export 
 
-get_r_import_path_chr <- function (processed_fls_dir_1L_chr, name_chr, data_type_chr) 
+make_paths_to_fls_for_ingest <- function (processed_fls_dir_1L_chr, name_chr, data_type_chr) 
 {
     if (data_type_chr == "Geometry") 
         name_chr <- paste0(name_chr, "_sf")
@@ -456,26 +456,26 @@ get_resolution_hierarchy <- function (data_year, resolution_lup_r3, whole_area =
         dplyr::pull(area_type)
 }
 #' Get set diff lon lat
-#' @description get_set_diff_lon_lat_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get set diff lon lat simple features object. Function argument profile_sf specifies the where to look for the required object. The function is called for its side effects and does not return a value.
-#' @param profile_sf Profile (a simple features object)
+#' @description get_set_diff_lng_lat_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get set diff lon lat simple features object. Function argument geometry_sf specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @param geometry_sf Profile (a simple features object)
 #' @param cut_sf Cut (a simple features object)
 #' @param crs_nbr_dbl PARAM_DESCRIPTION
-#' @param validate_lgl Validate (a logical vector), Default: T
+#' @param validate_1L_lgl Validate (a logical vector), Default: T
 #' @param min_poly_area_dbl Min poly area (a double vector), Default: units::set_units(0.05, km^2)
 #' @return NULL
-#' @rdname get_set_diff_lon_lat_sf
+#' @rdname get_set_diff_lng_lat_sf
 #' @export 
 #' @importFrom units set_units
 #' @importFrom sf st_difference st_transform st_union st_cast st_area
 #' @importFrom dplyr mutate n pull filter select
 #' @importFrom purrr map map_dfr
-get_set_diff_lon_lat_sf <- function (profile_sf, cut_sf, crs_nbr_dbl, validate_lgl = T, 
+get_set_diff_lng_lat_sf <- function (geometry_sf, cut_sf, crs_nbr_dbl, validate_1L_lgl = T, 
     min_poly_area_dbl = units::set_units(0.05, km^2)) 
 {
-    new_sf <- sf::st_difference(profile_sf %>% sf::st_transform(crs = crs_nbr_dbl[2]), 
+    new_sf <- sf::st_difference(geometry_sf %>% sf::st_transform(crs = crs_nbr_dbl[2]), 
         sf::st_union(cut_sf) %>% sf::st_transform(crs = crs_nbr_dbl[2])) %>% 
         sf::st_transform(crs = crs_nbr_dbl[1])
-    if (validate_lgl) 
+    if (validate_1L_lgl) 
         new_sf <- new_sf %>% make_valid_new_sf()
     new_sf <- new_sf %>% dplyr::mutate(feature_idx_int = 1:dplyr::n())
     new_ls <- purrr::map(dplyr::pull(new_sf, feature_idx_int), 
@@ -510,30 +510,30 @@ get_sngl_path_for_imp <- function (downloaded_data_tb, match_value_xx, raw_fls_d
     paste0(raw_fls_dir_1L_chr, "/", paste(path_element_vector, collapse = "/"))
 }
 #' Get spatial data list
-#' @description get_spatial_data_list() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get spatial data list. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description make_attributes_ls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get spatial data list. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
-#' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
-#' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
-#' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
+#' @param subdivision_1L_chr PARAM_DESCRIPTION, Default: NULL
+#' @param match_year_1L_lgl PARAM_DESCRIPTION, Default: TRUE
+#' @param exclude_dif_bndy_yr_1L_lgl PARAM_DESCRIPTION, Default: TRUE
 #' @return NA ()
-#' @rdname get_spatial_data_list
+#' @rdname make_attributes_ls
 #' @export 
 #' @importFrom stringr str_sub
 #' @importFrom purrr map map_chr map2 map_lgl prepend
 #' @importFrom stats setNames
 #' @importFrom dplyr filter pull
 #' @importFrom ready4fun get_from_lup
-get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_match = TRUE, 
-    excl_diff_bound_yr = TRUE) 
+make_attributes_ls <- function (input_ls, subdivision_1L_chr = NULL, match_year_1L_lgl = TRUE, 
+    exclude_dif_bndy_yr_1L_lgl = TRUE) 
 {
-    attributes_to_import <- get_spatial_data_names(input_ls = input_ls, 
-        sub_div_unit = sub_div_unit, require_year_match = require_year_match, 
-        excl_diff_bound_yr = excl_diff_bound_yr)
+    attributes_to_import <- get_spatial attr_names(input_ls = input_ls, 
+        subdivision_1L_chr = subdivision_1L_chr, match_year_1L_lgl = match_year_1L_lgl, 
+        exclude_dif_bndy_yr_1L_lgl = exclude_dif_bndy_yr_1L_lgl)
     boundary_res <- stringr::str_sub(attributes_to_import, 5, 
         7) %>% unique() %>% toupper()
     data_names_list <- purrr::map(boundary_res, ~attributes_to_import[stringr::str_sub(attributes_to_import, 
         5, 7) == tolower(.x)]) %>% stats::setNames(boundary_res)
-    year_vec <- make_year_vec(input_ls = input_ls)
+    year_vec <- make_years_chr(input_ls = input_ls)
     extra_names <- purrr::map(input_ls$at_specified_res, ~lookup_tb(input_ls$x_VicinityProfile) %>% 
         sp_data_pack_lup() %>% dplyr::filter(main_feature == 
         .x[1]) %>% dplyr::filter(make_year_filter_logic_vec(data_tb = ., 
@@ -561,51 +561,51 @@ get_spatial_data_list <- function (input_ls, sub_div_unit = NULL, require_year_m
         boundary_res <- c(boundary_res, extra_res)
     }
     data_sf_list <- purrr::map2(boundary_res, data_names_list, 
-        ~add_attr_recrly_to_sf(input_ls = input_ls, sub_div_unit = sub_div_unit, 
+        ~add_attr_recrly_to_sf(input_ls = input_ls, subdivision_1L_chr = subdivision_1L_chr, 
             area_unit_1L_chr = .x, boundary_year = lookup_tb(input_ls$x_VicinityProfile) %>% 
                 sp_data_pack_lup() %>% dplyr::filter(name %in% 
                 .y) %>% dplyr::pull(year) %>% min(as.numeric()), 
             attribute_data = .y)) %>% stats::setNames(boundary_res)
     index_ppr <- purrr::map_lgl(data_names_list, ~validate_popl_predns_incld(.x, 
         data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>% sp_data_pack_lup(), 
-        popl_predns_var_1L_chr = input_ls$popl_predns_var_1L_chr)) %>% which() + 
+        key_var_1L_chr = input_ls$key_var_1L_chr)) %>% which() + 
         1
     data_sf_list <- purrr::prepend(data_sf_list, list(index_ppr = index_ppr))
     return(data_sf_list)
 }
 #' Get spatial data names
-#' @description get_spatial_data_names() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get spatial data names. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
+#' @description get_spatial attr_names() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get spatial data names. Function argument input_ls specifies the where to look for the required object. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
-#' @param sub_div_unit PARAM_DESCRIPTION, Default: NULL
-#' @param require_year_match PARAM_DESCRIPTION, Default: TRUE
-#' @param excl_diff_bound_yr PARAM_DESCRIPTION, Default: TRUE
+#' @param subdivision_1L_chr PARAM_DESCRIPTION, Default: NULL
+#' @param match_year_1L_lgl PARAM_DESCRIPTION, Default: TRUE
+#' @param exclude_dif_bndy_yr_1L_lgl PARAM_DESCRIPTION, Default: TRUE
 #' @return NULL
-#' @rdname get_spatial_data_names
+#' @rdname get_spatial attr_names
 #' @export 
 #' @importFrom purrr map map_chr map2 flatten_chr map2_chr map_dbl reduce
 #' @importFrom dplyr filter pull
 #' @importFrom ready4fun get_from_lup
-get_spatial_data_names <- function (input_ls, sub_div_unit = NULL, require_year_match = TRUE, 
-    excl_diff_bound_yr = TRUE) 
+get_spatial attr_names <- function (input_ls, subdivision_1L_chr = NULL, match_year_1L_lgl = TRUE, 
+    exclude_dif_bndy_yr_1L_lgl = TRUE) 
 {
     at_highest_res <- input_ls$at_highest_res
     data_year <- data_year(input_ls$x_VicinityProfile)
     at_specified_res <- input_ls$at_specified_res
     country <- country(input_ls$x_VicinityProfile)
-    popl_predns_var_1L_chr <- input_ls$popl_predns_var_1L_chr
+    key_var_1L_chr <- input_ls$key_var_1L_chr
     lookup_tb_r4 <- input_ls$x_VicinityProfile %>% lookup_tb()
     spatial_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
     abbreviations_lookup_tb <- sp_abbreviations_lup(lookup_tb_r4)
-    year_vec <- make_year_vec(input_ls = input_ls)
+    year_vec <- make_years_chr(input_ls = input_ls)
     lookup_tb_list <- purrr::map(at_highest_res, ~spatial_lookup_tb %>% 
         dplyr::filter(main_feature == .x) %>% dplyr::filter(year %in% 
-        year_vec[if (.x == popl_predns_var_1L_chr) 
+        year_vec[if (.x == key_var_1L_chr) 
             1:length(year_vec)
         else 1]))
     data_res_vec <- purrr::map_chr(lookup_tb_list, ~.x %>% dplyr::pull(area_type) %>% 
         unique() %>% get_highest_res(year = data_year, resolution_lup_r3 = sp_resolution_lup(lookup_tb_r4)))
     data_unavail_for_year <- is.na(data_res_vec)
-    if (require_year_match & sum(data_unavail_for_year) > 0) 
+    if (match_year_1L_lgl & sum(data_unavail_for_year) > 0) 
         stop("Data not available for specified year for all data requested")
     matched_year_vec <- at_highest_res[!data_unavail_for_year]
     matched_yr_lookup_tb_list <- lookup_tb_list[!data_unavail_for_year]

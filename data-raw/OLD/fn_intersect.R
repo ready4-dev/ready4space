@@ -3,16 +3,16 @@
 #' @param sf_1 PARAM_DESCRIPTION
 #' @param sf_2 PARAM_DESCRIPTION
 #' @param crs_nbr_dbl PARAM_DESCRIPTION
-#' @param validate_lgl Validate (a logical vector), Default: T
+#' @param validate_1L_lgl Validate (a logical vector), Default: T
 #' @return NULL
 #' @rdname make_intersecting_geometries
 #' @export 
 #' @importFrom sf st_intersection st_transform
-make_intersecting_geometries <- function (sf_1, sf_2, crs_nbr_dbl, validate_lgl = T) 
+make_intersecting_geometries <- function (sf_1, sf_2, crs_nbr_dbl, validate_1L_lgl = T) 
 {
     sf_3 <- sf::st_intersection(sf_1 %>% sf::st_transform(crs_nbr_dbl[2]), 
         sf_2 %>% sf::st_transform(crs_nbr_dbl[2])) %>% sf::st_transform(crs_nbr_dbl[1])
-    if (validate_lgl) 
+    if (validate_1L_lgl) 
         sf_3 %>% make_valid_new_sf()
     else sf_3
 }
@@ -58,7 +58,7 @@ make_intersecting_profiled_area <- function (profiled_sf, profiled_sf_col_1L_chr
 #' @param profiled_sf_col_1L_chr PARAM_DESCRIPTION, Default: NA
 #' @param profiled_sf_row_1L_chr PARAM_DESCRIPTION, Default: NA
 #' @param sp_data_list PARAM_DESCRIPTION
-#' @param tot_pop_resolution PARAM_DESCRIPTION
+#' @param reference_var_rsl_1L_chr PARAM_DESCRIPTION
 #' @param dynamic_var_rsl_1L_chr PARAM_DESCRIPTION
 #' @param group_by_var_1L_chr PARAM_DESCRIPTION
 #' @param age_sex_counts_grouped_by PARAM_DESCRIPTION
@@ -71,12 +71,12 @@ make_intersecting_profiled_area <- function (profiled_sf, profiled_sf_col_1L_chr
 #' @importFrom dplyr distinct select ends_with rename_at vars
 #' @importFrom stringi stri_replace_last_regex
 make_reconciled_intersecting_area <- function (profiled_sf, profiled_sf_col_1L_chr = NA, profiled_sf_row_1L_chr = NA, 
-    sp_data_list, tot_pop_resolution, dynamic_var_rsl_1L_chr, 
+    sp_data_list, reference_var_rsl_1L_chr, dynamic_var_rsl_1L_chr, 
     group_by_var_1L_chr, age_sex_counts_grouped_by, data_year, crs_nbr_dbl) 
 {
-    if (!is.null(tot_pop_resolution)) {
-        if (age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])) {
-            sp_data_list[[dynamic_var_rsl_1L_chr]] <- merge(sp_data_list[[tot_pop_resolution]], 
+    if (!is.null(reference_var_rsl_1L_chr)) {
+        if (age_sex_counts_grouped_by %in% names(sp_data_list[[reference_var_rsl_1L_chr]])) {
+            sp_data_list[[dynamic_var_rsl_1L_chr]] <- merge(sp_data_list[[reference_var_rsl_1L_chr]], 
                 sf::st_set_geometry(sp_data_list[[dynamic_var_rsl_1L_chr]], 
                   NULL), by = age_sex_counts_grouped_by) %>% 
                 dplyr::distinct(.keep_all = T) %>% dplyr::select(-dplyr::ends_with(".x")) %>% 
@@ -85,7 +85,7 @@ make_reconciled_intersecting_area <- function (profiled_sf, profiled_sf_col_1L_c
                     ""))
             sp_data_list[[dynamic_var_rsl_1L_chr]] <- rename_vars_based_on_res(sf = sp_data_list[[dynamic_var_rsl_1L_chr]], 
                 data_type = "tot_pop", data_year = data_year, 
-                feature_nm_1L_chr = tot_pop_resolution) %>% add_km_sqd(feature_nm_1L_chr = tot_pop_resolution)
+                feature_nm_1L_chr = reference_var_rsl_1L_chr) %>% add_km_sqd(feature_nm_1L_chr = reference_var_rsl_1L_chr)
         }
     }
     sp_data_list[[dynamic_var_rsl_1L_chr]] <- sp_data_list[[dynamic_var_rsl_1L_chr]] %>% 
@@ -96,18 +96,18 @@ make_reconciled_intersecting_area <- function (profiled_sf, profiled_sf_col_1L_c
         attribute_sf = sp_data_list[[dynamic_var_rsl_1L_chr]], 
         attribute_rsl_1L_chr = dynamic_var_rsl_1L_chr, data_type = "age_sex", 
         data_year = data_year, crs_nbr_dbl = crs_nbr_dbl)
-    if (!is.null(tot_pop_resolution)) {
-        if (!age_sex_counts_grouped_by %in% names(sp_data_list[[tot_pop_resolution]])) {
+    if (!is.null(reference_var_rsl_1L_chr)) {
+        if (!age_sex_counts_grouped_by %in% names(sp_data_list[[reference_var_rsl_1L_chr]])) {
             profiled_sf <- make_intersecting_profiled_area(profiled_sf = profiled_sf, 
                 profiled_sf_col_1L_chr = profiled_sf_col_1L_chr, profiled_sf_row_1L_chr = profiled_sf_row_1L_chr, 
-                attribute_sf = sp_data_list[[tot_pop_resolution]] %>% 
-                  add_km_sqd(feature_nm_1L_chr = tot_pop_resolution), 
-                attribute_rsl_1L_chr = tot_pop_resolution, data_type = "tot_pop")
+                attribute_sf = sp_data_list[[reference_var_rsl_1L_chr]] %>% 
+                  add_km_sqd(feature_nm_1L_chr = reference_var_rsl_1L_chr), 
+                attribute_rsl_1L_chr = reference_var_rsl_1L_chr, data_type = "tot_pop")
         }
     }
     profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf, 
         group_by_var_1L_chr = group_by_var_1L_chr, dynamic_var_nm_1L_chr = age_sex_counts_grouped_by, 
         data_year = data_year, dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr, 
-        tot_pop_resolution = tot_pop_resolution)
+        reference_var_rsl_1L_chr = reference_var_rsl_1L_chr)
     return(profiled_sf)
 }

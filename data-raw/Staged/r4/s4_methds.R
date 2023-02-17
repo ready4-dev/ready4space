@@ -16,7 +16,7 @@
 #                    "VicinityLookup",
 #                    function(x,
 #                             attr_data_xx,
-#                             alt_names_sf,
+#                             altv_names_sf,
 #                             area_names_var_chr,
 #                             region_short_long_chr) {
 #                      attr_data_xx
