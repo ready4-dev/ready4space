@@ -186,16 +186,16 @@ make_env_param_tb <- function (n_its_int, env_str_param_tb, mape_str_param_tb, j
     dplyr::bind_rows(param_val_env, param_val_mape)
 }
 #' Make geomc dist boundrs
-#' @description make_geomc_dist_boundrs() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make geomc dist boundrs. The function returns Distance from prototypes on land (a simple features object).
+#' @description make_geomc_dist_bndys() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make geomc dist boundrs. The function returns Distance from prototypes on land (a simple features object).
 #' @param point_locations PARAM_DESCRIPTION
 #' @param land_sf Land (a simple features object)
 #' @param distance PARAM_DESCRIPTION
 #' @param crs_nbr PARAM_DESCRIPTION
 #' @return Distance from prototypes on land (a simple features object)
-#' @rdname make_geomc_dist_boundrs
+#' @rdname make_geomc_dist_bndys
 #' @export 
 #' @importFrom sf st_as_sf st_transform st_buffer st_union st_intersection st_sf
-make_geomc_dist_boundrs <- function (point_locations, land_sf, distance, crs_nbr) 
+make_geomc_dist_bndys <- function (point_locations, land_sf, distance, crs_nbr) 
 {
     distance_from_pts_sf <- sf::st_as_sf(point_locations, coords = c("long", 
         "lat"), crs = crs_nbr[1]) %>% sf::st_transform(crs_nbr[2])
@@ -394,15 +394,15 @@ make_servc_clstr_isochrs_ls <- function (cluster_tbs_list, look_up_ref, time_min
     return(one_cluster_joint_travel_time_list)
 }
 #' Make sp data list
-#' @description make_sp_data_list() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make sp data list. The function is called for its side effects and does not return a value.
+#' @description make_spatial_attrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make sp data list. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
 #' @param subdivisions_chr PARAM_DESCRIPTION
 #' @return NA ()
-#' @rdname make_sp_data_list
+#' @rdname make_spatial_attrs_ls
 #' @export 
 #' @importFrom purrr map transpose map_chr map_dbl prepend
 #' @importFrom stats setNames
-make_sp_data_list <- function (input_ls, subdivisions_chr) 
+make_spatial_attrs_ls <- function (input_ls, subdivisions_chr) 
 {
     lists_to_merge <- purrr::map(subdivisions_chr, ~make_attributes_ls(input_ls = input_ls, 
         subdivision_1L_chr = .x, match_year_1L_lgl = FALSE, exclude_dif_bndy_yr_1L_lgl = TRUE))
@@ -413,8 +413,8 @@ make_sp_data_list <- function (input_ls, subdivisions_chr)
         0, NA_character_, names(.x[1])))
     ppr_ref <- purrr::map_dbl(lists_to_merge[[1]], ~ifelse(length(.x[1]) == 
         0, NA_real_, .x[1])) %>% stats::setNames(names_ppr)
-    sp_data_list <- purrr::prepend(merged_list, list(ppr_ref = ppr_ref))
-    return(sp_data_list)
+    spatial_attrs_ls <- purrr::prepend(merged_list, list(ppr_ref = ppr_ref))
+    return(spatial_attrs_ls)
 }
 #' Make srvc clstr geomc dist boundrs
 #' @description make_srvc_clstr_geomc_dist_boundrs() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make srvc clstr geomc dist boundrs. The function is called for its side effects and does not return a value.
@@ -431,7 +431,7 @@ make_sp_data_list <- function (input_ls, subdivisions_chr)
 make_srvc_clstr_geomc_dist_boundrs <- function (distance_km, clusters_vec, clusters_tbs_list, land_boundary_sf, 
     crs_nbr) 
 {
-    purrr::map(1:length(clusters_vec), ~make_geomc_dist_boundrs(point_locations = clusters_tbs_list %>% 
+    purrr::map(1:length(clusters_vec), ~make_geomc_dist_bndys(point_locations = clusters_tbs_list %>% 
         purrr::pluck(.x), land_sf = land_boundary_sf, distance = distance_km * 
         1000, crs_nbr = crs_nbr)) %>% stats::setNames(., clusters_tbs_list %>% 
         names())

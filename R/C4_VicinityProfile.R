@@ -8,7 +8,7 @@
 #' @slot geomc_dist_limit_km_dbl Geometric distance limit kilometre (a double vector)
 #' @slot drive_time_limit_mins_dbl Drive time limit minimums (a double vector)
 #' @slot nbr_bands_dbl Number bands (a double vector)
-#' @slot data_year_chr Data year (a character vector)
+#' @slot data_year_1L_chr Data year (a character vector)
 #' @slot data_ymds_dtm Data ymds (a date vector)
 #' @slot geom_dist_km_cuts_dbl Geometry distance kilometre cuts (a double vector)
 #' @slot travel_time_mins_cuts_dbl Travel time minimums cuts (a double vector)
@@ -32,8 +32,8 @@
 #' @exportClass VicinityProfile
 VicinityProfile <- methods::setClass("VicinityProfile",
 contains = "VicinityMicro",
-slots = c(features_chr = "character",use_coord_lup_lgl = "logical",geomc_dist_limit_km_dbl = "numeric",drive_time_limit_mins_dbl = "numeric",nbr_bands_dbl = "numeric",data_year_chr = "character",data_ymds_dtm = "POSIXt",geom_dist_km_cuts_dbl = "numeric",travel_time_mins_cuts_dbl = "numeric",travel_mode_chr = "character",area_type_chr = "character",area_chr = "character",area_bndy_yr_dbl = "numeric",region_type_chr = "character",region_chr = "character",region_bndy_yr_dbl = "numeric",a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt"),
-prototype =  list(features_chr = NA_character_,use_coord_lup_lgl = NA,geomc_dist_limit_km_dbl = NA_real_,drive_time_limit_mins_dbl = NA_real_,nbr_bands_dbl = NA_real_,data_year_chr = NA_character_,data_ymds_dtm = .POSIXct(NA_character_)))
+slots = c(features_chr = "character",use_coord_lup_lgl = "logical",geomc_dist_limit_km_dbl = "numeric",drive_time_limit_mins_dbl = "numeric",nbr_bands_dbl = "numeric",data_year_1L_chr = "character",data_ymds_dtm = "POSIXt",geom_dist_km_cuts_dbl = "numeric",travel_time_mins_cuts_dbl = "numeric",travel_mode_chr = "character",area_type_chr = "character",area_chr = "character",area_bndy_yr_dbl = "numeric",region_type_chr = "character",region_chr = "character",region_bndy_yr_dbl = "numeric",a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt"),
+prototype =  list(features_chr = NA_character_,use_coord_lup_lgl = NA,geomc_dist_limit_km_dbl = NA_real_,drive_time_limit_mins_dbl = NA_real_,nbr_bands_dbl = NA_real_,data_year_1L_chr = NA_character_,data_ymds_dtm = .POSIXct(NA_character_)))
 
 
 methods::setValidity(methods::className("VicinityProfile"),

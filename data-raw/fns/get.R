@@ -97,7 +97,7 @@ get_set_diff_lng_lat_sf <- function(geometry_sf,
 #   years_chr <- make_years_chr(input_ls = input_ls)
 #   #specified_rsl_chr <- input_ls$at_specified_res
 #   X <- input_ls$x_VicinityProfile
-#   data_year_chr <- X@data_year_chr
+#   data_year_1L_chr <- X@data_year_1L_chr
 #   country_chr <- X@country_chr
 #   #subdivision_1L_chr = NULL
 #   spatial_lookup_tb <- X@a_VicinityLookup@vicinity_processed_r3 #sp_data_pack_lup(Y)
@@ -116,7 +116,7 @@ get_set_diff_lng_lat_sf <- function(geometry_sf,
 #                                    dplyr::pull(area_type_chr) %>%
 #                                    unique() %>%
 #                                    procure.vicinity_resolutions(x = X@a_VicinityLookup@vicinity_resolutions_r3,
-#                                                                 year_1L_dbl = data_year_chr))
+#                                                                 year_1L_dbl = data_year_1L_chr))
 #   data_unavail_for_year <-  is.na(data_rsl_chr)
 #   if(match_year_1L_lgl & sum(data_unavail_for_year) > 0)
 #     stop("Data not available for specified year for all data requested")
@@ -146,7 +146,7 @@ get_set_diff_lng_lat_sf <- function(geometry_sf,
 #   if(!identical(non_matched_years_chr,character(0))){
 #     closest_yrs_ls <- make_closest_yrs_ls(data_lookup_tb = spatial_lookup_tb,
 #                                           inc_main_ft_vec = non_matched_years_chr,
-#                                           target_year = data_year_chr)
+#                                           target_year = data_year_1L_chr)
 #     extra_names <- purrr::map2_chr(non_matched_years_chr,
 #                                    closest_yrs_ls,
 #                                    ~     ready4::get_from_lup_obj(data_lookup_tb = spatial_lookup_tb %>%

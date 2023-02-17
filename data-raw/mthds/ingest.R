@@ -3,8 +3,9 @@ ingest.vicinity_processed <- function(x,
                                          match_value_xx,
                                          processed_fls_dir_1L_chr = NA_character_){
   if(!is.na(processed_fls_dir_1L_chr)){
-    x <- add_path_col(x,
-                      processed_fls_dir_1L_chr = processed_fls_dir_1L_chr)
+    x <- renew(x,#add_path_col
+               processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
+               what_1L_chr = "shiny")
   }
   object_xx <- readRDS(ready4::get_from_lup_obj(data_lookup_tb = x, # boundary_year
                                                 match_value_xx = match_value_xx,

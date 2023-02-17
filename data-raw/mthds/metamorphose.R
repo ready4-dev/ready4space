@@ -10,14 +10,16 @@ metamorphose.vicinity_raw <- function(x,#make_data_packs
     y_VicinityLookup <- VicinityLookup()
   x <- renew(x,
              what_1L_chr = "names") %>% #add_names() %>%
-    order_tb()
+    renew(x,
+          what_1L_chr = "order") # order_tb()
   z_VicinityLookup <- purrr::reduce(1:nrow(x),
                                  .init = y_VicinityLookup,
                                  ~ ready4::rowbind_all_tbs_in_r4_obj(tbs_r4 = .x, #ready4fun::add_all_tbs_in_r4
                                                                      second_tbs_r4 = x %>% dplyr::slice(.y) %>%
-                                                                       manufacture(merge_itms_chr = make_merge_sf_chr(.x, #write_fls_and_mk_sngl_row_data_lup ####TF2A
-                                                                                                                      y_vicinity_raw= x %>% dplyr::slice(.y),
-                                                                                                                      processed_fls_dir_1L_chr = processed_fls_dir_1L_chr),#merge_itms_chr_vec[.y],
+                                                                       manufacture(merge_itms_chr = manufacture(.x, #write_fls_and_mk_sngl_row_data_lup # make_merge_sf_chr ###TF2A
+                                                                                                                y_vicinity_raw = x %>% dplyr::slice(.y),
+                                                                                                                path_1L_chr = processed_fls_dir_1L_chr,
+                                                                                                                what_1L_chr = "imports_script"),#merge_itms_chr_vec[.y],
                                                                                         package_1L_chr = package_1L_chr,
                                                                                         raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
                                                                                         processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,

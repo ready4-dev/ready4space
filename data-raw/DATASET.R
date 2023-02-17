@@ -221,7 +221,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                               "geomc_dist_limit_km_dbl", # geom_dist_limit_km
                                                               "drive_time_limit_mins_dbl", # drive_time_limit_mins
                                                               "nbr_bands_dbl", # nbr_bands
-                                                              "data_year_chr",# data_yea
+                                                              "data_year_1L_chr",# data_yea
                                                               "data_ymds_dtm" # data_ymd
                                                               )) %>% list(),
                                             parent_class_chr = "VicinityMicro"),

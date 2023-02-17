@@ -25,7 +25,7 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
                                      dplyr::pull(area_type_chr) %>%
                                      unique() %>%
                                      procure.vicinity_resolutions(x = x@a_VicinityLookup@vicinity_resolutions_r3,
-                                                                  year_1L_dbl = as.numeric(x@data_year_chr)))
+                                                                  year_1L_dbl = as.numeric(x@data_year_1L_chr)))
     data_unavail_for_year <-  is.na(data_rsl_chr)
     if(match_year_1L_lgl & sum(data_unavail_for_year) > 0)
       stop("Data not available for specified year for all data requested")
@@ -54,8 +54,8 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
       purrr::flatten_chr()
     if(!identical(non_matched_years_chr,character(0))){
       closest_yrs_ls <- make_closest_yrs_ls(data_lookup_tb = spatial_lookup_tb,
-                                            inc_main_ft_vec = non_matched_years_chr,
-                                            target_year = x@data_year_chr)
+                                            main_incld_feature_chr = non_matched_years_chr,#inc_main_ft_vec
+                                            target_year_1L_chr = x@data_year_1L_chr)
       extra_names <- purrr::map2_chr(non_matched_years_chr,
                                      closest_yrs_ls,
                                      ~     ready4::get_from_lup_obj(data_lookup_tb = spatial_lookup_tb %>%

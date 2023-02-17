@@ -45,6 +45,7 @@ renew.vicinity_raw <- function(x, ##
                                data_type_chr = character(0),
                                main_feature_chr = character(0),
                                name_chr = character(0),
+                               processed_fls_dir_1L_chr = character(0),
                                region_chr = character(0),
                                source_reference_chr = character(0),
                                year_chr = character(0),
@@ -54,6 +55,31 @@ renew.vicinity_raw <- function(x, ##
   if(what_1L_chr == "names"){
     x <- add_names(x)
   }
+  if(what_1L_chr == "order"){ #order_tb mthd # Could make into a fn if required for vicinity_processed
+    not_to_be_ordered_tb <- x %>% dplyr::filter(is.na(uid_chr))
+    x <- x %>% dplyr::filter(!is.na(uid_chr))
+    ordering_tb <- x %>%
+      dplyr::select(name_chr,uid_chr,add_boundaries_chr) %>%
+      dplyr::mutate(preceeded_by = purrr::map(add_boundaries_chr,
+                                              ~ unlist(.x)[unlist(.x) %in% uid_chr])) %>%
+      dplyr::mutate(sequence = purrr::map2(preceeded_by,
+                                           uid_chr,
+                                           ~ c(.x,.y)))
+    if(nrow(x) > 0){
+      ordering_chr <- purrr::reduce(ordering_tb %>%
+                                      dplyr::pull(sequence),
+                                    ~ append(.x,.y[!.y %in% .x]))
+
+      x <- x[match(ordering_chr, x$uid_chr),]
+    }
+    dplyr::bind_rows(x,not_to_be_ordered_tb)
+  }
+  if(what_1L_chr == "shiny"){ # add_path_col
+    x <- x %>%
+      dplyr::mutate(start_from = purrr::map_dbl(source_reference_chr, ~ 2 + stringr::str_locate(.x,":") %>% purrr::pluck(1))) %>%
+      dplyr::mutate(start_from = purrr::map_dbl(start_from, ~ ifelse(is.na(.x),1,.x))) %>%
+      dplyr::mutate(shiny_source_chr = paste0(processed_fls_dir_1L_chr,"/",stringr::str_sub(source_reference_chr,start=start_from),".RDS"))
+  }
   if(what_1L_chr == "table"){
       fn_env_ls <- as.list(rlang::current_env())[-1]
       x <- ready4::update_tb_r3(x,
@@ -62,5 +88,6 @@ renew.vicinity_raw <- function(x, ##
 
 
   }
+
   return(x)
 }

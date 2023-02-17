@@ -8,7 +8,10 @@ manufacture_VicinityLookup <- function(x,
                                        attr_data_xx = NULL,
                                        boundary_year_1L_chr = character(0),
                                        match_value_xx = character(0),
+                                       path_1L_chr = character(0),
+                                       type_1L_chr = "Geometry",
                                        what_1L_chr = "attribute",
+                                       y_vicinity_raw = NULL,
                                        ... # Can remove???
                                        ){
   if(what_1L_chr == "attribute"){
@@ -99,6 +102,43 @@ manufacture_VicinityLookup <- function(x,
                                 region_short_long_chr = region_short_long_chr, # Remove when moved to s2lsd
                                 match_value_xx = match_value_xx)
     object_xx <- attr_data_xx
+  }
+  if(what_1L_chr == "imports"){ #make_imports_chr
+    if(type_1L_chr == "Geometry"){
+      imports_chr <- x@vicinity_raw_r3 %>%
+        dplyr::filter(main_feature_chr == "Boundary") %>% dplyr::pull(name_chr)
+    }else{
+      imports_chr <- x@vicinity_raw_r3 %>%
+        dplyr::filter(type_1L_chr == "Attribute") %>% dplyr::pull(name_chr)
+      return(imports_chr)
+    }
+    object_xx <- imports_chr
+
+  }
+  if(what_1L_chr == "import_script"){ # make_merge_sf_chr
+      if(is.null(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1))){
+        script_1L_chr <- NA_character_
+      }else{
+        if(is.na(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1)) %>% any()){
+          script_1L_chr <- NA_character_
+        }else{
+          script_1L_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_boundaries_chr) %>% purrr::pluck(1),
+                                         ~ ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3,
+                                                                    match_value_xx = .x,
+                                                                    match_var_nm_1L_chr = "uid_chr",
+                                                                    target_var_nm_1L_chr = "name_chr",
+                                                                    evaluate_1L_lgl = FALSE) %>%
+                                           ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3,
+                                                                    match_value_xx = .,
+                                                                    match_var_nm_1L_chr = "name_chr",
+                                                                    target_var_nm_1L_chr = "source_reference_chr",
+                                                                    evaluate_1L_lgl = FALSE) %>%
+                                           ifelse(stringr::str_detect(.,"::"),
+                                                  .,
+                                                  paste0("readRDS(\"",path_1L_chr,"/",.,".rds\")")))
+        }
+      }
+    object_xx <- script_1L_chr
   }
   return(object_xx)
 }
