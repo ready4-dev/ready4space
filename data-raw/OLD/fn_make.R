@@ -116,28 +116,28 @@ make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, se
 {
     distances_vec <- seq(from = distance_km_outer/nbr_distance_bands, 
         to = distance_km_outer, by = distance_km_outer/nbr_distance_bands)
-    service_clusters_vec <- service_cluster_tb %>% dplyr::pull(cluster_name) %>% 
+    service_clusters_chr <- service_cluster_tb %>% dplyr::pull(cluster_name) %>% 
         unique()
-    service_clusters_tbs_list <- purrr::map(service_clusters_vec, 
+    service_vicinity_points_ls <- purrr::map(service_clusters_chr, 
         ~service_cluster_tb %>% dplyr::filter(cluster_name == 
-            .x)) %>% stats::setNames(service_clusters_vec)
+            .x)) %>% stats::setNames(service_clusters_chr)
     service_clusters_by_distance_list <- purrr::map(distances_vec, 
-        ~make_srvc_clstr_geomc_dist_boundrs(distance_km = .x, 
-            clusters_vec = service_clusters_vec, clusters_tbs_list = service_clusters_tbs_list, 
+        ~make_cluster_bndys(distance_km = .x, 
+            clusters_chr = service_clusters_chr, vicinity_points_ls = service_vicinity_points_ls, 
             land_boundary_sf = profiled_sf, crs_nbr = crs_nbr)) %>% 
         stats::setNames(., paste0("km_", distances_vec, "from_service"))
-    geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_vec), 
+    geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr), 
         ~reorder_distance_list_by_cluster(look_up_ref = .x, clusters_by_distance_list = service_clusters_by_distance_list, 
             distances_vec = distances_vec)) %>% stats::setNames(., 
-        service_clusters_tbs_list %>% names())
+        service_vicinity_points_ls %>% names())
     geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles, 
         ~transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>% 
-        stats::setNames(., service_clusters_tbs_list %>% names())
+        stats::setNames(., service_vicinity_points_ls %>% names())
     geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles, 
-        ~do.call(rbind, .x)) %>% stats::setNames(., service_clusters_tbs_list %>% 
+        ~do.call(rbind, .x)) %>% stats::setNames(., service_vicinity_points_ls %>% 
         names()) %>% purrr::map(., ~.x %>% dplyr::arrange(desc(distance_km)))
     geometric_distance_by_cluster_bands_merged_list <- purrr::map(geometric_distance_by_cluster_bands, 
-        ~do.call(rbind, .x)) %>% stats::setNames(., service_clusters_tbs_list %>% 
+        ~do.call(rbind, .x)) %>% stats::setNames(., service_vicinity_points_ls %>% 
         names()) %>% purrr::map(., ~.x %>% dplyr::arrange(desc(distance_km)) %>% 
         simplify_sf(crs = crs_nbr[1]))
     return(geometric_distance_by_cluster_bands_merged_list)
@@ -417,23 +417,23 @@ make_spatial_attrs_ls <- function (input_ls, subdivisions_chr)
     return(spatial_attrs_ls)
 }
 #' Make srvc clstr geomc dist boundrs
-#' @description make_srvc_clstr_geomc_dist_boundrs() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make srvc clstr geomc dist boundrs. The function is called for its side effects and does not return a value.
+#' @description make_cluster_bndys() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make srvc clstr geomc dist boundrs. The function is called for its side effects and does not return a value.
 #' @param distance_km PARAM_DESCRIPTION
-#' @param clusters_vec PARAM_DESCRIPTION
-#' @param clusters_tbs_list PARAM_DESCRIPTION
+#' @param clusters_chr PARAM_DESCRIPTION
+#' @param vicinity_points_ls PARAM_DESCRIPTION
 #' @param land_boundary_sf Land boundary (a simple features object)
 #' @param crs_nbr PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname make_srvc_clstr_geomc_dist_boundrs
+#' @rdname make_cluster_bndys
 #' @export 
 #' @importFrom purrr map pluck
 #' @importFrom stats setNames
-make_srvc_clstr_geomc_dist_boundrs <- function (distance_km, clusters_vec, clusters_tbs_list, land_boundary_sf, 
+make_cluster_bndys <- function (distance_km, clusters_chr, vicinity_points_ls, land_boundary_sf, 
     crs_nbr) 
 {
-    purrr::map(1:length(clusters_vec), ~make_geomc_dist_bndys(point_locations = clusters_tbs_list %>% 
+    purrr::map(1:length(clusters_chr), ~make_geomc_dist_bndys(point_locations = vicinity_points_ls %>% 
         purrr::pluck(.x), land_sf = land_boundary_sf, distance = distance_km * 
-        1000, crs_nbr = crs_nbr)) %>% stats::setNames(., clusters_tbs_list %>% 
+        1000, crs_nbr = crs_nbr)) %>% stats::setNames(., vicinity_points_ls %>% 
         names())
 }
 #' Make time band

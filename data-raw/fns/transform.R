@@ -37,7 +37,7 @@ transform_circles_to_bands <- function(geom_distance_circle_sfs_list){
                                    purrr::pluck(.x+1),
                                  geom_distance_circle_sfs_list %>%
                                    purrr::pluck(.x)) %>%
-               dplyr::select(distance_km)) %>%
+               dplyr::select(distance_in_km_dbl)) %>%
     stats::setNames(paste0("dist_"
                            ,2:(geom_distance_circle_sfs_list  %>%
                                  length())))  %>%

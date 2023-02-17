@@ -92,7 +92,7 @@ update_spatial_attrs_ls <- function(spatial_attrs_ls,
                                 profiled_area_bands_list){
   crs_nbr_dbl <-  input_ls$x_VicinityProfile %>% crs_nbr()
   at_highest_res = input_ls$at_highest_res
-  distance_km = geom_dist_limit_km(input_ls$x_VicinityProfile)
+  distance_in_km_dbl = geom_dist_limit_km(input_ls$x_VicinityProfile)
   travel_time_mins = drive_time_limit_mins(input_ls$x_VicinityProfile)
   group_by_var_1L_chr <- procure(input_ls$x_VicinityProfile,#get_group_by_var_from_VicinityProfile
                                  what_1L_chr = "grouping")

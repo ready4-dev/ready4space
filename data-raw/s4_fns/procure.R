@@ -91,7 +91,7 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
       if(is.na(x@geomc_dist_limit_km_dbl))
         object_xx <- "drive_times"
       else
-        object_xx <- "distance_km"
+        object_xx <- "distance_in_km_dbl"
       # procure.vicinity_identifiers(y_vicinity_identifiers,#get_group_by_var
       #                              geometry_rsl_1L_chr = "GEOMETRIC_DISTANCE",
       #                              area_bndy_yr_chr = as.character(x@area_bndy_yr_dbl) ## Addition - Not sure if correct.

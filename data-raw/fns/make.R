@@ -315,28 +315,30 @@ make_raw_format_dir_chr <- function(raw_fls_dir_1L_chr,
                                     category_1L_chr){
   paste0(raw_fls_dir_1L_chr,"/",category_1L_chr)
 }
-##### STAGED
-make_srvc_clstr_geomc_dist_boundrs <- function(distance_km,
-                                    clusters_vec,
-                                    clusters_tbs_list,
-                                    land_boundary_sf,
-                                    crs_nbr_dbl){
-  purrr::map(1:length(clusters_vec),
-             ~ make_geomc_dist_bndys(point_locations_tb = clusters_tbs_list %>%
+make_cluster_bndys <- function(clusters_chr,
+                               crs_nbr_dbl,
+                               distance_in_km_1L_dbl,
+                               land_boundary_sf,
+                               vicinity_points_ls){
+  cluster_bndys_ls <- purrr::map(1:length(clusters_chr),
+             ~ manufacture.vicinity_points(vicinity_points_ls %>% #make_geomc_dist_bndys
                                          purrr::pluck(.x),
                                        land_sf = land_boundary_sf,
-                                       distance = distance_km *1000,
-                                       crs_nbr_dbl = crs_nbr_dbl)) %>%
-    stats::setNames(., clusters_tbs_list %>% names())
+                                       metres_1L_dbl = distance_in_km_1L_dbl *1000,
+                                       crs_nbr_dbl = crs_nbr_dbl,
+                                     what_1L_chr == "geometric")) %>%
+    stats::setNames(., vicinity_points_ls %>% names())
+  return(cluster_bndys_ls)
 
 }
+##### STAGED
 make_servc_clstr_isochrs_ls <- function(cluster_tbs_list,
                                         look_up_ref,
                                         time_min_1L_dbl = 0,
                                         time_max_1L_dbl = 60,
                                         time_steps_1L_dbl = 5){
   ##
-  require(osrm)
+  require(osrm) # Make a dependency
   one_cluster_services_vec <- cluster_tbs_list %>%
     purrr::pluck(look_up_ref) %>%
     dplyr::select(service_name_chr) %>%
@@ -393,50 +395,7 @@ make_servc_clstr_isochrs_ls <- function(cluster_tbs_list,
   return(one_cluster_joint_travel_time_list)
 }
 
-make_distance_based_bands <- function(distance_km_outer,
-                                      nbr_distance_bands,
-                                      service_cluster_tb,
-                                      profiled_sf,
-                                      crs_nbr_dbl){
-  distances_vec <- seq(from = distance_km_outer/nbr_distance_bands,
-                       to = distance_km_outer,
-                       by = distance_km_outer/nbr_distance_bands)
 
-  service_clusters_vec <- service_cluster_tb %>% dplyr::pull(cluster_name_chr) %>% unique()
-  service_clusters_tbs_list <- purrr::map(service_clusters_vec,
-                                          ~ service_cluster_tb %>%
-                                            dplyr::filter(cluster_name_chr == .x)) %>%
-    stats::setNames(service_clusters_vec)
-  service_clusters_by_distance_list <- purrr::map(distances_vec,
-                                                  ~ make_srvc_clstr_geomc_dist_boundrs(distance_km = .x,
-                                                                                       clusters_vec = service_clusters_vec,
-                                                                                       clusters_tbs_list = service_clusters_tbs_list,
-                                                                                       land_boundary_sf = profiled_sf,
-                                                                                       crs_nbr_dbl = crs_nbr_dbl)) %>%
-    stats::setNames(., paste0("km_",
-                              distances_vec,
-                              "from_service"))
-  geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_vec),
-                                                      ~ reorder_distance_list_by_cluster(look_up_ref = .x,
-                                                                                         clusters_by_distance_list = service_clusters_by_distance_list,
-                                                                                         distances_vec = distances_vec)) %>%
-    stats::setNames(., service_clusters_tbs_list %>% names())
-  geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles,
-                                                    ~ transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>%
-    stats::setNames(., service_clusters_tbs_list %>% names())
-  geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles,
-                                                                  ~ do.call(rbind,.x)) %>%
-    stats::setNames(., service_clusters_tbs_list %>% names()) %>%
-    purrr::map(.,
-               ~ .x %>% dplyr::arrange(desc(distance_km)))
-  geometric_distance_by_cluster_bands_merged_list <- purrr::map(geometric_distance_by_cluster_bands,
-                                                                ~ do.call(rbind,.x)) %>%
-    stats::setNames(., service_clusters_tbs_list %>% names()) %>%
-    purrr::map(.,
-               ~ .x %>% dplyr::arrange(desc(distance_km)) %>%
-                 simplify_sf(crs = crs_nbr_dbl[1]))
-  return(geometric_distance_by_cluster_bands_merged_list)
-}
 make_each_uid_a_poly_sf <- function(sf,
                                     uid_chr){
   sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
@@ -523,20 +482,22 @@ make_profiled_area_objs <- function(x_VicinityProfile){
       as.character() %>%
       unique()
   }else{
-    cluster_tb = lookup_tb(x_VicinityProfile) %>%
-      sp_site_coord_lup() %>%
-      dplyr::filter(service_name_chr %in% features(x_VicinityProfile))
+    y_vicinity_points = x_VicinityProfile@a_VicinityLookup@vicinity_points_r3 %>%
+      dplyr::filter(service_name_chr %in% x_VicinityProfile@features_chr)
     if(!is.na(geom_dist_limit_km(x_VicinityProfile))){
-      profiled_sf <- make_distance_based_bands(distance_km_outer = geom_dist_limit_km(x_VicinityProfile), # *1000
-                                              nbr_distance_bands = nbr_bands(x_VicinityProfile),
-                                              service_cluster_tb = cluster_tb,
-                                              profiled_sf =  st_profiled_sf,
-                                              crs_nbr_dbl = x_VicinityProfile@crs_dbl )[[1]]
+      profiled_sf <- manufacture.vicinity_points(y_vicinity_points,
+                                                 bands_1L_dbl = x_VicinityProfile@nbr_bands_dbl,#,
+                                                 crs_nbr_dbl = x_VicinityProfile@crs_dbl,
+                                                 land_sf =  st_profiled_sf,
+                                                 metres_1L_dbl = x_VicinityProfile@geomc_dist_limit_km_dbl *1000, # make_distance_based_bands
+                                                 type_1L_chr = "bands",
+                                                 what_1L_chr = "geometric"
+                                                 )[[1]]
       profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf,
                                                        group_by_var_1L_chr = group_by_var_1L_chr)
     }
     if(!is.na(drive_time_limit_mins(x_VicinityProfile))){
-      profiled_area_bands_list <- make_servc_clstr_isochrs_ls(cluster_tbs_list = list(cluster_tb),
+      profiled_area_bands_list <- make_servc_clstr_isochrs_ls(cluster_tbs_list = list(y_vicinity_points),
                                                      look_up_ref = 1,
                                                      time_min_1L_dbl = 0,
                                                      time_max_1L_dbl = drive_time_limit_mins(x_VicinityProfile),
@@ -803,4 +764,48 @@ make_years_chr <- function(input_ls){
 #     sf::st_transform(crs_nbr_dbl[1]) %>%
 #     sf::st_sf()
 #   return(distance_from_pts_on_land_sf)
+# }
+# make_distance_based_bands <- function(distance_in_km_1L_dbl, # Not a manufacuture mthd for vicinity_points
+#                                       bands_1L_dbl,
+#                                       service_cluster_tb,
+#                                       profiled_sf,
+#                                       crs_nbr_dbl){
+#   distances_vec <- seq(from = distance_in_km_1L_dbl/bands_1L_dbl,
+#                        to = distance_in_km_1L_dbl,
+#                        by = distance_in_km_1L_dbl/bands_1L_dbl)
+#
+#   service_clusters_chr <- service_cluster_tb %>% dplyr::pull(cluster_name_chr) %>% unique()
+#   service_vicinity_points_ls <- purrr::map(service_clusters_chr,
+#                                           ~ service_cluster_tb %>%
+#                                             dplyr::filter(cluster_name_chr == .x)) %>%
+#     stats::setNames(service_clusters_chr)
+#   service_clusters_by_distance_list <- purrr::map(distances_vec,
+#                                                   ~ make_cluster_bndys(distance_in_km_1L_dbl = .x,
+#                                                                                        clusters_chr = service_clusters_chr,
+#                                                                                        vicinity_points_ls = service_vicinity_points_ls,
+#                                                                                        land_boundary_sf = profiled_sf,
+#                                                                                        crs_nbr_dbl = crs_nbr_dbl)) %>%
+#     stats::setNames(., paste0("km_",
+#                               distances_vec,
+#                               "from_service"))
+#   geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
+#                                                       ~ reorder_distance_list_by_cluster(look_up_ref = .x,
+#                                                                                          clusters_by_distance_list = service_clusters_by_distance_list,
+#                                                                                          distances_vec = distances_vec)) %>%
+#     stats::setNames(., service_vicinity_points_ls %>% names())
+#   geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles,
+#                                                     ~ transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>%
+#     stats::setNames(., service_vicinity_points_ls %>% names())
+#   geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles,
+#                                                                   ~ do.call(rbind,.x)) %>%
+#     stats::setNames(., service_vicinity_points_ls %>% names()) %>%
+#     purrr::map(.,
+#                ~ .x %>% dplyr::arrange(desc(distance_in_km_dbl)))
+#   geometric_distance_by_cluster_bands_merged_list <- purrr::map(geometric_distance_by_cluster_bands,
+#                                                                 ~ do.call(rbind,.x)) %>%
+#     stats::setNames(., service_vicinity_points_ls %>% names()) %>%
+#     purrr::map(.,
+#                ~ .x %>% dplyr::arrange(desc(distance_in_km_dbl)) %>%
+#                  simplify_sf(crs = crs_nbr_dbl[1]))
+#   return(geometric_distance_by_cluster_bands_merged_list)
 # }
