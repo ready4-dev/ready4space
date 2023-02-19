@@ -64,11 +64,11 @@ update_pop_by_inc_area <- function(profiled_sf,
   return(profiled_sf)
 }
 
-update_sf_boundary_descr <- function(look_up_ref,
-                                     one_cluster_up_to_xmin_list){
+update_sf_boundary_descr <- function(index_val_1L_int,
+                                     one_cluster_up_to_xmin_ls){
   max_var <- "max"
-  max_vec <- one_cluster_up_to_xmin_list %>%
-    purrr::pluck(look_up_ref) %>%
+  max_vec <- one_cluster_up_to_xmin_ls %>%
+    purrr::pluck(index_val_1L_int) %>%
     names() %>%
     stringr::str_subset("max")
   if(length(max_vec) > 1){
@@ -79,8 +79,8 @@ update_sf_boundary_descr <- function(look_up_ref,
       max() %>%
       paste0("max.",.)
   }
-  return_object <- one_cluster_up_to_xmin_list %>%
-    purrr::pluck(look_up_ref) %>%
+  return_object <- one_cluster_up_to_xmin_ls %>%
+    purrr::pluck(index_val_1L_int) %>%
     dplyr::mutate(max := !!rlang::sym(max_var)) %>%
     dplyr::mutate(center = (min + max) / 2) %>%
     dplyr::mutate(drive_times = paste0("0 to ",max," mins")) %>%
@@ -89,7 +89,7 @@ update_sf_boundary_descr <- function(look_up_ref,
 }
 update_spatial_attrs_ls <- function(spatial_attrs_ls,
                                 input_ls,
-                                profiled_area_bands_list){
+                                profiled_area_bands_ls){
   crs_nbr_dbl <-  input_ls$x_VicinityProfile %>% crs_nbr()
   at_highest_res = input_ls$at_highest_res
   distance_in_km_dbl = geom_dist_limit_km(input_ls$x_VicinityProfile)
@@ -120,10 +120,10 @@ update_spatial_attrs_ls <- function(spatial_attrs_ls,
 
   }
   # if(use_coord_lup(input_ls$x_VicinityProfile))
-  #   profiled_area_bands_list <- purrr::map(profiled_area_bands_list,
+  #   profiled_area_bands_ls <- purrr::map(profiled_area_bands_ls,
   #                                          ~ .x %>%
   #                                            sf::st_transform(crs_nbr(input_ls$x_VicinityProfile)[1]))
-  by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
+  by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_ls,
                                          ~ make_reconciled_intersecting_area(profiled_sf = .x,
                                                                        profiled_sf_col_1L_chr = NA,
                                                                        profiled_sf_row_1L_chr = NA,

@@ -244,14 +244,22 @@ make_sf_ls <- function(profiled_sf,
 }
 make_drive_time_isochrones <- function(lng_1L_dbl,
                                        lat_1L_dbl,
+                                       server_1L_chr = character(0),
                                        time_min_1L_dbl,
                                        time_max_1L_dbl,
-                                       time_steps_1L_dbl){
+                                       time_steps_1L_dbl,
+                                       travel_mode_1L_chr = "car"){
+  if(identical(server_1L_chr, character(0)))
+    server_1L_chr <- getOption("osrm.server")
+  if(identical(travel_mode_1L_chr, character(0)))
+    travel_mode_1L_chr <- getOption("osrm.profile")
   step_1L_dbl <- (time_max_1L_dbl-time_min_1L_dbl)/time_steps_1L_dbl
   iso_sf <- osrm::osrmIsochrone(loc = c(lng_1L_dbl, lat_1L_dbl),
                                 breaks = seq(from = time_min_1L_dbl,
                                              to = time_max_1L_dbl,
-                                             by = step_1L_dbl))
+                                             by = step_1L_dbl),
+                                osrm.profile = travel_mode_1L_chr,
+                                osrm.server = server_1L_chr)
   iso_sf <- sf::st_as_sf(iso_sf) %>%
     dplyr::mutate(drive_times = paste0(time_min_1L_dbl,
                                        " to ",
@@ -332,70 +340,63 @@ make_cluster_bndys <- function(clusters_chr,
 
 }
 ##### STAGED
-make_servc_clstr_isochrs_ls <- function(cluster_tbs_list,
-                                        look_up_ref,
+make_servc_clstr_isochrs_ls <- function(vicinity_points_ls,
+                                        index_val_1L_int,
                                         time_min_1L_dbl = 0,
                                         time_max_1L_dbl = 60,
                                         time_steps_1L_dbl = 5){
-  ##
-  require(osrm) # Make a dependency
-  one_cluster_services_vec <- cluster_tbs_list %>%
-    purrr::pluck(look_up_ref) %>%
+  #require(osrm) # Make a dependency
+  cluster_services_chr <- vicinity_points_ls %>%
+    purrr::pluck(index_val_1L_int) %>%
     dplyr::select(service_name_chr) %>%
     dplyr::pull()
-  ##
-  cluster_tb = cluster_tbs_list %>%
-    purrr::pluck(look_up_ref)
-  ##
-  one_cluster_travel_time_sf_list <- purrr::map(one_cluster_services_vec,
-                                                ~ make_isochrs_for_1_srvc(cluster_tb = cluster_tb,
-                                                                                      service = .x,
-                                                                                      time_min_1L_dbl = time_min_1L_dbl,
-                                                                                      time_max_1L_dbl = time_max_1L_dbl,
-                                                                                      time_steps_1L_dbl = time_steps_1L_dbl)) %>%
-    stats::setNames(., one_cluster_services_vec)
-  detach("package:osrm", unload=TRUE)
-  ##
-  one_cluster_time_bands_list <- purrr::map(1:length(one_cluster_travel_time_sf_list),
-                                            ~ make_time_band_sf_ls(look_up_ref = .x,
-                                                                   one_cluster_travel_time_sf_list = one_cluster_travel_time_sf_list)) %>%
-    stats::setNames(one_cluster_travel_time_sf_list %>% names())
-  ##
-  one_cluster_unioned_time_bands_list <- purrr::map(1:(one_cluster_time_bands_list %>%
-                                                         purrr::pluck(1) %>%
-                                                         length()),
-                                                    ~ union_one_travel_time_band_across_sites(time_band_ref = .x,
-                                                                                              one_cluster_time_bands_list =  one_cluster_time_bands_list)) %>%
-    stats::setNames(paste0("tb_"
-                           ,1:(one_cluster_time_bands_list %>%
-                                 purrr::pluck(1) %>%
-                                 length())))
-  ##
-  one_cluster_up_to_xmin_list <- purrr::accumulate(one_cluster_unioned_time_bands_list,
+  x_vicinity_points <- vicinity_points_ls %>%
+    purrr::pluck(index_val_1L_int)
+  one_cluster_travel_time_sf_ls <- purrr::map(cluster_services_chr,
+                                                ~ manufacture.vicinity_points(x_vicinity_points,#make_isochrs_for_1_srvc
+                                                                              service_1L_chr = .x,
+                                                                              time_min_1L_dbl = time_min_1L_dbl,
+                                                                              time_max_1L_dbl = time_max_1L_dbl,
+                                                                              time_steps_1L_dbl = time_steps_1L_dbl,
+                                                                              what_1L_chr = "drive time")) %>%
+    stats::setNames(., cluster_services_chr)
+  #detach("package:osrm", unload=TRUE)
+  one_cluster_time_bands_ls <- purrr::map(1:length(one_cluster_travel_time_sf_ls),
+                                            ~ make_time_band_sf_ls(index_val_1L_int = .x,
+                                                                   one_cluster_travel_time_sf_ls = one_cluster_travel_time_sf_ls)) %>%
+    stats::setNames(one_cluster_travel_time_sf_ls %>% names())
+  one_cluster_unioned_time_bands_ls <- purrr::map(1:(one_cluster_time_bands_ls %>%
+                                                       purrr::pluck(1) %>%
+                                                       length()),
+                                                  ~ union_one_travel_time_band_across_sites(time_band_ref = .x,
+                                                                                            one_cluster_time_bands_ls =  one_cluster_time_bands_ls)) %>%
+    stats::setNames(paste0("tb_",
+                           1:(one_cluster_time_bands_ls %>%
+                                purrr::pluck(1) %>%
+                                length())))
+  one_cluster_up_to_xmin_ls <- purrr::accumulate(one_cluster_unioned_time_bands_ls,
                                                    ~ sf::st_union(.x,.y))  %>%
-    stats::setNames(paste0("tb_"
-                           ,1:(one_cluster_unioned_time_bands_list %>%
+    stats::setNames(paste0("tb_",
+                           1:(one_cluster_unioned_time_bands_ls %>%
+                                length())))
+  one_cluster_up_to_xmin_ls <- purrr::map(1:length(one_cluster_up_to_xmin_ls),
+                                            ~ update_sf_boundary_descr(index_val_1L_int = .x,
+                                                                       one_cluster_up_to_xmin_ls = one_cluster_up_to_xmin_ls)) %>%
+    stats::setNames(paste0("tb_",
+                           1:(one_cluster_up_to_xmin_ls  %>%
                                  length())))
-  ##
-  one_cluster_up_to_xmin_list <- purrr::map(1:length(one_cluster_up_to_xmin_list),
-                                            ~ update_sf_boundary_descr(look_up_ref = .x,
-                                                                  one_cluster_up_to_xmin_list = one_cluster_up_to_xmin_list)) %>%
-    stats::setNames(paste0("tb_"
-                           ,1:(one_cluster_up_to_xmin_list  %>%
-                                 length())))
-  ##
-  one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_list)-1),
-                                                   ~ sf::st_difference(one_cluster_unioned_time_bands_list %>% purrr::pluck(.x+1),
-                                                                       one_cluster_up_to_xmin_list %>% purrr::pluck(.x)) %>%
-                                                     dplyr::select(id,min,max,center,drive_times)) %>%
-    stats::setNames(paste0("tb_"
-                           ,2:(one_cluster_up_to_xmin_list  %>%
-                                 length())))  %>%
-    purrr::prepend(list(tb_1 = one_cluster_unioned_time_bands_list %>% purrr::pluck(1)))
+  one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_ls)-1),
+                                                   ~ sf::st_difference(one_cluster_unioned_time_bands_ls %>% purrr::pluck(.x+1),
+                                                                       one_cluster_up_to_xmin_ls %>% purrr::pluck(.x)) %>%
+                                                     dplyr::select(id,isomin,isomax,
+                                                                   center, ### CHECK
+                                                                   drive_times)) %>%
+    stats::setNames(paste0("tb_",
+                           2:(one_cluster_up_to_xmin_ls  %>%
+                                length())))  %>%
+    purrr::prepend(list(tb_1 = one_cluster_unioned_time_bands_ls %>% purrr::pluck(1)))
   return(one_cluster_joint_travel_time_list)
 }
-
-
 make_each_uid_a_poly_sf <- function(sf,
                                     uid_chr){
   sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
@@ -453,81 +454,16 @@ make_spatial_attrs_ls <- function(input_ls,
   spatial_attrs_ls <- purrr::prepend(merged_list,list(ppr_ref = ppr_ref))
   return(spatial_attrs_ls)
 }
-make_profiled_area_objs <- function(x_VicinityProfile){
-  group_by_var_1L_chr <- procure(x_VicinityProfile,#get_group_by_var_from_VicinityProfile
-                                 what_1L_chr = "grouping")
-  st_profiled_sf <- ingest(x_VicinityProfile = x_VicinityProfile, # get_starter_sf_for_profiled_area
-                                                           key_var_1L_chr = group_by_var_1L_chr)
-  main_sub_div_var <- ifelse(use_coord_lup(x_VicinityProfile),
-                             x_VicinityProfile@lookup_tb@sp_uid_lup %>%
-                               ready4::get_from_lup_obj(match_var_nm_1L_chr = "spatial_unit_chr",
-                                                       match_value_xx = x_VicinityProfile@region_type,
-                                                       target_var_nm_1L_chr = "var_name_chr",
-                                                       evaluate_1L_lgl = F),
-                             ready4::get_from_lup_obj(data_lookup_tb = x_VicinityProfile %>%
-                                                       lookup_tb() %>%
-                                                       sp_starter_sf_lup() %>%
-                                                       dplyr::filter(country_chr == x_VicinityProfile@country_chr) %>%
-                                                       dplyr::filter(area_bndy_yr_dbl == x_VicinityProfile@area_bndy_yr_dbl),
-                                                     match_var_nm_1L_chr = "area_type_chr",
-                                                     match_value_xx = x_VicinityProfile@area_type_chr,
-                                                     target_var_nm_1L_chr = "subdivision_chr",
-                                                     evaluate_1L_lgl = FALSE))
-  if(!use_coord_lup(x_VicinityProfile)){
-    profiled_sf <- st_profiled_sf
-    profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf,
-                                                     group_by_var_1L_chr = group_by_var_1L_chr)
-    subdivisions_chr <- profiled_sf %>%
-      dplyr::pull(!!rlang::sym(main_sub_div_var)) %>%
-      as.character() %>%
-      unique()
-  }else{
-    y_vicinity_points = x_VicinityProfile@a_VicinityLookup@vicinity_points_r3 %>%
-      dplyr::filter(service_name_chr %in% x_VicinityProfile@features_chr)
-    if(!is.na(geom_dist_limit_km(x_VicinityProfile))){
-      profiled_sf <- manufacture.vicinity_points(y_vicinity_points,
-                                                 bands_1L_dbl = x_VicinityProfile@nbr_bands_dbl,#,
-                                                 crs_nbr_dbl = x_VicinityProfile@crs_dbl,
-                                                 land_sf =  st_profiled_sf,
-                                                 metres_1L_dbl = x_VicinityProfile@geomc_dist_limit_km_dbl *1000, # make_distance_based_bands
-                                                 type_1L_chr = "bands",
-                                                 what_1L_chr = "geometric"
-                                                 )[[1]]
-      profiled_area_bands_list <- make_sf_ls(profiled_sf = profiled_sf,
-                                                       group_by_var_1L_chr = group_by_var_1L_chr)
-    }
-    if(!is.na(drive_time_limit_mins(x_VicinityProfile))){
-      profiled_area_bands_list <- make_servc_clstr_isochrs_ls(cluster_tbs_list = list(y_vicinity_points),
-                                                     look_up_ref = 1,
-                                                     time_min_1L_dbl = 0,
-                                                     time_max_1L_dbl = drive_time_limit_mins(x_VicinityProfile),
-                                                     time_steps_1L_dbl = x_VicinityProfile@nbr_bands_dbl)
-      names(profiled_area_bands_list) <- paste0("dt_band_",1:length(profiled_area_bands_list))
-      profiled_sf <- do.call(rbind,profiled_area_bands_list) %>%
-        sf::st_transform(x_VicinityProfile@crs_dbl[1]) %>%
-        simplify_sf()
-    }
-    subdivisions_chr <- make_intersecting_geometries(geometry_one_sf = st_profiled_sf,
-                                               geometry_two_sf = profiled_sf,
-                                               crs_nbr_dbl = x_VicinityProfile@crs_dbl) %>%
-      dplyr::pull(!!rlang::sym(main_sub_div_var)) %>%
-      as.vector()%>%
-      unique()
-  }
-  return(list(subdivisions_chr = subdivisions_chr,
-              profiled_sf = profiled_sf,
-              profiled_area_bands_list = profiled_area_bands_list))
-}
-make_time_band_sf_ls <- function(look_up_ref,
-                                 one_cluster_travel_time_sf_list){
-  travel_time_bands <- one_cluster_travel_time_sf_list %>%
-    purrr::pluck(look_up_ref) %>% dplyr::pull(drive_times)
+make_time_band_sf_ls <- function(index_val_1L_int,
+                                 one_cluster_travel_time_sf_ls){
+  travel_time_bands <- one_cluster_travel_time_sf_ls %>%
+    purrr::pluck(index_val_1L_int) %>% dplyr::pull(drive_times)
   time_band_sf_ls <- purrr::map(travel_time_bands,
-                                ~ one_cluster_travel_time_sf_list %>%
-                                  purrr::pluck(look_up_ref) %>%
+                                ~ one_cluster_travel_time_sf_ls %>%
+                                  purrr::pluck(index_val_1L_int) %>%
                                   dplyr::filter(drive_times == .x)) %>%
-    stats::setNames(paste0("tb_"
-                           ,stringr::str_replace_all(travel_time_bands,
+    stats::setNames(paste0("tb_",
+                           stringr::str_replace_all(travel_time_bands,
                                                      " ",
                                                      "_")))
   return(time_band_sf_ls)
@@ -789,7 +725,7 @@ make_years_chr <- function(input_ls){
 #                               distances_vec,
 #                               "from_service"))
 #   geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
-#                                                       ~ reorder_distance_list_by_cluster(look_up_ref = .x,
+#                                                       ~ reorder_distance_list_by_cluster(index_val_1L_int = .x,
 #                                                                                          clusters_by_distance_list = service_clusters_by_distance_list,
 #                                                                                          distances_vec = distances_vec)) %>%
 #     stats::setNames(., service_vicinity_points_ls %>% names())
@@ -808,4 +744,68 @@ make_years_chr <- function(input_ls){
 #                ~ .x %>% dplyr::arrange(desc(distance_in_km_dbl)) %>%
 #                  simplify_sf(crs = crs_nbr_dbl[1]))
 #   return(geometric_distance_by_cluster_bands_merged_list)
+# }
+# make_profiled_area_objs <- function(x_VicinityProfile){ Now a manufacture mthd
+#   group_by_var_1L_chr <- procure(x_VicinityProfile,#get_group_by_var_from_VicinityProfile
+#                                  what_1L_chr = "grouping")
+#   st_profiled_sf <- ingest(x_VicinityProfile, # get_starter_sf_for_profiled_area
+#                            key_var_1L_chr = group_by_var_1L_chr)
+#   subdivision_var_nm_1L_chr <- ifelse(x_VicinityProfile@use_coord_lup_lgl,
+#                                       x_VicinityProfile@VicinityLookup@vicinity_identifiers_r3 %>%
+#                                         ready4::get_from_lup_obj(match_var_nm_1L_chr = "spatial_unit_chr",
+#                                                                  match_value_xx = x_VicinityProfile@region_type,
+#                                                                  target_var_nm_1L_chr = "var_name_chr",
+#                                                                  evaluate_1L_lgl = F),
+#                                       ready4::get_from_lup_obj(data_lookup_tb = x_VicinityProfile@VicinityLookup@vicinity_templates_r3 %>%
+#                                                                  dplyr::filter(country_chr == x_VicinityProfile@country_chr) %>%
+#                                                                  dplyr::filter(area_bndy_yr_dbl == x_VicinityProfile@area_bndy_yr_dbl),
+#                                                                match_var_nm_1L_chr = "area_type_chr",
+#                                                                match_value_xx = x_VicinityProfile@area_type_chr,
+#                                                                target_var_nm_1L_chr = "subdivision_chr",
+#                                                                evaluate_1L_lgl = FALSE))
+#   if(!x_VicinityProfile@use_coord_lup_lgl){
+#     profiled_sf <- st_profiled_sf
+#     profiled_area_bands_ls <- make_sf_ls(profiled_sf = profiled_sf,
+#                                          group_by_var_1L_chr = group_by_var_1L_chr)
+#     subdivisions_chr <- profiled_sf %>%
+#       dplyr::pull(!!rlang::sym(subdivision_var_nm_1L_chr)) %>%
+#       as.character() %>%
+#       unique()
+#   }else{
+#     y_vicinity_points <- x_VicinityProfile@a_VicinityLookup@vicinity_points_r3 %>%
+#       dplyr::filter(service_name_chr %in% x_VicinityProfile@features_chr)
+#     if(!is.na(geom_dist_limit_km(x_VicinityProfile))){
+#       profiled_sf <- manufacture.vicinity_points(y_vicinity_points,
+#                                                  bands_1L_dbl = x_VicinityProfile@nbr_bands_dbl,#,
+#                                                  crs_nbr_dbl = x_VicinityProfile@crs_dbl,
+#                                                  land_sf =  st_profiled_sf,
+#                                                  metres_1L_dbl = x_VicinityProfile@geomc_dist_limit_km_dbl *1000, # make_distance_based_bands
+#                                                  type_1L_chr = "bands",
+#                                                  what_1L_chr = "geometric"
+#       )[[1]]
+#       profiled_area_bands_ls <- make_sf_ls(profiled_sf = profiled_sf,
+#                                            group_by_var_1L_chr = group_by_var_1L_chr)
+#     }
+#     if(!is.na(drive_time_limit_mins(x_VicinityProfile))){
+#       profiled_area_bands_ls <- make_servc_clstr_isochrs_ls(vicinity_points_ls = list(y_vicinity_points),
+#                                                             index_val_1L_int = 1,
+#                                                             time_min_1L_dbl = 0,
+#                                                             time_max_1L_dbl = drive_time_limit_mins(x_VicinityProfile),
+#                                                             time_steps_1L_dbl = x_VicinityProfile@nbr_bands_dbl)
+#       names(profiled_area_bands_ls) <- paste0("dt_band_",1:length(profiled_area_bands_ls))
+#       profiled_sf <- do.call(rbind,profiled_area_bands_ls) %>%
+#         sf::st_transform(x_VicinityProfile@crs_dbl[1]) %>%
+#         simplify_sf()
+#     }
+#     subdivisions_chr <- make_intersecting_geometries(geometry_one_sf = st_profiled_sf,
+#                                                      geometry_two_sf = profiled_sf,
+#                                                      crs_nbr_dbl = x_VicinityProfile@crs_dbl) %>%
+#       dplyr::pull(!!rlang::sym(subdivision_var_nm_1L_chr)) %>%
+#       as.vector()%>%
+#       unique()
+#   }
+#   profiled_area_objs_ls <- list(subdivisions_chr = subdivisions_chr,
+#                                 profiled_sf = profiled_sf,
+#                                 profiled_area_bands_ls = profiled_area_bands_ls)
+#   return(profiled_area_objs_ls)
 # }

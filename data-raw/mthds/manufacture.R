@@ -101,7 +101,7 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
                                         what_1L_chr = "geometric"
                                         ){
   if(what_1L_chr == "drive time"){
-    if(type_1L_chr == "single"){ # make_drive_time_for_one_service #make_1_clstr_1_srvc_trvl_tm
+    if(type_1L_chr == "single"){ # make_drive_time_for_one_service #make_1_clstr_1_srvc_trvl_tm # possibly: make_isochrs_for_1_srvc
         one_service_tb <- x %>%
           dplyr::filter(service_name_chr == service_1L_chr)
         one_service_sf <- make_drive_time_isochrones(lng_1L_dbl = one_service_tb %>% dplyr::select(lng_dbl) %>% dplyr::pull(),
@@ -145,7 +145,7 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
           stats::setNames(service_clusters_chr)
         service_clusters_by_distance_list <- purrr::map(distances_vec,
                                                         ~ make_cluster_bndys(clusters_chr = service_clusters_chr,
-                                                                             crs_nbr_dbl = crs_nbr_dbl
+                                                                             crs_nbr_dbl = crs_nbr_dbl,
                                                                              distance_in_km_1L_dbl = .x,
                                                                              land_boundary_sf = land_sf,
                                                                              vicinity_points_ls = service_vicinity_points_ls)) %>%
@@ -153,7 +153,7 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
                                     distances_vec,
                                     "from_service"))
         geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
-                                                            ~ reorder_distance_list_by_cluster(look_up_ref = .x,
+                                                            ~ reorder_distance_list_by_cluster(index_val_1L_int = .x,
                                                                                                clusters_by_distance_list = service_clusters_by_distance_list,
                                                                                                distances_vec = distances_vec)) %>%
           stats::setNames(., service_vicinity_points_ls %>% names())

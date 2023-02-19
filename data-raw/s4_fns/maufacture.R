@@ -201,6 +201,72 @@ manufacture_VicinityProfile <- function(x,
                                     list(index_ppr=index_ppr))
     object_xx <- attribtues_ls
   }
+  if(what_1L_chr == "subdivisions"){ #make_profiled_area_objs
+    #make_profiled_area_objs <- function(x_VicinityProfile){
+      group_by_var_1L_chr <- procure(x,#get_group_by_var_from_VicinityProfile
+                                     what_1L_chr = "grouping")
+      st_profiled_sf <- ingest(x, # get_starter_sf_for_profiled_area
+                               key_var_1L_chr = group_by_var_1L_chr)
+      subdivision_var_nm_1L_chr <- ifelse(x@use_coord_lup_lgl,
+                                          x@VicinityLookup@vicinity_identifiers_r3 %>%
+                                            ready4::get_from_lup_obj(match_var_nm_1L_chr = "spatial_unit_chr",
+                                                                     match_value_xx = x@rregion_type_chr,
+                                                                     target_var_nm_1L_chr = "var_name_chr",
+                                                                     evaluate_1L_lgl = F),
+                                          ready4::get_from_lup_obj(data_lookup_tb = x@VicinityLookup@vicinity_templates_r3 %>%
+                                                                     dplyr::filter(country_chr == x@country_chr) %>%
+                                                                     dplyr::filter(area_bndy_yr_dbl == x@area_bndy_yr_dbl),
+                                                                   match_var_nm_1L_chr = "area_type_chr",
+                                                                   match_value_xx = x@area_type_chr,
+                                                                   target_var_nm_1L_chr = "subdivision_chr",
+                                                                   evaluate_1L_lgl = FALSE))
+      if(!x@use_coord_lup_lgl){
+        profiled_sf <- st_profiled_sf
+        profiled_area_bands_ls <- make_sf_ls(profiled_sf = profiled_sf,
+                                             group_by_var_1L_chr = group_by_var_1L_chr)
+        subdivisions_chr <- profiled_sf %>%
+          dplyr::pull(!!rlang::sym(subdivision_var_nm_1L_chr)) %>%
+          as.character() %>%
+          unique()
+      }else{
+        y_vicinity_points <- x@a_VicinityLookup@vicinity_points_r3 %>%
+          dplyr::filter(service_name_chr %in% x@features_chr)
+        if(!is.na(geom_dist_limit_km(x))){
+          profiled_sf <- manufacture.vicinity_points(y_vicinity_points,
+                                                     bands_1L_dbl = x@nbr_bands_dbl,#,
+                                                     crs_nbr_dbl = x@crs_dbl,
+                                                     land_sf =  st_profiled_sf,
+                                                     metres_1L_dbl = x@geomc_dist_limit_km_dbl *1000, # make_distance_based_bands
+                                                     type_1L_chr = "bands",
+                                                     what_1L_chr = "geometric"
+          )[[1]]
+          profiled_area_bands_ls <- make_sf_ls(profiled_sf = profiled_sf,
+                                               group_by_var_1L_chr = group_by_var_1L_chr)
+        }
+        if(!is.na(drive_time_limit_mins(x))){
+          profiled_area_bands_ls <- make_servc_clstr_isochrs_ls(vicinity_points_ls = list(y_vicinity_points),
+                                                                index_val_1L_int = 1,
+                                                                time_min_1L_dbl = 0,
+                                                                time_max_1L_dbl = drive_time_limit_mins(x),
+                                                                time_steps_1L_dbl = x@nbr_bands_dbl)
+          names(profiled_area_bands_ls) <- paste0("dt_band_",1:length(profiled_area_bands_ls))
+          profiled_sf <- do.call(rbind,profiled_area_bands_ls) %>%
+            sf::st_transform(x@crs_dbl[1]) %>%
+            simplify_sf()
+        }
+        subdivisions_chr <- make_intersecting_geometries(geometry_one_sf = st_profiled_sf,
+                                                         geometry_two_sf = profiled_sf,
+                                                         crs_nbr_dbl = x@crs_dbl) %>%
+          dplyr::pull(!!rlang::sym(subdivision_var_nm_1L_chr)) %>%
+          as.vector()%>%
+          unique()
+      }
+      profiled_area_objs_ls <- list(subdivisions_chr = subdivisions_chr,
+                                    profiled_sf = profiled_sf,
+                                    profiled_area_bands_ls = profiled_area_bands_ls)
+      object_xx <- profiled_area_objs_ls
+    #}
+  }
   return(object_xx)
 }
 

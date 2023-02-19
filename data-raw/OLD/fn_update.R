@@ -71,9 +71,9 @@ update_pop_count_by_areas <- function (profiled_sf, group_by_var_1L_chr, dynamic
     return(profiled_sf)
 }
 #' Update simple features object boundary descr
-#' @description update_sf_boundary_descr() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument look_up_ref specifies the object to be updated. Argument one_cluster_up_to_xmin_list provides the object to be updated. The function is called for its side effects and does not return a value.
-#' @param look_up_ref PARAM_DESCRIPTION
-#' @param one_cluster_up_to_xmin_list PARAM_DESCRIPTION
+#' @description update_sf_boundary_descr() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument index_val_1L_int specifies the object to be updated. Argument one_cluster_up_to_xmin_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @param index_val_1L_int PARAM_DESCRIPTION
+#' @param one_cluster_up_to_xmin_ls PARAM_DESCRIPTION
 #' @return NA ()
 #' @rdname update_sf_boundary_descr
 #' @export
@@ -81,17 +81,17 @@ update_pop_count_by_areas <- function (profiled_sf, group_by_var_1L_chr, dynamic
 #' @importFrom stringr str_subset str_replace_all
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list)
+update_sf_boundary_descr <- function (index_val_1L_int, one_cluster_up_to_xmin_ls)
 {
     max_var <- "max"
-    max_vec <- one_cluster_up_to_xmin_list %>% purrr::pluck(look_up_ref) %>%
+    max_vec <- one_cluster_up_to_xmin_ls %>% purrr::pluck(index_val_1L_int) %>%
         names() %>% stringr::str_subset("max")
     if (length(max_vec) > 1) {
         max_var <- max_vec %>% stringr::str_subset("max.") %>%
             stringr::str_replace_all("max.", "") %>% as.numeric() %>%
             max() %>% paste0("max.", .)
     }
-    return_object <- one_cluster_up_to_xmin_list %>% purrr::pluck(look_up_ref) %>%
+    return_object <- one_cluster_up_to_xmin_ls %>% purrr::pluck(index_val_1L_int) %>%
         dplyr::mutate(`:=`(max, !!rlang::sym(max_var))) %>% dplyr::mutate(center = (min +
         max)/2) %>% dplyr::mutate(drive_times = paste0("0 to ",
         max, " mins")) %>% dplyr::select(id, min, max, center,
@@ -102,7 +102,7 @@ update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list)
 #' @description update_spatial_attrs_ls() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update sp data list. Function argument spatial_attrs_ls specifies the object to be updated. Argument input_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 #' @param spatial_attrs_ls PARAM_DESCRIPTION
 #' @param input_ls Input (a list)
-#' @param profiled_area_bands_list PARAM_DESCRIPTION
+#' @param profiled_area_bands_ls PARAM_DESCRIPTION
 #' @return NA ()
 #' @rdname update_spatial_attrs_ls
 #' @export
@@ -111,7 +111,7 @@ update_sf_boundary_descr <- function (look_up_ref, one_cluster_up_to_xmin_list)
 #' @importFrom purrr map_dbl map map2
 #' @importFrom nnet which.is.max
 #' @importFrom sf st_area
-update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_bands_list)
+update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_bands_ls)
 {
     crs_nbr_dbl <- input_ls$x_VicinityProfile %>% crs_nbr()
     at_highest_res = input_ls$at_highest_res
@@ -137,7 +137,7 @@ update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_b
         if (!use_tot_pop_lgl)
             reference_var_rsl_1L_chr <- NULL
     }
-    by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_list,
+    by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_ls,
         ~make_reconciled_intersecting_area(profiled_sf = .x, profiled_sf_col_1L_chr = NA,
             profiled_sf_row_1L_chr = NA, spatial_attrs_ls = spatial_attrs_ls,
             reference_var_rsl_1L_chr = reference_var_rsl_1L_chr, dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,

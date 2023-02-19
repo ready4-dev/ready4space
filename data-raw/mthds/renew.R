@@ -85,9 +85,23 @@ renew.vicinity_raw <- function(x, ##
       x <- ready4::update_tb_r3(x,
                                 fn = renew.vicinity_raw,
                                 fn_env_ls = fn_env_ls)
-
-
   }
 
+  return(x)
+}
+renew.vicinity_points <- function(x,
+                                  service_type_chr = character(0),
+                                  cluster_name_chr = character(0),
+                                  service_name_chr = character(0),
+                                  lat_dbl = numeric(0),
+                                  lng_dbl = numeric(0),
+                                  what_1L_chr = "table",
+                                  ...){
+  if(what_1L_chr == "table"){
+    fn_env_ls <- as.list(rlang::current_env())[-1]
+    x <- ready4::update_tb_r3(x,
+                              fn = renew.vicinity_points,
+                              fn_env_ls = fn_env_ls)
+  }
   return(x)
 }
