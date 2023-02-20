@@ -4,6 +4,7 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
                                     key_var_1L_chr = character(0),
                                     #subdivision_1L_chr = NULL,
                                     match_year_1L_lgl = TRUE,
+                                    travel_mode_1L_chr = character(0), # "car"
                                     years_chr = character(0),
                                     what_1L_chr = "grouping"){
   if(what_1L_chr == "attribute_names"){ # From get_spatial_attr_names  - Probably needs work
@@ -89,7 +90,7 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
     }
     if(what_1L_chr == "proximity"){
       if(is.na(x@geomc_dist_limit_km_dbl))
-        object_xx <- "drive_times"
+        object_xx <- paste0(travel_mode_1L_chr,"_times")#"drive_times"
       else
         object_xx <- "distance_in_km_dbl"
       # procure.vicinity_identifiers(y_vicinity_identifiers,#get_group_by_var

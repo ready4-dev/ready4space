@@ -144,61 +144,88 @@ manufacture_VicinityLookup <- function(x,
 }
 manufacture_VicinityProfile <- function(x,
                                         attributes_to_import_chr = character(0),
+                                        exclude_dif_bndy_yr_1L_lgl = TRUE,
+                                        input_ls = NULL,
                                         key_var_1L_chr  = character(0),
+                                        match_year_1L_lgl = TRUE,
                                         specified_rsl_chr  = character(0),
+                                        subdivision_1L_chr = NULL,
+                                        type_1L_chr = "inner",
                                         what_1L_chr = "attributes",
                                         years_chr  = character(0)){
   if(what_1L_chr == "attributes"){
-    boundary_rsl_chr <- stringr::str_sub(attributes_to_import_chr,5,7) %>% unique() %>% toupper() ## Ammend from naming convention to lookup
-    data_names_ls <- purrr::map(boundary_rsl_chr,
-                                ~ attributes_to_import_chr[stringr::str_sub(attributes_to_import_chr,5,7) == tolower(.x )]) %>%
-      stats::setNames(boundary_rsl_chr)
-    extra_names_chr <- purrr::map(specified_rsl_chr,
-                                  ~ x@a_VicinityLookup@vicinity_processed_r3 %>%
-                                    dplyr::filter(main_feature_chr == .x[1]) %>%
-                                    dplyr::filter(make_year_filter_logic_vec(data_tb = .,
-                                                                             included_years_vec = years_chr)) %>%
-                                    ready4::get_from_lup_obj(match_value_xx = .x[1],
-                                                             match_var_nm_1L_chr = "main_feature_chr",
-                                                             target_var_nm_1L_chr = "name_chr",
-                                                             evaluate_1L_lgl = FALSE)) %>%
-      stats::setNames(purrr::map_chr(specified_rsl_chr, ~.x[2]))
-    rsl_to_merge_chr <- names(extra_names_chr)[names(extra_names_chr) %in% boundary_rsl_chr]
-    if(!identical(rsl_to_merge_chr,character(0))){
-      merged_elements_ls <-  purrr::map2(data_names_ls[rsl_to_merge_chr],
-                                         extra_names_chr[rsl_to_merge_chr],
-                                         ~ c(.x,.y))
-      if(length(merged_elements_ls) == length(data_names_ls)){
-        data_names_ls <- merged_elements_ls
-      }else{
-        data_names_ls <- append(data_names_ls[names(data_names_ls)[!names(data_names_ls) %in% rsl_to_merge_chr]],
-                                merged_elements_ls)
+    if(type_1L_chr == "outer"){ #make_attributes_ls # get_sp_data or similar ???
+        years_chr <- manufacture(x,
+                                 input_ls = input_ls,
+                                 what_1L_chr = "years")#make_years_chr
+        attributes_to_import_chr = procure(x,#input_ls$x_VicinityProfile, # Formally get_spatial_attr_names(
+                                           exclude_dif_bndy_yr_1L_lgl = exclude_dif_bndy_yr_1L_lgl,
+                                           highest_rsl_chr = input_ls$at_highest_res,
+                                           key_var_1L_chr = input_ls$key_var_1L_chr,
+                                           #subdivision_1L_chr = NULL,
+                                           match_year_1L_lgl = match_year_1L_lgl,
+                                           years_chr = years_chr,
+                                           what_1L_chr = "grouping")
+        attributes_ls <- manufacture(x,#input_ls$x_VicinityProfile,
+                                     attributes_to_import_chr = attributes_to_import_chr,
+                                     key_var_1L_chr  = input_ls$key_var_1L_chr,
+                                     specified_rsl_chr  = input_ls$at_specified_res,
+                                     type_1L_chr = "inner",
+                                     what_1L_chr = "attributes",
+                                     years_chr  = years_chr)
+    }
+    if(type_1L_chr == "inner"){
+      boundary_rsl_chr <- stringr::str_sub(attributes_to_import_chr,5,7) %>% unique() %>% toupper() ## Ammend from naming convention to lookup
+      data_names_ls <- purrr::map(boundary_rsl_chr,
+                                  ~ attributes_to_import_chr[stringr::str_sub(attributes_to_import_chr,5,7) == tolower(.x )]) %>%
+        stats::setNames(boundary_rsl_chr)
+      extra_names_chr <- purrr::map(specified_rsl_chr,
+                                    ~ x@a_VicinityLookup@vicinity_processed_r3 %>%
+                                      dplyr::filter(main_feature_chr == .x[1]) %>%
+                                      dplyr::filter(make_filter_by_year_logic(data_tb = .,
+                                                                              years_chr = years_chr)) %>%
+                                      ready4::get_from_lup_obj(match_value_xx = .x[1],
+                                                               match_var_nm_1L_chr = "main_feature_chr",
+                                                               target_var_nm_1L_chr = "name_chr",
+                                                               evaluate_1L_lgl = FALSE)) %>%
+        stats::setNames(purrr::map_chr(specified_rsl_chr, ~.x[2]))
+      rsl_to_merge_chr <- names(extra_names_chr)[names(extra_names_chr) %in% boundary_rsl_chr]
+      if(!identical(rsl_to_merge_chr,character(0))){
+        merged_elements_ls <-  purrr::map2(data_names_ls[rsl_to_merge_chr],
+                                           extra_names_chr[rsl_to_merge_chr],
+                                           ~ c(.x,.y))
+        if(length(merged_elements_ls) == length(data_names_ls)){
+          data_names_ls <- merged_elements_ls
+        }else{
+          data_names_ls <- append(data_names_ls[names(data_names_ls)[!names(data_names_ls) %in% rsl_to_merge_chr]],
+                                  merged_elements_ls)
 
+        }
       }
-    }
-    extra_rsls_chr <- names(extra_names_chr)[!names(extra_names_chr) %in% boundary_rsl_chr]
-    if(!identical(extra_rsls_chr,character(0))){
-      data_names_ls <- append(data_names_ls,extra_names_chr[extra_rsls_chr])
-      boundary_rsl_chr <- c(boundary_rsl_chr, extra_rsls_chr)
-    }
-    attributes_ls <- purrr::map2(boundary_rsl_chr,
-                                 data_names_ls,
-                                 ~ manufacture(x@a_VicinityLookup,#input_ls = input_ls, # add_attr_recrly_to_sf
-                                               #subdivision_1L_chr = subdivision_1L_chr,
-                                               area_unit_1L_chr = .x,
-                                               attr_data_xx = .y,
-                                               boundary_year_1L_dbl = x@a_VicinityLookup@vicinity_processed_r3 %>%
-                                                 dplyr::filter(name_chr %in% .y) %>%
-                                                 dplyr::pull(year_chr) %>%
-                                                 min(as.numeric()))) %>%
-      stats::setNames(boundary_rsl_chr)
-    index_ppr <- purrr::map_lgl(data_names_ls,
-                                ~ validate_popl_predns_incld(.x,
-                                                             data_lookup_tb = x@a_VicinityLookup@vicinity_processed_r3,#aus_spatial_lookup_tb,
-                                                             key_var_1L_chr = key_var_1L_chr)) %>%
-      which() + 1
-    attributes_ls <- purrr::prepend(attributes_ls,
-                                    list(index_ppr=index_ppr))
+      extra_rsls_chr <- names(extra_names_chr)[!names(extra_names_chr) %in% boundary_rsl_chr]
+      if(!identical(extra_rsls_chr,character(0))){
+        data_names_ls <- append(data_names_ls,extra_names_chr[extra_rsls_chr])
+        boundary_rsl_chr <- c(boundary_rsl_chr, extra_rsls_chr)
+      }
+      attributes_ls <- purrr::map2(boundary_rsl_chr,
+                                   data_names_ls,
+                                   ~ manufacture(x@a_VicinityLookup,#input_ls = input_ls, # add_attr_recrly_to_sf
+                                                 #subdivision_1L_chr = subdivision_1L_chr,
+                                                 area_unit_1L_chr = .x,
+                                                 attr_data_xx = .y,
+                                                 boundary_year_1L_dbl = x@a_VicinityLookup@vicinity_processed_r3 %>%
+                                                   dplyr::filter(name_chr %in% .y) %>%
+                                                   dplyr::pull(year_chr) %>%
+                                                   min(as.numeric()))) %>%
+        stats::setNames(boundary_rsl_chr)
+      index_ppr <- purrr::map_lgl(data_names_ls,
+                                  ~ validate_popl_predns_incld(.x,
+                                                               data_lookup_tb = x@a_VicinityLookup@vicinity_processed_r3,#aus_spatial_lookup_tb,
+                                                               key_var_1L_chr = key_var_1L_chr)) %>%
+        which() + 1
+      attributes_ls <- purrr::prepend(attributes_ls,
+                                      list(index_ppr=index_ppr))
+      }
     object_xx <- attribtues_ls
   }
   if(what_1L_chr == "subdivisions"){ #make_profiled_area_objs
@@ -244,11 +271,13 @@ manufacture_VicinityProfile <- function(x,
                                                group_by_var_1L_chr = group_by_var_1L_chr)
         }
         if(!is.na(drive_time_limit_mins(x))){
-          profiled_area_bands_ls <- make_servc_clstr_isochrs_ls(vicinity_points_ls = list(y_vicinity_points),
-                                                                index_val_1L_int = 1,
-                                                                time_min_1L_dbl = 0,
-                                                                time_max_1L_dbl = drive_time_limit_mins(x),
-                                                                time_steps_1L_dbl = x@nbr_bands_dbl)
+          profiled_area_bands_ls <- make_cluster_isochrones(vicinity_points_ls = list(y_vicinity_points),
+                                                            index_val_1L_int = 1,
+                                                            time_min_1L_dbl = 0,
+                                                            time_max_1L_dbl = x@drive_time_limit_mins_dbl,
+                                                            time_steps_1L_dbl = x@nbr_bands_dbl,
+                                                            travel_mode_1L_chr = x@travel_mode_chr
+                                                            )
           names(profiled_area_bands_ls) <- paste0("dt_band_",1:length(profiled_area_bands_ls))
           profiled_sf <- do.call(rbind,profiled_area_bands_ls) %>%
             sf::st_transform(x@crs_dbl[1]) %>%
@@ -266,6 +295,28 @@ manufacture_VicinityProfile <- function(x,
                                     profiled_area_bands_ls = profiled_area_bands_ls)
       object_xx <- profiled_area_objs_ls
     #}
+  }
+  if(what_1L_chr == "years"){ #make_years_chr
+    #make_years_chr <- function(input_ls){
+      model_end_year_dbl <- calculate_end_date(input_ls = input_ls) %>% lubridate::year()
+      key_var_1L_chr <- input_ls$key_var_1L_chr
+      data_year_1L_chr <- x@data_year_1L_chr
+      spatial_lookup_tb <- x@a_VicinityLookup@vicinity_processed_r3
+      year_opts_chr <- spatial_lookup_tb %>%
+        dplyr::filter(main_feature_chr == key_var_1L_chr) %>%
+        dplyr::pull(year_end_chr)
+      year_opts_chr <- year_opts_chr[stringr::str_length(year_opts_chr)==4]
+      year_opts_ref_dbl <- which((year_opts_chr %>%
+                                as.numeric() %>%
+                                sort()) >= model_end_year_dbl) %>% min()
+      model_end_year_dbl <- year_opts_chr %>%
+        as.numeric() %>%
+        sort() %>% purrr::pluck(year_opts_ref_dbl) %>%
+        as.character()
+      years_chr <- as.character(as.numeric(data_year_1L_chr):as.numeric(model_end_year_dbl))
+      object_xx <- years_chr
+    #}
+
   }
   return(object_xx)
 }

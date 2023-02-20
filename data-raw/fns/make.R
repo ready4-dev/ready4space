@@ -28,7 +28,9 @@ make_attributes_ls <- function(input_ls, # get_sp_data or similar ???
                                subdivision_1L_chr = NULL,
                                match_year_1L_lgl = TRUE,
                                exclude_dif_bndy_yr_1L_lgl = TRUE){
-  years_chr <- make_years_chr(input_ls = input_ls)
+  years_chr <- manufacture(input_ls$x_VicinityProfile,
+                           input_ls = input_ls,
+                           what_1L_chr = "years")#make_years_chr
   attributes_to_import_chr = procure(input_ls$x_VicinityProfile, # Formally get_spatial_attr_names(
                                      exclude_dif_bndy_yr_1L_lgl = exclude_dif_bndy_yr_1L_lgl,
                                      highest_rsl_chr = input_ls$at_highest_res,
@@ -73,6 +75,92 @@ make_closest_yrs_ls <- function(data_lookup_tb,
                                  ~ .x[which(.x - as.numeric(target_year_1L_chr) == min(max(.x - as.numeric(target_year_1L_chr),0)))])
   }
   return(closest_yrs_ls)
+}
+make_cluster_bndys <- function(clusters_chr,
+                               crs_nbr_dbl,
+                               distance_in_km_1L_dbl,
+                               land_boundary_sf,
+                               vicinity_points_ls){
+  cluster_bndys_ls <- purrr::map(1:length(clusters_chr),
+                                 ~ manufacture.vicinity_points(vicinity_points_ls %>% #make_geomc_dist_bndys
+                                                                 purrr::pluck(.x),
+                                                               land_sf = land_boundary_sf,
+                                                               metres_1L_dbl = distance_in_km_1L_dbl *1000,
+                                                               crs_nbr_dbl = crs_nbr_dbl,
+                                                               what_1L_chr == "geometric")) %>%
+    stats::setNames(., vicinity_points_ls %>% names())
+  return(cluster_bndys_ls)
+
+}
+make_cluster_isochrones <- function(vicinity_points_ls,
+                                    index_val_1L_int,
+                                    time_min_1L_dbl = 0,
+                                    time_max_1L_dbl = 30,
+                                    time_steps_1L_dbl = 5,
+                                    travel_mode_1L_chr = "car"){
+  #require(osrm) # Make a dependency
+  cluster_services_chr <- vicinity_points_ls %>%
+    purrr::pluck(index_val_1L_int) %>%
+    dplyr::select(service_name_chr) %>%
+    dplyr::pull()
+  x_vicinity_points <- vicinity_points_ls %>%
+    purrr::pluck(index_val_1L_int)
+  cluster_isochrone_ls <- purrr::map(cluster_services_chr,
+                                     ~ manufacture.vicinity_points(x_vicinity_points,#make_isochrs_for_1_srvc
+                                                                   service_1L_chr = .x,
+                                                                   time_min_1L_dbl = time_min_1L_dbl,
+                                                                   time_max_1L_dbl = time_max_1L_dbl,
+                                                                   time_steps_1L_dbl = time_steps_1L_dbl,
+                                                                   travel_mode_1L_chr = travel_mode_1L_chr,
+                                                                   what_1L_chr = "isochrones")) %>% #drive time
+    stats::setNames(., cluster_services_chr)
+  #detach("package:osrm", unload=TRUE)
+  isochrone_bands_ls <- purrr::map(1:length(cluster_isochrone_ls),
+                                   ~ make_isochrone_bands(index_val_1L_int = .x,
+                                                          cluster_isochrone_ls = cluster_isochrone_ls,
+                                                          travel_mode_1L_chr = travel_mode_1L_chr)) %>%
+    stats::setNames(cluster_isochrone_ls %>% names())
+  unioned_isochrones_ls <- purrr::map(1:(isochrone_bands_ls %>%
+                                           purrr::pluck(1) %>%
+                                           length()),
+                                      ~ bind_isochrone_bands(isochrone_bands_ls =  isochrone_bands_ls,
+                                                             index_1L_int = .x,
+                                                             travel_mode_1L_chr = travel_mode_1L_chr)) %>%
+    stats::setNames(paste0("tb_",
+                           1:(isochrone_bands_ls %>%
+                                purrr::pluck(1) %>%
+                                length())))
+  #sf::sf_use_s2(FALSE)
+  temporal_bands_ls <- purrr::accumulate(2:length(unioned_isochrones_ls),
+                                         .init = unioned_isochrones_ls[[1]],
+                                         .simplify = F,
+                                         ~ sf::st_union(.x,
+                                                        unioned_isochrones_ls[[.y]]))  %>%
+    stats::setNames(paste0("tb_",
+                           1:(unioned_isochrones_ls %>%
+                                length())))
+  temporal_bands_ls <- purrr::map(1:length(temporal_bands_ls),
+                                  ~ update_sf_boundary_descr(index_val_1L_int = .x,
+                                                             temporal_bands_ls = temporal_bands_ls,
+                                                             travel_mode_1L_chr = travel_mode_1L_chr)) %>%
+    stats::setNames(paste0("tb_",
+                           1:(temporal_bands_ls  %>%
+                                length())))
+  discrete_temporal_bands_ls <- purrr::map(1:(length(unioned_isochrones_ls)-1),
+                                           ~ sf::st_difference(unioned_isochrones_ls %>% purrr::pluck(.x+1),
+                                                               temporal_bands_ls %>% purrr::pluck(.x)) %>%
+                                             dplyr::select(id,isomin,isomax,
+                                                           center_value, ### CHECK
+                                                           !!rlang::sym(paste0(travel_mode_1L_chr,"_times"))# drive_times
+                                             )) %>%
+    stats::setNames(paste0("tb_",
+                           2:(temporal_bands_ls  %>%
+                                length())))  %>%
+    append(list(tb_1 = unioned_isochrones_ls %>% purrr::pluck(1) %>%
+                  dplyr::mutate(center_value = (isomin + isomax) / 2) %>%
+                  dplyr::select(id,isomin,isomax,center_value,!!rlang::sym(paste0(travel_mode_1L_chr,"_times")) )),
+           after = 0)
+  return(discrete_temporal_bands_ls)
 }
 make_common_sf_vars_ls <- function(sf_ls){
   vec_ls <- purrr::map(sf_ls, ~ names(.x))
@@ -155,6 +243,48 @@ make_intersecting_geometries <- function(geometry_one_sf,
   if(validate_1L_lgl)
     intersection_sf <- intersection_sf %>% make_valid_new_sf()
   return(intersection_sf)
+}
+make_isochrone_bands <- function(index_val_1L_int,
+                                 cluster_isochrone_ls,
+                                 travel_mode_1L_chr){ #"car" # CHECK
+  travel_time_bands <- cluster_isochrone_ls %>%
+    purrr::pluck(index_val_1L_int) %>% dplyr::pull(!!rlang::sym(paste0(travel_mode_1L_chr,"_times"))# drive_times
+    )
+  time_band_sf_ls <- purrr::map(travel_time_bands,
+                                ~ cluster_isochrone_ls %>%
+                                  purrr::pluck(index_val_1L_int) %>%
+                                  dplyr::filter(!!rlang::sym(paste0(travel_mode_1L_chr,"_times")) == .x)) %>% # drive_times
+    stats::setNames(paste0("tb_",
+                           stringr::str_replace_all(travel_time_bands,
+                                                    " ",
+                                                    "_")))
+  return(time_band_sf_ls)
+}
+make_isochrones <- function(lat_1L_dbl,
+                            lng_1L_dbl,
+                            server_1L_chr = character(0),
+                            time_min_1L_dbl,
+                            time_max_1L_dbl,
+                            time_steps_1L_dbl,
+                            travel_mode_1L_chr = "car"){
+  if(identical(server_1L_chr, character(0)))
+    server_1L_chr <- getOption("osrm.server")
+  if(identical(travel_mode_1L_chr, character(0)))
+    travel_mode_1L_chr <- getOption("osrm.profile")
+  step_1L_dbl <- (time_max_1L_dbl-time_min_1L_dbl)/time_steps_1L_dbl
+  iso_sf <- osrm::osrmIsochrone(loc = c(lng_1L_dbl, lat_1L_dbl),
+                                breaks = seq(from = time_min_1L_dbl,
+                                             to = time_max_1L_dbl,
+                                             by = step_1L_dbl),
+                                osrm.profile = travel_mode_1L_chr,
+                                osrm.server = server_1L_chr)
+  iso_sf <- sf::st_as_sf(iso_sf) %>%
+    dplyr::mutate(!!rlang::sym(paste0(travel_mode_1L_chr,"_times")) := paste0(isomin,##drive_times # time_min_1L_dbl,
+                                                                              " to ",
+                                                                              isomax,#time_max_1L_dbl,
+                                                                              " mins")) %>%
+    dplyr::arrange(id)
+  return(iso_sf)
 }
 make_km_sqd_dbl <- function(data_sf){
   km_sqd_dbl <- data_sf %>%
@@ -242,32 +372,6 @@ make_sf_ls <- function(profiled_sf,
                       unique())
   return(sf_ls)
 }
-make_drive_time_isochrones <- function(lng_1L_dbl,
-                                       lat_1L_dbl,
-                                       server_1L_chr = character(0),
-                                       time_min_1L_dbl,
-                                       time_max_1L_dbl,
-                                       time_steps_1L_dbl,
-                                       travel_mode_1L_chr = "car"){
-  if(identical(server_1L_chr, character(0)))
-    server_1L_chr <- getOption("osrm.server")
-  if(identical(travel_mode_1L_chr, character(0)))
-    travel_mode_1L_chr <- getOption("osrm.profile")
-  step_1L_dbl <- (time_max_1L_dbl-time_min_1L_dbl)/time_steps_1L_dbl
-  iso_sf <- osrm::osrmIsochrone(loc = c(lng_1L_dbl, lat_1L_dbl),
-                                breaks = seq(from = time_min_1L_dbl,
-                                             to = time_max_1L_dbl,
-                                             by = step_1L_dbl),
-                                osrm.profile = travel_mode_1L_chr,
-                                osrm.server = server_1L_chr)
-  iso_sf <- sf::st_as_sf(iso_sf) %>%
-    dplyr::mutate(drive_times = paste0(time_min_1L_dbl,
-                                       " to ",
-                                       time_max_1L_dbl,
-                                       " mins")) %>%
-    dplyr::arrange(id)
-  return(iso_sf)
-}
 make_sf_rows_fn <- function(...){
   attribution_1L_chr <- "Based on: https://github.com/r-spatial/sf/issues/49"
   sf_list <- rlang::dots_values(...)[[1]]
@@ -323,122 +427,39 @@ make_raw_format_dir_chr <- function(raw_fls_dir_1L_chr,
                                     category_1L_chr){
   paste0(raw_fls_dir_1L_chr,"/",category_1L_chr)
 }
-make_cluster_bndys <- function(clusters_chr,
-                               crs_nbr_dbl,
-                               distance_in_km_1L_dbl,
-                               land_boundary_sf,
-                               vicinity_points_ls){
-  cluster_bndys_ls <- purrr::map(1:length(clusters_chr),
-             ~ manufacture.vicinity_points(vicinity_points_ls %>% #make_geomc_dist_bndys
-                                         purrr::pluck(.x),
-                                       land_sf = land_boundary_sf,
-                                       metres_1L_dbl = distance_in_km_1L_dbl *1000,
-                                       crs_nbr_dbl = crs_nbr_dbl,
-                                     what_1L_chr == "geometric")) %>%
-    stats::setNames(., vicinity_points_ls %>% names())
-  return(cluster_bndys_ls)
-
-}
-##### STAGED
-make_servc_clstr_isochrs_ls <- function(vicinity_points_ls,
-                                        index_val_1L_int,
-                                        time_min_1L_dbl = 0,
-                                        time_max_1L_dbl = 60,
-                                        time_steps_1L_dbl = 5){
-  #require(osrm) # Make a dependency
-  cluster_services_chr <- vicinity_points_ls %>%
-    purrr::pluck(index_val_1L_int) %>%
-    dplyr::select(service_name_chr) %>%
-    dplyr::pull()
-  x_vicinity_points <- vicinity_points_ls %>%
-    purrr::pluck(index_val_1L_int)
-  one_cluster_travel_time_sf_ls <- purrr::map(cluster_services_chr,
-                                                ~ manufacture.vicinity_points(x_vicinity_points,#make_isochrs_for_1_srvc
-                                                                              service_1L_chr = .x,
-                                                                              time_min_1L_dbl = time_min_1L_dbl,
-                                                                              time_max_1L_dbl = time_max_1L_dbl,
-                                                                              time_steps_1L_dbl = time_steps_1L_dbl,
-                                                                              what_1L_chr = "drive time")) %>%
-    stats::setNames(., cluster_services_chr)
-  #detach("package:osrm", unload=TRUE)
-  one_cluster_time_bands_ls <- purrr::map(1:length(one_cluster_travel_time_sf_ls),
-                                            ~ make_time_band_sf_ls(index_val_1L_int = .x,
-                                                                   one_cluster_travel_time_sf_ls = one_cluster_travel_time_sf_ls)) %>%
-    stats::setNames(one_cluster_travel_time_sf_ls %>% names())
-  one_cluster_unioned_time_bands_ls <- purrr::map(1:(one_cluster_time_bands_ls %>%
-                                                       purrr::pluck(1) %>%
-                                                       length()),
-                                                  ~ union_one_travel_time_band_across_sites(time_band_ref = .x,
-                                                                                            one_cluster_time_bands_ls =  one_cluster_time_bands_ls)) %>%
-    stats::setNames(paste0("tb_",
-                           1:(one_cluster_time_bands_ls %>%
-                                purrr::pluck(1) %>%
-                                length())))
-  one_cluster_up_to_xmin_ls <- purrr::accumulate(one_cluster_unioned_time_bands_ls,
-                                                   ~ sf::st_union(.x,.y))  %>%
-    stats::setNames(paste0("tb_",
-                           1:(one_cluster_unioned_time_bands_ls %>%
-                                length())))
-  one_cluster_up_to_xmin_ls <- purrr::map(1:length(one_cluster_up_to_xmin_ls),
-                                            ~ update_sf_boundary_descr(index_val_1L_int = .x,
-                                                                       one_cluster_up_to_xmin_ls = one_cluster_up_to_xmin_ls)) %>%
-    stats::setNames(paste0("tb_",
-                           1:(one_cluster_up_to_xmin_ls  %>%
-                                 length())))
-  one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_ls)-1),
-                                                   ~ sf::st_difference(one_cluster_unioned_time_bands_ls %>% purrr::pluck(.x+1),
-                                                                       one_cluster_up_to_xmin_ls %>% purrr::pluck(.x)) %>%
-                                                     dplyr::select(id,isomin,isomax,
-                                                                   center, ### CHECK
-                                                                   drive_times)) %>%
-    stats::setNames(paste0("tb_",
-                           2:(one_cluster_up_to_xmin_ls  %>%
-                                length())))  %>%
-    purrr::prepend(list(tb_1 = one_cluster_unioned_time_bands_ls %>% purrr::pluck(1)))
-  return(one_cluster_joint_travel_time_list)
-}
-make_each_uid_a_poly_sf <- function(sf,
-                                    uid_chr){
+make_polygons_from_duplicates <- function(sf, # Not sure if needed / and or properly implemented
+                                          uid_1L_chr){
   sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
-  duplicate_chr_vec <- sf %>% dplyr::filter(!!rlang::sym(uid_chr) %>%
+  duplicates_chr <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %>%
                                               duplicated()) %>%
-    dplyr::pull(!!rlang::sym(uid_chr)) %>%
+    dplyr::pull(!!rlang::sym(uid_1L_chr)) %>%
     unique()
-  geometry_one_sf <- sf %>% dplyr::filter(!(!!rlang::sym(uid_chr) %in%
-                                   duplicate_chr_vec))
-  geometry_two_sf <- sf %>% dplyr::filter(!!rlang::sym(uid_chr) %in%
-                                 duplicate_chr_vec)
-  purrr::map(duplicate_chr_vec,
+  geometry_one_sf <- sf %>% dplyr::filter(!(!!rlang::sym(uid_1L_chr) %in%
+                                              duplicates_chr))
+  geometry_two_sf <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %in%
+                                            duplicates_chr)
+  polygons_sf <- purrr::map(duplicates_chr,
              ~ sf::st_sf(geometry_two_sf %>%
-                           dplyr::filter(!!rlang::sym(uid_chr) == .x) %>%
+                           dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
                            sf::st_set_geometry(NULL) %>%
                            dplyr::summarise_all(.funs = dplyr::first),
                          geometry = geometry_two_sf %>%
-                           dplyr::filter(!!rlang::sym(uid_chr) == .x) %>%
+                           dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
                            sf::st_union() %>%
                            sf::st_sfc())) %>%
     append(list(geometry_one_sf))  %>%
     purrr::reduce(~rbind(.x,.y))
-}
-make_env_param_tb <- function(n_its_int,
-                              env_str_param_tb,
-                              mape_str_param_tb,
-                              joint_dstr_1L_lgl){
-  param_val_mape <- reckon(x = mape_str_param_tb,
-                                             n_its_int = n_its_int,
-                                             joint_dstr_1L_lgl = joint_dstr_1L_lgl)
-  param_val_env <- reckon(x = env_str_param_tb,
-                                            n_its_int = n_its_int)
-  dplyr::bind_rows(param_val_env,
-                   param_val_mape)
+  return(polygons_sf)
 }
 make_spatial_attrs_ls <- function(input_ls,
-                              subdivisions_chr){
+                                  subdivisions_chr){
   lists_to_merge <- purrr::map(subdivisions_chr,
-                               ~ make_attributes_ls(input_ls = input_ls,
-                                                       subdivision_1L_chr = .x,
-                                                       match_year_1L_lgl = FALSE,
-                                                       exclude_dif_bndy_yr_1L_lgl = TRUE))
+                               ~ manufacture(input_ls$x_VicinityProfile,
+                                             exclude_dif_bndy_yr_1L_lgl = TRUE,
+                                             input_ls = input_ls,#make_attributes_ls
+                                             match_year_1L_lgl = FALSE,
+                                             subdivision_1L_chr = .x,
+                                             type_1L_chr = "outer"))
   lists_to_merge <- purrr::transpose(lists_to_merge)
   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
                             ~ do.call(rbind,.x))
@@ -451,67 +472,9 @@ make_spatial_attrs_ls <- function(input_ls,
                                      NA_real_,
                                      .x[1])) %>%
     stats::setNames(names_ppr)
-  spatial_attrs_ls <- purrr::prepend(merged_list,list(ppr_ref = ppr_ref))
+  spatial_attrs_ls <- append(merged_list,list(ppr_ref = ppr_ref),
+                             after = 0)
   return(spatial_attrs_ls)
-}
-make_time_band_sf_ls <- function(index_val_1L_int,
-                                 one_cluster_travel_time_sf_ls){
-  travel_time_bands <- one_cluster_travel_time_sf_ls %>%
-    purrr::pluck(index_val_1L_int) %>% dplyr::pull(drive_times)
-  time_band_sf_ls <- purrr::map(travel_time_bands,
-                                ~ one_cluster_travel_time_sf_ls %>%
-                                  purrr::pluck(index_val_1L_int) %>%
-                                  dplyr::filter(drive_times == .x)) %>%
-    stats::setNames(paste0("tb_",
-                           stringr::str_replace_all(travel_time_bands,
-                                                     " ",
-                                                     "_")))
-  return(time_band_sf_ls)
-}
-# https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
-make_trvl_tm_isochrs <- function(appID,
-                                 apiKey,
-                                 origin,
-                                 mode_of_transport = "driving",
-                                 travel_time_hours,
-                                 crs){
-  location <- origin
-  travel_time_secs <- travel_time_hours * 60 * 60
-  url <- "http://api.traveltimeapp.com/v4/time-map"
-  requestBody <- paste0('{
-                        "departure_searches" : [
-                        {"id" : "test",
-                        "coords": {"lat":', origin[1], ', "lng":', origin[2],' },
-                        "transportation" : {"type" : "', mode_of_transport,'" } ,
-                        "travel_time" : ', travel_time_secs, ',
-                        "departure_time" : "2017-05-03T08:00:00z"
-                        }
-                        ]
-}') # Check lat and lng are correct
-  res <- httr::POST(url = url,
-                    httr::add_headers('Content-Type' = 'application/json'),
-                    httr::add_headers('Accept' = 'application/json'),
-                    httr::add_headers('X-Application-Id' = appId),
-                    httr::add_headers('X-Api-Key' = apiKey),
-                    body = requestBody,
-                    encode = "json")
-
-  res <- jsonlite::fromJSON(as.character(res))
-  pl <- lapply(res$results$shapes[[1]]$shell, function(x){
-    googleway::encode_pl(lat = x[['lat']], lon = x[['lng']]) # Check lat and lng are correct
-  })
-  df <- data.frame(polyline = unlist(pl))
-  #df_marker <- data.frame(lat = location[1], lon = location[2])
-  polyline_vec <- df %>% dplyr::pull(polyline)
-  list_of_sfs <- purrr::map(polyline_vec,
-                            ~ transform_tt_polygon_to_sf(tt_polyline = .x,
-                                                         mode_of_transport = mode_of_transport,
-                                                         travel_time_hours = travel_time_hours,
-                                                         crs = crs))
-
-  new_sf <- purrr::reduce(list_of_sfs,
-                          rbind)
-  return(new_sf)
 }
 make_valid_new_sf <- function(sf){
   valid_sf <- sf %>%
@@ -530,35 +493,65 @@ make_valid_new_sf <- function(sf){
       rbind(valid_sf %>%
               dplyr::filter(sf::st_geometry_type(.)!="GEOMETRYCOLLECTION"))
   }
-  valid_sf %>%
+  valid_sf <- valid_sf %>%
     dplyr::filter(sf::st_geometry_type(.) %in% c("POLYGON", "MULTIPOLYGON")) %>%
     sf::st_cast("MULTIPOLYGON") %>%
     dplyr::distinct(.keep_all = T)
+  return(valid_sf)
 }
-make_year_filter_logic_vec <- function(data_tb,
-                                       included_years_vec){
-  purrr::map2_lgl(data_tb$year_chr, data_tb$year_start_chr, ~ (.x %in% included_years_vec | .y %in% included_years_vec))
-}
-make_years_chr <- function(input_ls){
-  model_end_year <- calculate_end_date(input_ls = input_ls) %>% lubridate::year()
-  key_var_1L_chr <- input_ls$key_var_1L_chr
-  data_year_1L_chr <- input_ls$x_VicinityProfile@data_year_1L_chr
-  x_VicinityLookup <- input_ls$x_VicinityProfile@a_VicinityLookup
-  spatial_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
-  year_opts <- spatial_lookup_tb %>%
-    dplyr::filter(main_feature_chr == key_var_1L_chr) %>%
-    dplyr::pull(year_end_chr)
-  year_opts <- year_opts[stringr::str_length(year_opts)==4]
-  year_opts_ref <- which((year_opts %>%
-                            as.numeric() %>%
-                            sort()) >= model_end_year) %>% min()
-  model_end_year <- year_opts %>%
-    as.numeric() %>%
-    sort() %>% purrr::pluck(year_opts_ref) %>%
-    as.character()
-  as.character(as.numeric(data_year_1L_chr):as.numeric(model_end_year))
+##### STAGED
+make_filter_by_year_logic <- function(data_tb,
+                                      years_chr){
+  filter_by_year_lgl <- purrr::map2_lgl(data_tb$year_chr, data_tb$year_start_chr, ~ (.x %in% years_chr | .y %in% years_chr))
+  return(filter_by_year_lgl)
 }
 
+
+
+# make_trvl_tm_isochrs <- function(appID, # No longer required????
+#                                  apiKey, # https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
+#                                  origin,
+#                                  mode_of_transport = "driving",
+#                                  travel_time_hours,
+#                                  crs){
+#   location <- origin
+#   travel_time_secs <- travel_time_hours * 60 * 60
+#   url <- "http://api.traveltimeapp.com/v4/time-map"
+#   requestBody <- paste0('{
+#                         "departure_searches" : [
+#                         {"id" : "test",
+#                         "coords": {"lat":', origin[1], ', "lng":', origin[2],' },
+#                         "transportation" : {"type" : "', mode_of_transport,'" } ,
+#                         "travel_time" : ', travel_time_secs, ',
+#                         "departure_time" : "2017-05-03T08:00:00z"
+#                         }
+#                         ]
+# }') # Check lat and lng are correct
+#   res <- httr::POST(url = url,
+#                     httr::add_headers('Content-Type' = 'application/json'),
+#                     httr::add_headers('Accept' = 'application/json'),
+#                     httr::add_headers('X-Application-Id' = appId),
+#                     httr::add_headers('X-Api-Key' = apiKey),
+#                     body = requestBody,
+#                     encode = "json")
+#
+#   res <- jsonlite::fromJSON(as.character(res))
+#   pl <- lapply(res$results$shapes[[1]]$shell, function(x){
+#     googleway::encode_pl(lat = x[['lat']], lon = x[['lng']]) # Check lat and lng are correct
+#   })
+#   df <- data.frame(polyline = unlist(pl))
+#   #df_marker <- data.frame(lat = location[1], lon = location[2])
+#   polyline_vec <- df %>% dplyr::pull(polyline)
+#   list_of_sfs <- purrr::map(polyline_vec,
+#                             ~ transform_tt_polygon_to_sf(tt_polyline = .x,
+#                                                          mode_of_transport = mode_of_transport,
+#                                                          travel_time_hours = travel_time_hours,
+#                                                          crs = crs))
+#
+#   new_sf <- purrr::reduce(list_of_sfs,
+#                           rbind)
+#   return(new_sf)
+# }
 
 # make_attr_data_xx <- function(x_VicinityLookup, now manufacture mthd
 #                               match_1L_chr,
@@ -677,7 +670,7 @@ make_years_chr <- function(input_ls){
 #                                             time_steps_1L_dbl){
 #   one_service_tb <- cluster_tb %>%
 #     dplyr::filter(service_name_chr == service_1L_chr)
-#   one_service_sf <- make_drive_time_isochrones(lng_1L_dbl = one_service_tb %>% dplyr::select(lng_dbl) %>% dplyr::pull(),
+#   one_service_sf <- make_isochrones(lng_1L_dbl = one_service_tb %>% dplyr::select(lng_dbl) %>% dplyr::pull(),
 #                                                lat_1L_dbl = one_service_tb %>% dplyr::select(lat_dbl) %>% dplyr::pull(),
 #                                                time_min_1L_dbl = time_min_1L_dbl,
 #                                                time_max_1L_dbl = time_max_1L_dbl,
@@ -787,7 +780,7 @@ make_years_chr <- function(input_ls){
 #                                            group_by_var_1L_chr = group_by_var_1L_chr)
 #     }
 #     if(!is.na(drive_time_limit_mins(x_VicinityProfile))){
-#       profiled_area_bands_ls <- make_servc_clstr_isochrs_ls(vicinity_points_ls = list(y_vicinity_points),
+#       profiled_area_bands_ls <- make_cluster_isochrones(vicinity_points_ls = list(y_vicinity_points),
 #                                                             index_val_1L_int = 1,
 #                                                             time_min_1L_dbl = 0,
 #                                                             time_max_1L_dbl = drive_time_limit_mins(x_VicinityProfile),
@@ -808,4 +801,35 @@ make_years_chr <- function(input_ls){
 #                                 profiled_sf = profiled_sf,
 #                                 profiled_area_bands_ls = profiled_area_bands_ls)
 #   return(profiled_area_objs_ls)
+# }
+# make_env_param_tb <- function(n_its_int, # Now manufacture mthd
+#                               env_str_param_tb,
+#                               mape_str_param_tb,
+#                               joint_dstr_1L_lgl){
+#   param_val_mape <- reckon(x = mape_str_param_tb,
+#                            n_its_int = n_its_int,
+#                            joint_dstr_1L_lgl = joint_dstr_1L_lgl)
+#   param_val_env <- reckon(x = env_str_param_tb,
+#                           n_its_int = n_its_int)
+#   env_param_tb <- dplyr::bind_rows(param_val_env,
+#                                    param_val_mape)
+# }
+# make_years_chr <- function(input_ls){ # Now manufacture mthd
+#   model_end_year <- calculate_end_date(input_ls = input_ls) %>% lubridate::year()
+#   key_var_1L_chr <- input_ls$key_var_1L_chr
+#   data_year_1L_chr <- input_ls$x_VicinityProfile@data_year_1L_chr
+#   x_VicinityLookup <- input_ls$x_VicinityProfile@a_VicinityLookup
+#   spatial_lookup_tb <- x_VicinityLookup@vicinity_processed_r3
+#   year_opts <- spatial_lookup_tb %>%
+#     dplyr::filter(main_feature_chr == key_var_1L_chr) %>%
+#     dplyr::pull(year_end_chr)
+#   year_opts <- year_opts[stringr::str_length(year_opts)==4]
+#   year_opts_ref <- which((year_opts %>%
+#                             as.numeric() %>%
+#                             sort()) >= model_end_year) %>% min()
+#   model_end_year <- year_opts %>%
+#     as.numeric() %>%
+#     sort() %>% purrr::pluck(year_opts_ref) %>%
+#     as.character()
+#   as.character(as.numeric(data_year_1L_chr):as.numeric(model_end_year))
 # }

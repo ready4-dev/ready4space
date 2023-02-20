@@ -315,7 +315,7 @@ make_profiled_area_objs <- function (x_VicinityProfile)
                 group_by_var_1L_chr = group_by_var_1L_chr)
         }
         if (!is.na(drive_time_limit_mins(x_VicinityProfile))) {
-            profiled_area_bands_ls <- make_servc_clstr_isochrs_ls(vicinity_points_ls = list(cluster_tb), 
+            profiled_area_bands_ls <- make_cluster_isochrones(vicinity_points_ls = list(cluster_tb), 
                 index_val_1L_int = 1, time_min = 0, time_max = drive_time_limit_mins(x_VicinityProfile), 
                 nbr_time_steps = nbr_bands(x_VicinityProfile))
             names(profiled_area_bands_ls) <- paste0("dt_band_", 
@@ -344,20 +344,20 @@ make_raw_format_dir_chr <- function (raw_fls_dir_1L_chr, category)
     paste0(raw_fls_dir_1L_chr, "/", category)
 }
 #' Make servc clstr isochrs
-#' @description make_servc_clstr_isochrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make servc clstr isochrs list. The function is called for its side effects and does not return a value.
+#' @description make_cluster_isochrones() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make servc clstr isochrs list. The function is called for its side effects and does not return a value.
 #' @param vicinity_points_ls PARAM_DESCRIPTION
 #' @param index_val_1L_int PARAM_DESCRIPTION
 #' @param time_min PARAM_DESCRIPTION, Default: 0
 #' @param time_max PARAM_DESCRIPTION, Default: 60
 #' @param nbr_time_steps PARAM_DESCRIPTION, Default: 5
 #' @return NA ()
-#' @rdname make_servc_clstr_isochrs_ls
+#' @rdname make_cluster_isochrones
 #' @export 
 #' @importFrom purrr pluck map accumulate prepend
 #' @importFrom dplyr select pull
 #' @importFrom stats setNames
 #' @importFrom sf st_union st_difference
-make_servc_clstr_isochrs_ls <- function (vicinity_points_ls, index_val_1L_int, time_min = 0, time_max = 60, 
+make_cluster_isochrones <- function (vicinity_points_ls, index_val_1L_int, time_min = 0, time_max = 60, 
     nbr_time_steps = 5) 
 {
     require(osrm)
@@ -370,25 +370,25 @@ make_servc_clstr_isochrs_ls <- function (vicinity_points_ls, index_val_1L_int, t
         stats::setNames(., one_cluster_services_vec)
     detach("package:osrm", unload = TRUE)
     one_cluster_time_bands_ls <- purrr::map(1:length(one_cluster_travel_time_sf_ls), 
-        ~make_time_band_sf_ls(index_val_1L_int = .x, one_cluster_travel_time_sf_ls = one_cluster_travel_time_sf_ls)) %>% 
+        ~make_isochrone_bands(index_val_1L_int = .x, one_cluster_travel_time_sf_ls = one_cluster_travel_time_sf_ls)) %>% 
         stats::setNames(one_cluster_travel_time_sf_ls %>% names())
     one_cluster_unioned_time_bands_ls <- purrr::map(1:(one_cluster_time_bands_ls %>% 
-        purrr::pluck(1) %>% length()), ~union_one_travel_time_band_across_sites(time_band_ref = .x, 
+        purrr::pluck(1) %>% length()), ~bind_isochrone_bands(time_band_ref = .x, 
         one_cluster_time_bands_ls = one_cluster_time_bands_ls)) %>% 
         stats::setNames(paste0("tb_", 1:(one_cluster_time_bands_ls %>% 
             purrr::pluck(1) %>% length())))
-    one_cluster_up_to_xmin_ls <- purrr::accumulate(one_cluster_unioned_time_bands_ls, 
+    temporal_bands_ls <- purrr::accumulate(one_cluster_unioned_time_bands_ls, 
         ~sf::st_union(.x, .y)) %>% stats::setNames(paste0("tb_", 
         1:(one_cluster_unioned_time_bands_ls %>% length())))
-    one_cluster_up_to_xmin_ls <- purrr::map(1:length(one_cluster_up_to_xmin_ls), 
-        ~update_sf_boundary_descr(index_val_1L_int = .x, one_cluster_up_to_xmin_ls = one_cluster_up_to_xmin_ls)) %>% 
-        stats::setNames(paste0("tb_", 1:(one_cluster_up_to_xmin_ls %>% 
+    temporal_bands_ls <- purrr::map(1:length(temporal_bands_ls), 
+        ~update_sf_boundary_descr(index_val_1L_int = .x, temporal_bands_ls = temporal_bands_ls)) %>% 
+        stats::setNames(paste0("tb_", 1:(temporal_bands_ls %>% 
             length())))
     one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_ls) - 
         1), ~sf::st_difference(one_cluster_unioned_time_bands_ls %>% 
-        purrr::pluck(.x + 1), one_cluster_up_to_xmin_ls %>% 
+        purrr::pluck(.x + 1), temporal_bands_ls %>% 
         purrr::pluck(.x)) %>% dplyr::select(id, min, max, center, 
-        drive_times)) %>% stats::setNames(paste0("tb_", 2:(one_cluster_up_to_xmin_ls %>% 
+        drive_times)) %>% stats::setNames(paste0("tb_", 2:(temporal_bands_ls %>% 
         length()))) %>% purrr::prepend(list(tb_1 = one_cluster_unioned_time_bands_ls %>% 
         purrr::pluck(1)))
     return(one_cluster_joint_travel_time_list)
@@ -437,17 +437,17 @@ make_cluster_bndys <- function (distance_km, clusters_chr, vicinity_points_ls, l
         names())
 }
 #' Make time band
-#' @description make_time_band_sf_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make time band simple features object list. The function returns Time band (a list of simple features objects).
+#' @description make_isochrone_bands() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make time band simple features object list. The function returns Time band (a list of simple features objects).
 #' @param index_val_1L_int PARAM_DESCRIPTION
 #' @param one_cluster_travel_time_sf_ls PARAM_DESCRIPTION
 #' @return Time band (a list of simple features objects)
-#' @rdname make_time_band_sf_ls
+#' @rdname make_isochrone_bands
 #' @export 
 #' @importFrom purrr pluck map
 #' @importFrom dplyr pull filter
 #' @importFrom stats setNames
 #' @importFrom stringr str_replace_all
-make_time_band_sf_ls <- function (index_val_1L_int, one_cluster_travel_time_sf_ls) 
+make_isochrone_bands <- function (index_val_1L_int, one_cluster_travel_time_sf_ls) 
 {
     travel_time_bands <- one_cluster_travel_time_sf_ls %>% 
         purrr::pluck(index_val_1L_int) %>% dplyr::pull(drive_times)
@@ -527,14 +527,14 @@ make_valid_new_sf <- function (sf)
         dplyr::distinct(.keep_all = T)
 }
 #' Make year filter logic vec
-#' @description make_year_filter_logic_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make year filter logic vec. The function is called for its side effects and does not return a value.
+#' @description make_filter_by_lear_logic() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make year filter logic vec. The function is called for its side effects and does not return a value.
 #' @param data_tb Data (a tibble)
 #' @param included_years_vec PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname make_year_filter_logic_vec
+#' @rdname make_filter_by_lear_logic
 #' @export 
 #' @importFrom purrr map2_lgl
-make_year_filter_logic_vec <- function (data_tb, included_years_vec) 
+make_filter_by_lear_logic <- function (data_tb, included_years_vec) 
 {
     purrr::map2_lgl(data_tb$year, data_tb$year_start, ~(.x %in% 
         included_years_vec | .y %in% included_years_vec))

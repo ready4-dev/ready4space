@@ -65,26 +65,27 @@ update_pop_by_inc_area <- function(profiled_sf,
 }
 
 update_sf_boundary_descr <- function(index_val_1L_int,
-                                     one_cluster_up_to_xmin_ls){
-  max_var <- "max"
-  max_vec <- one_cluster_up_to_xmin_ls %>%
+                                     temporal_bands_ls,
+                                     travel_mode_1L_chr){
+  max_var_1L_chr <- "isomax"
+  max_vars_chr <- temporal_bands_ls %>%
     purrr::pluck(index_val_1L_int) %>%
     names() %>%
-    stringr::str_subset("max")
-  if(length(max_vec) > 1){
-    max_var <- max_vec %>%
-      stringr::str_subset("max.") %>%
-      stringr::str_replace_all("max.","") %>%
+    stringr::str_subset("isomax")
+  if(length(max_vars_chr) > 1){
+    max_var_1L_chr <- max_vars_chr %>%
+      stringr::str_subset("isomax.") %>% # CHECK
+      stringr::str_replace_all("isomax.","") %>%
       as.numeric() %>%
       max() %>%
-      paste0("max.",.)
+      paste0("isomax.",.)
   }
-  return_object <- one_cluster_up_to_xmin_ls %>%
+  return_object <- temporal_bands_ls %>%
     purrr::pluck(index_val_1L_int) %>%
-    dplyr::mutate(max := !!rlang::sym(max_var)) %>%
-    dplyr::mutate(center = (min + max) / 2) %>%
-    dplyr::mutate(drive_times = paste0("0 to ",max," mins")) %>%
-    dplyr::select(id,min,max,center,drive_times)
+    dplyr::mutate(isomax := !!rlang::sym(max_var_1L_chr)) %>% # max
+    dplyr::mutate(center_value = (isomin + isomax) / 2) %>% #center
+    dplyr::mutate(!!rlang::sym(paste0(travel_mode_1L_chr,"_times")) := paste0("0 to ",isomax," mins")) %>% #drive_times
+    dplyr::select(id,isomin,isomax,center_value,!!rlang::sym(paste0(travel_mode_1L_chr,"_times")) )
   return(return_object)
 }
 update_spatial_attrs_ls <- function(spatial_attrs_ls,

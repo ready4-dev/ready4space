@@ -536,7 +536,7 @@ make_attributes_ls <- function (input_ls, subdivision_1L_chr = NULL, match_year_
     year_vec <- make_years_chr(input_ls = input_ls)
     extra_names <- purrr::map(input_ls$at_specified_res, ~lookup_tb(input_ls$x_VicinityProfile) %>% 
         sp_data_pack_lup() %>% dplyr::filter(main_feature == 
-        .x[1]) %>% dplyr::filter(make_year_filter_logic_vec(data_tb = ., 
+        .x[1]) %>% dplyr::filter(make_filter_by_lear_logic(data_tb = ., 
         included_years_vec = year_vec)) %>% ready4::get_from_lup_obj(match_value_xx = .x[1], 
         match_var_nm_1L_chr = "main_feature", target_var_nm_1L_chr = "name", 
         evaluate_1L_lgl = FALSE)) %>% stats::setNames(purrr::map_chr(input_ls$at_specified_res, 

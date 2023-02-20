@@ -1,3 +1,22 @@
+manufacture.vicinity_parameters<- function(x,# make_env_param_tb #env_str_param_tb
+                                           y_vicinity_mapes = NULL,#mape_str_param_tb,
+                                           n_its_int = integer(0),
+                                           joint_dstr_1L_lgl = T,
+                                           what_1L_chr = "values"){
+  if(what_1L_chr == "values"){
+    param_vals_tb <- reckon(x,
+                            n_its_int = n_its_int)
+    if(!is.null(y_vicinity_mapes)){
+      mape_vals_tb <- reckon(y_vicinity_mapes,
+                             n_its_int = n_its_int,
+                             joint_dstr_1L_lgl = joint_dstr_1L_lgl)
+      param_vals_tb  <- dplyr::bind_rows(param_vals_tb,
+                                         mape_vals_tb)
+    }
+    object_xx <- param_vals_tb
+  }
+  return(object_xx)
+}
 manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
                                      crs_nbr_dbl = NA_real_,
                                      match_value_xx = NULL,
@@ -97,18 +116,20 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
                                         time_min_1L_dbl = numeric(0),
                                         time_max_1L_dbl = numeric(0),
                                         time_steps_1L_dbl = numeric(0),
+                                        travel_mode_1L_chr = "car",
                                         type_1L_chr = "single",
                                         what_1L_chr = "geometric"
                                         ){
-  if(what_1L_chr == "drive time"){
+  if(what_1L_chr == "isochrones"){ #"drive time"
     if(type_1L_chr == "single"){ # make_drive_time_for_one_service #make_1_clstr_1_srvc_trvl_tm # possibly: make_isochrs_for_1_srvc
         one_service_tb <- x %>%
           dplyr::filter(service_name_chr == service_1L_chr)
-        one_service_sf <- make_drive_time_isochrones(lng_1L_dbl = one_service_tb %>% dplyr::select(lng_dbl) %>% dplyr::pull(),
-                                                     lat_1L_dbl = one_service_tb %>% dplyr::select(lat_dbl) %>% dplyr::pull(),
+        one_service_sf <- make_isochrones(lat_1L_dbl = one_service_tb %>% dplyr::select(lat_dbl) %>% dplyr::pull(),
+                                                     lng_1L_dbl = one_service_tb %>% dplyr::select(lng_dbl) %>% dplyr::pull(),
                                                      time_min_1L_dbl = time_min_1L_dbl,
                                                      time_max_1L_dbl = time_max_1L_dbl,
-                                                     time_steps_1L_dbl = time_steps_1L_dbl)
+                                                     time_steps_1L_dbl = time_steps_1L_dbl,
+                                                     travel_mode_1L_chr = travel_mode_1L_chr)
         object_xx <- one_service_sf
     }
 

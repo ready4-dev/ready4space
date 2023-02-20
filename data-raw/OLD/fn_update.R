@@ -71,9 +71,9 @@ update_pop_count_by_areas <- function (profiled_sf, group_by_var_1L_chr, dynamic
     return(profiled_sf)
 }
 #' Update simple features object boundary descr
-#' @description update_sf_boundary_descr() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument index_val_1L_int specifies the object to be updated. Argument one_cluster_up_to_xmin_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @description update_sf_boundary_descr() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument index_val_1L_int specifies the object to be updated. Argument temporal_bands_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 #' @param index_val_1L_int PARAM_DESCRIPTION
-#' @param one_cluster_up_to_xmin_ls PARAM_DESCRIPTION
+#' @param temporal_bands_ls PARAM_DESCRIPTION
 #' @return NA ()
 #' @rdname update_sf_boundary_descr
 #' @export
@@ -81,17 +81,17 @@ update_pop_count_by_areas <- function (profiled_sf, group_by_var_1L_chr, dynamic
 #' @importFrom stringr str_subset str_replace_all
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-update_sf_boundary_descr <- function (index_val_1L_int, one_cluster_up_to_xmin_ls)
+update_sf_boundary_descr <- function (index_val_1L_int, temporal_bands_ls)
 {
     max_var <- "max"
-    max_vec <- one_cluster_up_to_xmin_ls %>% purrr::pluck(index_val_1L_int) %>%
+    max_vec <- temporal_bands_ls %>% purrr::pluck(index_val_1L_int) %>%
         names() %>% stringr::str_subset("max")
     if (length(max_vec) > 1) {
         max_var <- max_vec %>% stringr::str_subset("max.") %>%
             stringr::str_replace_all("max.", "") %>% as.numeric() %>%
             max() %>% paste0("max.", .)
     }
-    return_object <- one_cluster_up_to_xmin_ls %>% purrr::pluck(index_val_1L_int) %>%
+    return_object <- temporal_bands_ls %>% purrr::pluck(index_val_1L_int) %>%
         dplyr::mutate(`:=`(max, !!rlang::sym(max_var))) %>% dplyr::mutate(center = (min +
         max)/2) %>% dplyr::mutate(drive_times = paste0("0 to ",
         max, " mins")) %>% dplyr::select(id, min, max, center,
