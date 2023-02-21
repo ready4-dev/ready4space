@@ -155,7 +155,7 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
       #                                       profiled_sf, ### land_sf,
       #                                       ){
         distance_in_km_1L_dbl <- metres_1L_dbl * 1000
-        distances_vec <- seq(from = distance_in_km_1L_dbl/bands_1L_dbl,
+        distances_dbl <- seq(from = distance_in_km_1L_dbl/bands_1L_dbl,
                              to = distance_in_km_1L_dbl,
                              by = distance_in_km_1L_dbl/bands_1L_dbl)
 
@@ -164,22 +164,22 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
                                                 ~ x %>%
                                                   dplyr::filter(cluster_name_chr == .x)) %>%
           stats::setNames(service_clusters_chr)
-        service_clusters_by_distance_list <- purrr::map(distances_vec,
+        service_clusters_by_distance_ls <- purrr::map(distances_dbl,
                                                         ~ make_cluster_bndys(clusters_chr = service_clusters_chr,
                                                                              crs_nbr_dbl = crs_nbr_dbl,
                                                                              distance_in_km_1L_dbl = .x,
                                                                              land_boundary_sf = land_sf,
                                                                              vicinity_points_ls = service_vicinity_points_ls)) %>%
           stats::setNames(., paste0("km_",
-                                    distances_vec,
+                                    distances_dbl,
                                     "from_service"))
         geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
-                                                            ~ reorder_distance_list_by_cluster(index_val_1L_int = .x,
-                                                                                               clusters_by_distance_list = service_clusters_by_distance_list,
-                                                                                               distances_vec = distances_vec)) %>%
+                                                            ~ reorder_distance_list_by_cluster(clusters_by_distance_ls = service_clusters_by_distance_ls,
+                                                                                               distances_dbl = distances_dbl,
+                                                                                               index_val_1L_int = .x)) %>%
           stats::setNames(., service_vicinity_points_ls %>% names())
         geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles,
-                                                          ~ transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>%
+                                                          ~ transform_circles_to_bands(geomc_dist_circles_ls = .x)) %>%
           stats::setNames(., service_vicinity_points_ls %>% names())
         geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles,
                                                                         ~ do.call(rbind,.x)) %>%
@@ -191,9 +191,25 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
           stats::setNames(., service_vicinity_points_ls %>% names()) %>%
           purrr::map(.,
                      ~ .x %>% dplyr::arrange(desc(distance_in_km_dbl)) %>%
-                       simplify_sf(crs = crs_nbr_dbl[1]))
+                       transform_to_simpler_sf(crs_dbl = crs_nbr_dbl[1]))
         object_xx <- geometric_distance_by_cluster_bands_merged_list
     }
   }
     return(object_xx)
   }
+manufacture.vicinity_processed <- function(x,
+                                           approximation_1L_chr = "abs",
+                                           main_incld_feature_chr = character(0),
+                                           target_area_1L_chr = character(0),
+                                           target_year_1L_chr = character(0),
+                                           what_1L_chr = "closest years"){
+  if(what_1L_chr == "closest years"){
+    closest_yrs_ls <- make_closest_yrs_ls(x,
+                                          main_incld_feature_chr = main_incld_feature_chr,
+                                          target_area_1L_chr = target_area_1L_chr,
+                                          target_year_1L_chr = target_year_1L_chr,
+                                          approximation_1L_chr = approximation_1L_chr)
+    object_xx <- closest_yrs_ls
+  }
+    return(object_xx)
+}

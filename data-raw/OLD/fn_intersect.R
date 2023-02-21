@@ -105,7 +105,7 @@ make_reconciled_intersecting_area <- function (profiled_sf, profiled_sf_col_1L_c
                 attribute_rsl_1L_chr = reference_var_rsl_1L_chr, data_type = "tot_pop")
         }
     }
-    profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf, 
+    profiled_sf <- update_popl_counts(profiled_sf = profiled_sf, 
         group_by_var_1L_chr = group_by_var_1L_chr, dynamic_var_nm_1L_chr = grouping_var_1L_chr, 
         data_year = data_year, dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr, 
         reference_var_rsl_1L_chr = reference_var_rsl_1L_chr)

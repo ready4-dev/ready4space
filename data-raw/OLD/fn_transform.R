@@ -1,6 +1,6 @@
 #' Transform circles to bands
-#' @description transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. Function argument geom_distance_circle_sfs_list specifies the object to be updated. The function is called for its side effects and does not return a value.
-#' @param geom_distance_circle_sfs_list PARAM_DESCRIPTION
+#' @description transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. Function argument geomc_dist_circles_ls specifies the object to be updated. The function is called for its side effects and does not return a value.
+#' @param geomc_dist_circles_ls PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname transform_circles_to_bands
 #' @export 
@@ -8,14 +8,14 @@
 #' @importFrom sf st_difference
 #' @importFrom dplyr select
 #' @importFrom stats setNames
-transform_circles_to_bands <- function (geom_distance_circle_sfs_list) 
+transform_circles_to_bands <- function (geomc_dist_circles_ls) 
 {
-    purrr::map(1:(length(geom_distance_circle_sfs_list) - 1), 
-        ~sf::st_difference(geom_distance_circle_sfs_list %>% 
-            purrr::pluck(.x + 1), geom_distance_circle_sfs_list %>% 
+    purrr::map(1:(length(geomc_dist_circles_ls) - 1), 
+        ~sf::st_difference(geomc_dist_circles_ls %>% 
+            purrr::pluck(.x + 1), geomc_dist_circles_ls %>% 
             purrr::pluck(.x)) %>% dplyr::select(distance_km)) %>% 
-        stats::setNames(paste0("dist_", 2:(geom_distance_circle_sfs_list %>% 
-            length()))) %>% purrr::prepend(list(dist_1 = geom_distance_circle_sfs_list %>% 
+        stats::setNames(paste0("dist_", 2:(geomc_dist_circles_ls %>% 
+            length()))) %>% purrr::prepend(list(dist_1 = geomc_dist_circles_ls %>% 
         purrr::pluck(1)))
 }
 #' Transform suffix to prefix

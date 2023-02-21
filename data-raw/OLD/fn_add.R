@@ -230,7 +230,7 @@ add_dynamic_vars_to_sf <- function (dynamic_vars_sf, profiled_sf, dynamic_var_rs
     dyn_param_unit_id <- names(dynamic_vars_sf)[1]
     profiled_sf <- profiled_sf %>% dplyr::mutate(`:=`(!!rlang::sym(dynamic_var_nm_1L_chr), 
         paste0(!!rlang::sym(dyn_param_unit_id), "_", !!rlang::sym(dynamic_var_nm_1L_chr))))
-    update_pop_count_by_areas(profiled_sf = profiled_sf, group_by_var_1L_chr = group_by_var_1L_chr, 
+    update_popl_counts(profiled_sf = profiled_sf, group_by_var_1L_chr = group_by_var_1L_chr, 
         dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr, data_year = data_year, 
         dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr = NULL, 
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)

@@ -47,9 +47,9 @@ make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "e
     agent_coordinates_tb <- purrr::map2_dfr(profiled_area_df %>% 
         dplyr::select(!!unit_col_name) %>% dplyr::pull(), profiled_area_df %>% 
         dplyr::select(!!rlang::sym(cases_col_name)) %>% dplyr::pull(), 
-        ~sample_agent_coords(profiled_sf = profiled_area_sf %>% 
+        ~randomise_locations(profiled_sf = profiled_area_sf %>% 
             dplyr::filter(!!rlang::sym(unit_col_name) == .x), 
-            incident_cases = .y))
+            cases_int = .y))
     return(agent_coordinates_tb)
 }
 #' Make attr data
@@ -114,24 +114,24 @@ make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf)
 make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, service_cluster_tb, 
     profiled_sf, crs_nbr) 
 {
-    distances_vec <- seq(from = distance_km_outer/nbr_distance_bands, 
+    distances_dbl <- seq(from = distance_km_outer/nbr_distance_bands, 
         to = distance_km_outer, by = distance_km_outer/nbr_distance_bands)
     service_clusters_chr <- service_cluster_tb %>% dplyr::pull(cluster_name) %>% 
         unique()
     service_vicinity_points_ls <- purrr::map(service_clusters_chr, 
         ~service_cluster_tb %>% dplyr::filter(cluster_name == 
             .x)) %>% stats::setNames(service_clusters_chr)
-    service_clusters_by_distance_list <- purrr::map(distances_vec, 
+    service_clusters_by_distance_ls <- purrr::map(distances_dbl, 
         ~make_cluster_bndys(distance_km = .x, 
             clusters_chr = service_clusters_chr, vicinity_points_ls = service_vicinity_points_ls, 
             land_boundary_sf = profiled_sf, crs_nbr = crs_nbr)) %>% 
-        stats::setNames(., paste0("km_", distances_vec, "from_service"))
+        stats::setNames(., paste0("km_", distances_dbl, "from_service"))
     geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr), 
-        ~reorder_distance_list_by_cluster(index_val_1L_int = .x, clusters_by_distance_list = service_clusters_by_distance_list, 
-            distances_vec = distances_vec)) %>% stats::setNames(., 
+        ~reorder_distance_list_by_cluster(index_val_1L_int = .x, clusters_by_distance_ls = service_clusters_by_distance_ls, 
+            distances_dbl = distances_dbl)) %>% stats::setNames(., 
         service_vicinity_points_ls %>% names())
     geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles, 
-        ~transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>% 
+        ~transform_circles_to_bands(geomc_dist_circles_ls = .x)) %>% 
         stats::setNames(., service_vicinity_points_ls %>% names())
     geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles, 
         ~do.call(rbind, .x)) %>% stats::setNames(., service_vicinity_points_ls %>% 
@@ -139,7 +139,7 @@ make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, se
     geometric_distance_by_cluster_bands_merged_list <- purrr::map(geometric_distance_by_cluster_bands, 
         ~do.call(rbind, .x)) %>% stats::setNames(., service_vicinity_points_ls %>% 
         names()) %>% purrr::map(., ~.x %>% dplyr::arrange(desc(distance_km)) %>% 
-        simplify_sf(crs = crs_nbr[1]))
+        transform_to_simpler_sf(crs = crs_nbr[1]))
     return(geometric_distance_by_cluster_bands_merged_list)
 }
 #' Make each uid a poly
@@ -321,7 +321,7 @@ make_profiled_area_objs <- function (x_VicinityProfile)
             names(profiled_area_bands_ls) <- paste0("dt_band_", 
                 1:length(profiled_area_bands_ls))
             profiled_sf <- do.call(rbind, profiled_area_bands_ls) %>% 
-                sf::st_transform(crs_nbr(x_VicinityProfile)[1]) %>% simplify_sf()
+                sf::st_transform(crs_nbr(x_VicinityProfile)[1]) %>% transform_to_simpler_sf()
         }
         subdivisions_chr <- make_intersecting_geometries(sf_1 = st_profiled_sf, 
             sf_2 = profiled_sf, crs_nbr_dbl = crs_nbr(x_VicinityProfile)) %>% 
@@ -381,7 +381,7 @@ make_cluster_isochrones <- function (vicinity_points_ls, index_val_1L_int, time_
         ~sf::st_union(.x, .y)) %>% stats::setNames(paste0("tb_", 
         1:(one_cluster_unioned_time_bands_ls %>% length())))
     temporal_bands_ls <- purrr::map(1:length(temporal_bands_ls), 
-        ~update_sf_boundary_descr(index_val_1L_int = .x, temporal_bands_ls = temporal_bands_ls)) %>% 
+        ~update_isochrone_tbl(index_val_1L_int = .x, temporal_bands_ls = temporal_bands_ls)) %>% 
         stats::setNames(paste0("tb_", 1:(temporal_bands_ls %>% 
             length())))
     one_cluster_joint_travel_time_list <- purrr::map(1:(length(one_cluster_unioned_time_bands_ls) - 
@@ -411,9 +411,9 @@ make_spatial_attrs_ls <- function (input_ls, subdivisions_chr)
         ~do.call(rbind, .x))
     names_ppr <- purrr::map_chr(lists_to_merge[[1]], ~ifelse(length(.x[1]) == 
         0, NA_character_, names(.x[1])))
-    ppr_ref <- purrr::map_dbl(lists_to_merge[[1]], ~ifelse(length(.x[1]) == 
+    ppr_idx_dbl <- purrr::map_dbl(lists_to_merge[[1]], ~ifelse(length(.x[1]) == 
         0, NA_real_, .x[1])) %>% stats::setNames(names_ppr)
-    spatial_attrs_ls <- purrr::prepend(merged_list, list(ppr_ref = ppr_ref))
+    spatial_attrs_ls <- purrr::prepend(merged_list, list(ppr_idx_dbl = ppr_idx_dbl))
     return(spatial_attrs_ls)
 }
 #' Make srvc clstr geomc dist boundrs

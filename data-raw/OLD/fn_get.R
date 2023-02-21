@@ -566,11 +566,11 @@ make_attributes_ls <- function (input_ls, subdivision_1L_chr = NULL, match_year_
                 sp_data_pack_lup() %>% dplyr::filter(name %in% 
                 .y) %>% dplyr::pull(year) %>% min(as.numeric()), 
             attribute_data = .y)) %>% stats::setNames(boundary_res)
-    index_ppr <- purrr::map_lgl(data_names_list, ~validate_popl_predns_incld(.x, 
+    index_ppr_dbl <- purrr::map_lgl(data_names_list, ~validate_popl_predns_incld(.x, 
         data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>% sp_data_pack_lup(), 
         key_var_1L_chr = input_ls$key_var_1L_chr)) %>% which() + 
         1
-    data_sf_list <- purrr::prepend(data_sf_list, list(index_ppr = index_ppr))
+    data_sf_list <- purrr::prepend(data_sf_list, list(index_ppr_dbl = index_ppr_dbl))
     return(data_sf_list)
 }
 #' Get spatial data names

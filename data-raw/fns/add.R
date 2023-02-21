@@ -21,30 +21,34 @@ add_dynamic_vars_to_sf <- function(dynamic_vars_sf,
                                    profiled_sf,
                                    dynamic_var_rsl_1L_chr,
                                    dynamic_var_nm_1L_chr,
-                                   featured_var_pfx_1L_chr,
+                                   featured_var_pfx_1L_chr, #### NULL ?
                                    data_year_1L_chr,
-                                   crs_nbr_dbl){
-  profiled_sf <- make_intersecting_profiled_area(profiled_sf = dynamic_vars_sf,
-                                           profiled_sf_col_1L_chr = NA_character_,
-                                           profiled_sf_row_1L_chr = NA_character_,
-                                           attribute_sf = profiled_sf,
-                                           attribute_rsl_1L_chr = dynamic_var_rsl_1L_chr,
-                                           data_type_chr = "processed_age_sex",
-                                           data_year_1L_chr = data_year_1L_chr,
-                                           featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
-                                           crs_nbr_dbl = crs_nbr_dbl) %>%
+                                   crs_nbr_dbl,
+                                   reference_vals_chr# = c("tot_pop","age_sex")
+                                   ){
+  profiled_sf <- make_intersecting_profiled_area(attribute_rsl_1L_chr = dynamic_var_rsl_1L_chr,
+                                                 attribute_sf = profiled_sf,
+                                                 crs_nbr_dbl = crs_nbr_dbl,
+                                                 data_type_chr = "processed_age_sex",
+                                                 data_year_1L_chr = data_year_1L_chr,
+                                                 featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
+                                                 profiled_sf = dynamic_vars_sf,
+                                                 profiled_sf_col_1L_chr = NA_character_,
+                                                 profiled_sf_row_1L_chr = NA_character_
+                                           ) %>%
     add_km_sqd_by_group(group_by_var_1L_chr = dynamic_var_nm_1L_chr,
                            feature_nm_1L_chr = dynamic_var_rsl_1L_chr)
   dyn_param_unit_id_1L_chr <- names(dynamic_vars_sf)[1] # Should be read from lookup
   profiled_sf <- profiled_sf %>%
     dplyr::mutate(!!rlang::sym(dynamic_var_nm_1L_chr) := paste0(!!rlang::sym(dyn_param_unit_id_1L_chr),"_",!!rlang::sym(dynamic_var_nm_1L_chr)))
-  profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
+  profiled_sf <- update_popl_counts(profiled_sf = profiled_sf,
                             group_by_var_1L_chr = group_by_var_1L_chr,
                             dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr,
                             data_year_1L_chr = data_year_1L_chr,
                             dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                             reference_var_rsl_1L_chr = NULL,
-                            featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
+                            featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
+                            reference_vals_chr = reference_vals_chr)
   return(profiled_sf)
 
 }
@@ -105,6 +109,34 @@ add_names <- function(ds_tb){
                                                                                                                     stringr::str_sub(.x, start = 12, end = -3)),
                                                                                                              .x)))
   return(ds_tb)
+}
+add_popl_counts <- function(profiled_sf, # sum_updated_pop_by_grp
+                            group_by_var_1L_chr,
+                            nse_objs_ls,
+                            convert_sfx_to_pfx_1L_lgl = FALSE,
+                            top_level_1L_lgl = FALSE){
+  group_totals <- profiled_sf %>%
+    sf::st_set_geometry(NULL) %>%
+    dplyr::group_by(!!rlang::sym(grp_var_name)) %>%
+    dplyr::summarise_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$popl_inc_unit)),
+                        dplyr::funs(!!rlang::sym(nse_objs_ls$grouping_1_concept_tot) := sum(.)))
+  if(convert_sfx_to_pfx_1L_lgl)
+    group_totals <- group_totals %>%
+      transform_sfx_to_pfx(suffix_1L_chr = nse_objs_ls$grouping_1_concept_tot)
+  group_totals <- group_totals %>%
+    dplyr::ungroup()
+  if(top_level_1L_lgl){
+    profiled_sf <- dplyr::bind_cols(profiled_sf,
+                                    group_totals[rep(row.names(group_totals), nrow(profiled_sf)), ] %>%
+                                      dplyr::select(-!!rlang::sym(grp_var_name)))
+  }else{
+    profiled_sf <- profiled_sf %>%
+      dplyr::inner_join(.,
+                        group_totals %>%
+                          dplyr::rename_at(dplyr::vars(dplyr::starts_with(nse_objs_ls$grouping_1_concept_tot)),
+                                           dplyr::funs(gsub(paste0(nse_objs_ls$popl_inc_unit,"_"),"",.))))
+  }
+  return(profiled_sf)
 }
 # add_attribute_to_data_pack_from_tb <- function(attr_tb,
 #                                                object_name_1L_chr){

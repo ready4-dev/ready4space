@@ -1,15 +1,17 @@
 make_agent_locations_tb <- function(profiled_area_sf,
-                                    disorder_1L_chr,
-                                    year_1L_chr,
-                                    #case_type_1L_chr = "expected.incidence",
+                                    crs_dbl,
+                                    person_ctg_1L_chr = character(0),
                                     person_type_1L_chr = "p",
-                                    resolution_unit_1L_chr){
+                                    resolution_unit_1L_chr,
+                                    year_1L_chr
+                                    #case_type_1L_chr = "expected.incidence",
+                                    ){
   unit_col_name_1L_chr <- paste0(resolution_unit_1L_chr,
                                  "_MAIN",
                                  stringr::str_sub(year_1L_chr,3,4))
   cases_col_name_1L_chr <- paste0("proj_",
-                                  disorder_1L_chr,
-                                  "_",
+                                  person_ctg_1L_chr,
+                                  ifelse(identical(person_ctg_1L_chr, character(0)),"","_"),
                                   person_type_1L_chr,
                                   "_",
                                   year_1L_chr)
@@ -19,40 +21,18 @@ make_agent_locations_tb <- function(profiled_area_sf,
                   !!rlang::sym(cases_col_name_1L_chr))
   agent_coordinates_tb <- purrr::map2_dfr(profiled_area_df %>% dplyr::select(!!unit_col_name_1L_chr) %>% dplyr::pull(),
                                           profiled_area_df %>% dplyr::select(!!rlang::sym(cases_col_name_1L_chr)) %>% dplyr::pull(),
-                                          ~ sample_agent_coords(profiled_sf = profiled_area_sf %>%
+                                          ~ randomise_locations(profiled_sf = profiled_area_sf %>%
                                                                   dplyr::filter(!!rlang::sym(unit_col_name_1L_chr)==.x),
-                                                                incident_cases = .y))
+                                                                cases_int = .y,
+                                                                crs_dbl = crs_dbl))
   return(agent_coordinates_tb)
-}
-make_attributes_ls <- function(input_ls, # get_sp_data or similar ???
-                               subdivision_1L_chr = NULL,
-                               match_year_1L_lgl = TRUE,
-                               exclude_dif_bndy_yr_1L_lgl = TRUE){
-  years_chr <- manufacture(input_ls$x_VicinityProfile,
-                           input_ls = input_ls,
-                           what_1L_chr = "years")#make_years_chr
-  attributes_to_import_chr = procure(input_ls$x_VicinityProfile, # Formally get_spatial_attr_names(
-                                     exclude_dif_bndy_yr_1L_lgl = exclude_dif_bndy_yr_1L_lgl,
-                                     highest_rsl_chr = input_ls$at_highest_res,
-                                     key_var_1L_chr = input_ls$key_var_1L_chr,
-                                     #subdivision_1L_chr = NULL,
-                                     match_year_1L_lgl = match_year_1L_lgl,
-                                     years_chr = years_chr,
-                                     what_1L_chr = "grouping")
-  attributes_ls <- manufacture(input_ls$x_VicinityProfile,
-                               attributes_to_import_chr = attributes_to_import_chr,
-                               key_var_1L_chr  = input_ls$key_var_1L_chr,
-                               specified_rsl_chr  = input_ls$at_specified_res,
-                               what_1L_chr = "attributes",
-                               years_chr  = years_chr)
-  return(attributes_ls)
 }
 make_closest_yrs_ls <- function(data_lookup_tb,
                                 main_incld_feature_chr,
                                 target_year_1L_chr,
-                                target_area_1L_chr = NULL,
+                                target_area_1L_chr = character(0),
                                 approximation_1L_chr = "abs"){
-  if(!is.null(target_area_1L_chr)){
+  if(!identical(target_area_1L_chr, character(0))){
     data_lookup_tb <- data_lookup_tb %>%
       dplyr::filter(area_type_chr == target_area_1L_chr)
   }
@@ -140,7 +120,7 @@ make_cluster_isochrones <- function(vicinity_points_ls,
                            1:(unioned_isochrones_ls %>%
                                 length())))
   temporal_bands_ls <- purrr::map(1:length(temporal_bands_ls),
-                                  ~ update_sf_boundary_descr(index_val_1L_int = .x,
+                                  ~ update_isochrone_tbl(index_val_1L_int = .x,
                                                              temporal_bands_ls = temporal_bands_ls,
                                                              travel_mode_1L_chr = travel_mode_1L_chr)) %>%
     stats::setNames(paste0("tb_",
@@ -199,15 +179,21 @@ make_featured_var_pfx <- function(dynamic_var_rsl_1L_chr,
   prefix_1L_chr <- paste0(nse_names_ls$popl_inc_unit,"_")
   return(prefix_1L_chr)
 }
-make_intersecting_profiled_area <- function(profiled_sf,
-                                            profiled_sf_col_1L_chr = NA,
-                                            profiled_sf_row_1L_chr = NA,
+make_filter_by_year_logic <- function(data_tb,
+                                      years_chr){
+  filter_by_year_lgl <- purrr::map2_lgl(data_tb$year_chr, data_tb$year_start_chr, ~ (.x %in% years_chr | .y %in% years_chr))
+  return(filter_by_year_lgl)
+}
+make_intersecting_profiled_area <- function(attribute_rsl_1L_chr,
                                             attribute_sf,
-                                            attribute_rsl_1L_chr,
+                                            crs_nbr_dbl,
                                             data_type_chr,
                                             data_year_1L_chr,
-                                            crs_nbr_dbl,
-                                            featured_var_pfx_1L_chr = NULL){
+                                            profiled_sf,
+                                            featured_var_pfx_1L_chr = character(0),
+                                            profiled_sf_col_1L_chr = NA_character_,
+                                            profiled_sf_row_1L_chr = NA_character_
+                                            ){
   if(!is.na(profiled_sf_col_1L_chr)){
     if(!is.na(profiled_sf_row_1L_chr)){
       profiled_sf <- profiled_sf %>%
@@ -226,7 +212,6 @@ make_intersecting_profiled_area <- function(profiled_sf,
                                            data_year_1L_chr = data_year_1L_chr,
                                            featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
                                            feature_nm_1L_chr = attribute_rsl_1L_chr)
-
   profiled_sf <- make_intersecting_geometries(geometry_one_sf = profiled_sf,
                                               geometry_two_sf = attribute_sf,
                                               crs_nbr_dbl = crs_nbr_dbl)
@@ -294,6 +279,49 @@ make_km_sqd_dbl <- function(data_sf){
     dplyr::pull(TOT_AREA_SQKM)
   return(km_sqd_dbl)
 }
+make_nse_objs_ls <- function(spatial_unit_1L_chr,
+                             concept_1L_chr,
+                             reference_var_nm_1L_chr = NULL,
+                             grouping_var_1L_chr = NULL,
+                             data_year_1L_chr,
+                             featured_var_pfx_1L_chr){
+  if(concept_1L_chr == "age_sex"){
+    popl_multiplier <- paste0("inc_",spatial_unit_1L_chr,"_prop")
+    whl_pop_str_1 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_1L_chr,".Females.")
+    whl_pop_str_2 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_1L_chr,".Males.")
+    inc_str_to_delete <- paste0("whl_",spatial_unit_1L_chr,"_")
+    grouping_age_sex_popl_1L_chr <- NA_character_
+  }
+  if(concept_1L_chr == "tot_pop"){
+    popl_multiplier <- "pop_prop_multiplier_tot_pop"
+    grouping_age_sex_popl_1L_chr <- paste0("grp_by_",grouping_var_1L_chr,"_inc_age_sex_")
+    whl_pop_str_1 <- paste0(grouping_age_sex_popl_1L_chr,"y",data_year_1L_chr,".Females.")
+    whl_pop_str_2 <- paste0(grouping_age_sex_popl_1L_chr,"y",data_year_1L_chr,".Males.")
+    inc_str_to_delete <- grouping_age_sex_popl_1L_chr
+    grouping_age_sex_popl_1L_chr <- paste0("grp_by_",grouping_var_1L_chr,"_inc_age_sex_")
+  }
+  nse_objs_ls <- list(area_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_area"),
+                      area_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_area"),
+                      prop_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_prop"),
+                      popl_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_popl"),
+                      popl_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_",reference_var_nm_1L_chr),
+                      popl_multiplier = popl_multiplier,
+                      popl_whl_starts_with_1 = ifelse(is.null(whl_pop_str_1),
+                                                      NA_character_,
+                                                      whl_pop_str_1),
+                      popl_whl_starts_with_2 = ifelse(is.null(whl_pop_str_2),
+                                                      NA_character_,
+                                                      whl_pop_str_2),
+                      grouping_1_concept_tot = ifelse(is.null(grouping_var_1L_chr),
+                                                      NA_character_,
+                                                      paste0("grp_by_",
+                                                             grouping_var_1L_chr,
+                                                             "_inc_",
+                                                             concept_1L_chr)),
+                      grouping_1_age_sex_pop = grouping_age_sex_popl_1L_chr,
+                      inc_str_to_delete = inc_str_to_delete)
+  return(nse_objs_ls)
+}
 make_paths_to_fls_for_ingest <- function(processed_fls_dir_1L_chr, #get_r_import_path_chr
                                          name_chr,
                                          data_type_chr){
@@ -302,7 +330,35 @@ make_paths_to_fls_for_ingest <- function(processed_fls_dir_1L_chr, #get_r_import
   paths_chr <- paste0(processed_fls_dir_1L_chr,"/",name_chr,".RDS")
   return(paths_chr)
 }
-make_reconciled_intersecting_area <- function(profiled_sf,
+make_polygons_from_duplicates <- function(sf, # Not sure if needed / and or properly implemented
+                                          uid_1L_chr){
+  sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
+  duplicates_chr <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %>%
+                                           duplicated()) %>%
+    dplyr::pull(!!rlang::sym(uid_1L_chr)) %>%
+    unique()
+  geometry_one_sf <- sf %>% dplyr::filter(!(!!rlang::sym(uid_1L_chr) %in%
+                                              duplicates_chr))
+  geometry_two_sf <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %in%
+                                            duplicates_chr)
+  polygons_sf <- purrr::map(duplicates_chr,
+                            ~ sf::st_sf(geometry_two_sf %>%
+                                          dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
+                                          sf::st_set_geometry(NULL) %>%
+                                          dplyr::summarise_all(.funs = dplyr::first),
+                                        geometry = geometry_two_sf %>%
+                                          dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
+                                          sf::st_union() %>%
+                                          sf::st_sfc())) %>%
+    append(list(geometry_one_sf))  %>%
+    purrr::reduce(~rbind(.x,.y))
+  return(polygons_sf)
+}
+make_raw_format_dir_chr <- function(raw_fls_dir_1L_chr,
+                                    category_1L_chr){
+  paste0(raw_fls_dir_1L_chr,"/",category_1L_chr)
+}
+make_reconciled_intersecting_area <- function(profiled_sf,###### make mthd
                                               profiled_sf_col_1L_chr = NA,
                                               profiled_sf_row_1L_chr = NA,
                                               spatial_attrs_ls,
@@ -310,7 +366,7 @@ make_reconciled_intersecting_area <- function(profiled_sf,
                                               dynamic_var_rsl_1L_chr,
                                               group_by_var_1L_chr,
                                               reference_grouping_1L_chr,
-                                              reference_vals_chr = c("tot_pop","age_sex"),
+                                              reference_vals_chr,# = c("tot_pop","age_sex"),
                                               data_year_1L_chr,
                                               crs_nbr_dbl){
   if(!is.null(reference_var_rsl_1L_chr)){
@@ -351,12 +407,13 @@ make_reconciled_intersecting_area <- function(profiled_sf,
                                                      data_type_chr = reference_vals_chr[1])
     }
   }
-  profiled_sf <- update_pop_count_by_areas(profiled_sf = profiled_sf,
+  profiled_sf <- update_popl_counts(profiled_sf = profiled_sf,
                                            group_by_var_1L_chr = group_by_var_1L_chr,
                                            dynamic_var_nm_1L_chr = reference_grouping_1L_chr,
                                            data_year_1L_chr = data_year_1L_chr,
                                            dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
-                                           reference_var_rsl_1L_chr = reference_var_rsl_1L_chr)
+                                           reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
+                                    reference_vals_chr = reference_vals_chr)
 
   return(profiled_sf)
 }
@@ -379,102 +436,6 @@ make_sf_rows_fn <- function(...){
   df <- lapply(sf_list, function(sf) sf::st_set_geometry(sf, NULL)) %>% dplyr::bind_rows()
   sf_rows_fn <- sf::st_sf(data.frame(df, geom=sfg_list_column))
   return(sf_rows_fn)
-}
-make_nse_objs_ls <- function(spatial_unit_1L_chr,
-                             concept_1L_chr,
-                             reference_var_nm_1L_chr = NULL,
-                             grouping_var_1L_chr = NULL,
-                             data_year_1L_chr,
-                             featured_var_pfx_1L_chr){
-  if(concept_1L_chr == "age_sex"){
-    popl_multiplier <- paste0("inc_",spatial_unit_1L_chr,"_prop")
-    whl_pop_str_1 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_1L_chr,".Females.")
-    whl_pop_str_2 <- paste0("whl_",spatial_unit_1L_chr,"_",featured_var_pfx_1L_chr,"y",data_year_1L_chr,".Males.")
-    inc_str_to_delete <- paste0("whl_",spatial_unit_1L_chr,"_")
-    grouping_age_sex_popl_1L_chr <- NA_character_
-  }
-  if(concept_1L_chr == "tot_pop"){
-    popl_multiplier <- "pop_prop_multiplier_tot_pop"
-    grouping_age_sex_popl_1L_chr <- paste0("grp_by_",grouping_var_1L_chr,"_inc_age_sex_")
-    whl_pop_str_1 <- paste0(grouping_age_sex_popl_1L_chr,"y",data_year_1L_chr,".Females.")
-    whl_pop_str_2 <- paste0(grouping_age_sex_popl_1L_chr,"y",data_year_1L_chr,".Males.")
-    inc_str_to_delete <- grouping_age_sex_popl_1L_chr
-    grouping_age_sex_popl_1L_chr <- paste0("grp_by_",grouping_var_1L_chr,"_inc_age_sex_")
-  }
-  nse_objs_ls <- list(area_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_area"),
-       area_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_area"),
-       prop_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_prop"),
-       popl_inc_unit = paste0("inc_",spatial_unit_1L_chr,"_popl"),
-       popl_whl_unit = paste0("whl_",spatial_unit_1L_chr,"_",reference_var_nm_1L_chr),
-       popl_multiplier = popl_multiplier,
-       popl_whl_starts_with_1 = ifelse(is.null(whl_pop_str_1),
-                                       NA_character_,
-                                       whl_pop_str_1),
-       popl_whl_starts_with_2 = ifelse(is.null(whl_pop_str_2),
-                                       NA_character_,
-                                       whl_pop_str_2),
-       grouping_1_concept_tot = ifelse(is.null(grouping_var_1L_chr),
-                                       NA_character_,
-                                       paste0("grp_by_",
-                                              grouping_var_1L_chr,
-                                              "_inc_",
-                                              concept_1L_chr)),
-       grouping_1_age_sex_pop = grouping_age_sex_popl_1L_chr,
-       inc_str_to_delete = inc_str_to_delete)
-  return(nse_objs_ls)
-}
-make_raw_format_dir_chr <- function(raw_fls_dir_1L_chr,
-                                    category_1L_chr){
-  paste0(raw_fls_dir_1L_chr,"/",category_1L_chr)
-}
-make_polygons_from_duplicates <- function(sf, # Not sure if needed / and or properly implemented
-                                          uid_1L_chr){
-  sf <- sf %>% dplyr::filter(sf::st_is_valid(sf))
-  duplicates_chr <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %>%
-                                              duplicated()) %>%
-    dplyr::pull(!!rlang::sym(uid_1L_chr)) %>%
-    unique()
-  geometry_one_sf <- sf %>% dplyr::filter(!(!!rlang::sym(uid_1L_chr) %in%
-                                              duplicates_chr))
-  geometry_two_sf <- sf %>% dplyr::filter(!!rlang::sym(uid_1L_chr) %in%
-                                            duplicates_chr)
-  polygons_sf <- purrr::map(duplicates_chr,
-             ~ sf::st_sf(geometry_two_sf %>%
-                           dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
-                           sf::st_set_geometry(NULL) %>%
-                           dplyr::summarise_all(.funs = dplyr::first),
-                         geometry = geometry_two_sf %>%
-                           dplyr::filter(!!rlang::sym(uid_1L_chr) == .x) %>%
-                           sf::st_union() %>%
-                           sf::st_sfc())) %>%
-    append(list(geometry_one_sf))  %>%
-    purrr::reduce(~rbind(.x,.y))
-  return(polygons_sf)
-}
-make_spatial_attrs_ls <- function(input_ls,
-                                  subdivisions_chr){
-  lists_to_merge <- purrr::map(subdivisions_chr,
-                               ~ manufacture(input_ls$x_VicinityProfile,
-                                             exclude_dif_bndy_yr_1L_lgl = TRUE,
-                                             input_ls = input_ls,#make_attributes_ls
-                                             match_year_1L_lgl = FALSE,
-                                             subdivision_1L_chr = .x,
-                                             type_1L_chr = "outer"))
-  lists_to_merge <- purrr::transpose(lists_to_merge)
-  merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
-                            ~ do.call(rbind,.x))
-  names_ppr <- purrr::map_chr(lists_to_merge[[1]],
-                              ~ ifelse(length(.x[1])==0,
-                                       NA_character_,
-                                       names(.x[1])))
-  ppr_ref <- purrr::map_dbl(lists_to_merge[[1]],
-                            ~ ifelse(length(.x[1])==0,
-                                     NA_real_,
-                                     .x[1])) %>%
-    stats::setNames(names_ppr)
-  spatial_attrs_ls <- append(merged_list,list(ppr_ref = ppr_ref),
-                             after = 0)
-  return(spatial_attrs_ls)
 }
 make_valid_new_sf <- function(sf){
   valid_sf <- sf %>%
@@ -499,14 +460,6 @@ make_valid_new_sf <- function(sf){
     dplyr::distinct(.keep_all = T)
   return(valid_sf)
 }
-##### STAGED
-make_filter_by_year_logic <- function(data_tb,
-                                      years_chr){
-  filter_by_year_lgl <- purrr::map2_lgl(data_tb$year_chr, data_tb$year_start_chr, ~ (.x %in% years_chr | .y %in% years_chr))
-  return(filter_by_year_lgl)
-}
-
-
 
 # make_trvl_tm_isochrs <- function(appID, # No longer required????
 #                                  apiKey, # https://stackoverflow.com/questions/40489162/draw-time-radius-around-lat-long-on-map
@@ -618,6 +571,29 @@ make_filter_by_year_logic <- function(data_tb,
 #     return(imports_chr)
 #   }
 # }
+# make_attributes_ls <- function(input_ls, # get_sp_data or similar ???
+#                                subdivision_1L_chr = NULL,
+#                                match_year_1L_lgl = TRUE,
+#                                exclude_dif_bndy_yr_1L_lgl = TRUE){
+#   years_chr <- manufacture(input_ls$x_VicinityProfile,
+#                            input_ls = input_ls,
+#                            what_1L_chr = "years")#make_years_chr
+#   attributes_to_import_chr = procure(input_ls$x_VicinityProfile, # Formally get_spatial_attr_names(
+#                                      exclude_dif_bndy_yr_1L_lgl = exclude_dif_bndy_yr_1L_lgl,
+#                                      highest_rsl_chr = input_ls$at_highest_res,
+#                                      key_var_1L_chr = input_ls$key_var_1L_chr,
+#                                      #subdivision_1L_chr = NULL,
+#                                      match_year_1L_lgl = match_year_1L_lgl,
+#                                      years_chr = years_chr,
+#                                      what_1L_chr = "grouping")
+#   attributes_ls <- manufacture(input_ls$x_VicinityProfile,
+#                                attributes_to_import_chr = attributes_to_import_chr,
+#                                key_var_1L_chr  = input_ls$key_var_1L_chr,
+#                                specified_rsl_chr  = input_ls$at_specified_res,
+#                                what_1L_chr = "attributes",
+#                                years_chr  = years_chr)
+#   return(attributes_ls)
+# }
 # make_merge_sf_chr <- function(x_VicinityLookup, Now manufacture method
 #                               y_vicinity_raw,
 #                               processed_fls_dir_1L_chr = NULL){
@@ -699,7 +675,7 @@ make_filter_by_year_logic <- function(data_tb,
 #                                       service_cluster_tb,
 #                                       profiled_sf,
 #                                       crs_nbr_dbl){
-#   distances_vec <- seq(from = distance_in_km_1L_dbl/bands_1L_dbl,
+#   distances_dbl <- seq(from = distance_in_km_1L_dbl/bands_1L_dbl,
 #                        to = distance_in_km_1L_dbl,
 #                        by = distance_in_km_1L_dbl/bands_1L_dbl)
 #
@@ -708,22 +684,22 @@ make_filter_by_year_logic <- function(data_tb,
 #                                           ~ service_cluster_tb %>%
 #                                             dplyr::filter(cluster_name_chr == .x)) %>%
 #     stats::setNames(service_clusters_chr)
-#   service_clusters_by_distance_list <- purrr::map(distances_vec,
+#   service_clusters_by_distance_ls <- purrr::map(distances_dbl,
 #                                                   ~ make_cluster_bndys(distance_in_km_1L_dbl = .x,
 #                                                                                        clusters_chr = service_clusters_chr,
 #                                                                                        vicinity_points_ls = service_vicinity_points_ls,
 #                                                                                        land_boundary_sf = profiled_sf,
 #                                                                                        crs_nbr_dbl = crs_nbr_dbl)) %>%
 #     stats::setNames(., paste0("km_",
-#                               distances_vec,
+#                               distances_dbl,
 #                               "from_service"))
 #   geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
 #                                                       ~ reorder_distance_list_by_cluster(index_val_1L_int = .x,
-#                                                                                          clusters_by_distance_list = service_clusters_by_distance_list,
-#                                                                                          distances_vec = distances_vec)) %>%
+#                                                                                          clusters_by_distance_ls = service_clusters_by_distance_ls,
+#                                                                                          distances_dbl = distances_dbl)) %>%
 #     stats::setNames(., service_vicinity_points_ls %>% names())
 #   geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles,
-#                                                     ~ transform_circles_to_bands(geom_distance_circle_sfs_list = .x)) %>%
+#                                                     ~ transform_circles_to_bands(geomc_dist_circles_ls = .x)) %>%
 #     stats::setNames(., service_vicinity_points_ls %>% names())
 #   geometric_distance_by_cluster_circles_merged_list <- purrr::map(geometric_distance_by_cluster_circles,
 #                                                                   ~ do.call(rbind,.x)) %>%
@@ -735,7 +711,7 @@ make_filter_by_year_logic <- function(data_tb,
 #     stats::setNames(., service_vicinity_points_ls %>% names()) %>%
 #     purrr::map(.,
 #                ~ .x %>% dplyr::arrange(desc(distance_in_km_dbl)) %>%
-#                  simplify_sf(crs = crs_nbr_dbl[1]))
+#                  transform_to_simpler_sf(crs = crs_nbr_dbl[1]))
 #   return(geometric_distance_by_cluster_bands_merged_list)
 # }
 # make_profiled_area_objs <- function(x_VicinityProfile){ Now a manufacture mthd
@@ -788,7 +764,7 @@ make_filter_by_year_logic <- function(data_tb,
 #       names(profiled_area_bands_ls) <- paste0("dt_band_",1:length(profiled_area_bands_ls))
 #       profiled_sf <- do.call(rbind,profiled_area_bands_ls) %>%
 #         sf::st_transform(x_VicinityProfile@crs_dbl[1]) %>%
-#         simplify_sf()
+#         transform_to_simpler_sf()
 #     }
 #     subdivisions_chr <- make_intersecting_geometries(geometry_one_sf = st_profiled_sf,
 #                                                      geometry_two_sf = profiled_sf,
@@ -813,6 +789,31 @@ make_filter_by_year_logic <- function(data_tb,
 #                           n_its_int = n_its_int)
 #   env_param_tb <- dplyr::bind_rows(param_val_env,
 #                                    param_val_mape)
+# }
+# make_spatial_attrs_ls <- function(input_ls, # Now manufacture mthd Perhaps formerly make_sp_data_ls
+#                                   subdivisions_chr){
+#   lists_to_merge <- purrr::map(subdivisions_chr,
+#                                ~ manufacture(input_ls$x_VicinityProfile,#make_attributes_ls
+#                                              exclude_dif_bndy_yr_1L_lgl = TRUE,
+#                                              input_ls = input_ls,
+#                                              match_year_1L_lgl = FALSE,
+#                                              subdivision_1L_chr = .x,
+#                                              type_1L_chr = "outer"))
+#   lists_to_merge <- purrr::transpose(lists_to_merge)
+#   merged_list <- purrr::map(lists_to_merge[2:length(lists_to_merge)],
+#                             ~ do.call(rbind,.x))
+#   names_ppr <- purrr::map_chr(lists_to_merge[[1]],
+#                               ~ ifelse(length(.x[1])==0,
+#                                        NA_character_,
+#                                        names(.x[1])))
+#   ppr_idx_dbl <- purrr::map_dbl(lists_to_merge[[1]],
+#                                 ~ ifelse(length(.x[1])==0,
+#                                          NA_real_,
+#                                          .x[1])) %>%
+#     stats::setNames(names_ppr)
+#   spatial_attrs_ls <- append(merged_list,list(ppr_idx_dbl = ppr_idx_dbl),
+#                              after = 0)
+#   return(spatial_attrs_ls)
 # }
 # make_years_chr <- function(input_ls){ # Now manufacture mthd
 #   model_end_year <- calculate_end_date(input_ls = input_ls) %>% lubridate::year()

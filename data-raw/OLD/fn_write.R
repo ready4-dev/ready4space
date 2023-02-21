@@ -211,7 +211,7 @@ write_procsd_geom_imp <- function (x, imports_ls, path_to_seed_sf_1L_chr, merge_
             }
         }
         if (x %>% dplyr::pull(main_feature) == "Boundary") 
-            starter_sf <- starter_sf %>% simplify_sf(crs = crs_nbr_dbl[1])
+            starter_sf <- starter_sf %>% transform_to_simpler_sf(crs = crs_nbr_dbl[1])
         saveRDS(starter_sf, file = path_to_seed_sf_1L_chr)
     }
 }

@@ -1,5 +1,5 @@
 #' Update pop by include area
-#' @description update_pop_by_inc_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update pop by include area. Function argument profiled_sf specifies the object to be updated. Argument sp_unit provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description update_popl_by_incld_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update pop by include area. Function argument profiled_sf specifies the object to be updated. Argument sp_unit provides the object to be updated. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param sp_unit PARAM_DESCRIPTION
 #' @param data_year PARAM_DESCRIPTION
@@ -9,13 +9,13 @@
 #' @param reference_var_nm_1L_chr PARAM_DESCRIPTION, Default: NULL
 #' @param featured_var_pfx_1L_chr PARAM_DESCRIPTION
 #' @return Profiled (a simple features object)
-#' @rdname update_pop_by_inc_area
+#' @rdname update_popl_by_incld_area
 #' @export
 #' @importFrom dplyr mutate mutate_at vars starts_with funs rename_at
 #' @importFrom rlang sym
 #' @importFrom sf st_area
 #' @importFrom units set_units
-update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, dynamic_var_nm_1L_chr = NULL,
+update_popl_by_incld_area <- function (profiled_sf, sp_unit, data_year, concept, dynamic_var_nm_1L_chr = NULL,
     dynamic_var_rsl_1L_chr = NULL, reference_var_nm_1L_chr = NULL, featured_var_pfx_1L_chr)
 {
     nse_objs_ls <- make_nse_objs_ls(sp_unit = sp_unit, concept = concept,
@@ -28,7 +28,7 @@ update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, dy
     if (!is.null(reference_var_nm_1L_chr)) {
         profiled_sf <- profiled_sf %>% dplyr::mutate(`:=`(!!rlang::sym(nse_objs_ls$popl_inc_unit),
             !!rlang::sym(nse_objs_ls$popl_whl_unit) * !!rlang::sym(nse_objs_ls$prop_inc_unit)))
-        profiled_sf <- sum_updated_pop_by_grp(profiled_sf = profiled_sf,
+        profiled_sf <- add_popl_counts(profiled_sf = profiled_sf,
             nse_objs_ls = nse_objs_ls, grp_var_name = dynamic_var_nm_1L_chr)
         profiled_sf <- profiled_sf %>% dplyr::mutate(pop_prop_multiplier_tot_pop = !!rlang::sym(nse_objs_ls$popl_inc_unit)/!!rlang::sym(nse_objs_ls$grouping_1_concept_tot)) %>%
             dplyr::mutate(pop_prop_multiplier_tot_pop = ifelse(is.nan(pop_prop_multiplier_tot_pop),
@@ -45,7 +45,7 @@ update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, dy
     return(profiled_sf)
 }
 #' Update pop count by areas
-#' @description update_pop_count_by_areas() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update pop count by areas. Function argument profiled_sf specifies the object to be updated. Argument group_by_var_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description update_popl_counts() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update pop count by areas. Function argument profiled_sf specifies the object to be updated. Argument group_by_var_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param group_by_var_1L_chr PARAM_DESCRIPTION
 #' @param dynamic_var_nm_1L_chr PARAM_DESCRIPTION
@@ -54,34 +54,34 @@ update_pop_by_inc_area <- function (profiled_sf, sp_unit, data_year, concept, dy
 #' @param reference_var_rsl_1L_chr PARAM_DESCRIPTION
 #' @param featured_var_pfx_1L_chr PARAM_DESCRIPTION, Default: ''
 #' @return Profiled (a simple features object)
-#' @rdname update_pop_count_by_areas
+#' @rdname update_popl_counts
 #' @export
 
-update_pop_count_by_areas <- function (profiled_sf, group_by_var_1L_chr, dynamic_var_nm_1L_chr, data_year,
+update_popl_counts <- function (profiled_sf, group_by_var_1L_chr, dynamic_var_nm_1L_chr, data_year,
     dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr, featured_var_pfx_1L_chr = "")
 {
-    profiled_sf <- update_pop_by_inc_area(profiled_sf = profiled_sf,
+    profiled_sf <- update_popl_by_incld_area(profiled_sf = profiled_sf,
         sp_unit = dynamic_var_rsl_1L_chr, data_year = data_year,
         concept = "age_sex", featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
     if (featured_var_pfx_1L_chr == "")
-        profiled_sf <- sum_pop_by_multiple_groups_sf(profiled_sf = profiled_sf,
+        profiled_sf <- update_popl_by_group(profiled_sf = profiled_sf,
             group_by_var_1L_chr = group_by_var_1L_chr, dynamic_var_nm_1L_chr = dynamic_var_nm_1L_chr,
             data_year = data_year, dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
             reference_var_rsl_1L_chr = reference_var_rsl_1L_chr, featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
     return(profiled_sf)
 }
 #' Update simple features object boundary descr
-#' @description update_sf_boundary_descr() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument index_val_1L_int specifies the object to be updated. Argument temporal_bands_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @description update_isochrone_tbl() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update simple features object boundary descr. Function argument index_val_1L_int specifies the object to be updated. Argument temporal_bands_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 #' @param index_val_1L_int PARAM_DESCRIPTION
 #' @param temporal_bands_ls PARAM_DESCRIPTION
 #' @return NA ()
-#' @rdname update_sf_boundary_descr
+#' @rdname update_isochrone_tbl
 #' @export
 #' @importFrom purrr pluck
 #' @importFrom stringr str_subset str_replace_all
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-update_sf_boundary_descr <- function (index_val_1L_int, temporal_bands_ls)
+update_isochrone_tbl <- function (index_val_1L_int, temporal_bands_ls)
 {
     max_var <- "max"
     max_vec <- temporal_bands_ls %>% purrr::pluck(index_val_1L_int) %>%
@@ -152,7 +152,7 @@ update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_b
         reference_var_rsl_1L_chr = reference_var_rsl_1L_chr, data_year = data_year(input_ls$x_VicinityProfile))
     profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
-    profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_attrs_ls[[spatial_attrs_ls$ppr_ref[1]]] %>%
+    profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_attrs_ls[[spatial_attrs_ls$ppr_idx_dbl[1]]] %>%
         dplyr::select(1), profiled_sf = profiled_sf, dynamic_var_rsl_1L_chr = "UNIT_ID",
         dynamic_var_nm_1L_chr = "popl_spatial_unit_chr", featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
         data_year = input_ls$x_VicinityProfile@data_year, crs_nbr_dbl = crs_nbr_dbl)

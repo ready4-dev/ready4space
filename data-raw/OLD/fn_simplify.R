@@ -12,21 +12,21 @@ simplify_geoms_in_lup <- function (lup_r4, r_data_dir, crs_nbr)
 {
     lup_r4 %>% sp_data_pack_lup() %>% dplyr::filter(main_feature == 
         "Boundary") %>% dplyr::pull(source_reference) %>% purrr::walk(~readRDS(paste0(r_data_dir, 
-        "/", .x, ".RDS")) %>% simplify_sf(crs = crs_nbr[1]) %>% 
+        "/", .x, ".RDS")) %>% transform_to_simpler_sf(crs = crs_nbr[1]) %>% 
         saveRDS(paste0(r_data_dir, "/", .x, ".RDS")))
 }
 #' Simplify
-#' @description simplify_sf() is a Simplify function that simplifies an object. Specifically, this function implements an algorithm to simplify simple features object. The function is called for its side effects and does not return a value.
+#' @description transform_to_simpler_sf() is a Simplify function that simplifies an object. Specifically, this function implements an algorithm to simplify simple features object. The function is called for its side effects and does not return a value.
 #' @param sf Simple features object (a simple features object)
 #' @param ... Additional arguments, Default: NULL
 #' @return NULL
-#' @rdname simplify_sf
+#' @rdname transform_to_simpler_sf
 #' @export 
 #' @importFrom sf st_crs st_geometry_type st_collection_extract st_transform
 #' @importFrom dplyr filter select
 #' @importFrom geojsonio geojson_json geojson_sf
 #' @importFrom rmapshaper ms_simplify
-simplify_sf <- function (sf, crs = NULL) 
+transform_to_simpler_sf <- function (sf, crs = NULL) 
 {
     if (is.null(crs)) 
         crs <- sf::st_crs(sf)[[1]]

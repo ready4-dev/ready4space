@@ -125,7 +125,7 @@ write_procsd_geom_imp <- function(x,
     }
     if(x %>% dplyr::pull(main_feature_chr) == "Boundary")
       starter_sf <- starter_sf %>%
-        simplify_sf(crs = crs_nbr_dbl[1])
+        transform_to_simpler_sf(crs_dbl = crs_nbr_dbl[1])
     saveRDS(starter_sf, file = path_to_seed_sf_1L_chr)
   }
 }

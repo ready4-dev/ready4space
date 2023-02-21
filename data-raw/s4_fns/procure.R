@@ -9,7 +9,7 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
                                     what_1L_chr = "grouping"){
   if(what_1L_chr == "attribute_names"){ # From get_spatial_attr_names  - Probably needs work
     #### NEED TO WORK ON SECOND HALF
-    x <- input_ls$x_VicinityProfile
+    # x <- input_ls$x_VicinityProfile
     #subdivision_1L_chr = NULL
     spatial_lookup_tb <- x@a_VicinityLookup@vicinity_processed_r3 #sp_data_pack_lup(Y)
     # if(exclude_dif_bndy_yr_1L_lgl){
@@ -54,9 +54,10 @@ procure_VicinityProfile <- function(x, #get_group_by_var_from_VicinityProfile
                                         dplyr::pull(name)) %>%
       purrr::flatten_chr()
     if(!identical(non_matched_years_chr,character(0))){
-      closest_yrs_ls <- make_closest_yrs_ls(data_lookup_tb = spatial_lookup_tb,
+      closest_yrs_ls <- manufacture.vicinity_processed(spatial_lookup_tb,#make_closest_yrs_ls
                                             main_incld_feature_chr = non_matched_years_chr,#inc_main_ft_vec
-                                            target_year_1L_chr = x@data_year_1L_chr)
+                                            target_year_1L_chr = x@data_year_1L_chr,
+                                            what_1L_chr = "closest year")
       extra_names <- purrr::map2_chr(non_matched_years_chr,
                                      closest_yrs_ls,
                                      ~     ready4::get_from_lup_obj(data_lookup_tb = spatial_lookup_tb %>%

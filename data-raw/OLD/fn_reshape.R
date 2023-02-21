@@ -1,13 +1,13 @@
 #' Reshape pop projs
-#' @description reshape_pop_projs() is a Reshape function that modifies the shape of a data object. Specifically, this function implements an algorithm to reshape pop projs. The function is called for its side effects and does not return a value.
+#' @description transform_shape_of_popl_predns_ds() is a Reshape function that modifies the shape of a data object. Specifically, this function implements an algorithm to reshape pop projs. The function is called for its side effects and does not return a value.
 #' @param x PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname reshape_pop_projs
+#' @rdname transform_shape_of_popl_predns_ds
 #' @export
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr mutate_if mutate_at
 #' @importFrom stringr str_trim
-reshape_pop_projs <- function (x)
+transform_shape_of_popl_predns_ds <- function (x)
 {
     reshaped_tb <- t(x)
     colnames(reshaped_tb) <- paste0("Persons.", as.character(unlist(reshaped_tb[1,
