@@ -1,6 +1,6 @@
 Package: vicinity
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9223
+Version: 0.0.0.9224
 Authors@R: c(
     person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7407-9194")),
@@ -24,24 +24,34 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     dplyr,
+    geojsonio,
+    googlePolylines,
     knitr,
     knitrBootstrap,
     lifecycle,
+    lubridate,
     magrittr,
+    mc2d,
     methods,
     purrr,
     ready4 (>= 0.0.0.9109),
     ready4use (>= 0.0.0.9225),
     rlang,
+    rmapshaper,
     sf,
+    stats,
+    stringi,
     stringr,
     testthat,
     tibble,
-    tidyr
+    tidyr,
+    units,
+    utils
 VignetteBuilder: knitr
 Collate: 
     'C3_vicinity_abbreviations.R'
     'C3_vicinity_identifiers.R'
+    'C3_vicinity_mapes.R'
     'C3_vicinity_parameters.R'
     'C3_vicinity_points.R'
     'C3_vicinity_processed.R'
@@ -49,6 +59,7 @@ Collate:
     'C3_vicinity_resolutions.R'
     'C3_vicinity_templates.R'
     'C3_vicinity_values.R'
+    'C4_VicinityArguments.R'
     'C4_VicinityLookup.R'
     'C4_VicinityLocal.R'
     'C4_VicinityLocalProcessed.R'
@@ -60,10 +71,32 @@ Collate:
     'C4_VicinityProfile.R'
     'C4_VicinitySpaceTime.R'
     'fn_add.R'
+    'fn_bind.R'
+    'fn_calculate.R'
+    'fn_get.R'
+    'fn_make.R'
+    'fn_randomise.R'
+    'fn_remove.R'
+    'fn_reorder.R'
+    'fn_transform.R'
+    'fn_update.R'
+    'fn_validate.R'
+    'fn_write.R'
     'imp_fns.R'
     'imp_mthds.R'
+    'mthd_author.R'
+    'mthd_authorData.R'
+    'mthd_ingest.R'
+    'mthd_manufacture.R'
+    'mthd_metamorphose.R'
+    'mthd_procure.R'
+    'mthd_ratify.R'
+    'mthd_reckon.R'
+    'mthd_renew.R'
     'pkg_vicinity.R'
     'vicinity-package.R'
+Depends: 
+    osrm
 Suggests: 
     rmarkdown
 Remotes: 
