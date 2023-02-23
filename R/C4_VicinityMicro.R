@@ -16,7 +16,7 @@
 #' @slot global_region_chr Global region (a character vector)
 #' @slot country_chr Country (a character vector)
 #' @slot country_bndy_yr_dbl Country boundary year (a double vector)
-#' @slot crs_dbl Crs (a double vector)
+#' @slot crs_dbl Coordinates reference system (a double vector)
 #' @slot temporal_min_dtm Temporal minimum (a date vector)
 #' @slot temporal_max_dtm Temporal maximum (a date vector)
 #' @name VicinityMicro-class

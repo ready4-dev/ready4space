@@ -8,7 +8,7 @@
 #' @slot geomc_dist_limit_km_dbl Geometric distance limit kilometre (a double vector)
 #' @slot drive_time_limit_mins_dbl Drive time limit minimums (a double vector)
 #' @slot nbr_bands_dbl Number bands (a double vector)
-#' @slot data_year_1L_chr Data year (a character vector)
+#' @slot data_year_1L_chr Data year (a character vector of length one)
 #' @slot data_ymds_dtm Data ymds (a date vector)
 #' @slot geom_dist_km_cuts_dbl Geometry distance kilometre cuts (a double vector)
 #' @slot travel_time_mins_cuts_dbl Travel time minimums cuts (a double vector)
@@ -23,7 +23,7 @@
 #' @slot global_region_chr Global region (a character vector)
 #' @slot country_chr Country (a character vector)
 #' @slot country_bndy_yr_dbl Country boundary year (a double vector)
-#' @slot crs_dbl Crs (a double vector)
+#' @slot crs_dbl Coordinates reference system (a double vector)
 #' @slot temporal_min_dtm Temporal minimum (a date vector)
 #' @slot temporal_max_dtm Temporal maximum (a date vector)
 #' @name VicinityProfile-class

@@ -174,7 +174,7 @@ manufacture.vicinity_points <- function(x, # make_geomc_dist_bndys
                                     distances_dbl,
                                     "from_service"))
         geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr),
-                                                            ~ reorder_distance_list_by_cluster(clusters_by_distance_ls = service_clusters_by_distance_ls,
+                                                            ~ reorder_clusters_by_distances(clusters_by_distance_ls = service_clusters_by_distance_ls,
                                                                                                distances_dbl = distances_dbl,
                                                                                                index_val_1L_int = .x)) %>%
           stats::setNames(., service_vicinity_points_ls %>% names())

@@ -5,7 +5,7 @@ return(NULL)
 manufacture_VicinityLookup <- function(x,
                                        area_sf = NULL,
                                        area_unit_1L_chr = character(0),
-                                       attr_data_xx = NULL,
+                                       att_data_xx = NULL,
                                        boundary_year_1L_chr = character(0),
                                        match_value_xx = character(0),
                                        path_1L_chr = character(0),
@@ -16,13 +16,13 @@ manufacture_VicinityLookup <- function(x,
                                        ){
   if(what_1L_chr == "attribute"){
     if(!identical(match_value_xx, character(0))){ # add_attr_list_to_sf
-      attr_data_xx <- manufacture(x, #make_attr_data_xx
+      att_data_xx <- manufacture(x, #make_att_data_xx
                                   match_value_xx = match_value_xx,
                                   area_sf = area_sf,
                                   what_1L_chr = "attribute_inner")
-      object_xx <- add_attr_to_sf(area_sf = area_sf,
-                                  attr_data_tb = attr_data_xx,
-                                  attr_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+      object_xx <- add_att_to_sf(area_sf = area_sf,
+                                  att_data_tb = att_data_xx,
+                                  att_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
                                                                             match_value_xx = match_value_xx,
                                                                             match_var_nm_1L_chr = "name_chr",
                                                                             target_var_nm_1L_chr = "main_feature_chr"))
@@ -34,9 +34,9 @@ manufacture_VicinityLookup <- function(x,
                                 dplyr::filter(main_feature_chr == "Boundary") %>%
                                 dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
                               match_value_xx = "Boundary")
-        attribute_data_ls <- purrr::map(attr_data_xx,#attribute_data_chr,
+        attribute_data_ls <- purrr::map(att_data_xx,#attribute_data_chr,
                                         ~ .x) %>%
-          stats::setNames(attr_data_xx,#attribute_data_chr,
+          stats::setNames(att_data_xx,#attribute_data_chr,
           )
         object_xx <- purrr::map(attribute_data_ls,
                                 ~ manufacture(x, #add_attr_list_to_sf
@@ -46,16 +46,16 @@ manufacture_VicinityLookup <- function(x,
           purrr::reduce(~rbind(.x,.y))
 
       }else{
-        object_xx <- attr_data_xx
+        object_xx <- att_data_xx
       }
     }
   }
-  if(what_1L_chr == "attribute_inner"){ # make_attr_data_xx
-    attr_data_xx <- ingest(x@vicinity_processed_r3,
+  if(what_1L_chr == "attribute_inner"){ # make_att_data_xx
+    att_data_xx <- ingest(x@vicinity_processed_r3,
                            col_nm_1L_chr = "name_chr",
                            match_value_xx = match_value_xx)
-    if(is.data.frame(attr_data_xx)){
-      attr_data_xx <- list(attr_data_xx) %>%
+    if(is.data.frame(att_data_xx)){
+      att_data_xx <- list(att_data_xx) %>%
         stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
                                                  match_value_xx = match_value_xx,
                                                  match_var_nm_1L_chr = "name_chr",
@@ -95,13 +95,13 @@ manufacture_VicinityLookup <- function(x,
       dplyr::filter(as.numeric(year_chr) == max(as.numeric(year_chr)[as.numeric(year_chr) <= as.numeric(boundary_year_1L_chr)])) %>%
       dplyr::pull(var_name_chr)
     ## End move to s2lsd
-    attr_data_xx <- manufacture(x,# updateAttrDataXx
-                                attr_data_xx = attr_data_xx,
+    att_data_xx <- manufacture(x,# updateAttrDataXx
+                                att_data_xx = att_data_xx,
                                 area_sf = area_sf,
                                 area_names_var_chr = area_names_var_chr, # Remove when moved to s2lsd
                                 region_short_long_chr = region_short_long_chr, # Remove when moved to s2lsd
                                 match_value_xx = match_value_xx)
-    object_xx <- attr_data_xx
+    object_xx <- att_data_xx
   }
   if(what_1L_chr == "imports"){ #make_imports_chr
     if(type_1L_chr == "Geometry"){
@@ -199,7 +199,7 @@ manufacture_VicinityProfile <- function(x,
                                    ~ manufacture(x@a_VicinityLookup,#input_ls = input_ls, # add_attr_recrly_to_sf
                                                  #subdivision_1L_chr = subdivision_1L_chr,
                                                  area_unit_1L_chr = .x,
-                                                 attr_data_xx = .y,
+                                                 att_data_xx = .y,
                                                  boundary_year_1L_dbl = x@a_VicinityLookup@vicinity_processed_r3 %>%
                                                    dplyr::filter(name_chr %in% .y) %>%
                                                    dplyr::pull(year_chr) %>%
@@ -207,10 +207,11 @@ manufacture_VicinityProfile <- function(x,
                                                  what_1L_chr = "attribute")) %>%
         stats::setNames(boundary_rsl_chr)
       index_ppr_dbl <- purrr::map_lgl(data_names_ls,
-                                  ~ validate_popl_predns_incld(.x,
-                                                               data_lookup_tb = x@a_VicinityLookup@vicinity_processed_r3,#aus_spatial_lookup_tb,
-                                                               key_var_1L_chr = key_var_1L_chr)) %>%
-        which() + 1
+                                      ~ ratify.vicinity_processed(x@a_VicinityLookup@vicinity_processed_r3,#aus_spatial_lookup_tb,
+                                                                  data_items_chr = .x,#validate_popl_predns_incld
+                                                                  key_var_1L_chr = key_var_1L_chr,
+                                                                  what_1L_chr = "population")) %>%
+                                        which() + 1
       attributes_ls <- append(attributes_ls,# purrr::prepend
                               list(index_ppr_dbl=index_ppr_dbl), # index_ppr
                               after = 0)
@@ -237,7 +238,7 @@ manufacture_VicinityProfile <- function(x,
                                    what_1L_chr = "attributes",
                                    years_chr  = years_chr)
     }
-    if(type_1L_chr == "preliminary"){ # make_spatial_attrs_ls
+    if(type_1L_chr == "preliminary"){ # make_spatial_atts_ls
       lists_to_merge_ls <- purrr::map(subdivisions_chr,
                                       ~ manufacture(x,#make_attributes_ls
                                                     attributes_to_import_chr = attributes_to_import_chr,#
@@ -271,7 +272,7 @@ manufacture_VicinityProfile <- function(x,
       attribtues_ls <- append(merged_ls,list(ppr_idx_dbl = ppr_idx_dbl),
                               after = 0)
     }
-    if(type_1L_chr == "updated"){ #update_spatial_attrs_ls # Probably formerly extend_sp_data_ls or else combination of extend_sp_data_ls and reformatting from https://github.com/orygennp/ready4sim/blob/master/R/fn_make_sim_data_env.R
+    if(type_1L_chr == "updated"){ #update_spatial_atts_ls # Probably formerly extend_sp_data_ls or else combination of extend_sp_data_ls and reformatting from https://github.com/orygennp/ready4sim/blob/master/R/fn_make_sim_data_env.R
       # required in call: attributes_ls,highest_rsl_chr, key_var_1L_chr,reference_var_rsl_1L_chr,type_1L_chr, what_1L_chr
         group_by_var_1L_chr <- procure(x,#input_ls$x_VicinityProfile,#get_group_by_var_from_VicinityProfile
                                        what_1L_chr = "grouping")
@@ -303,7 +304,7 @@ manufacture_VicinityProfile <- function(x,
                                                ~ make_reconciled_intersecting_area(profiled_sf = .x,
                                                                                    profiled_sf_col_1L_chr = NA,
                                                                                    profiled_sf_row_1L_chr = NA,
-                                                                                   spatial_attrs_ls = attributes_ls,
+                                                                                   spatial_atts_ls = attributes_ls,
                                                                                    reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
                                                                                    dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
                                                                                    group_by_var_1L_chr = group_by_var_1L_chr,
@@ -335,7 +336,7 @@ manufacture_VicinityProfile <- function(x,
                                               data_year_1L_chr = x@data_year_1L_chr,#input_ls$x_VicinityProfile
                                               crs_nbr_dbl = x@crs_dbl,
                                               reference_vals_chr = reference_vals_chr) #crs_nbr_dbl
-        attributes_ls <- append(attributes_ls,# extended_spatial_attrs_ls
+        attributes_ls <- append(attributes_ls,# extended_spatial_atts_ls
                                 list(profiled_sf = profiled_sf,
                                      featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)) # Is pop_val_prefix needed in this list?
     }
@@ -438,9 +439,9 @@ manufacture_VicinityProfile <- function(x,
 # methods::setMethod("updateAttrDataXx",
 #                    "VicinityLookup",
 #                    function(x,
-#                             attr_data_xx,
+#                             att_data_xx,
 #                             altv_names_sf,
 #                             area_names_var_chr,
 #                             region_short_long_chr) {
-#                      attr_data_xx
+#                      att_data_xx
 #                    })

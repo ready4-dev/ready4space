@@ -21,7 +21,7 @@ Information to create a profiled area object
 
 \item{\code{nbr_bands_dbl}}{Number bands (a double vector)}
 
-\item{\code{data_year_chr}}{Data year (a character vector)}
+\item{\code{data_year_1L_chr}}{Data year (a character vector of length one)}
 
 \item{\code{data_ymds_dtm}}{Data ymds (a date vector)}
 
@@ -51,7 +51,7 @@ Information to create a profiled area object
 
 \item{\code{country_bndy_yr_dbl}}{Country boundary year (a double vector)}
 
-\item{\code{crs_dbl}}{Crs (a double vector)}
+\item{\code{crs_dbl}}{Coordinates reference system (a double vector)}
 
 \item{\code{temporal_min_dtm}}{Temporal minimum (a date vector)}
 

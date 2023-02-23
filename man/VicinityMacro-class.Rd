@@ -19,7 +19,7 @@ Macro level context
 
 \item{\code{country_bndy_yr_dbl}}{Country boundary year (a double vector)}
 
-\item{\code{crs_dbl}}{Crs (a double vector)}
+\item{\code{crs_dbl}}{Coordinates reference system (a double vector)}
 
 \item{\code{temporal_min_dtm}}{Temporal minimum (a date vector)}
 

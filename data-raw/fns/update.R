@@ -64,8 +64,8 @@ update_popl_by_group <- function(profiled_sf, # sum_pop_by_multiple_groups_sf
   }
   profiled_sf <- add_popl_counts(profiled_sf = profiled_sf,
                                  group_by_var_1L_chr = group_by_var_1L_chr,
-                                 nse_objs_ls = make_nse_objs_ls(dynamic_var_rsl_1L_chr,
-                                                                concept_1L_chr = reference_vals_chr[2],#"age_sex",
+                                 nse_objs_ls = make_nse_objs_ls(concept_1L_chr = reference_vals_chr[2],#"age_sex",
+                                                                spatial_unit_1L_chr = dynamic_var_rsl_1L_chr,
                                                                 grouping_var_1L_chr = dynamic_var_rsl_1L_chr,
                                                                 data_year_1L_chr = data_year_1L_chr,
                                                                 featured_var_pfx_1L_chr = featured_var_pfx_1L_chr),
@@ -116,11 +116,11 @@ update_popl_by_incld_area <- function(profiled_sf,
                                       concept_1L_chr,
                                       data_year_1L_chr,
                                       featured_var_pfx_1L_chr,
+                                      spatial_unit_1L_chr,
                                       dynamic_var_nm_1L_chr = NULL,
                                       dynamic_var_rsl_1L_chr = NULL,
-                                      reference_var_nm_1L_chr = NULL,
-                                      spatial_unit_1L_chr
-                                   ){
+                                      reference_var_nm_1L_chr = NULL
+                                      ){
   nse_objs_ls <- make_nse_objs_ls(spatial_unit_1L_chr = spatial_unit_1L_chr,
                                           concept_1L_chr = concept_1L_chr,
                                           reference_var_nm_1L_chr = reference_var_nm_1L_chr,
@@ -170,7 +170,7 @@ update_popl_by_incld_area <- function(profiled_sf,
 #     dplyr::select(-dplyr::one_of(paste0(group_by,".y"))) %>%
 #     dplyr::rename(!!rlang::sym(group_by) := paste0(group_by,".x"))
 # }
-# update_spatial_attrs_ls <- function(spatial_attrs_ls, # Probably formerly extend_sp_data_ls or else combination of extend_sp_data_ls and reformatting from https://github.com/orygennp/ready4sim/blob/master/R/fn_make_sim_data_env.R
+# update_spatial_atts_ls <- function(spatial_atts_ls, # Probably formerly extend_sp_data_ls or else combination of extend_sp_data_ls and reformatting from https://github.com/orygennp/ready4sim/blob/master/R/fn_make_sim_data_env.R
 #                                     input_ls, #Now manufacture mthd
 #                                     profiled_area_bands_ls){
 #   crs_nbr_dbl <-  input_ls$x_VicinityProfile %>% crs_nbr()
@@ -179,7 +179,7 @@ update_popl_by_incld_area <- function(profiled_sf,
 #   travel_time_mins = drive_time_limit_mins(input_ls$x_VicinityProfile)
 #   group_by_var_1L_chr <- procure(input_ls$x_VicinityProfile,#get_group_by_var_from_VicinityProfile
 #                                  what_1L_chr = "grouping")
-#   dynamic_var_rsl_1L_chr <- names(spatial_attrs_ls)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
+#   dynamic_var_rsl_1L_chr <- names(spatial_atts_ls)[which(at_highest_res == input_ls$age_sex_pop_str) + 1]
 #   reference_grouping_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>%
 #                                                           sp_uid_lup() %>%
 #                                                           dplyr::filter(year_chr %in% c(input_ls$x_VicinityProfile@data_year_1L_chr)),
@@ -189,7 +189,7 @@ update_popl_by_incld_area <- function(profiled_sf,
 #                                                         evaluate_1L_lgl = FALSE)
 #   reference_var_rsl_1L_chr <- NULL
 #   if(!is.null(input_ls$tot_pop_str)){
-#     reference_var_rsl_1L_chr <- names(spatial_attrs_ls)[which(at_highest_res == input_ls$tot_pop_str) + 1]
+#     reference_var_rsl_1L_chr <- names(spatial_atts_ls)[which(at_highest_res == input_ls$tot_pop_str) + 1]
 #     res_lup <- input_ls$x_VicinityProfile %>% lookup_tb() %>% sp_resolution_lup()
 #     use_tot_pop_lgl <- c(dynamic_var_rsl_1L_chr,reference_var_rsl_1L_chr) %>%
 #       purrr::map_dbl(~ready4::get_from_lup_obj(data_lookup_tb = res_lup,
@@ -210,7 +210,7 @@ update_popl_by_incld_area <- function(profiled_sf,
 #                                          ~ make_reconciled_intersecting_area(profiled_sf = .x,
 #                                                                              profiled_sf_col_1L_chr = NA,
 #                                                                              profiled_sf_row_1L_chr = NA,
-#                                                                              spatial_attrs_ls = spatial_attrs_ls,
+#                                                                              spatial_atts_ls = spatial_atts_ls,
 #                                                                              reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
 #                                                                              dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
 #                                                                              group_by_var_1L_chr = group_by_var_1L_chr,
@@ -232,7 +232,7 @@ update_popl_by_incld_area <- function(profiled_sf,
 #                                                    data_year_1L_chr = input_ls$x_VicinityProfile@data_year_1L_chr)
 #   profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
 #                                           featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
-#   profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_attrs_ls[[spatial_attrs_ls$ppr_idx_dbl[1]]] %>%
+#   profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_atts_ls[[spatial_atts_ls$ppr_idx_dbl[1]]] %>%
 #                                           dplyr::select(1),
 #                                         profiled_sf = profiled_sf,
 #                                         dynamic_var_rsl_1L_chr = "UNIT_ID",
@@ -240,8 +240,8 @@ update_popl_by_incld_area <- function(profiled_sf,
 #                                         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
 #                                         data_year_1L_chr = input_ls$x_VicinityProfile@data_year_1L_chr,
 #                                         crs_nbr_dbl = crs_nbr_dbl)
-#   extended_spatial_attrs_ls <- append(spatial_attrs_ls,
+#   extended_spatial_atts_ls <- append(spatial_atts_ls,
 #                                       list(profiled_sf = profiled_sf,
 #                                            featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)) # Is pop_val_prefix needed in this list?
-#   return(extended_spatial_attrs_ls)
+#   return(extended_spatial_atts_ls)
 # }

@@ -1,19 +1,19 @@
 #' Write attr
-#' @description write_attr_tb() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write attr tibble. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param attr_tb Attr (a tibble)
+#' @description write_att_tb() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write attr tibble. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param att_tb Attr (a tibble)
 #' @param obj_name PARAM_DESCRIPTION
 #' @param processed_fls_dir_1L_chr PARAM_DESCRIPTION
 #' @param overwrite_1L_lgl Overwrite (a logical vector)
 #' @return NULL
-#' @rdname write_attr_tb
+#' @rdname write_att_tb
 #' @export 
 
-write_attr_tb <- function (attr_tb, obj_name, processed_fls_dir_1L_chr, overwrite_1L_lgl) 
+write_att_tb <- function (att_tb, obj_name, processed_fls_dir_1L_chr, overwrite_1L_lgl) 
 {
-    path_to_attr_tb_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
+    path_to_att_tb_chr <- make_paths_to_fls_for_ingest(processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
         name_chr = obj_name, data_type_chr = "Attribute")
-    if (overwrite_1L_lgl | !file.exists(path_to_attr_tb_chr)) 
-        saveRDS(attr_tb, file = path_to_attr_tb_chr)
+    if (overwrite_1L_lgl | !file.exists(path_to_att_tb_chr)) 
+        saveRDS(att_tb, file = path_to_att_tb_chr)
 }
 #' Write directories for import
 #' @description write_dirs_for_imp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write directories for import. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
@@ -242,7 +242,7 @@ write_procsd_imp_xx <- function (x, imports_ls, path_to_seed_sf_1L_chr, merge_it
             overwrite_1L_lgl = overwrite_1L_lgl)
     }
     if (x %>% dplyr::pull(data_type) == "Attribute") {
-        purrr::walk2(imports_ls, names(imports_ls), ~write_attr_tb(attr_tb = .x, 
+        purrr::walk2(imports_ls, names(imports_ls), ~write_att_tb(att_tb = .x, 
             obj_name = .y, processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, overwrite_1L_lgl = overwrite_1L_lgl))
     }
 }
@@ -280,7 +280,7 @@ write_raw_format_dir <- function (data_type_chr, raw_fls_dir_1L_chr)
 {
     directory_chr <- switch(data_type_chr, Geometry = "Geometries", 
         Attribute = "Attributes")
-    raw_format_sp_dir <- make_raw_format_dir_chr(raw_fls_dir_1L_chr, 
+    raw_format_sp_dir <- make_path_for_raw_outp_dir(raw_fls_dir_1L_chr, 
         directory_chr)
     if (!dir.exists(raw_format_sp_dir)) 
         dir.create(raw_format_sp_dir)

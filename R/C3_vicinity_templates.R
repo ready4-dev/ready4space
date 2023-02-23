@@ -29,7 +29,7 @@ x
 #' @param country_chr Country (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
-#' @param starter_sf Starter (a simple features object), Default: character(0)
+#' @param starter_sf_nm_chr Starter simple features object name (a character vector), Default: character(0)
 #' @param subdivision_chr Subdivision (a character vector), Default: character(0)
 #' @return A prototype for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' 
@@ -41,12 +41,12 @@ x
 make_pt_vicinity_templates <- function(country_chr = character(0),
 area_type_chr = character(0),
 area_bndy_yr_chr = character(0),
-starter_sf = character(0),
+starter_sf_nm_chr = character(0),
 subdivision_chr = character(0)){ 
 args_ls <- list(country_chr = country_chr,
 area_type_chr = area_type_chr,
 area_bndy_yr_chr = area_bndy_yr_chr,
-starter_sf = starter_sf,
+starter_sf_nm_chr = starter_sf_nm_chr,
 subdivision_chr = subdivision_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }

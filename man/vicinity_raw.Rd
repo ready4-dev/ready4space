@@ -22,7 +22,7 @@ make_pt_vicinity_raw(
   inc_file_main_chr = character(0),
   inc_fls_to_rename_ls = list(),
   new_nms_for_inc_fls_ls = list(),
-  name = character(0),
+  name_chr = character(0),
   country_chr = character(0),
   area_type_chr = character(0),
   area_bndy_yr_chr = character(0),
@@ -67,7 +67,7 @@ is_vicinity_raw(x)
 
 \item{new_nms_for_inc_fls_ls}{New names for include files (a list), Default: list()}
 
-\item{name}{PARAM_DESCRIPTION, Default: character(0)}
+\item{name_chr}{Name (a character vector), Default: character(0)}
 
 \item{country_chr}{Country (a character vector), Default: character(0)}
 

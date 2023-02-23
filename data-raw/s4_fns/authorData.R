@@ -8,7 +8,7 @@ authorData_VicinityLocal <- function(x, #"author" #write_raw_data_from_sp_local_
                             type_1L_chr = vicinity_raw_r3$data_type_chr)
   write_1L_lgl <- author(x = vicinity_raw_r3,
                          match_vals_xx = imports_chr,
-                         dir_1L_chr = raw_format_sp_dir,
+                         path_1L_chr = raw_format_sp_dir,#dir_1L_chr
                          overwrite_1L_lgl = x@overwrite_1L_lgl)
   if(return_r4_1L_lgl){
     return_xx <- metamorphose(x,

@@ -15,9 +15,9 @@
 # methods::setMethod("updateAttrDataXx",
 #                    "VicinityLookup",
 #                    function(x,
-#                             attr_data_xx,
+#                             att_data_xx,
 #                             altv_names_sf,
 #                             area_names_var_chr,
 #                             region_short_long_chr) {
-#                      attr_data_xx
+#                      att_data_xx
 #                    })

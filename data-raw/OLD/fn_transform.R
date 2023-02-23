@@ -49,23 +49,23 @@ transform_sp_local_r4_toProcessed_r4 <- function (x, imports_chr, raw_fls_dir_1L
         raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, write_1L_lgl = write_1L_lgl)
 }
 #' Transform tt polygon to
-#' @description transform_tt_polygon_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tt polygon to simple features object. Function argument tt_polyline specifies the object to be updated. Argument mode_of_transport provides the object to be updated. The function is called for its side effects and does not return a value.
-#' @param tt_polyline PARAM_DESCRIPTION
-#' @param mode_of_transport PARAM_DESCRIPTION
+#' @description transform_polyline_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tt polygon to simple features object. Function argument polyline_xx specifies the object to be updated. Argument mode_of_transport_1L_chr provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @param polyline_xx PARAM_DESCRIPTION
+#' @param mode_of_transport_1L_chr PARAM_DESCRIPTION
 #' @param travel_time_hours PARAM_DESCRIPTION
 #' @param ... Additional arguments
 #' @return NULL
-#' @rdname transform_tt_polygon_to_sf
+#' @rdname transform_polyline_to_sf
 #' @export 
 #' @importFrom googlePolylines decode
 #' @importFrom purrr pluck
 #' @importFrom sf st_polygon st_sfc st_sf
-transform_tt_polygon_to_sf <- function (tt_polyline, mode_of_transport, travel_time_hours, 
+transform_polyline_to_sf <- function (polyline_xx, mode_of_transport_1L_chr, travel_time_hours, 
     crs) 
 {
-    test_g_polyline <- tt_polyline %>% as.character()
+    test_g_polyline <- polyline_xx %>% as.character()
     googlePolylines::decode(test_g_polyline) %>% purrr::pluck(1) %>% 
         as.matrix() %>% list() %>% sf::st_polygon() %>% sf::st_sfc() %>% 
-        data.frame(mode_of_transport = mode_of_transport, travel_time_hours = travel_time_hours, 
+        data.frame(mode_of_transport_1L_chr = mode_of_transport_1L_chr, travel_time_hours = travel_time_hours, 
             .) %>% sf::st_sf(crs = crs)
 }

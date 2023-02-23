@@ -26,8 +26,10 @@ reference:
   - vicinity_points
   - vicinity_templates
   - vicinity_identifiers
+  - vicinity_mapes
 - title: "S4 Classes"
 - contents:
+  - VicinityArguments
   - VicinityLookup
   - VicinityMacro
   - VicinityMesoRegion
@@ -38,3 +40,35 @@ reference:
   - VicinityLocal
   - VicinityLocalRaw
   - VicinityLocalProcessed
+- title: "Methods"
+- contents:
+  - author-VicinityLocalProcessed
+  - author-VicinityLocalRaw
+  - author.vicinity_processed
+  - author.vicinity_raw
+  - authorData-VicinityLocal
+  - authorData.vicinity_raw
+  - ingest-VicinityProfile
+  - ingest.vicinity_processed
+  - ingest.vicinity_raw
+  - manufacture.vicinity_parameters
+  - manufacture.vicinity_points
+  - manufacture.vicinity_processed
+  - manufacture.vicinity_raw
+  - maufacture-
+  - metamorphose-VicinityLocal
+  - metamorphose-VicinityLocalProcessed
+  - metamorphose.vicinity_raw
+  - procure-VicinityProfile
+  - procure.vicinity_abbreviations
+  - procure.vicinity_identifiers
+  - procure.vicinity_raw
+  - procure.vicinity_resolutions
+  - ratify.vicinity_processed
+  - reckon.vicinity_mapes
+  - reckon.vicinity_parameters
+  - renew-VicinityArguments
+  - renew-VicinityLookup
+  - renew.vicinity_points
+  - renew.vicinity_processed
+  - renew.vicinity_raw

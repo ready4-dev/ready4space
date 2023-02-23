@@ -272,7 +272,7 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              ) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
-usethis::use_package("sf")
+#usethis::use_package("sf")
 ready4::write_extra_pkgs_to_actions()
 ready4::write_citation_cff(packageDescription("vicinity"),
                            citation_chr = readLines("inst/CITATION"))

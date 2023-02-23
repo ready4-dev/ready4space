@@ -9,10 +9,10 @@
 #' @importFrom ready4fun get_from_lup
 add_attr_list_to_sf <- function (x, y, lookup_tb_r4) 
 {
-    attr_data_xx <- make_attr_data_xx(lookup_tb_r4 = lookup_tb_r4, 
+    att_data_xx <- make_att_data_xx(lookup_tb_r4 = lookup_tb_r4, 
         match_value_xx = y, starter_sf = x)
-    add_attr_to_sf(area_sf = x, attr_data_tb = attr_data_xx, 
-        attr_data_desc = ready4::get_from_lup_obj(data_lookup_tb = sp_data_pack_lup(lookup_tb_r4), 
+    add_att_to_sf(area_sf = x, att_data_tb = att_data_xx, 
+        att_data_desc = ready4::get_from_lup_obj(data_lookup_tb = sp_data_pack_lup(lookup_tb_r4), 
             match_value_xx = y, match_var_nm_1L_chr = "name", target_var_nm_1L_chr = "main_feature", 
             evaluate_1L_lgl = FALSE))
 }
@@ -47,7 +47,7 @@ add_attr_recrly_to_sf <- function (input_ls, subdivision_1L_chr = NULL, area_uni
 #' Add attr tibble to data pack
 #' @description add_attrs_to_processed_lup() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr tibble to data pack lookup table. Function argument data_pack_lup specifies the object to be updated. The function is called for its side effects and does not return a value.
 #' @param data_pack_lup Data pack (a lookup table)
-#' @param attr_tb Attr (a tibble)
+#' @param att_tb Attr (a tibble)
 #' @param object_name PARAM_DESCRIPTION
 #' @param area_type PARAM_DESCRIPTION
 #' @param area_bound_yr PARAM_DESCRIPTION
@@ -61,7 +61,7 @@ add_attr_recrly_to_sf <- function (input_ls, subdivision_1L_chr = NULL, area_uni
 #' @export 
 #' @importFrom tibble tibble
 #' @importFrom dplyr bind_rows
-add_attrs_to_processed_lup <- function (data_pack_lup, attr_tb, object_name, area_type, area_bound_yr, 
+add_attrs_to_processed_lup <- function (data_pack_lup, att_tb, object_name, area_type, area_bound_yr, 
     region, year, year_start, year_end, main_feature) 
 {
     tibble::tibble(name = object_name, country = "Australia", 
@@ -72,57 +72,57 @@ add_attrs_to_processed_lup <- function (data_pack_lup, attr_tb, object_name, are
         .)
 }
 #' Add attr tibble to data pack lookup table from argument list
-#' @description add_attr_tb_to_processed_lup() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr tibble to data pack lookup table from argument list. Function argument x specifies the object to be updated. The function is called for its side effects and does not return a value.
+#' @description add_att_tb_to_processed_lup() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr tibble to data pack lookup table from argument list. Function argument x specifies the object to be updated. The function is called for its side effects and does not return a value.
 #' @param x PARAM_DESCRIPTION
 #' @param y PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname add_attr_tb_to_processed_lup
+#' @rdname add_att_tb_to_processed_lup
 #' @export 
 
-add_attr_tb_to_processed_lup <- function (x, y) 
+add_att_tb_to_processed_lup <- function (x, y) 
 {
-    add_attrs_to_processed_lup(data_pack_lup = x, attr_tb = y[[1]], 
+    add_attrs_to_processed_lup(data_pack_lup = x, att_tb = y[[1]], 
         object_name = y[[2]], area_type = y[[3]], area_bound_yr = y[[4]], 
         region = y[[5]], year = y[[6]], year_start = y[[7]], 
         year_end = y[[8]], main_feature = y[[9]])
 }
 #' Add attr to global
-#' @description add_attr_to_global() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr to global. Function argument combined_ste_ppr_ls specifies the object to be updated. The function is called for its side effects and does not return a value.
+#' @description add_att_to_global() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr to global. Function argument combined_ste_ppr_ls specifies the object to be updated. The function is called for its side effects and does not return a value.
 #' @param combined_ste_ppr_ls Combined ste ppr (a list)
 #' @param object_name_stub PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname add_attr_to_global
+#' @rdname add_att_to_global
 #' @export 
 #' @importFrom purrr walk
 #' @importFrom stringr str_sub
-add_attr_to_global <- function (combined_ste_ppr_ls, object_name_stub) 
+add_att_to_global <- function (combined_ste_ppr_ls, object_name_stub) 
 {
     purrr::walk(names(combined_ste_ppr_ls), ~eval(parse(text = paste0(object_name_stub, 
         .x %>% stringr::str_sub(start = 2), "<<-combined_ste_ppr_ls$", 
         .x))))
 }
 #' Add attr to
-#' @description add_attr_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr to simple features object. Function argument area_sf specifies the object to be updated. The function is called for its side effects and does not return a value.
+#' @description add_att_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attr to simple features object. Function argument area_sf specifies the object to be updated. The function is called for its side effects and does not return a value.
 #' @param area_sf Area (a simple features object)
-#' @param attr_data_tb Attr data (a tibble)
-#' @param attr_data_desc PARAM_DESCRIPTION
+#' @param att_data_tb Attr data (a tibble)
+#' @param att_data_desc PARAM_DESCRIPTION
 #' @return NA ()
-#' @rdname add_attr_to_sf
+#' @rdname add_att_to_sf
 #' @export 
 #' @importFrom dplyr inner_join
 #' @importFrom stringr str_detect
 #' @importFrom sf st_as_sf
-add_attr_to_sf <- function (area_sf, attr_data_tb, attr_data_desc) 
+add_att_to_sf <- function (area_sf, att_data_tb, att_data_desc) 
 {
-    if (attr_data_desc == "PPR") {
-        merged_units <- dplyr::inner_join(area_sf, attr_data_tb)
+    if (att_data_desc == "PPR") {
+        merged_units <- dplyr::inner_join(area_sf, att_data_tb)
     }
-    if (stringr::str_detect(attr_data_desc, "ERP_TOT")) {
-        merged_units <- dplyr::inner_join(area_sf, attr_data_tb) %>% 
+    if (stringr::str_detect(att_data_desc, "ERP_TOT")) {
+        merged_units <- dplyr::inner_join(area_sf, att_data_tb) %>% 
             sf::st_as_sf()
     }
-    if (attr_data_desc == "ERP_ASX") {
-        merged_units <- dplyr::inner_join(area_sf, attr_data_tb) %>% 
+    if (att_data_desc == "ERP_ASX") {
+        merged_units <- dplyr::inner_join(area_sf, att_data_tb) %>% 
             sf::st_as_sf()
     }
     return(merged_units)
@@ -138,23 +138,23 @@ add_attr_to_sf <- function (area_sf, attr_data_tb, attr_data_desc)
 #' @importFrom stringr str_sub
 add_attribute_to_data_pack <- function (combined_ste_ppr_ls, object_name_stub) 
 {
-    add_attr_to_global(combined_ste_ppr_ls = combined_ste_ppr_ls, 
+    add_att_to_global(combined_ste_ppr_ls = combined_ste_ppr_ls, 
         object_name_stub = object_name_stub)
     purrr::walk(names(combined_ste_ppr_ls), ~eval(parse(text = paste0("usethis::use_data(", 
         object_name_stub, .x %>% stringr::str_sub(start = 2), 
         ", overwrite = TRUE)"))))
 }
 #' Add attribute to data pack from
-#' @description add_attribute_to_data_pack_from_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attribute to data pack from tibble. Function argument attr_tb specifies the object to be updated. The function is called for its side effects and does not return a value.
-#' @param attr_tb Attr (a tibble)
+#' @description add_attribute_to_data_pack_from_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attribute to data pack from tibble. Function argument att_tb specifies the object to be updated. The function is called for its side effects and does not return a value.
+#' @param att_tb Attr (a tibble)
 #' @param object_name PARAM_DESCRIPTION
 #' @return NULL
 #' @rdname add_attribute_to_data_pack_from_tb
 #' @export 
 
-add_attribute_to_data_pack_from_tb <- function (attr_tb, object_name) 
+add_attribute_to_data_pack_from_tb <- function (att_tb, object_name) 
 {
-    eval(parse(text = paste0(object_name, "<<-attr_tb")))
+    eval(parse(text = paste0(object_name, "<<-att_tb")))
     eval(parse(text = paste0("usethis::use_data(", object_name, 
         ", overwrite = TRUE)")))
 }
@@ -193,7 +193,7 @@ add_data_pack_lup <- function (lookup_tbs_r4, tbl_data_type_1L_chr = "Geometry",
             match_var_nm_1L_chr = "name", match_value_xx = .y, 
             evaluate_1L_lgl = FALSE)))
     data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls, 
-        .init = lookup_tbs_r4 %>% sp_data_pack_lup(), ~add_attr_tb_to_processed_lup(.x, 
+        .init = lookup_tbs_r4 %>% sp_data_pack_lup(), ~add_att_tb_to_processed_lup(.x, 
             .y)) %>% dplyr::mutate(data_type = tbl_data_type_1L_chr)
     package_1L_chr <- ifelse(package_1L_chr == "" | is.na(package_1L_chr), "", 
         paste0(package_1L_chr, "::"))

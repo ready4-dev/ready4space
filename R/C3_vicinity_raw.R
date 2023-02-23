@@ -39,7 +39,7 @@ x
 #' @param inc_file_main_chr Include file main (a character vector), Default: character(0)
 #' @param inc_fls_to_rename_ls Include files to rename (a list), Default: list()
 #' @param new_nms_for_inc_fls_ls New names for include files (a list), Default: list()
-#' @param name PARAM_DESCRIPTION, Default: character(0)
+#' @param name_chr Name (a character vector), Default: character(0)
 #' @param country_chr Country (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
@@ -71,7 +71,7 @@ download_url_chr = character(0),
 inc_file_main_chr = character(0),
 inc_fls_to_rename_ls = list(),
 new_nms_for_inc_fls_ls = list(),
-name = character(0),
+name_chr = character(0),
 country_chr = character(0),
 area_type_chr = character(0),
 area_bndy_yr_chr = character(0),
@@ -96,7 +96,7 @@ download_url_chr = download_url_chr,
 inc_file_main_chr = inc_file_main_chr,
 inc_fls_to_rename_ls = inc_fls_to_rename_ls,
 new_nms_for_inc_fls_ls = new_nms_for_inc_fls_ls,
-name = name,
+name_chr = name_chr,
 country_chr = country_chr,
 area_type_chr = area_type_chr,
 area_bndy_yr_chr = area_bndy_yr_chr,

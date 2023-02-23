@@ -53,23 +53,23 @@ make_agt_coords_tb <- function (profiled_area_sf, disorder, year, case_type = "e
     return(agent_coordinates_tb)
 }
 #' Make attr data
-#' @description make_attr_data_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make attr data output object of multiple potential types. The function is called for its side effects and does not return a value.
+#' @description make_att_data_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make attr data output object of multiple potential types. The function is called for its side effects and does not return a value.
 #' @param lookup_tb_r4 Lookup (a ready4 S4 collection of tibbles)
 #' @param match_value_xx PARAM_DESCRIPTION
 #' @param starter_sf Starter (a simple features object)
 #' @return NULL
-#' @rdname make_attr_data_xx
+#' @rdname make_att_data_xx
 #' @export 
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter pull
-make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf) 
+make_att_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf) 
 {
     data_lookup_tb <- sp_data_pack_lup(lookup_tb_r4)
-    attr_data_xx <- procure(data_lookup_tb, col_nm_1L_chr = "name", 
+    att_data_xx <- procure(data_lookup_tb, col_nm_1L_chr = "name", 
         match_value_xx = match_value_xx)
-    if (is.data.frame(attr_data_xx)) {
-        attr_data_xx <- list(attr_data_xx) %>% stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
+    if (is.data.frame(att_data_xx)) {
+        att_data_xx <- list(att_data_xx) %>% stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = data_lookup_tb, 
             match_value_xx = match_value_xx, match_var_nm_1L_chr = "name", 
             target_var_nm_1L_chr = "year", evaluate_1L_lgl = FALSE))
     }
@@ -94,7 +94,7 @@ make_attr_data_xx <- function (lookup_tb_r4, match_value_xx, starter_sf)
         area_names_var_chr) %>% dplyr::filter(as.numeric(year) == 
         max(as.numeric(year)[as.numeric(year) <= as.numeric(boundary_year)])) %>% 
         dplyr::pull(var_name)
-    updateAttrDataXx(lookup_tb_r4, attr_data_xx = attr_data_xx, 
+    updateAttrDataXx(lookup_tb_r4, att_data_xx = att_data_xx, 
         altv_names_sf= starter_sf, area_names_var_chr = area_names_var_chr, 
         region_short_long_chr = region_short_long_chr, match_value_xx = match_value_xx)
 }
@@ -127,7 +127,7 @@ make_distance_based_bands <- function (distance_km_outer, nbr_distance_bands, se
             land_boundary_sf = profiled_sf, crs_nbr = crs_nbr)) %>% 
         stats::setNames(., paste0("km_", distances_dbl, "from_service"))
     geometric_distance_by_cluster_circles <- purrr::map(1:length(service_clusters_chr), 
-        ~reorder_distance_list_by_cluster(index_val_1L_int = .x, clusters_by_distance_ls = service_clusters_by_distance_ls, 
+        ~reorder_clusters_by_distances(index_val_1L_int = .x, clusters_by_distance_ls = service_clusters_by_distance_ls, 
             distances_dbl = distances_dbl)) %>% stats::setNames(., 
         service_vicinity_points_ls %>% names())
     geometric_distance_by_cluster_bands <- purrr::map(geometric_distance_by_cluster_circles, 
@@ -332,14 +332,14 @@ make_profiled_area_objs <- function (x_VicinityProfile)
         profiled_area_bands_ls = profiled_area_bands_ls))
 }
 #' Make raw format directory
-#' @description make_raw_format_dir_chr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make raw format directory character vector. The function is called for its side effects and does not return a value.
+#' @description make_path_for_raw_outp_dir() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make raw format directory character vector. The function is called for its side effects and does not return a value.
 #' @param raw_fls_dir_1L_chr PARAM_DESCRIPTION
 #' @param category PARAM_DESCRIPTION
 #' @return NULL
-#' @rdname make_raw_format_dir_chr
+#' @rdname make_path_for_raw_outp_dir
 #' @export 
 
-make_raw_format_dir_chr <- function (raw_fls_dir_1L_chr, category) 
+make_path_for_raw_outp_dir <- function (raw_fls_dir_1L_chr, category) 
 {
     paste0(raw_fls_dir_1L_chr, "/", category)
 }
@@ -394,15 +394,15 @@ make_cluster_isochrones <- function (vicinity_points_ls, index_val_1L_int, time_
     return(one_cluster_joint_travel_time_list)
 }
 #' Make sp data list
-#' @description make_spatial_attrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make sp data list. The function is called for its side effects and does not return a value.
+#' @description make_spatial_atts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make sp data list. The function is called for its side effects and does not return a value.
 #' @param input_ls Input (a list)
 #' @param subdivisions_chr PARAM_DESCRIPTION
 #' @return NA ()
-#' @rdname make_spatial_attrs_ls
+#' @rdname make_spatial_atts_ls
 #' @export 
 #' @importFrom purrr map transpose map_chr map_dbl prepend
 #' @importFrom stats setNames
-make_spatial_attrs_ls <- function (input_ls, subdivisions_chr) 
+make_spatial_atts_ls <- function (input_ls, subdivisions_chr) 
 {
     lists_to_merge <- purrr::map(subdivisions_chr, ~make_attributes_ls(input_ls = input_ls, 
         subdivision_1L_chr = .x, match_year_1L_lgl = FALSE, exclude_dif_bndy_yr_1L_lgl = TRUE))
@@ -413,8 +413,8 @@ make_spatial_attrs_ls <- function (input_ls, subdivisions_chr)
         0, NA_character_, names(.x[1])))
     ppr_idx_dbl <- purrr::map_dbl(lists_to_merge[[1]], ~ifelse(length(.x[1]) == 
         0, NA_real_, .x[1])) %>% stats::setNames(names_ppr)
-    spatial_attrs_ls <- purrr::prepend(merged_list, list(ppr_idx_dbl = ppr_idx_dbl))
-    return(spatial_attrs_ls)
+    spatial_atts_ls <- purrr::prepend(merged_list, list(ppr_idx_dbl = ppr_idx_dbl))
+    return(spatial_atts_ls)
 }
 #' Make srvc clstr geomc dist boundrs
 #' @description make_cluster_bndys() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make srvc clstr geomc dist boundrs. The function is called for its side effects and does not return a value.
@@ -462,7 +462,7 @@ make_isochrone_bands <- function (index_val_1L_int, one_cluster_travel_time_sf_l
 #' @param appID PARAM_DESCRIPTION
 #' @param apiKey PARAM_DESCRIPTION
 #' @param origin PARAM_DESCRIPTION
-#' @param mode_of_transport PARAM_DESCRIPTION, Default: 'driving'
+#' @param mode_of_transport_1L_chr PARAM_DESCRIPTION, Default: 'driving'
 #' @param travel_time_hours PARAM_DESCRIPTION
 #' @param ... Additional arguments
 #' @return New (a simple features object)
@@ -473,7 +473,7 @@ make_isochrone_bands <- function (index_val_1L_int, one_cluster_travel_time_sf_l
 #' @importFrom googleway encode_pl
 #' @importFrom dplyr pull
 #' @importFrom purrr map reduce
-make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport = "driving", 
+make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport_1L_chr = "driving", 
     travel_time_hours, crs) 
 {
     location <- origin
@@ -481,7 +481,7 @@ make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport = "dr
     url <- "http://api.traveltimeapp.com/v4/time-map"
     requestBody <- paste0("{\n                        \"departure_searches\" : [\n                        {\"id\" : \"test\",\n                        \"coords\": {\"lat\":", 
         origin[1], ", \"lng\":", origin[2], " },\n                        \"transportation\" : {\"type\" : \"", 
-        mode_of_transport, "\" } ,\n                        \"travel_time\" : ", 
+        mode_of_transport_1L_chr, "\" } ,\n                        \"travel_time\" : ", 
         travel_time_secs, ",\n                        \"departure_time\" : \"2017-05-03T08:00:00z\"\n                        }\n                        ]\n}")
     res <- httr::POST(url = url, httr::add_headers(`Content-Type` = "application/json"), 
         httr::add_headers(Accept = "application/json"), httr::add_headers(`X-Application-Id` = appId), 
@@ -493,8 +493,8 @@ make_trvl_tm_isochrs <- function (appID, apiKey, origin, mode_of_transport = "dr
     })
     df <- data.frame(polyline = unlist(pl))
     polyline_vec <- df %>% dplyr::pull(polyline)
-    list_of_sfs <- purrr::map(polyline_vec, ~transform_tt_polygon_to_sf(tt_polyline = .x, 
-        mode_of_transport = mode_of_transport, travel_time_hours = travel_time_hours, 
+    list_of_sfs <- purrr::map(polyline_vec, ~transform_polyline_to_sf(polyline_xx = .x, 
+        mode_of_transport_1L_chr = mode_of_transport_1L_chr, travel_time_hours = travel_time_hours, 
         crs = crs))
     new_sf <- purrr::reduce(list_of_sfs, rbind)
     return(new_sf)

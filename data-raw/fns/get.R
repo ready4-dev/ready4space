@@ -11,7 +11,6 @@ get_included_yrs <- function(geometry_sf,
     stringr::str_sub(start = 2, end = 5) %>%
     unique() %>%
     as.numeric()
-
   return(years_dbl)
 }
 get_max_or_min_yr_of_sf <- function(geometry_sf,
@@ -43,8 +42,9 @@ get_name_from_path_chr <- function(path_1L_chr,
 get_set_diff_lng_lat_sf <- function(geometry_sf,
                                     cut_sf,
                                     crs_nbr_dbl,
-                                    validate_1L_lgl = T,
-                                    min_polygon_area_dbl = units::set_units(0.05,km^2)){
+                                    min_polygon_area_dbl = units::set_units(0.05,km^2),
+                                    validate_1L_lgl = T
+                                    ){
   new_sf <- sf::st_difference(geometry_sf %>% sf::st_transform(crs = crs_nbr_dbl[2]),
                               sf::st_union(cut_sf) %>% sf::st_transform(crs = crs_nbr_dbl[2])) %>%
     sf::st_transform(crs = crs_nbr_dbl[1])

@@ -99,26 +99,26 @@ update_isochrone_tbl <- function (index_val_1L_int, temporal_bands_ls)
     return(return_object)
 }
 #' Update sp data list
-#' @description update_spatial_attrs_ls() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update sp data list. Function argument spatial_attrs_ls specifies the object to be updated. Argument input_ls provides the object to be updated. The function is called for its side effects and does not return a value.
-#' @param spatial_attrs_ls PARAM_DESCRIPTION
+#' @description update_spatial_atts_ls() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update sp data list. Function argument spatial_atts_ls specifies the object to be updated. Argument input_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @param spatial_atts_ls PARAM_DESCRIPTION
 #' @param input_ls Input (a list)
 #' @param profiled_area_bands_ls PARAM_DESCRIPTION
 #' @return NA ()
-#' @rdname update_spatial_attrs_ls
+#' @rdname update_spatial_atts_ls
 #' @export
 #' @importFrom ready4fun get_from_lup
 #' @importFrom dplyr filter mutate select
 #' @importFrom purrr map_dbl map map2
 #' @importFrom nnet which.is.max
 #' @importFrom sf st_area
-update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_bands_ls)
+update_spatial_atts_ls <- function (spatial_atts_ls, input_ls, profiled_area_bands_ls)
 {
     crs_nbr_dbl <- input_ls$x_VicinityProfile %>% crs_nbr()
     at_highest_res = input_ls$at_highest_res
     distance_km = geom_dist_limit_km(input_ls$x_VicinityProfile)
     travel_time_mins = drive_time_limit_mins(input_ls$x_VicinityProfile)
     group_by_var_1L_chr <- get_group_by_var_from_VicinityProfile(input_ls$x_VicinityProfile)
-    dynamic_var_rsl_1L_chr <- names(spatial_attrs_ls)[which(at_highest_res ==
+    dynamic_var_rsl_1L_chr <- names(spatial_atts_ls)[which(at_highest_res ==
         input_ls$age_sex_pop_str) + 1]
     grouping_var_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = lookup_tb(input_ls$x_VicinityProfile) %>%
         sp_uid_lup() %>% dplyr::filter(year %in% c(data_year(input_ls$x_VicinityProfile))),
@@ -126,7 +126,7 @@ update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_b
         target_var_nm_1L_chr = "var_name", evaluate_1L_lgl = FALSE)
     reference_var_rsl_1L_chr <- NULL
     if (!is.null(input_ls$tot_pop_str)) {
-        reference_var_rsl_1L_chr <- names(spatial_attrs_ls)[which(at_highest_res ==
+        reference_var_rsl_1L_chr <- names(spatial_atts_ls)[which(at_highest_res ==
             input_ls$tot_pop_str) + 1]
         res_lup <- input_ls$x_VicinityProfile %>% lookup_tb() %>% sp_resolution_lup()
         use_tot_pop_lgl <- c(dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr) %>%
@@ -139,7 +139,7 @@ update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_b
     }
     by_band_pop_counts_sf_ls <- purrr::map(profiled_area_bands_ls,
         ~make_reconciled_intersecting_area(profiled_sf = .x, profiled_sf_col_1L_chr = NA,
-            profiled_sf_row_1L_chr = NA, spatial_attrs_ls = spatial_attrs_ls,
+            profiled_sf_row_1L_chr = NA, spatial_atts_ls = spatial_atts_ls,
             reference_var_rsl_1L_chr = reference_var_rsl_1L_chr, dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
             group_by_var_1L_chr = group_by_var_1L_chr, grouping_var_1L_chr = grouping_var_1L_chr,
             data_year = data_year(input_ls$x_VicinityProfile), crs_nbr_dbl = crs_nbr_dbl))
@@ -152,13 +152,13 @@ update_spatial_attrs_ls <- function (spatial_attrs_ls, input_ls, profiled_area_b
         reference_var_rsl_1L_chr = reference_var_rsl_1L_chr, data_year = data_year(input_ls$x_VicinityProfile))
     profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr)
-    profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_attrs_ls[[spatial_attrs_ls$ppr_idx_dbl[1]]] %>%
+    profiled_sf <- add_dynamic_vars_to_sf(dynamic_vars_sf = spatial_atts_ls[[spatial_atts_ls$ppr_idx_dbl[1]]] %>%
         dplyr::select(1), profiled_sf = profiled_sf, dynamic_var_rsl_1L_chr = "UNIT_ID",
         dynamic_var_nm_1L_chr = "popl_spatial_unit_chr", featured_var_pfx_1L_chr = featured_var_pfx_1L_chr,
         data_year = input_ls$x_VicinityProfile@data_year, crs_nbr_dbl = crs_nbr_dbl)
-    extended_spatial_attrs_ls <- append(spatial_attrs_ls, list(profiled_sf = profiled_sf,
+    extended_spatial_atts_ls <- append(spatial_atts_ls, list(profiled_sf = profiled_sf,
         featured_var_pfx_1L_chr = featured_var_pfx_1L_chr))
-    return(extended_spatial_attrs_ls)
+    return(extended_spatial_atts_ls)
 }
 #' Update sp local process
 #' @description update_spProcessed_r4() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update sp local process ready4 s4. Function argument x specifies the object to be updated. The function is called for its side effects and does not return a value.

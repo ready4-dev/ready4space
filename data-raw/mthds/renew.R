@@ -1,4 +1,4 @@
-renew.vicinity_processed <- function(x, ## add_attr_tb_to_processed_lup & add_attrs_to_processed_lup
+renew.vicinity_processed <- function(x, ## add_att_tb_to_processed_lup & add_attrs_to_processed_lup
                                      args_ls = NULL,
                                      area_type_chr = character(0),
                                      area_bndy_yr_chr = character(0),
@@ -17,16 +17,17 @@ renew.vicinity_processed <- function(x, ## add_attr_tb_to_processed_lup & add_at
   }
   if(what_1L_chr == "table"){
     if(!is.null(args_ls)){
-      x <- add_attrs_to_processed_lup(data_pack_lup = x,
-                                      #attr_tb = args_ls[[1]], # remove (carefully)
-                                      object_name_1L_chr = args_ls[[2]],
-                                      area_type_chr = args_ls[[3]],
-                                      area_bndy_yr_chr = args_ls[[4]],
-                                      region_chr = args_ls[[5]],
-                                      year_chr = args_ls[[6]],
-                                      year_start_chr = args_ls[[7]],
-                                      year_end_chr = args_ls[[8]],
-                                      main_feature_chr = args_ls[[9]])
+      x <- renew.vicinity_processed(x,#data_pack_lup = add_attrs_to_processed_lup
+                                    args_ls = NULL,
+                                    #att_tb = args_ls[[1]], # remove (carefully)
+                                    source_reference_chr = args_ls[[2]],#### object_name_1L_chr
+                                    area_type_chr = args_ls[[3]],
+                                    area_bndy_yr_chr = args_ls[[4]],
+                                    region_chr = args_ls[[5]],
+                                    year_chr = args_ls[[6]],
+                                    year_start_chr = args_ls[[7]],
+                                    year_end_chr = args_ls[[8]],
+                                    main_feature_chr = args_ls[[9]])
     }else{
       fn_env_ls <- as.list(rlang::current_env())[-1]
       x <- ready4::update_tb_r3(x,

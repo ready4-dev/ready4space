@@ -1,29 +1,29 @@
-add_attr_to_sf <- function(area_sf,
-                           attr_data_tb,
-                           attr_data_desc_1L_chr){
-  if(attr_data_desc_1L_chr == "PPR"){ # "Population projections"
+add_att_to_sf <- function(area_sf,
+                           att_data_tb,
+                           att_data_desc_1L_chr){
+  if(att_data_desc_1L_chr == "PPR"){ # "Population projections"
     updated_area_sf <- dplyr::inner_join(area_sf,
-                                      attr_data_tb)
+                                      att_data_tb)
   }
-  if(stringr::str_detect(attr_data_desc_1L_chr, "ERP_TOT")){ #"ERP by age and sex"
+  if(stringr::str_detect(att_data_desc_1L_chr, "ERP_TOT")){ #"ERP by age and sex"
     updated_area_sf <- dplyr::inner_join(area_sf,
-                                      attr_data_tb) %>%
+                                      att_data_tb) %>%
       sf::st_as_sf()
   }
-  if(attr_data_desc_1L_chr == "ERP_ASX"){ # "ERP"
+  if(att_data_desc_1L_chr == "ERP_ASX"){ # "ERP"
     updated_area_sf <- dplyr::inner_join(area_sf,
-                                      attr_data_tb) %>%
+                                      att_data_tb) %>%
       sf::st_as_sf()
   }
   return(updated_area_sf)
 }
 add_dynamic_vars_to_sf <- function(dynamic_vars_sf,
-                                   profiled_sf,
-                                   dynamic_var_rsl_1L_chr,
-                                   dynamic_var_nm_1L_chr,
-                                   featured_var_pfx_1L_chr, #### NULL ?
-                                   data_year_1L_chr,
                                    crs_nbr_dbl,
+                                   data_year_1L_chr,
+                                   dynamic_var_nm_1L_chr,
+                                   dynamic_var_rsl_1L_chr,
+                                   featured_var_pfx_1L_chr, #### NULL ?
+                                   profiled_sf,
                                    reference_vals_chr# = c("tot_pop","age_sex")
                                    ){
   profiled_sf <- make_intersecting_profiled_area(attribute_rsl_1L_chr = dynamic_var_rsl_1L_chr,
@@ -64,8 +64,8 @@ add_km_sqd <- function(geometry_sf,
   return(geometry_sf)
 }
 add_km_sqd_by_group <- function(geometry_sf,
-                                group_by_var_1L_chr,
                                 feature_nm_1L_chr,
+                                group_by_var_1L_chr,
                                 prefix_1L_chr = "whl_",
                                 suffix_1L_chr = "_area"){
   geometry_sf <- merge(geometry_sf,
@@ -138,22 +138,22 @@ add_popl_counts <- function(profiled_sf, # sum_updated_pop_by_grp
   }
   return(profiled_sf)
 }
-# add_attribute_to_data_pack_from_tb <- function(attr_tb,
+# add_attribute_to_data_pack_from_tb <- function(att_tb,
 #                                                object_name_1L_chr){
 #   eval(parse(text = paste0(object_name_1L_chr,
-#                            "<<-attr_tb")))
+#                            "<<-att_tb")))
 #   eval(parse(text = paste0("usethis::use_data(",object_name_1L_chr,
 #                            ", overwrite = TRUE)")))
 # }
 # add_attribute_to_data_pack <- function(combined_ste_ppr_ls,
 #                                        object_name_stub){
-#   add_attr_to_global(combined_ste_ppr_ls = combined_ste_ppr_ls,
+#   add_att_to_global(combined_ste_ppr_ls = combined_ste_ppr_ls,
 #                      object_name_stub = object_name_stub)
 #   purrr::walk(names(combined_ste_ppr_ls),
 #               ~ eval(parse(text = paste0("usethis::use_data(",object_name_stub,.x %>% stringr::str_sub(start = 2),
 #                                          ", overwrite = TRUE)"))))
 # }
-# add_attr_to_global <- function(combined_ste_ppr_ls,
+# add_att_to_global <- function(combined_ste_ppr_ls,
 #                                object_name_stub){
 #   purrr::walk(names(combined_ste_ppr_ls),
 #               ~ eval(parse(text = paste0(object_name_stub,.x %>% stringr::str_sub(start = 2),
@@ -186,7 +186,7 @@ add_popl_counts <- function(profiled_sf, # sum_updated_pop_by_grp
 #                      .)
 # }
 # add_attrs_to_processed_lup <- function(data_pack_lup, # NOW renew method
-#                                        #attr_tb, # remove (carefully)
+#                                        #att_tb, # remove (carefully)
 #                                        object_name_1L_chr,
 #                                        area_type_chr,
 #                                        area_bndy_yr_chr,
@@ -213,12 +213,12 @@ add_popl_counts <- function(profiled_sf, # sum_updated_pop_by_grp
 #                                 match_1L_chr,#y,
 #                                 x_VicinityLookup#lookup_tb_r4
 # ){
-#   attr_data_xx <- make_attr_data_xx(x_VicinityLookup = x_VicinityLookup,
+#   att_data_xx <- make_att_data_xx(x_VicinityLookup = x_VicinityLookup,
 #                                     match_value_xx = match_1L_chr,
 #                                     starter_sf = area_sf)
-#   updated_area_sf <- add_attr_to_sf(area_sf = area_sf,
-#                                     attr_data_tb = attr_data_xx,
-#                                     attr_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_processed_r3,
+#   updated_area_sf <- add_att_to_sf(area_sf = area_sf,
+#                                     att_data_tb = att_data_xx,
+#                                     att_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_processed_r3,
 #                                                                               match_value_xx = match_1L_chr,
 #                                                                               match_var_nm_1L_chr = "name_chr",
 #                                                                               target_var_nm_1L_chr = "main_feature_chr"))
@@ -292,7 +292,7 @@ add_popl_counts <- function(profiled_sf, # sum_updated_pop_by_grp
 #                                                                           evaluate_1L_lgl = FALSE))) # Set names here to allow names based referencing in destination function.
 #   data_pack_lup_r3 <- purrr::reduce(data_pk_lup_arguments_ls,
 #                                     .init = x_VicinityLookup@vicinity_processed_r3,
-#                                     ~ add_attr_tb_to_processed_lup(.x,.y)) %>%
+#                                     ~ add_att_tb_to_processed_lup(.x,.y)) %>%
 #     dplyr::mutate(data_type_chr = tbl_data_type_1L_chr)
 #   package_1L_chr <- ifelse(package_1L_chr ==""|is.na(package_1L_chr),"", paste0(package_1L_chr,"::"))
 #   data_pack_lup_r3 <- data_pack_lup_r3 %>%

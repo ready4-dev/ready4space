@@ -90,19 +90,21 @@ transform_to_simpler_sf <- function(sf,
     sf::st_transform(crs = crs_dbl)
   return(polygons_sf)
 }
-transform_tt_polygon_to_sf <- function(tt_polyline,
-                                       mode_of_transport,
-                                       travel_time_hours,
-                                       crs){
-  test_g_polyline <- tt_polyline %>% as.character()
-  googlePolylines::decode(test_g_polyline) %>%
+transform_polyline_to_sf <- function(polyline_xx,
+                                     crs_1L_dbl,
+                                     mode_of_transport_1L_chr,
+                                     travel_time_hours_1L_dbl
+                                     ){
+  test_g_polyline <- polyline_xx %>% as.character()
+  geometry_sf <- googlePolylines::decode(test_g_polyline) %>%
     purrr::pluck(1) %>%
     as.matrix() %>%
     list() %>%
     sf::st_polygon() %>%
     sf::st_sfc() %>%
-    data.frame(mode_of_transport = mode_of_transport,
-               travel_time_hours = travel_time_hours,
+    data.frame(mode_of_transport_chr = mode_of_transport_1L_chr,
+               travel_time_hours_dbl = c,
                .) %>%
-    sf::st_sf(crs = crs)
+    sf::st_sf(crs = crs_1L_dbl)
+  return(geometry_sf)
 }
