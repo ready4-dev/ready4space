@@ -27,6 +27,10 @@ methods::setMethod("ingest", methods::className("vicinity_processed", package = 
 #' Ingest data
 #' @description ingest.vicinity_raw() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Ingest (an output object of multiple potential types).
 #' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @param args_ls Arguments (a list), Default: NULL
+#' @param fn Function (a function), Default: function(x, ...) {
+#'    NULL
+#'}
 #' @param imports_chr Imports (a character vector), Default: character(0)
 #' @param data_type_1L_chr Data type (a character vector of length one), Default: character(0)
 #' @param path_1L_chr Path (a character vector of length one), Default: character(0)
@@ -44,7 +48,9 @@ methods::setMethod("ingest", methods::className("vicinity_processed", package = 
 #' @importFrom stringr str_sub
 #' @importFrom stringi stri_locate_last_regex
 #' @importFrom ready4 get_from_lup_obj ingest
-ingest.vicinity_raw <- function (x, imports_chr = character(0), data_type_1L_chr = character(0), 
+ingest.vicinity_raw <- function (x, args_ls = NULL, fn = function(x, ...) {
+    NULL
+}, imports_chr = character(0), data_type_1L_chr = character(0), 
     path_1L_chr = character(0), raw_fls_dir_1L_chr = character(0), 
     processed_fls_dir_1L_chr = character(0), what_1L_chr = "list", 
     write_1L_lgl = T) 
@@ -97,8 +103,9 @@ ingest.vicinity_raw <- function (x, imports_chr = character(0), data_type_1L_chr
             match_value_xx = data_type_chr, what_1L_chr == "match"), 
             match_value_xx = file_name, match_var_nm_1L_chr = "inc_file_main_chr", 
             target_var_nm_1L_chr = .x, evaluate_1L_lgl = FALSE))
-        ingest_xx <- manufacture.vicinity_raw(x, var_val_chr = var_val_chr, 
-            path_1L_chr = path_1L_chr)
+        ingest_xx <- manufacture.vicinity_raw(x, args_ls = append(args_ls, 
+            list(var_val_chr = var_val_chr, path_1L_chr = path_1L_chr)), 
+            fn = fn)
     }
     return(ingest_xx)
 }

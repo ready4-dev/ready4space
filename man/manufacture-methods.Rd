@@ -77,7 +77,11 @@ manufacture.vicinity_processed(
 
 manufacture.vicinity_raw(
   x,
+  args_ls = NULL,
   crs_nbr_dbl = NA_real_,
+  fn = function(x, ...) {
+     NULL
+ },
   match_value_xx = NULL,
   match_var_nm_1L_chr = character(0),
   merge_itms_chr = character(0),
@@ -91,7 +95,11 @@ manufacture.vicinity_raw(
 
 \S4method{manufacture}{vicinity_raw}(
   x,
+  args_ls = NULL,
   crs_nbr_dbl = NA_real_,
+  fn = function(x, ...) {
+     NULL
+ },
   match_value_xx = NULL,
   match_var_nm_1L_chr = character(0),
   merge_itms_chr = character(0),
@@ -141,6 +149,12 @@ manufacture.vicinity_raw(
 \item{target_area_1L_chr}{Target area (a character vector of length one), Default: character(0)}
 
 \item{target_year_1L_chr}{Target year (a character vector of length one), Default: character(0)}
+
+\item{args_ls}{Arguments (a list), Default: NULL}
+
+\item{fn}{Function (a function), Default: function(x, ...) {
+NULL
+}}
 
 \item{match_value_xx}{Match value (an output object of multiple potential types), Default: NULL}
 

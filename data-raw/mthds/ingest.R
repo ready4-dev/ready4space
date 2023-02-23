@@ -15,6 +15,8 @@ ingest.vicinity_processed <- function(x,
   return(object_xx)
 }
 ingest.vicinity_raw <- function(x,
+                                args_ls = NULL,
+                                fn = function(x,...){NULL},
                                 imports_chr = character(0),
                                 data_type_1L_chr = character(0),
                                 path_1L_chr = character(0),
@@ -90,9 +92,10 @@ ingest.vicinity_raw <- function(x,
                                                              match_var_nm_1L_chr = "inc_file_main_chr",
                                                              target_var_nm_1L_chr = .x,
                                                              evaluate_1L_lgl = FALSE))
-    ingest_xx <- manufacture.vicinity_raw(x,#make_import_object # could pass custom fn to this method
-                                         var_val_chr = var_val_chr,
-                                         path_1L_chr = path_1L_chr)
+    ingest_xx <- manufacture.vicinity_raw(x,#make_import_object # could pass custom fn to this method,
+                                          args_ls = append(args_ls,list(var_val_chr = var_val_chr, path_1L_chr = path_1L_chr)),
+                                          fn = fn
+                                         )
   }
 
   return(ingest_xx)

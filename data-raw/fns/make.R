@@ -161,21 +161,21 @@ make_data_yrs_chr <- function(data_dtm){
 make_featured_var_pfx <- function(dynamic_var_rsl_1L_chr,
                                   reference_vals_chr,# = c("tot_pop","age_sex"),
                                   reference_var_rsl_1L_chr = NULL,
-                                  data_year_1L_dbl){
+                                  data_year_1L_chr){
   if(!is.null(reference_var_rsl_1L_chr)){
     nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = reference_var_rsl_1L_chr,
                                      concept_1L_chr = reference_vals_chr[1],#"tot_pop",
                                      reference_var_nm_1L_chr = paste0("year_",
-                                                                      data_year_1L_dbl,
+                                                                      data_year_1L_chr,
                                                                       "pr"),
                                      grouping_var_1L_chr = dynamic_var_rsl_1L_chr,
-                                     data_year_1L_dbl = data_year_1L_dbl)
+                                     data_year_1L_chr = data_year_1L_chr)
   }else{
     nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = dynamic_var_rsl_1L_chr,
 
                                      concept_1L_chr = reference_vals_chr[2],#"age_sex",
                                      grouping_var_1L_chr = dynamic_var_rsl_1L_chr,
-                                     data_year_1L_dbl = data_year_1L_dbl)
+                                     data_year_1L_chr = data_year_1L_chr)
   }
   prefix_1L_chr <- paste0(nse_names_ls$popl_inc_unit,"_")
   return(prefix_1L_chr)

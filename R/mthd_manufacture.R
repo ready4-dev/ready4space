@@ -150,7 +150,11 @@ methods::setMethod("manufacture", methods::className("vicinity_processed", packa
 #' Manufacture a new object
 #' @description manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
 #' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @param args_ls Arguments (a list), Default: NULL
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector), Default: NA
+#' @param fn Function (a function), Default: function(x, ...) {
+#'    NULL
+#'}
 #' @param match_value_xx Match value (an output object of multiple potential types), Default: NULL
 #' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: character(0)
 #' @param merge_itms_chr Merge items (a character vector), Default: character(0)
@@ -163,19 +167,22 @@ methods::setMethod("manufacture", methods::className("vicinity_processed", packa
 #' @return Object (an output object of multiple potential types)
 #' @rdname manufacture-methods
 #' @export 
-#' @importFrom ready4use assert_single_row_tb get_valid_path_chr manufacture.ready4use_dataverses ready4use_dataverses
 #' @importFrom rlang exec
+#' @importFrom ready4use assert_single_row_tb get_valid_path_chr manufacture.ready4use_dataverses ready4use_dataverses
 #' @importFrom purrr map_chr accumulate
 #' @importFrom ready4 get_from_lup_obj manufacture
 #' @importFrom dplyr select
 #' @importFrom tibble as_tibble
-manufacture.vicinity_raw <- function (x, crs_nbr_dbl = NA_real_, match_value_xx = NULL, match_var_nm_1L_chr = character(0), 
+manufacture.vicinity_raw <- function (x, args_ls = NULL, crs_nbr_dbl = NA_real_, fn = function(x, 
+    ...) {
+    NULL
+}, match_value_xx = NULL, match_var_nm_1L_chr = character(0), 
     merge_itms_chr = character(0), overwrite_1L_lgl = F, package_1L_chr = character(0), 
     processed_fls_dir_1L_chr = character(0), raw_fls_dir_1L_chr = character(0), 
     sub_dirs_chr = character(0), what_1L_chr = "output") 
 {
     if (what_1L_chr == "ingest") {
-        object_xx <- NULL
+        object_xx <- rlang::exec(fn, x, !!!args_ls)
         stop("A Make Import Object Method needs to be defined for the child class of vicinity_raw.")
     }
     if (what_1L_chr == "output") {

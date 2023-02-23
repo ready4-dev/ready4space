@@ -25,6 +25,10 @@ ingest.vicinity_processed(
 
 ingest.vicinity_raw(
   x,
+  args_ls = NULL,
+  fn = function(x, ...) {
+     NULL
+ },
   imports_chr = character(0),
   data_type_1L_chr = character(0),
   path_1L_chr = character(0),
@@ -36,6 +40,10 @@ ingest.vicinity_raw(
 
 \S4method{ingest}{vicinity_raw}(
   x,
+  args_ls = NULL,
+  fn = function(x, ...) {
+     NULL
+ },
   imports_chr = character(0),
   data_type_1L_chr = character(0),
   path_1L_chr = character(0),
@@ -55,6 +63,12 @@ ingest.vicinity_raw(
 \item{match_value_xx}{Match value (an output object of multiple potential types)}
 
 \item{processed_fls_dir_1L_chr}{Processed files directory (a character vector of length one), Default: character(0)}
+
+\item{args_ls}{Arguments (a list), Default: NULL}
+
+\item{fn}{Function (a function), Default: function(x, ...) {
+NULL
+}}
 
 \item{imports_chr}{Imports (a character vector), Default: character(0)}
 

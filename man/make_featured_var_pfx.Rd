@@ -8,7 +8,7 @@ make_featured_var_pfx(
   dynamic_var_rsl_1L_chr,
   reference_vals_chr,
   reference_var_rsl_1L_chr = NULL,
-  data_year_1L_dbl
+  data_year_1L_chr
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ make_featured_var_pfx(
 
 \item{reference_var_rsl_1L_chr}{Reference variable resolution (a character vector of length one), Default: NULL}
 
-\item{data_year_1L_dbl}{Data year (a double vector of length one)}
+\item{data_year_1L_chr}{Data year (a character vector of length one)}
 }
 \value{
 Prefix (a character vector of length one)
