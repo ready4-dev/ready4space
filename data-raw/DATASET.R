@@ -23,8 +23,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes Wi
                                               "https://github.com/ready4-dev/vicinity",
                                               "https://ready4-dev.github.io/ready4/")) %>%
   ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("rmarkdown"),
-                                                                       imports_chr = c("knitrBootstrap"),
-                                                                       depends_chr = c("osrm") # required?
+                                                                       imports_chr = c("knitrBootstrap")#, depends_chr = c("osrm") # required?
                                                                        ),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",

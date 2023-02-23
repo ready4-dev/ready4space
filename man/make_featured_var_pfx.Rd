@@ -6,12 +6,15 @@
 \usage{
 make_featured_var_pfx(
   dynamic_var_rsl_1L_chr,
+  reference_vals_chr,
   reference_var_rsl_1L_chr = NULL,
   data_year_1L_dbl
 )
 }
 \arguments{
 \item{dynamic_var_rsl_1L_chr}{Dynamic variable resolution (a character vector of length one)}
+
+\item{reference_vals_chr}{Reference values (a character vector)}
 
 \item{reference_var_rsl_1L_chr}{Reference variable resolution (a character vector of length one), Default: NULL}
 

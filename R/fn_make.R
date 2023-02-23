@@ -196,24 +196,25 @@ make_data_yrs_chr <- function (data_dtm)
 #' Make featured variable prefix
 #' @description make_featured_var_pfx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make featured variable prefix. The function returns Prefix (a character vector of length one).
 #' @param dynamic_var_rsl_1L_chr Dynamic variable resolution (a character vector of length one)
+#' @param reference_vals_chr Reference values (a character vector)
 #' @param reference_var_rsl_1L_chr Reference variable resolution (a character vector of length one), Default: NULL
 #' @param data_year_1L_dbl Data year (a double vector of length one)
 #' @return Prefix (a character vector of length one)
 #' @rdname make_featured_var_pfx
 #' @export 
 #' @keywords internal
-make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, reference_var_rsl_1L_chr = NULL, 
+make_featured_var_pfx <- function (dynamic_var_rsl_1L_chr, reference_vals_chr, reference_var_rsl_1L_chr = NULL, 
     data_year_1L_dbl) 
 {
     if (!is.null(reference_var_rsl_1L_chr)) {
         nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = reference_var_rsl_1L_chr, 
-            concept_1L_chr = "tot_pop", reference_var_nm_1L_chr = paste0("year_", 
+            concept_1L_chr = reference_vals_chr[1], reference_var_nm_1L_chr = paste0("year_", 
                 data_year_1L_dbl, "pr"), grouping_var_1L_chr = dynamic_var_rsl_1L_chr, 
             data_year_1L_dbl = data_year_1L_dbl)
     }
     else {
         nse_names_ls <- make_nse_objs_ls(spatial_unit_1L_chr = dynamic_var_rsl_1L_chr, 
-            concept_1L_chr = "age_sex", grouping_var_1L_chr = dynamic_var_rsl_1L_chr, 
+            concept_1L_chr = reference_vals_chr[2], grouping_var_1L_chr = dynamic_var_rsl_1L_chr, 
             data_year_1L_dbl = data_year_1L_dbl)
     }
     prefix_1L_chr <- paste0(nse_names_ls$popl_inc_unit, "_")

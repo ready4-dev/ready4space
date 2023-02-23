@@ -323,6 +323,7 @@ manufacture_VicinityProfile <- function(x,
                                                   dplyr::mutate(popl_spatial_unit_area_dbl = sf::st_area(.)))
         profiled_sf <- do.call(rbind,by_band_pop_counts_sf_ls)
         featured_var_pfx_1L_chr <- make_featured_var_pfx(dynamic_var_rsl_1L_chr = dynamic_var_rsl_1L_chr,
+                                                         reference_vals_chr = reference_vals_chr,
                                                          reference_var_rsl_1L_chr = reference_var_rsl_1L_chr,
                                                          data_year_1L_chr = x@data_year_1L_chr)#input_ls$x_VicinityProfile
         profiled_sf <- remove_grouped_popl_vars(profiled_sf = profiled_sf,
