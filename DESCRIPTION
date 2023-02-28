@@ -1,6 +1,6 @@
 Package: vicinity
 Title: Model Spatial Attributes with Ready4
-Version: 0.0.0.9227
+Version: 0.0.0.9228
 Authors@R: c(
     person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7407-9194")),
@@ -35,6 +35,7 @@ Imports:
     methods,
     osrm,
     purrr,
+    readxl,
     ready4 (>= 0.0.0.9109),
     ready4use (>= 0.0.0.9225),
     rlang,
@@ -78,6 +79,7 @@ Collate:
     'fn_make.R'
     'fn_randomise.R'
     'fn_remove.R'
+    'fn_rename.R'
     'fn_reorder.R'
     'fn_transform.R'
     'fn_update.R'
