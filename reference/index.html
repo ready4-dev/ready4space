@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">vicinity</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9223</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9228</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,6 +99,11 @@
           <code><a href="vicinity_identifiers.html">vicinity_identifiers()</a></code> <code><a href="vicinity_identifiers.html">make_pt_vicinity_identifiers()</a></code> <code><a href="vicinity_identifiers.html">is_vicinity_identifiers()</a></code> 
         </dt>
         <dd>ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vicinity_mapes.html">vicinity_mapes()</a></code> <code><a href="vicinity_mapes.html">make_pt_vicinity_mapes()</a></code> <code><a href="vicinity_mapes.html">is_vicinity_mapes()</a></code> 
+        </dt>
+        <dd>ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.</dd>
       </dl></div><div class="section level2">
       <h2 id="s-classes-1">S4 Classes<a class="anchor" aria-label="anchor" href="#s-classes-1"></a></h2>
       
@@ -111,6 +116,11 @@
       
 
       <dl><dt>
+          
+          <code><a href="VicinityArguments-class.html">VicinityArguments-class</a></code> <code><a href="VicinityArguments-class.html">VicinityArguments</a></code> 
+        </dt>
+        <dd>VicinityArguments</dd>
+      </dl><dl><dt>
           
           <code><a href="VicinityLookup-class.html">VicinityLookup-class</a></code> <code><a href="VicinityLookup-class.html">VicinityLookup</a></code> 
         </dt>
@@ -160,6 +170,62 @@
           <code><a href="VicinityLocalProcessed-class.html">VicinityLocalProcessed-class</a></code> <code><a href="VicinityLocalProcessed-class.html">VicinityLocalProcessed</a></code> 
         </dt>
         <dd>VicinityLocalProcessed</dd>
+      </dl></div><div class="section level2">
+      <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="author-methods.html">author.vicinity_processed()</a></code> <code><a href="author-methods.html">author(<i>&lt;vicinity_processed&gt;</i>)</a></code> <code><a href="author-methods.html">author.vicinity_raw()</a></code> <code><a href="author-methods.html">author(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="author-methods.html">author(<i>&lt;VicinityLocalProcessed&gt;</i>)</a></code> <code><a href="author-methods.html">author(<i>&lt;VicinityLocalRaw&gt;</i>)</a></code> 
+        </dt>
+        <dd>Author and save files</dd>
+      </dl><dl><dt>
+          
+          <code><a href="authorData-methods.html">authorData.vicinity_raw()</a></code> <code><a href="authorData-methods.html">authorData(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="authorData-methods.html">authorData(<i>&lt;VicinityLocal&gt;</i>)</a></code> 
+        </dt>
+        <dd>Author and document datasets</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ingest-methods.html">ingest.vicinity_processed()</a></code> <code><a href="ingest-methods.html">ingest(<i>&lt;vicinity_processed&gt;</i>)</a></code> <code><a href="ingest-methods.html">ingest.vicinity_raw()</a></code> <code><a href="ingest-methods.html">ingest(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="ingest-methods.html">ingest(<i>&lt;VicinityProfile&gt;</i>)</a></code> 
+        </dt>
+        <dd>Ingest data</dd>
+      </dl><dl><dt>
+          
+          <code><a href="manufacture-methods.html">manufacture.vicinity_abbreviations()</a></code> <code><a href="manufacture-methods.html">manufacture(<i>&lt;vicinity_abbreviations&gt;</i>)</a></code> <code><a href="manufacture-methods.html">manufacture.vicinity_parameters()</a></code> <code><a href="manufacture-methods.html">manufacture(<i>&lt;vicinity_parameters&gt;</i>)</a></code> <code><a href="manufacture-methods.html">manufacture.vicinity_points()</a></code> <code><a href="manufacture-methods.html">manufacture(<i>&lt;vicinity_points&gt;</i>)</a></code> <code><a href="manufacture-methods.html">manufacture.vicinity_processed()</a></code> <code><a href="manufacture-methods.html">manufacture(<i>&lt;vicinity_processed&gt;</i>)</a></code> <code><a href="manufacture-methods.html">manufacture.vicinity_raw()</a></code> <code><a href="manufacture-methods.html">manufacture(<i>&lt;vicinity_raw&gt;</i>)</a></code> 
+        </dt>
+        <dd>Manufacture a new object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="metamorphose-methods.html">metamorphose.vicinity_raw()</a></code> <code><a href="metamorphose-methods.html">metamorphose(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="metamorphose-methods.html">metamorphose(<i>&lt;VicinityLocalProcessed&gt;</i>)</a></code> <code><a href="metamorphose-methods.html">metamorphose(<i>&lt;VicinityLocal&gt;</i>)</a></code> 
+        </dt>
+        <dd>Metamorphose data from one model module (or sub-module) instance to an instance of a different model module or sub-module</dd>
+      </dl><dl><dt>
+          
+          <code><a href="procure-methods.html">procure.vicinity_abbreviations()</a></code> <code><a href="procure-methods.html">procure(<i>&lt;vicinity_abbreviations&gt;</i>)</a></code> <code><a href="procure-methods.html">procure.vicinity_identifiers()</a></code> <code><a href="procure-methods.html">procure(<i>&lt;vicinity_identifiers&gt;</i>)</a></code> <code><a href="procure-methods.html">procure.vicinity_raw()</a></code> <code><a href="procure-methods.html">procure(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="procure-methods.html">procure.vicinity_resolutions()</a></code> <code><a href="procure-methods.html">procure(<i>&lt;vicinity_resolutions&gt;</i>)</a></code> <code><a href="procure-methods.html">procure(<i>&lt;VicinityProfile&gt;</i>)</a></code> 
+        </dt>
+        <dd>Procure items from a dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ratify-methods.html">ratify.vicinity_processed()</a></code> <code><a href="ratify-methods.html">ratify(<i>&lt;vicinity_processed&gt;</i>)</a></code> 
+        </dt>
+        <dd>Ratify that a dataset meets validity criteria</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reckon-methods.html">reckon.vicinity_mapes()</a></code> <code><a href="reckon-methods.html">reckon(<i>&lt;vicinity_mapes&gt;</i>)</a></code> <code><a href="reckon-methods.html">reckon.vicinity_parameters()</a></code> <code><a href="reckon-methods.html">reckon(<i>&lt;vicinity_parameters&gt;</i>)</a></code> 
+        </dt>
+        <dd>Reckon (calculate) a value</dd>
+      </dl><dl><dt>
+          
+          <code><a href="renew-methods.html">renew.vicinity_points()</a></code> <code><a href="renew-methods.html">renew(<i>&lt;vicinity_points&gt;</i>)</a></code> <code><a href="renew-methods.html">renew.vicinity_processed()</a></code> <code><a href="renew-methods.html">renew(<i>&lt;vicinity_processed&gt;</i>)</a></code> <code><a href="renew-methods.html">renew.vicinity_raw()</a></code> <code><a href="renew-methods.html">renew(<i>&lt;vicinity_raw&gt;</i>)</a></code> <code><a href="renew-methods.html">renew(<i>&lt;VicinityLookup&gt;</i>)</a></code> <code><a href="renew-methods.html">renew(<i>&lt;VicinityArguments&gt;</i>)</a></code> 
+        </dt>
+        <dd>Renew values in a dataset</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

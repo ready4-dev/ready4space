@@ -22,6 +22,9 @@
     <loc>https://ready4-dev.github.io/vicinity/index.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/VicinityArguments-class.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/VicinityLocal-class.html</loc>
   </url>
   <url>
@@ -52,19 +55,109 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/VicinitySpaceTime-class.html</loc>
   </url>
   <url>
-    <loc>https://ready4-dev.github.io/vicinity/reference/add_uid_lup.html</loc>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_att_to_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_dynamic_vars_to_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_km_sqd.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_km_sqd_by_group.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_names.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/add_popl_counts.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/author-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/authorData-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/bind_isochrone_bands.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/calculate_end_date.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/deprecated.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/get_agent_areas.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/get_included_yrs.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/get_max_or_min_yr_of_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/get_name_from_path_chr.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/get_set_diff_lng_lat_sf.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/ingest-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_agent_locations_tb.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_closest_yrs_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_cluster_bndys.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_cluster_isochrones.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_common_sf_vars_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_common_sf_yrs_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_data_yrs_chr.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_featured_var_pfx.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_filter_by_year_logic.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_intersecting_geometries.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_intersecting_profiled_area.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_isochrone_bands.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_isochrones.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_km_sqd_dbl.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_abbreviations.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_identifiers.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_mapes.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_parameters.html</loc>
@@ -88,13 +181,115 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/make_new_vicinity_values.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_nse_objs_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_path_for_raw_outp_dir.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_paths_to_fls_for_ingest.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_polygons_from_duplicates.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_reconciled_intersecting_area.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_sf_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_sf_rows_fn.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/make_valid_new_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/manufacture-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/metamorphose-methods.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/procure-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/randomise_locations.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/ratify-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/reckon-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/remove_grouped_popl_vars.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/remove_outlier_areas.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/rename_areas.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/renew-methods.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/reorder_clusters_by_distances.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_agent_areas.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_circles_to_bands.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_multiple_vals.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_polyline_to_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_sf_ls.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_sfx_to_pfx.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_shape_of_popl_predns_ds.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_to_simpler_sf.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/transform_value.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/update_isochrone_tbl.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/update_popl_by_group.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/update_popl_by_incld_area.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/update_popl_counts.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_popl_predns_incld.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_abbreviations.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_identifiers.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_mapes.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/validate_vicinity_parameters.html</loc>
@@ -127,6 +322,9 @@
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_identifiers.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_mapes.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_parameters.html</loc>
   </url>
   <url>
@@ -146,5 +344,14 @@
   </url>
   <url>
     <loc>https://ready4-dev.github.io/vicinity/reference/vicinity_values.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/write_att_tb.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/write_dirs_for_imp.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/vicinity/reference/write_raw_format_dir.html</loc>
   </url>
 </urlset>
