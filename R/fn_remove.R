@@ -18,3 +18,30 @@ remove_grouped_popl_vars <- function (profiled_sf, featured_var_pfx_1L_chr)
     profiled_sf <- dplyr::select(profiled_sf, keep_vars_chr)
     return(profiled_sf)
 }
+#' Remove outlier areas
+#' @description remove_outlier_areas() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove outlier areas. Function argument areas_sf specifies the object to be updated. Argument outliers_chr provides the object to be updated. The function returns Areas (a simple features object).
+#' @param areas_sf Areas (a simple features object)
+#' @param outliers_chr Outliers (a character vector)
+#' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: character(0)
+#' @return Areas (a simple features object)
+#' @rdname remove_outlier_areas
+#' @export 
+#' @importFrom dplyr pull filter
+#' @importFrom rlang sym
+#' @importFrom stringr str_detect
+#' @importFrom stats setNames
+#' @importFrom purrr prepend reduce
+#' @importFrom sf st_as_sf
+#' @keywords internal
+remove_outlier_areas <- function (areas_sf, outliers_chr, area_var_nm_1L_chr = character(0)) 
+{
+    included_areas_with_outliers_chr <- areas_sf %>% dplyr::pull(!!rlang::sym(area_var_nm_1L_chr))
+    remove_outlier <- function(x, y) x[!stringr::str_detect(x, 
+        y)]
+    included_areas_excl_outliers_chr <- as.list(outliers_chr) %>% 
+        stats::setNames(outliers_chr) %>% purrr::prepend(list(a = included_areas_with_outliers_chr)) %>% 
+        purrr::reduce(remove_outlier)
+    areas_sf <- areas_sf %>% dplyr::filter(!!rlang::sym(area_var_nm_1L_chr) %in% 
+        included_areas_excl_outliers_chr) %>% sf::st_as_sf()
+    return(areas_sf)
+}

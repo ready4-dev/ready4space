@@ -15,94 +15,97 @@ manufacture_VicinityLookup <- function(x,
                                        ... # Can remove???
                                        ){
   if(what_1L_chr == "attribute"){
-    if(!identical(match_value_xx, character(0))){ # add_attr_list_to_sf
-      att_data_xx <- manufacture(x, #make_att_data_xx
-                                  match_value_xx = match_value_xx,
-                                  area_sf = area_sf,
-                                  what_1L_chr = "attribute_inner")
-      object_xx <- add_att_to_sf(area_sf = area_sf,
-                                  att_data_tb = att_data_xx,
-                                  att_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+    if(type_1L_chr == "inner"){ # make_att_data_xx
+      att_data_xx <- ingest(x@vicinity_processed_r3,
+                            col_nm_1L_chr = "name_chr",
+                            match_value_xx = match_value_xx)
+      if(is.data.frame(att_data_xx)){
+        att_data_xx <- list(att_data_xx) %>%
+          stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+                                                   match_value_xx = match_value_xx,
+                                                   match_var_nm_1L_chr = "name_chr",
+                                                   target_var_nm_1L_chr = "year_chr",
+                                                   evaluate_1L_lgl = FALSE))
+      }
+      # START MOVE TO s2lsd
+      region_short_nm_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+                                                         match_value_xx = match_value_xx,
+                                                         match_var_nm_1L_chr = "name_chr",
+                                                         target_var_nm_1L_chr = "region_chr",
+                                                         evaluate_1L_lgl = FALSE)
+      region_short_long_chr <- c(region_short_nm_1L_chr,
+                                 ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_abbreviations_r3,
+                                                          match_value_xx = region_short_nm_1L_chr,
+                                                          match_var_nm_1L_chr = "short_name_chr",
+                                                          target_var_nm_1L_chr = "long_name_chr",
+                                                          evaluate_1L_lgl = FALSE))
+      area_names_var_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+                                                     match_value_xx = match_value_xx,
+                                                     match_var_nm_1L_chr = "name_chr",
+                                                     target_var_nm_1L_chr = "area_type_chr",
+                                                     evaluate_1L_lgl = FALSE) %>%
+        ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_templates_r3,
+                                 match_value_xx = .,
+                                 match_var_nm_1L_chr = "area_type_chr",
+                                 target_var_nm_1L_chr = "subdivision_chr",
+                                 evaluate_1L_lgl = FALSE)
+      area_names_var_chr <- area_names_var_chr[area_names_var_chr %in% names(area_sf)]
+      boundary_year_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
+                                                       match_value_xx = match_value_xx,
+                                                       match_var_nm_1L_chr = "name_chr",
+                                                       target_var_nm_1L_chr = "area_bndy_yr_chr",
+                                                       evaluate_1L_lgl = F)
+      area_unit_1L_chr <- x@vicinity_identifiers_r3 %>%
+        dplyr::filter(var_name_chr %in% area_names_var_chr) %>%
+        dplyr::filter(as.numeric(year_chr) == max(as.numeric(year_chr)[as.numeric(year_chr) <= as.numeric(boundary_year_1L_chr)])) %>%
+        dplyr::pull(var_name_chr)
+      ## End move to s2lsd
+      att_data_xx <- manufacture(x,# updateAttrDataXx
+                                 att_data_xx = att_data_xx,
+                                 area_sf = area_sf,
+                                 area_unit_1L_chr = area_unit_1L_chr, # Remove when moved to s2lsd
+                                 region_short_long_chr = region_short_long_chr, # Remove when moved to s2lsd
+                                 match_value_xx = match_value_xx,
+                                 type_1L_chr = "custom")
+      object_xx <- att_data_xx
+    }
+    if(!type_1L_chr %in% c("inner")){
+      if(!identical(match_value_xx, character(0))){ # add_attr_list_to_sf
+        att_data_xx <- manufacture(x, #make_att_data_xx
+                                   match_value_xx = match_value_xx,
+                                   area_sf = area_sf,
+                                   type_1L_chr = "inner")
+        object_xx <- add_att_to_sf(area_sf = area_sf,
+                                   att_data_tb = att_data_xx,
+                                   att_data_desc = ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
                                                                             match_value_xx = match_value_xx,
                                                                             match_var_nm_1L_chr = "name_chr",
                                                                             target_var_nm_1L_chr = "main_feature_chr"))
-
-    }else{
-      if(!identical(area_unit_1L_chr, character(0))){ # add_attr_recrly_to_sf
-        boundary_sf <- ingest(x@vicinity_processed_r3 %>%
-                                dplyr::filter(area_type_chr == area_unit_1L_chr) %>%
-                                dplyr::filter(main_feature_chr == "Boundary") %>%
-                                dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
-                              match_value_xx = "Boundary")
-        attribute_data_ls <- purrr::map(att_data_xx,#attribute_data_chr,
-                                        ~ .x) %>%
-          stats::setNames(att_data_xx,#attribute_data_chr,
-          )
-        object_xx <- purrr::map(attribute_data_ls,
-                                ~ manufacture(x, #add_attr_list_to_sf
-                                              area_sf = boundary_sf,
-                                              match_value_xx = .x)) %>%
-          transform_sf_ls() %>%
-          purrr::reduce(~rbind(.x,.y))
-
       }else{
-        object_xx <- att_data_xx
+        if(!identical(area_unit_1L_chr, character(0))){ # add_attr_recrly_to_sf
+          boundary_sf <- ingest(x@vicinity_processed_r3 %>%
+                                  dplyr::filter(area_type_chr == area_unit_1L_chr) %>%
+                                  dplyr::filter(main_feature_chr == "Boundary") %>%
+                                  dplyr::filter(as.numeric(year_start_chr) == max(as.numeric(year_start_chr)[as.numeric(year_start_chr) <= as.numeric(boundary_year_1L_chr)])),
+                                match_value_xx = "Boundary")
+          attribute_data_ls <- purrr::map(att_data_xx,#attribute_data_chr,
+                                          ~ .x) %>%
+            stats::setNames(att_data_xx,#attribute_data_chr,
+            )
+          object_xx <- purrr::map(attribute_data_ls,
+                                  ~ manufacture(x, #add_attr_list_to_sf
+                                                area_sf = boundary_sf,
+                                                match_value_xx = .x)) %>%
+            transform_sf_ls() %>%
+            purrr::reduce(~rbind(.x,.y))
+
+        }else{
+          object_xx <- att_data_xx
+        }
       }
     }
   }
-  if(what_1L_chr == "attribute_inner"){ # make_att_data_xx
-    att_data_xx <- ingest(x@vicinity_processed_r3,
-                           col_nm_1L_chr = "name_chr",
-                           match_value_xx = match_value_xx)
-    if(is.data.frame(att_data_xx)){
-      att_data_xx <- list(att_data_xx) %>%
-        stats::setNames(ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
-                                                 match_value_xx = match_value_xx,
-                                                 match_var_nm_1L_chr = "name_chr",
-                                                 target_var_nm_1L_chr = "year_chr",
-                                                 evaluate_1L_lgl = FALSE))
-    }
-    # START MOVE TO s2lsd
-    region_short_nm_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
-                                                       match_value_xx = match_value_xx,
-                                                       match_var_nm_1L_chr = "name_chr",
-                                                       target_var_nm_1L_chr = "region_chr",
-                                                       evaluate_1L_lgl = FALSE)
-    region_short_long_chr <- c(region_short_nm_1L_chr,
-                               ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_abbreviations_r3,
-                                                        match_value_xx = region_short_nm_1L_chr,
-                                                        match_var_nm_1L_chr = "short_name_chr",
-                                                        target_var_nm_1L_chr = "long_name_chr",
-                                                        evaluate_1L_lgl = FALSE))
-    area_names_var_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
-                                                   match_value_xx = match_value_xx,
-                                                   match_var_nm_1L_chr = "name_chr",
-                                                   target_var_nm_1L_chr = "area_type_chr",
-                                                   evaluate_1L_lgl = FALSE) %>%
-      ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_templates_r3,
-                               match_value_xx = .,
-                               match_var_nm_1L_chr = "area_type_chr",
-                               target_var_nm_1L_chr = "subdivision_chr",
-                               evaluate_1L_lgl = FALSE)
-    area_names_var_chr <- area_names_var_chr[area_names_var_chr %in% names(area_sf)]
-    boundary_year_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_processed_r3,
-                                                     match_value_xx = match_value_xx,
-                                                     match_var_nm_1L_chr = "name_chr",
-                                                     target_var_nm_1L_chr = "area_bndy_yr_chr",
-                                                     evaluate_1L_lgl = F)
-    area_names_var_chr <- x@vicinity_identifiers_r3 %>%
-      dplyr::filter(var_name_chr %in% area_names_var_chr) %>%
-      dplyr::filter(as.numeric(year_chr) == max(as.numeric(year_chr)[as.numeric(year_chr) <= as.numeric(boundary_year_1L_chr)])) %>%
-      dplyr::pull(var_name_chr)
-    ## End move to s2lsd
-    att_data_xx <- manufacture(x,# updateAttrDataXx
-                                att_data_xx = att_data_xx,
-                                area_sf = area_sf,
-                                area_names_var_chr = area_names_var_chr, # Remove when moved to s2lsd
-                                region_short_long_chr = region_short_long_chr, # Remove when moved to s2lsd
-                                match_value_xx = match_value_xx)
-    object_xx <- att_data_xx
-  }
+
   if(what_1L_chr == "imports"){ #make_imports_chr
     if(type_1L_chr == "Geometry"){
       imports_chr <- x@vicinity_raw_r3 %>%
@@ -116,13 +119,13 @@ manufacture_VicinityLookup <- function(x,
 
   }
   if(what_1L_chr == "import_script"){ # make_merge_sf_chr
-      if(is.null(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1))){
+      if(is.null(y_vicinity_raw %>% dplyr::pull(add_bndys_from_ls) %>% purrr::pluck(1))){
         script_1L_chr <- NA_character_
       }else{
-        if(is.na(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1)) %>% any()){
+        if(is.na(y_vicinity_raw %>% dplyr::pull(add_bndys_from_ls) %>% purrr::pluck(1)) %>% any()){
           script_1L_chr <- NA_character_
         }else{
-          script_1L_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_boundaries_chr) %>% purrr::pluck(1),
+          script_1L_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_bndys_from_ls) %>% purrr::pluck(1),
                                          ~ ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3,
                                                                     match_value_xx = .x,
                                                                     match_var_nm_1L_chr = "uid_chr",

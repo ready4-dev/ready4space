@@ -33,7 +33,7 @@ make_pt_vicinity_raw(
   year_start_chr = character(0),
   year_end_chr = character(0),
   uid_chr = character(0),
-  add_boundaries_chr = list()
+  add_bndys_from_ls = list()
 )
 
 is_vicinity_raw(x)
@@ -89,7 +89,7 @@ is_vicinity_raw(x)
 
 \item{uid_chr}{Unique identifier (a character vector), Default: character(0)}
 
-\item{add_boundaries_chr}{Add boundaries (a character vector), Default: list()}
+\item{add_bndys_from_ls}{Add boundaries from (a list), Default: list()}
 }
 \value{
 A validated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.

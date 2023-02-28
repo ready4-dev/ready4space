@@ -56,20 +56,20 @@ spatial_vic_pop_growth_lga <- function(vic_pop_growth_by_age_lga_t0 = ready.data
                                                                                            evaluate_1L_lgl = T),
                                        t0 ="2016",
                                        t1 ="2021"){
-  vic_pop_growth_by_age_lga_t0 <- spatial_select_rename_age_sex(population_tib = vic_pop_growth_by_age_lga_t0,
+  vic_pop_growth_by_age_lga_t0 <- spatial_select_rename_age_sex(population_tb = vic_pop_growth_by_age_lga_t0, # now manufacture mthd
                                                                 year = t0,
-                                                                also_include = c("LGA Code",
+                                                                include_chr = c("LGA Code",
                                                                                  "Local Government Area")) %>%
     dplyr::rename("LGA" = "Local.Government.Area")
-  vic_pop_growth_by_age_lga_t1 <- spatial_select_rename_age_sex(population_tib = vic_pop_growth_by_age_lga_t1,
+  vic_pop_growth_by_age_lga_t1 <- spatial_select_rename_age_sex(population_tb = vic_pop_growth_by_age_lga_t1, # now manufacture mthd
                                                                 year = t1,
-                                                                also_include = c("LGA Code",
+                                                                include_chr = c("LGA Code",
                                                                                  "Local Government Area")) %>%
     dplyr::rename("LGA" = "Local.Government.Area")
   vic.pop.growth.by.age.lga <- dplyr::inner_join(vic_pop_growth_by_age_lga_t0,
                                                  vic_pop_growth_by_age_lga_t1,
                                                  by = c("LGA.Code", "LGA"))
-  vic.pop.growth.by.age.lga <- spatial_population_growth(population_tib = vic.pop.growth.by.age.lga,
+  vic.pop.growth.by.age.lga <- spatial_population_growth(population_tb = vic.pop.growth.by.age.lga,
                                                          t0 = t0,
                                                          t1 = t1)
   vic.pop.growth.by.age.lga <- vic.pop.growth.by.age.lga %>%

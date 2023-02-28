@@ -28,6 +28,7 @@ x
 #' make prototype vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.
 #' @param long_name_chr Long name (a character vector), Default: character(0)
 #' @param short_name_chr Short name (a character vector), Default: character(0)
+#' @param type_chr Type (a character vector), Default: character(0)
 #' @return A prototype for ready4 S3 class for tibble object lookup table for spatial data abbreviations.
 #' 
 #' @rdname vicinity_abbreviations
@@ -36,9 +37,11 @@ x
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
 make_pt_vicinity_abbreviations <- function(long_name_chr = character(0),
-short_name_chr = character(0)){ 
+short_name_chr = character(0),
+type_chr = character(0)){ 
 args_ls <- list(long_name_chr = long_name_chr,
-short_name_chr = short_name_chr) %>% ready4::update_pt_fn_args_ls()
+short_name_chr = short_name_chr,
+type_chr = type_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
 #' validate vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.

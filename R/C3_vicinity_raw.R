@@ -50,7 +50,7 @@ x
 #' @param year_start_chr Year start (a character vector), Default: character(0)
 #' @param year_end_chr Year end (a character vector), Default: character(0)
 #' @param uid_chr Unique identifier (a character vector), Default: character(0)
-#' @param add_boundaries_chr Add boundaries (a character vector), Default: list()
+#' @param add_bndys_from_ls Add boundaries from (a list), Default: list()
 #' @return A prototype for ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' 
 #' @rdname vicinity_raw
@@ -82,7 +82,7 @@ year_chr = character(0),
 year_start_chr = character(0),
 year_end_chr = character(0),
 uid_chr = character(0),
-add_boundaries_chr = list()){ 
+add_bndys_from_ls = list()){ 
 args_ls <- list(file_type_chr = file_type_chr,
 file_name_chr = file_name_chr,
 data_repo_chr = data_repo_chr,
@@ -107,7 +107,7 @@ year_chr = year_chr,
 year_start_chr = year_start_chr,
 year_end_chr = year_end_chr,
 uid_chr = uid_chr,
-add_boundaries_chr = add_boundaries_chr) %>% ready4::update_pt_fn_args_ls()
+add_bndys_from_ls = add_bndys_from_ls) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
 #' validate vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.

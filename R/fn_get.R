@@ -1,3 +1,32 @@
+#' Get agent areas
+#' @description get_agent_areas() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get agent areas. Function argument agent_areas_tb specifies the where to look for the required object. The function returns Agent areas (an output object of multiple potential types).
+#' @param agent_areas_tb Agent areas (a tibble), Default: NULL
+#' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
+#' @param path_1L_chr Path (a character vector of length one), Default: character(0)
+#' @param type_1L_chr Type (a character vector of length one), Default: 'table'
+#' @return Agent areas (an output object of multiple potential types)
+#' @rdname get_agent_areas
+#' @export 
+#' @importFrom readxl read_xls
+#' @importFrom dplyr select pull
+#' @importFrom rlang sym
+#' @importFrom stringr str_sort
+#' @keywords internal
+get_agent_areas <- function (agent_areas_tb = NULL, area_var_nm_1L_chr = "Suburb", 
+    path_1L_chr = character(0), type_1L_chr = "table") 
+{
+    if (is.null(agent_locations_tb)) {
+        agent_areas_tb <- readxl::read_xls(path_1L_chr)
+    }
+    if (type_1L_chr == "names") {
+        agent_areas_xx <- agent_areas_tb %>% dplyr::select(!!rlang::sym(area_var_nm_1L_chr)) %>% 
+            unique() %>% dplyr::pull() %>% stringr::str_sort()
+    }
+    else {
+        agent_areas_xx <- agent_areas_tb
+    }
+    return(agent_areas_xx)
+}
 #' Get included years
 #' @description get_included_yrs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get included years. Function argument geometry_sf specifies the where to look for the required object. The function returns Years (a double vector).
 #' @param geometry_sf Geometry (a simple features object)

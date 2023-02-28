@@ -10,7 +10,8 @@ vicinity_abbreviations(x = make_pt_vicinity_abbreviations())
 
 make_pt_vicinity_abbreviations(
   long_name_chr = character(0),
-  short_name_chr = character(0)
+  short_name_chr = character(0),
+  type_chr = character(0)
 )
 
 is_vicinity_abbreviations(x)
@@ -21,6 +22,8 @@ is_vicinity_abbreviations(x)
 \item{long_name_chr}{Long name (a character vector), Default: character(0)}
 
 \item{short_name_chr}{Short name (a character vector), Default: character(0)}
+
+\item{type_chr}{Type (a character vector), Default: character(0)}
 }
 \value{
 A validated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.

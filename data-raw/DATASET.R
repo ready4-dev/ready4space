@@ -59,7 +59,8 @@ y <- ready4class::ready4class_constructor() %>%
     NULL, NULL, NULL, "ready4 S3 class for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL,
     TRUE, "abbreviations",#"sp_abbreviations_lup"
     list("tibble"), list("is_"), list("tibble"),list(long_name_chr = "character(0)",#long_name
-                                                     short_name_chr = "character(0)"#short_name
+                                                     short_name_chr = "character(0)",#short_name
+                                                     type_chr = "character(0)"
                                                      ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
     TRUE, "processed",#"sp_data_pack_lup"
     list("tibble"), list("is_"), list("tibble"),list(name_chr = "character(0)",#name
@@ -87,7 +88,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                             year_start_chr = "character(0)",#year_start
                                                                             year_end_chr = "character(0)",#year_end
                                                                             uid_chr = "character(0)",#
-                                                                            add_boundaries_chr = "list()"#
+                                                                            add_bndys_from_ls = "list()"#
                                                      ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4use_imports", NULL, NULL, NULL,
     TRUE, "resolutions",#"sp_resolution_lup"
     list("tibble"), list("is_"), list("tibble"),list(parent_area_chr = "character(0)",# parent_area

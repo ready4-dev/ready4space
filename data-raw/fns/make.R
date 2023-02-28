@@ -598,13 +598,13 @@ make_valid_new_sf <- function(sf){
 # make_merge_sf_chr <- function(x_VicinityLookup, Now manufacture method
 #                               y_vicinity_raw,
 #                               processed_fls_dir_1L_chr = NULL){
-#   if(is.null(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1))){
+#   if(is.null(y_vicinity_raw %>% dplyr::pull(add_bndys_from_ls) %>% purrr::pluck(1))){
 #     merge_sf_chr <- NA_character_
 #   }else{
-#     if(is.na(y_vicinity_raw %>% dplyr::pull(add_boundaries_chr) %>% purrr::pluck(1)) %>% any()){
+#     if(is.na(y_vicinity_raw %>% dplyr::pull(add_bndys_from_ls) %>% purrr::pluck(1)) %>% any()){
 #       merge_sf_chr <- NA_character_
 #     }else{
-#       merge_sf_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_boundaries_chr) %>% purrr::pluck(1),
+#       merge_sf_chr <- purrr::map_chr(y_vicinity_raw %>% pull(add_bndys_from_ls) %>% purrr::pluck(1),
 #                                      ~ ready4::get_from_lup_obj(data_lookup_tb = x_VicinityLookup@vicinity_raw_r3,
 #                                                                 match_value_xx = .x,
 #                                                                 match_var_nm_1L_chr = "uid_chr",

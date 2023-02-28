@@ -1,3 +1,29 @@
+#' Transform agent areas
+#' @description transform_agent_areas() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform agent areas. Function argument agent_areas_tb specifies the object to be updated. Argument area_var_nm_1L_chr provides the object to be updated. The function returns Agent areas (a tibble).
+#' @param agent_areas_tb Agent areas (a tibble)
+#' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
+#' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: character(0)
+#' @param match_value_xx Match value (an output object of multiple potential types), Default: NULL
+#' @param title_case_1L_lgl Title case (a logical vector of length one), Default: T
+#' @return Agent areas (a tibble)
+#' @rdname transform_agent_areas
+#' @export 
+#' @importFrom dplyr filter mutate
+#' @importFrom rlang sym
+#' @importFrom stringr str_to_title
+#' @keywords internal
+transform_agent_areas <- function (agent_areas_tb, area_var_nm_1L_chr = "Suburb", match_var_nm_1L_chr = character(0), 
+    match_value_xx = NULL, title_case_1L_lgl = T) 
+{
+    agent_areas_tb <- agent_areas_tb %>% dplyr::filter(!is.na(!!rlang::sym(match_var_nm_1L_chr))) %>% 
+        dplyr::filter(!!rlang::sym(match_var_nm_1L_chr) == match_value_xx)
+    proper <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
+        2)))
+    agent_areas_tb <- agent_areas_tb %>% dplyr::mutate(`:=`(!!rlang::sym(area_var_nm_1L_chr), 
+        proper(!!rlang::sym(area_var_nm_1L_chr)))) %>% dplyr::mutate(`:=`(!!rlang::sym(area_var_nm_1L_chr), 
+        stringr::str_to_title(!!rlang::sym(area_var_nm_1L_chr))))
+    return(agent_areas_tb)
+}
 #' Transform circles to bands
 #' @description transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. Function argument geomc_dist_circles_ls specifies the object to be updated. The function returns Bands (a list).
 #' @param geomc_dist_circles_ls Geometric distance circles (a list)

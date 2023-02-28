@@ -1,3 +1,21 @@
+get_agent_areas <- function(agent_areas_tb = NULL, # get_client_suburb_vector
+                            area_var_nm_1L_chr = "Suburb",
+                            path_1L_chr = character(0),
+                            type_1L_chr = "table"){
+  if(is.null(agent_locations_tb)){
+    agent_areas_tb <- readxl::read_xls(path_1L_chr)
+  }
+  if(type_1L_chr == "names"){
+    agent_areas_xx <- agent_areas_tb %>%
+      dplyr::select(!!rlang::sym(area_var_nm_1L_chr)) %>% #Suburb
+      unique() %>%
+      dplyr::pull() %>%
+      stringr::str_sort()
+  }else{
+    agent_areas_xx <- agent_areas_tb
+  }
+  return(agent_areas_xx)
+}
 get_included_yrs <- function(geometry_sf,
                              pfx_1L_chr = "y2"){
   geometry_sf <- geometry_sf %>%

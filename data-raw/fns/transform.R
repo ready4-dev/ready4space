@@ -1,3 +1,19 @@
+transform_agent_areas <- function(agent_areas_tb,#cluster,
+                                  area_var_nm_1L_chr = "Suburb",
+                                  match_var_nm_1L_chr = character(0),#TeamName
+                                  match_value_xx = NULL,#"hYEPP"
+                                  title_case_1L_lgl = T
+                                  #year_dbl,file_ref = NA
+){
+  agent_areas_tb <- agent_areas_tb %>% dplyr::filter(!is.na(!!rlang::sym(match_var_nm_1L_chr)))  %>% #TeamName
+    dplyr::filter(!!rlang::sym(match_var_nm_1L_chr)==match_value_xx) #"hYEPP"
+  proper <- function(x) paste0(toupper(substr(x, 1, 1)),
+                               tolower(substring(x, 2)))
+  agent_areas_tb <- agent_areas_tb %>%
+    dplyr::mutate(!!rlang::sym(area_var_nm_1L_chr) := proper(!!rlang::sym(area_var_nm_1L_chr))) %>%
+    dplyr::mutate(!!rlang::sym(area_var_nm_1L_chr) := stringr::str_to_title(!!rlang::sym(area_var_nm_1L_chr)))
+  return(agent_areas_tb)
+}
 transform_circles_to_bands <- function(geomc_dist_circles_ls){
   bands_ls <- purrr::map(1:(length(geomc_dist_circles_ls)-1),
                          ~ sf::st_difference(geomc_dist_circles_ls %>%

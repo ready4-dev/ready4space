@@ -51,6 +51,7 @@ reference:
   - ingest-VicinityProfile
   - ingest.vicinity_processed
   - ingest.vicinity_raw
+  - manufacture.vicinity_abbreviations
   - manufacture.vicinity_parameters
   - manufacture.vicinity_points
   - manufacture.vicinity_processed

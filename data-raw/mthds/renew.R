@@ -60,8 +60,8 @@ renew.vicinity_raw <- function(x, ##
     not_to_be_ordered_tb <- x %>% dplyr::filter(is.na(uid_chr))
     x <- x %>% dplyr::filter(!is.na(uid_chr))
     ordering_tb <- x %>%
-      dplyr::select(name_chr,uid_chr,add_boundaries_chr) %>%
-      dplyr::mutate(preceeded_by = purrr::map(add_boundaries_chr,
+      dplyr::select(name_chr,uid_chr,add_bndys_from_ls) %>%
+      dplyr::mutate(preceeded_by = purrr::map(add_bndys_from_ls,
                                               ~ unlist(.x)[unlist(.x) %in% uid_chr])) %>%
       dplyr::mutate(sequence = purrr::map2(preceeded_by,
                                            uid_chr,
