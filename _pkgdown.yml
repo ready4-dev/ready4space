@@ -56,7 +56,6 @@ reference:
   - manufacture.vicinity_points
   - manufacture.vicinity_processed
   - manufacture.vicinity_raw
-  - maufacture-
   - metamorphose-VicinityLocal
   - metamorphose-VicinityLocalProcessed
   - metamorphose.vicinity_raw
