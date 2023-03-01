@@ -42,6 +42,7 @@ reference:
   - VicinityLocalProcessed
 - title: "Methods"
 - contents:
+  - author-VicinityArguments
   - author-VicinityLocalProcessed
   - author-VicinityLocalRaw
   - author.vicinity_processed
@@ -51,7 +52,6 @@ reference:
   - ingest-VicinityProfile
   - ingest.vicinity_processed
   - ingest.vicinity_raw
-  - manufacture-VicinityArguments
   - manufacture-VicinityLookup
   - manufacture-VicinityProfile
   - manufacture.vicinity_abbreviations

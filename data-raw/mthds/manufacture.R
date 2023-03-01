@@ -2,7 +2,7 @@ manufacture.vicinity_abbreviations <- function(x,
                                                agent_areas_tb = NULL,
                                                area_names_chr = character(0),
                                                area_var_nm_1L_chr = "Suburb",
-                                               areas_sf,
+                                               areas_sf = NULL,
                                                correspondences_lup = NULL,
                                                large_area_var_nm_1L_chr = character(0),#STE_NAME16
                                                large_areas_chr = character(0),##state_names,
@@ -278,7 +278,7 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
                                            what_1L_chr = "source") ####TF2A
     if(names(import_type_ls) == "script_chr"){
       make_class_fn_chr <- eval(parse(text = import_type_ls))
-      script_args_ls <- list(lup_tbs_r4 = y_VicinityLookup,
+      script_args_ls <- list(a_VicinityLookup = y_VicinityLookup,
                              merge_itms_chr = merge_itms_chr,
                              processed_fls_dir_1L_chr = processed_fls_dir_1L_chr,
                              raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
@@ -286,9 +286,9 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
                              overwrite_1L_lgl = overwrite_1L_lgl,
                              crs_nbr_dbl = crs_nbr_dbl)
       z_VicinityArguments <- rlang::exec(make_class_fn_chr, !!!script_args_ls)
-      object_xx <- manufacture(z_VicinityArguments)
+      object_xx <- author(z_VicinityArguments) ## Changed from manufacture
     }else{
-      object_xx <- VicinityLocalRaw(lup_tbs_r4 = y_VicinityLookup,
+      object_xx <- VicinityLocalRaw(a_VicinityLookup = y_VicinityLookup,
                                     merge_itms_chr = merge_itms_chr,
                                     raw_fls_dir_1L_chr = raw_fls_dir_1L_chr,
                                     pkg_1L_chr = package_1L_chr,
@@ -331,7 +331,9 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
                               forced_choice_chr = forced_choice_chr,
                               what_1L_chr = "source")
     object_xx <- switch(names(import_type_ls),
-                        "script_chr" = rlang::exec(VicinityArguments, x, !!!script_args_ls), ## THIS LOOKS WRONG - Extra slot needed? Function required? ###TF2A
+                        "script_chr" = rlang::exec(VicinityArguments, ## THIS MAY BE WRONG - Does the specified class need to allow for inheriting structures ###TF2A
+                                                  # x,
+                                                   !!!script_args_ls),
                         "local_chr" = ready4use::get_valid_path_chr(import_type_ls[[1]]),
                         "repo_chr"  = ready4use::manufacture.ready4use_dataverses(x %>% dplyr::select(names(ready4use::ready4use_dataverses())) %>%
                                                                                     tibble::as_tibble() %>%

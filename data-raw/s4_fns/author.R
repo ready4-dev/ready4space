@@ -1,3 +1,7 @@
+author_VicinityArguments <- function(x, # changed from manufacture
+                                     ...){
+  return(NULL)
+}
 author_VicinityLocalRaw <- function(x, #write_fls_from_imp_and_upd_r4
                                     processed_fls_dir_1L_chr_chr,
                                     crs_nbr_dbl){

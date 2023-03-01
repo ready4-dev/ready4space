@@ -4,7 +4,7 @@
 #' @param agent_areas_tb Agent areas (a tibble), Default: NULL
 #' @param area_names_chr Area names (a character vector), Default: character(0)
 #' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
-#' @param areas_sf Areas (a simple features object)
+#' @param areas_sf Areas (a simple features object), Default: NULL
 #' @param correspondences_lup Correspondences (a lookup table), Default: NULL
 #' @param large_area_var_nm_1L_chr Large area variable name (a character vector of length one), Default: character(0)
 #' @param large_areas_chr Large areas (a character vector), Default: character(0)
@@ -27,7 +27,7 @@
 #' @importFrom purrr map
 #' @importFrom ready4 manufacture
 manufacture.vicinity_abbreviations <- function (x, agent_areas_tb = NULL, area_names_chr = character(0), 
-    area_var_nm_1L_chr = "Suburb", areas_sf, correspondences_lup = NULL, 
+    area_var_nm_1L_chr = "Suburb", areas_sf = NULL, correspondences_lup = NULL, 
     large_area_var_nm_1L_chr = character(0), large_areas_chr = character(0), 
     large_area_idx_1L_int = 1L, match_value_xx = NULL, match_var_nm_1L_chr = character(0), 
     outliers_chr = character(0), small_area_var_nm_1L_chr = character(0), 
@@ -330,16 +330,16 @@ manufacture.vicinity_raw <- function (x, args_ls = NULL, crs_nbr_dbl = NA_real_,
             forced_choice_chr = NA_character_, what_1L_chr = "source")
         if (names(import_type_ls) == "script_chr") {
             make_class_fn_chr <- eval(parse(text = import_type_ls))
-            script_args_ls <- list(lup_tbs_r4 = y_VicinityLookup, 
+            script_args_ls <- list(a_VicinityLookup = y_VicinityLookup, 
                 merge_itms_chr = merge_itms_chr, processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
                 raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, pkg_1L_chr = package_1L_chr, 
                 overwrite_1L_lgl = overwrite_1L_lgl, crs_nbr_dbl = crs_nbr_dbl)
             z_VicinityArguments <- rlang::exec(make_class_fn_chr, 
                 !!!script_args_ls)
-            object_xx <- manufacture(z_VicinityArguments)
+            object_xx <- author(z_VicinityArguments)
         }
         else {
-            object_xx <- VicinityLocalRaw(lup_tbs_r4 = y_VicinityLookup, 
+            object_xx <- VicinityLocalRaw(a_VicinityLookup = y_VicinityLookup, 
                 merge_itms_chr = merge_itms_chr, raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, 
                 pkg_1L_chr = package_1L_chr, overwrite_1L_lgl = overwrite_1L_lgl) %>% 
                 author(processed_fls_dir_1L_chr_chr = processed_fls_dir_1L_chr, 
@@ -369,7 +369,7 @@ manufacture.vicinity_raw <- function (x, args_ls = NULL, crs_nbr_dbl = NA_real_,
         import_type_ls <- procure(x, inc_script_1L_lgl = !is.null(script_args_ls), 
             forced_choice_chr = forced_choice_chr, what_1L_chr = "source")
         object_xx <- switch(names(import_type_ls), script_chr = rlang::exec(VicinityArguments, 
-            x, !!!script_args_ls), local_chr = ready4use::get_valid_path_chr(import_type_ls[[1]]), 
+            !!!script_args_ls), local_chr = ready4use::get_valid_path_chr(import_type_ls[[1]]), 
             repo_chr = ready4use::manufacture.ready4use_dataverses(x %>% 
                 dplyr::select(names(ready4use::ready4use_dataverses())) %>% 
                 tibble::as_tibble() %>% ready4use::ready4use_dataverses()), 
@@ -381,21 +381,6 @@ manufacture.vicinity_raw <- function (x, args_ls = NULL, crs_nbr_dbl = NA_real_,
 #' @aliases manufacture,vicinity_raw-method
 #' @importFrom ready4 manufacture
 methods::setMethod("manufacture", methods::className("vicinity_raw", package = "vicinity"), manufacture.vicinity_raw)
-#' 
-#' Manufacture a new object
-#' @name manufacture-VicinityArguments
-#' @description manufacture method applied to VicinityArguments
-#' @param x An object of class VicinityArguments
-#' @param ... Additional arguments
-#' @return NULL (An object)
-#' @rdname manufacture-methods
-#' @aliases manufacture,VicinityArguments-method
-#' @export 
-#' @importFrom ready4 manufacture
-methods::setMethod("manufacture", "VicinityArguments", function (x, ...) 
-{
-    return(NULL)
-})
 #' 
 #' Manufacture a new object
 #' @name manufacture-VicinityLookup

@@ -9,6 +9,8 @@
 \alias{author,VicinityLocalProcessed-method}
 \alias{author-VicinityLocalRaw}
 \alias{author,VicinityLocalRaw-method}
+\alias{author-VicinityArguments}
+\alias{author,VicinityArguments-method}
 \title{Author and save files}
 \usage{
 author.vicinity_processed(x, path_1L_chr, crs_dbl)
@@ -40,9 +42,11 @@ author.vicinity_raw(
 \S4method{author}{VicinityLocalProcessed}(x, crs_nbr_dbl, return_r4_1L_lgl = T)
 
 \S4method{author}{VicinityLocalRaw}(x, processed_fls_dir_1L_chr_chr, crs_nbr_dbl)
+
+\S4method{author}{VicinityArguments}(x, ...)
 }
 \arguments{
-\item{x}{An object of class VicinityLocalRaw}
+\item{x}{An object of class VicinityArguments}
 
 \item{path_1L_chr}{Path (a character vector of length one), Default: character(0)}
 
@@ -63,6 +67,8 @@ author.vicinity_raw(
 \item{return_r4_1L_lgl}{Return ready4 S4 (a logical vector of length one), Default: T}
 
 \item{processed_fls_dir_1L_chr_chr}{Processed files directory length one character vector (a character vector)}
+
+\item{...}{Additional arguments}
 }
 \value{
 Files written (a logical vector)
@@ -70,6 +76,8 @@ Files written (a logical vector)
 Return (an output object of multiple potential types)
 
 Y (Look up tables for spatiotemporal data)
+
+NULL (An object)
 }
 \description{
 author.vicinity_processed() is an author method that authors and saves files to local or remote locations. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
@@ -79,4 +87,6 @@ author.vicinity_raw() is an author method that authors and saves files to local 
 author method applied to VicinityLocalProcessed
 
 author method applied to VicinityLocalRaw
+
+author method applied to VicinityArguments
 }

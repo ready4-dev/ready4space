@@ -1,7 +1,3 @@
-manufacture_VicinityArguments <- function(x,
-                                          ...){
-return(NULL)
-}
 manufacture_VicinityLookup <- function(x,
                                        area_sf = NULL,
                                        area_unit_1L_chr = character(0),

@@ -149,3 +149,18 @@ methods::setMethod("author", "VicinityLocalRaw", function (x, processed_fls_dir_
         author(crs_nbr_dbl = crs_nbr_dbl) %>% metamorphose()
     return(y_VicinityLookup)
 })
+#' 
+#' Author and save files
+#' @name author-VicinityArguments
+#' @description author method applied to VicinityArguments
+#' @param x An object of class VicinityArguments
+#' @param ... Additional arguments
+#' @return NULL (An object)
+#' @rdname author-methods
+#' @aliases author,VicinityArguments-method
+#' @export 
+#' @importFrom ready4 author
+methods::setMethod("author", "VicinityArguments", function (x, ...) 
+{
+    return(NULL)
+})

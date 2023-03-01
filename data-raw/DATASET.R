@@ -1,9 +1,9 @@
 library(ready4fun)
 library(ready4use)
-library(ready4show)
-library(youthvars)
-library(scorz)
-library(specific)
+# library(ready4show)
+# library(youthvars)
+# library(scorz)
+# library(specific)
 library(sf)
 ready4fun::write_fn_type_dirs()
 #

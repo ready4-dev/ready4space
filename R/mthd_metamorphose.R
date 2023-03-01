@@ -75,7 +75,7 @@ methods::setMethod("metamorphose", "VicinityLocalProcessed", function (x)
 #' @importFrom ready4 metamorphose
 methods::setMethod("metamorphose", "VicinityLocal", function (x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl) 
 {
-    x_VicinityLocalProcessed <- VicinityLocalProcessed(lup_tbs_r4 = x@lup_tbs_r4, 
+    x_VicinityLocalProcessed <- VicinityLocalProcessed(a_VicinityLookup = x@a_VicinityLookup, 
         imports_chr = imports_chr, merge_itms_chr = x@merge_itms_chr, 
         overwrite_1L_lgl = x@overwrite_1L_lgl, raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, 
         write_1L_lgl = write_1L_lgl)

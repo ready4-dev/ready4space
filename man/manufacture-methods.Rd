@@ -11,8 +11,6 @@
 \alias{manufacture,vicinity_processed-method}
 \alias{manufacture.vicinity_raw}
 \alias{manufacture,vicinity_raw-method}
-\alias{manufacture-VicinityArguments}
-\alias{manufacture,VicinityArguments-method}
 \alias{manufacture-VicinityLookup}
 \alias{manufacture,VicinityLookup-method}
 \alias{manufacture-VicinityProfile}
@@ -24,7 +22,7 @@ manufacture.vicinity_abbreviations(
   agent_areas_tb = NULL,
   area_names_chr = character(0),
   area_var_nm_1L_chr = "Suburb",
-  areas_sf,
+  areas_sf = NULL,
   correspondences_lup = NULL,
   large_area_var_nm_1L_chr = character(0),
   large_areas_chr = character(0),
@@ -45,7 +43,7 @@ manufacture.vicinity_abbreviations(
   agent_areas_tb = NULL,
   area_names_chr = character(0),
   area_var_nm_1L_chr = "Suburb",
-  areas_sf,
+  areas_sf = NULL,
   correspondences_lup = NULL,
   large_area_var_nm_1L_chr = character(0),
   large_areas_chr = character(0),
@@ -161,8 +159,6 @@ manufacture.vicinity_raw(
   what_1L_chr = "output"
 )
 
-\S4method{manufacture}{VicinityArguments}(x, ...)
-
 \S4method{manufacture}{VicinityLookup}(
   x,
   area_sf = NULL,
@@ -206,7 +202,7 @@ manufacture.vicinity_raw(
 
 \item{area_var_nm_1L_chr}{Area variable name (a character vector of length one), Default: 'Suburb'}
 
-\item{areas_sf}{Areas (a simple features object)}
+\item{areas_sf}{Areas (a simple features object), Default: NULL}
 
 \item{correspondences_lup}{Correspondences (a lookup table), Default: NULL}
 
@@ -284,8 +280,6 @@ NULL
 
 \item{sub_dirs_chr}{Sub directories (a character vector), Default: character(0)}
 
-\item{...}{Additional arguments}
-
 \item{area_sf}{Area (a simple features object), Default: NULL}
 
 \item{area_unit_1L_chr}{Area unit (a character vector of length one), Default: character(0)}
@@ -297,6 +291,8 @@ NULL
 \item{path_1L_chr}{Path (a character vector of length one), Default: character(0)}
 
 \item{y_vicinity_raw}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{...}{Additional arguments}
 
 \item{attributes_ls}{Attributes (a list), Default: NULL}
 
@@ -337,8 +333,6 @@ Object (an output object of multiple potential types)
 
 Object (an output object of multiple potential types)
 
-NULL (An object)
-
 Object (an output object of multiple potential types)
 
 Object (an output object of multiple potential types)
@@ -353,8 +347,6 @@ manufacture.vicinity_points() is a manufacture method that manufactures a novel 
 manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
 
 manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
-
-manufacture method applied to VicinityArguments
 
 manufacture method applied to VicinityLookup
 
