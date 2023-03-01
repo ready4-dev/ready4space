@@ -11,6 +11,12 @@
 \alias{manufacture,vicinity_processed-method}
 \alias{manufacture.vicinity_raw}
 \alias{manufacture,vicinity_raw-method}
+\alias{manufacture-VicinityArguments}
+\alias{manufacture,VicinityArguments-method}
+\alias{manufacture-VicinityLookup}
+\alias{manufacture,VicinityLookup-method}
+\alias{manufacture-VicinityProfile}
+\alias{manufacture,VicinityProfile-method}
 \title{Manufacture a new object}
 \usage{
 manufacture.vicinity_abbreviations(
@@ -154,9 +160,45 @@ manufacture.vicinity_raw(
   sub_dirs_chr = character(0),
   what_1L_chr = "output"
 )
+
+\S4method{manufacture}{VicinityArguments}(x, ...)
+
+\S4method{manufacture}{VicinityLookup}(
+  x,
+  area_sf = NULL,
+  area_unit_1L_chr = character(0),
+  att_data_xx = NULL,
+  boundary_year_1L_chr = character(0),
+  match_value_xx = character(0),
+  path_1L_chr = character(0),
+  type_1L_chr = "Geometry",
+  what_1L_chr = "attribute",
+  y_vicinity_raw = NULL,
+  ...
+)
+
+\S4method{manufacture}{VicinityProfile}(
+  x,
+  attributes_ls = NULL,
+  attributes_to_import_chr = character(0),
+  exclude_dif_bndy_yr_1L_lgl = TRUE,
+  highest_rsl_chr = character(0),
+  key_var_1L_chr = character(0),
+  match_year_1L_lgl = FALSE,
+  model_start_ymdhms_dtm = NULL,
+  nbr_steps_start_to_end_1L_int = integer(0),
+  reference_var_rsl_1L_chr = NULL,
+  reference_vals_chr = c("tot_pop", "age_sex"),
+  simulation_steps_ymwd_dtm = NULL,
+  specified_rsl_chr = character(0),
+  subdivision_1L_chr = NULL,
+  type_1L_chr = "inner",
+  what_1L_chr = "attributes",
+  years_chr = character(0)
+)
 }
 \arguments{
-\item{x}{An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\item{x}{An object of class VicinityProfile}
 
 \item{agent_areas_tb}{Agent areas (a tibble), Default: NULL}
 
@@ -174,7 +216,7 @@ manufacture.vicinity_raw(
 
 \item{large_area_idx_1L_int}{Large area index (an integer vector of length one), Default: 1}
 
-\item{match_value_xx}{Match value (an output object of multiple potential types), Default: NULL}
+\item{match_value_xx}{Match value (an output object of multiple potential types), Default: character(0)}
 
 \item{match_var_nm_1L_chr}{Match variable name (a character vector of length one), Default: character(0)}
 
@@ -184,13 +226,13 @@ manufacture.vicinity_raw(
 
 \item{title_case_1L_lgl}{Title case (a logical vector of length one), Default: T}
 
-\item{type_1L_chr}{Type (a character vector of length one), Default: 'single'}
+\item{type_1L_chr}{Type (a character vector of length one), Default: 'inner'}
 
 \item{unknown_area_val_1L_chr}{Unknown area value (a character vector of length one), Default: 'Unk'}
 
 \item{valid_names_chr}{Valid names (a character vector), Default: character(0)}
 
-\item{what_1L_chr}{What (a character vector of length one), Default: 'output'}
+\item{what_1L_chr}{What (a character vector of length one), Default: 'attributes'}
 
 \item{y_vicinity_mapes}{PARAM_DESCRIPTION, Default: NULL}
 
@@ -241,6 +283,48 @@ NULL
 \item{raw_fls_dir_1L_chr}{Raw files directory (a character vector of length one), Default: character(0)}
 
 \item{sub_dirs_chr}{Sub directories (a character vector), Default: character(0)}
+
+\item{...}{Additional arguments}
+
+\item{area_sf}{Area (a simple features object), Default: NULL}
+
+\item{area_unit_1L_chr}{Area unit (a character vector of length one), Default: character(0)}
+
+\item{att_data_xx}{Attribute data (an output object of multiple potential types), Default: NULL}
+
+\item{boundary_year_1L_chr}{Boundary year (a character vector of length one), Default: character(0)}
+
+\item{path_1L_chr}{Path (a character vector of length one), Default: character(0)}
+
+\item{y_vicinity_raw}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{attributes_ls}{Attributes (a list), Default: NULL}
+
+\item{attributes_to_import_chr}{Attributes to import (a character vector), Default: character(0)}
+
+\item{exclude_dif_bndy_yr_1L_lgl}{Exclude different boundary year (a logical vector of length one), Default: TRUE}
+
+\item{highest_rsl_chr}{Highest resolution (a character vector), Default: character(0)}
+
+\item{key_var_1L_chr}{Key variable (a character vector of length one), Default: character(0)}
+
+\item{match_year_1L_lgl}{Match year (a logical vector of length one), Default: FALSE}
+
+\item{model_start_ymdhms_dtm}{Model start years months days hours minutes seconds (a date vector), Default: NULL}
+
+\item{nbr_steps_start_to_end_1L_int}{Number steps start to end (an integer vector of length one), Default: integer(0)}
+
+\item{reference_var_rsl_1L_chr}{Reference variable resolution (a character vector of length one), Default: NULL}
+
+\item{reference_vals_chr}{Reference values (a character vector), Default: c("tot_pop", "age_sex")}
+
+\item{simulation_steps_ymwd_dtm}{Simulation steps years month weeks days (a date vector), Default: NULL}
+
+\item{specified_rsl_chr}{Specified resolution (a character vector), Default: character(0)}
+
+\item{subdivision_1L_chr}{Subdivision (a character vector of length one), Default: NULL}
+
+\item{years_chr}{Years (a character vector), Default: character(0)}
 }
 \value{
 Object (an output object of multiple potential types)
@@ -248,6 +332,12 @@ Object (an output object of multiple potential types)
 Object (an output object of multiple potential types)
 
 Object (an output object of multiple potential types)
+
+Object (an output object of multiple potential types)
+
+Object (an output object of multiple potential types)
+
+NULL (An object)
 
 Object (an output object of multiple potential types)
 
@@ -263,4 +353,10 @@ manufacture.vicinity_points() is a manufacture method that manufactures a novel 
 manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
 
 manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
+
+manufacture method applied to VicinityArguments
+
+manufacture method applied to VicinityLookup
+
+manufacture method applied to VicinityProfile
 }

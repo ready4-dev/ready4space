@@ -28,13 +28,14 @@ author_VicinityLocalProcessed <- function(x,#import_data #write_fls_from_sp_imp_
   }else{
     path_to_seed_sf_1L_chr <- x@processed_fls_dir_1L_chr #NA_character_
   }
-  write_procsd_imp_xx(x = vicinity_raw_r3,
+  author.vicinity_raw(vicinity_raw_r3,#write_procsd_imp_xx
                       imports_ls = imports_ls,
-                      path_to_seed_sf_1L_chr = path_to_seed_sf_1L_chr,
+                      path_1L_chr = path_to_seed_sf_1L_chr,
                       merge_itms_chr = x@merge_itms_chr,
-                      #processed_fls_dir_1L_chr = x@processed_fls_dir_1L_chr,
-                      crs_nbr_dbl = crs_nbr_dbl,
-                      overwrite_1L_lgl = x@overwrite_1L_lgl)
+                      crs_dbl = crs_nbr_dbl,
+                      overwrite_1L_lgl = x@overwrite_1L_lgl,
+                      what_1L_chr = "processed"
+                      )
   if(return_r4_1L_lgl)
     return_xx <- renewSlot(x,
                            "path_to_seed_sf_1L_chr",

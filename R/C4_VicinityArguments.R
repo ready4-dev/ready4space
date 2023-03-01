@@ -2,6 +2,8 @@
 #' 
 #' Function arguments for constructing a spatial object.
 #' 
+#' @include C4_VicinityLookup.R
+#' @slot a_VicinityLookup  (an instance of the VicinityLookup class)
 #' @slot crs_nbr_dbl Coordinates reference system number (a double vector)
 #' @slot write_type_1L_chr Write type (a character vector of length one)
 #' @slot processed_fls_dir_1L_chr Processed files directory (a character vector of length one)
@@ -21,8 +23,8 @@
 #' @exportClass VicinityArguments
 VicinityArguments <- methods::setClass("VicinityArguments",
 contains = "Ready4useProcessed",
-slots = c(crs_nbr_dbl = "numeric",write_type_1L_chr = "character",processed_fls_dir_1L_chr = "character",imports_chr = "character",path_to_seed_sf_1L_chr = "character",imports_ls = "list",merge_itms_chr = "character",raw_fls_dir_1L_chr = "character",pkg_1L_chr = "character",overwrite_1L_lgl = "logical",write_1L_lgl = "logical",dissemination_1L_chr = "character"),
-prototype =  list(crs_nbr_dbl = NA_real_))
+slots = c(a_VicinityLookup = "VicinityLookup",crs_nbr_dbl = "numeric",write_type_1L_chr = "character",processed_fls_dir_1L_chr = "character",imports_chr = "character",path_to_seed_sf_1L_chr = "character",imports_ls = "list",merge_itms_chr = "character",raw_fls_dir_1L_chr = "character",pkg_1L_chr = "character",overwrite_1L_lgl = "logical",write_1L_lgl = "logical",dissemination_1L_chr = "character"),
+prototype =  list(a_VicinityLookup = VicinityLookup(),crs_nbr_dbl = NA_real_))
 
 
 methods::setValidity(methods::className("VicinityArguments"),

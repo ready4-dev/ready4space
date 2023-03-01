@@ -144,12 +144,6 @@ y <- ready4class::ready4class_constructor() %>%
                                                                      mape_15_yr_shp_dbl = "numeric(0)")),
                                                  class_desc_chr = "ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors."),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
-                                                 name_stub_chr = "Arguments",
-                                                 slots_ls = list("crs_nbr_dbl") %>% list(), # Change
-                                                 pt_ls = list("numeric") %>% list(),
-                                                 class_desc_chr= "Function arguments for constructing a spatial object.",
-                                                 parent_class_chr = "Ready4useProcessed"),
-    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "Lookup", # lookup
                                             slots_ls = c("vicinity_abbreviations_r3",#"sp_abbreviations_lup",
                                                          "vicinity_raw_r3",#"sp_import_lup",
@@ -236,6 +230,14 @@ y <- ready4class::ready4class_constructor() %>%
                                             pt_ls = c("list","sf","tbl_df") %>% list() %>% list(),
                                             class_desc_chr = "Spatiotemporal environment",
                                             parent_class_chr = NA_character_),
+    ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                                 name_stub_chr = "Arguments",
+                                                 slots_ls = list("a_VicinityLookup",
+                                                                 "crs_nbr_dbl") %>% list(), # Change #
+                                                 pt_ls = list("VicinityLookup","numeric") %>% list(),
+                                                 class_desc_chr= "Function arguments for constructing a spatial object.",
+                                                 parent_class_chr = "Ready4useProcessed",
+                                                 inc_clss_ls = list("VicinityLookup") %>% list()),
     # %>%
       ##
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,

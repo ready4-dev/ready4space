@@ -11,6 +11,8 @@ Function arguments for constructing a spatial object.
 \section{Slots}{
 
 \describe{
+\item{\code{a_VicinityLookup}}{(an instance of the VicinityLookup class)}
+
 \item{\code{crs_nbr_dbl}}{Coordinates reference system number (a double vector)}
 
 \item{\code{write_type_1L_chr}}{Write type (a character vector of length one)}

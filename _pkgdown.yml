@@ -29,7 +29,6 @@ reference:
   - vicinity_mapes
 - title: "S4 Classes"
 - contents:
-  - VicinityArguments
   - VicinityLookup
   - VicinityMacro
   - VicinityMesoRegion
@@ -37,6 +36,7 @@ reference:
   - VicinityMicro
   - VicinityProfile
   - VicinitySpaceTime
+  - VicinityArguments
   - VicinityLocal
   - VicinityLocalRaw
   - VicinityLocalProcessed
@@ -51,6 +51,9 @@ reference:
   - ingest-VicinityProfile
   - ingest.vicinity_processed
   - ingest.vicinity_raw
+  - manufacture-VicinityArguments
+  - manufacture-VicinityLookup
+  - manufacture-VicinityProfile
   - manufacture.vicinity_abbreviations
   - manufacture.vicinity_parameters
   - manufacture.vicinity_points

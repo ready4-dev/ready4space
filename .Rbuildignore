@@ -193,3 +193,4 @@
 ^data-raw/Staged/MAKE_CLASSES_S3\.R$
 ^data-raw/Staged/MAKE_CLASSES_S4\.R$
 ^data-raw/fns/rename\.R$
+^data-raw/s4_fns/manufacture\.R$
