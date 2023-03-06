@@ -33,7 +33,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes Wi
                                             "ready4use"#,"ready4show",
                                             ),
                            lifecycle_stage_1L_chr = "experimental",
-                           path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/ready4space-logo/default.png",# UPDATE
+                           path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/vicinity-logo/default.png",
                            piggyback_to_1L_chr = "ready4-dev/ready4",
                            ready4_type_1L_chr = "modelling",
                            zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7623630.svg)](https://doi.org/10.5281/zenodo.7623630)"
