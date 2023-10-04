@@ -1,4 +1,4 @@
-library(ready4fun)
+library(ready4)
 library(ready4use)
 # library(ready4show)
 # library(youthvars)
@@ -10,15 +10,15 @@ ready4fun::write_fn_type_dirs()
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
-x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Attributes With Ready4",
-                                 pkg_desc_1L_chr = "Tools for developing geospatial models for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
-                            This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
-                            If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
+x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Features Of Health Systems" %>% tools::toTitleCase(),
+                                 pkg_desc_1L_chr = "Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop geospatial models.
+                                 Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/).
+                                 This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
+                                 If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
                                  authors_prsn = c(#utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
-                                                  utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
+                                                  utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton1@monash.edu", role = c("aut", "cre", "fnd"),comment = c(ORCID = "0000-0001-7407-9194")),
                                                   utils::person("Orygen", role = c("cph", "fnd")),
-                                                  utils::person("Headspace", role = c( "fnd")),
-                                                  utils::person("National Health and Medical Research Council", role = c( "fnd"))),
+                                                  utils::person("Australian Government Research Training Program", role =c("fnd"))),
                                  urls_chr = c("https://ready4-dev.github.io/vicinity/",
                                               "https://github.com/ready4-dev/vicinity",
                                               "https://ready4-dev.github.io/ready4/")) %>%
@@ -275,9 +275,22 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
 #usethis::use_package("sf")
-ready4::write_extra_pkgs_to_actions()
-ready4::write_citation_cff(packageDescription("vicinity"),
-                           citation_chr = readLines("inst/CITATION"))
+ready4::write_extra_pkgs_to_actions(consent_1L_chr = "Y")
+# usethis::use_dev_package("youthvars",
+#                          type = "Suggests",#D?
+#                          remote = "ready4-dev/youthvars")
+# usethis::use_dev_package("scorz",
+#                          type = "Depends",
+#                          remote = "ready4-dev/scorz")
+# usethis::use_dev_package("specific",
+#                          type = "Depends",
+#                          remote = "ready4-dev/specific")
+write_to_edit_workflow("pkgdown.yaml", consent_1L_chr = "Y") # In other packages, run for "test-coverage.yaml" as well.
+readLines("_pkgdown.yml") %>%
+  stringr::str_replace_all("  - text: Model", "  - text: Framework & Model") %>%
+  writeLines(con = "_pkgdown.yml")
+# ready4::write_citation_cff(packageDescription("vicinity"),
+#                            citation_chr = readLines("inst/CITATION"))
 # usethis::use_dev_package("youthvars",
 #                          type = "Imports",#D?
 #                          remote = "ready4-dev/youthvars")
