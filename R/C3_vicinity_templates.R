@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_templates","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects., Default: make_pt_vicinity_templates()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects., Default: make_pt_vicinity_templates()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @details ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @rdname vicinity_templates
 #' @export 
 vicinity_templates <- function(x = make_pt_vicinity_templates()){ 
 validate_vicinity_templates(make_new_vicinity_templates(x))
 }
-#' make new vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' make new vicinity templates ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @details ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @rdname make_new_vicinity_templates
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,13 +25,13 @@ class(x) <- append(c("vicinity_templates",setdiff(make_pt_vicinity_templates() %
 class(x))
 x
 }
-#' make prototype vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' make prototype vicinity templates ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param country_chr Country (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
 #' @param starter_sf_nm_chr Starter simple features object name (a character vector), Default: character(0)
 #' @param subdivision_chr Subdivision (a character vector), Default: character(0)
-#' @return A prototype for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @return A prototype for ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' 
 #' @rdname vicinity_templates
 #' @export 
@@ -50,11 +50,11 @@ starter_sf_nm_chr = starter_sf_nm_chr,
 subdivision_chr = subdivision_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @return A prototpe for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
-#' @details ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' validate vicinity templates ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @return A prototpe for ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @details ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @rdname validate_vicinity_templates
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -99,9 +99,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' is vicinity templates ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 #' 
 #' @rdname vicinity_templates
 #' @export 

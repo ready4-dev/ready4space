@@ -1,6 +1,6 @@
 #' Ingest data
-#' @description ingest.vicinity_processed() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description ingest.vicinity_processed() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param col_nm_1L_chr Column name (a character vector of length one), Default: 'main_feature_chr'
 #' @param match_value_xx Match value (an output object of multiple potential types)
 #' @param processed_fls_dir_1L_chr Processed files directory (a character vector of length one), Default: 'NA'
@@ -25,8 +25,8 @@ ingest.vicinity_processed <- function (x, col_nm_1L_chr = "main_feature_chr", ma
 #' @importFrom ready4 ingest
 methods::setMethod("ingest", methods::className("vicinity_processed", package = "vicinity"), ingest.vicinity_processed)
 #' Ingest data
-#' @description ingest.vicinity_raw() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Ingest (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description ingest.vicinity_raw() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Ingest (an output object of multiple potential types).
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param fn Function (a function), Default: function(x, ...) {
 #'    NULL

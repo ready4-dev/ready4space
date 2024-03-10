@@ -24,6 +24,6 @@ get_agent_areas(
 Agent areas (an output object of multiple potential types)
 }
 \description{
-get_agent_areas() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get agent areas. Function argument agent_areas_tb specifies the where to look for the required object. The function returns Agent areas (an output object of multiple potential types).
+get_agent_areas() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get agent areas. The function returns Agent areas (an output object of multiple potential types).
 }
 \keyword{internal}

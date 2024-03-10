@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_points.R
 \name{validate_vicinity_points}
 \alias{validate_vicinity_points}
-\title{validate vicinity points ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
+\title{validate vicinity points ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
 \usage{
 validate_vicinity_points(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+A prototpe for ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+Validate an instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+ready4 submodule for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \keyword{internal}

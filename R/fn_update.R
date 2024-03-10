@@ -1,5 +1,5 @@
 #' Update isochrone table
-#' @description update_isochrone_tbl() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update isochrone table. Function argument index_val_1L_int specifies the object to be updated. Argument temporal_bands_ls provides the object to be updated. The function returns Isochrone (a tibble).
+#' @description update_isochrone_tbl() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update isochrone table. The function returns Isochrone (a tibble).
 #' @param index_val_1L_int Index value (an integer vector of length one)
 #' @param temporal_bands_ls Temporal bands (a list)
 #' @param travel_mode_1L_chr Travel mode (a character vector of length one)
@@ -31,7 +31,7 @@ update_isochrone_tbl <- function (index_val_1L_int, temporal_bands_ls, travel_mo
     return(isochrone_tb)
 }
 #' Update population by group
-#' @description update_popl_by_group() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by group. Function argument profiled_sf specifies the object to be updated. Argument data_year_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description update_popl_by_group() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by group. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param data_year_1L_chr Data year (a character vector of length one)
 #' @param dynamic_var_nm_1L_chr Dynamic variable name (a character vector of length one)
@@ -83,7 +83,7 @@ update_popl_by_group <- function (profiled_sf, data_year_1L_chr, dynamic_var_nm_
     return(profiled_sf)
 }
 #' Update population by included area
-#' @description update_popl_by_incld_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by included area. Function argument profiled_sf specifies the object to be updated. Argument concept_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description update_popl_by_incld_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by included area. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param concept_1L_chr Concept (a character vector of length one)
 #' @param data_year_1L_chr Data year (a character vector of length one)
@@ -132,7 +132,7 @@ update_popl_by_incld_area <- function (profiled_sf, concept_1L_chr, data_year_1L
     return(profiled_sf)
 }
 #' Update population counts
-#' @description update_popl_counts() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population counts. Function argument profiled_sf specifies the object to be updated. Argument data_year_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description update_popl_counts() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population counts. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param data_year_1L_chr Data year (a character vector of length one)
 #' @param dynamic_var_nm_1L_chr Dynamic variable name (a character vector of length one)

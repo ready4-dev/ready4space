@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_processed.R
 \name{validate_vicinity_processed}
 \alias{validate_vicinity_processed}
-\title{validate vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\title{validate vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 \usage{
 validate_vicinity_processed(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+A prototpe for ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+Validate an instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \details{
-ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \keyword{internal}

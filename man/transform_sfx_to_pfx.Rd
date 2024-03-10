@@ -15,6 +15,6 @@ transform_sfx_to_pfx(data_tb, suffix_1L_chr)
 Data (a tibble)
 }
 \description{
-transform_sfx_to_pfx() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform suffix to prefix. Function argument data_tb specifies the object to be updated. Argument suffix_1L_chr provides the object to be updated. The function returns Data (a tibble).
+transform_sfx_to_pfx() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform suffix to prefix. The function returns Data (a tibble).
 }
 \keyword{internal}

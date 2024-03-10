@@ -5,13 +5,13 @@ library(ready4use)
 # library(scorz)
 # library(specific)
 library(sf)
-ready4fun::write_fn_type_dirs()
+#ready4fun::write_fn_type_dirs()
 #
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Model Spatial Features Of Health Systems" %>% tools::toTitleCase(),
-                                 pkg_desc_1L_chr = "Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop geospatial models.
+                                 pkg_desc_1L_chr = "Modules from the readyforwhatsnext youth mental health economic model (https://readyforwhatsnext.org) that can be used to develop geospatial models.
                                  Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/).
                                  This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use.
                                  If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
@@ -52,16 +52,16 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                transformation_chr = "character(0)",#transformation
                                                                                use_in_chr = "character(0)",#use_in
                                                                                source_chr = "character(0)"), #source
-    NULL, NULL, NULL, "ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.", NA_character_, NULL, NULL, NULL,
+    NULL, NULL, NULL, "ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.", NA_character_, NULL, NULL, NULL,
     TRUE, "values",#"param_val_envir"
     list("tibble"), list("is_"), list("tibble"),list(param_name_chr = "character(0)",
                                                      iteration_1_dbl = "numeric(0)"), #v_it_1
-    NULL, NULL, NULL, "ready4 S3 class for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL,
+    NULL, NULL, NULL, "ready4 submodule for tibble object that stores simulation parameter values for each iteration.", NA_character_, NULL, NULL, NULL,
     TRUE, "abbreviations",#"sp_abbreviations_lup"
     list("tibble"), list("is_"), list("tibble"),list(long_name_chr = "character(0)",#long_name
                                                      short_name_chr = "character(0)",#short_name
                                                      type_chr = "character(0)"
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table for spatial data abbreviations.", NA_character_, NULL, NULL, NULL,
     TRUE, "processed",#"sp_data_pack_lup"
     list("tibble"), list("is_"), list("tibble"),list(name_chr = "character(0)",#name
                                                                                country_chr = "character(0)",#country
@@ -75,7 +75,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                year_end_chr = "character(0)",#year_end
                                                                                source_reference_chr = "character(0)",#
                                                                                additional_detail_chr = "character(0)"#
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).", NA_character_, NULL, NULL, NULL,
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).", NA_character_, NULL, NULL, NULL,
     TRUE, "raw", #"sp_import_lup"
     list("tibble"), list("is_"), list("tibble"),list(name_chr = "character(0)",#name
                                                                             country_chr = "character(0)",#country
@@ -89,7 +89,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                             year_end_chr = "character(0)",#year_end
                                                                             uid_chr = "character(0)",#
                                                                             add_bndys_from_ls = "list()"#
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4use_imports", NULL, NULL, NULL,
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.","ready4use_imports", NULL, NULL, NULL,
     TRUE, "resolutions",#"sp_resolution_lup"
     list("tibble"), list("is_"), list("tibble"),list(parent_area_chr = "character(0)",# parent_area
                                                                                 boundary_year_dbl = "numeric(0)",# boundary_year
@@ -98,14 +98,14 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                 complete_lgl = "logical(0)",# complete
                                                                                 summed_area_dbl = "numeric(0)",# summed_area
                                                                                 mean_size_dbl = "numeric(0)"# mean_size
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.", NA_character_, NULL, NULL, NULL,
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.", NA_character_, NULL, NULL, NULL,
     TRUE, "points",#"sp_site_coord_lup"
     list("tibble"), list("is_"), list("tibble"),list(service_type_chr = "character(0)",# service_type
                                                                                 cluster_name_chr = "character(0)",# cluster_name
                                                                                 service_name_chr = "character(0)",# service_name
                                                                                 lat_dbl = "numeric(0)",# lat
                                                                                 lng_dbl = "numeric(0)"# long
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.", NA_character_, NULL, NULL, NULL,
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.", NA_character_, NULL, NULL, NULL,
     TRUE, "templates",#"sp_starter_sf_lup"
     list("tibble"), list("is_"),
     list("tibble"),list(country_chr = "character(0)",#country
@@ -113,12 +113,12 @@ y <- ready4class::ready4class_constructor() %>%
                         area_bndy_yr_chr = "character(0)",#area_bound_yr
                         starter_sf_nm_chr = "character(0)",#starter_sf ### NOT YET UPDATED
                         subdivision_chr = "character(0)"#sf_main_sub_div =
-                        ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.", NA_character_, NULL, NULL, NULL,
+                        ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.", NA_character_, NULL, NULL, NULL,
     TRUE, "identifiers",#"sp_uid_lup"
     list("tibble"), list("is_"), list("tibble"),list(spatial_unit_chr = "character(0)",#spatial_unit
                                                                          year_chr = "character(0)",#year
                                                                          var_name_chr = "character(0)"# var_name
-                                                     ), NULL, NULL, NULL, "ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.", NA_character_, NULL, NULL, NULL
+                                                     ), NULL, NULL, NULL, "ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.", NA_character_, NULL, NULL, NULL
     ))
 y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(
@@ -142,7 +142,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                      mape_05_yr_shp_dbl = "numeric(0)",
                                                                      mape_10_yr_shp_dbl = "numeric(0)",
                                                                      mape_15_yr_shp_dbl = "numeric(0)")),
-                                                 class_desc_chr = "ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors."),
+                                                 class_desc_chr = "ready4 submodule for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors."),
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "Lookup", # lookup
                                             slots_ls = c("vicinity_abbreviations_r3",#"sp_abbreviations_lup",
@@ -275,7 +275,7 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
 #usethis::use_package("sf")
-ready4::write_extra_pkgs_to_actions(consent_1L_chr = "Y")
+ready4::write_extra_pkgs_to_actions(path_to_dir_1L_chr = ".github/workflows", consent_1L_chr = "Y")
 # usethis::use_dev_package("youthvars",
 #                          type = "Suggests",#D?
 #                          remote = "ready4-dev/youthvars")

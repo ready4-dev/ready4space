@@ -338,15 +338,15 @@ Object (an output object of multiple potential types)
 Object (an output object of multiple potential types)
 }
 \description{
-manufacture.vicinity_abbreviations() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
+manufacture.vicinity_abbreviations() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
 
-manufacture.vicinity_parameters() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Object (an output object of multiple potential types).
+manufacture.vicinity_parameters() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Object (an output object of multiple potential types).
 
-manufacture.vicinity_points() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function returns Object (an output object of multiple potential types).
+manufacture.vicinity_points() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function returns Object (an output object of multiple potential types).
 
-manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
+manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
 
-manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
+manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
 
 manufacture method applied to VicinityLookup
 

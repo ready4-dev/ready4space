@@ -36,6 +36,6 @@ add_dynamic_vars_to_sf(
 Profiled (a simple features object)
 }
 \description{
-add_dynamic_vars_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dynamic variables to simple features object. Function argument dynamic_vars_sf specifies the object to be updated. The function returns Profiled (a simple features object).
+add_dynamic_vars_to_sf() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add dynamic variables to simple features object. The function returns Profiled (a simple features object).
 }
 \keyword{internal}

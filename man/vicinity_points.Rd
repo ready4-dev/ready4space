@@ -4,7 +4,7 @@
 \alias{vicinity_points}
 \alias{make_pt_vicinity_points}
 \alias{is_vicinity_points}
-\title{ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
+\title{ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
 \usage{
 vicinity_points(x = make_pt_vicinity_points())
 
@@ -32,15 +32,15 @@ is_vicinity_points(x)
 \item{lng_dbl}{Longitude (a double vector), Default: numeric(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+A validated instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 
-A prototype for ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+A prototype for ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+ready4 submodule for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }

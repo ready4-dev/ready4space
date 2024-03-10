@@ -1,5 +1,5 @@
 #' Transform agent areas
-#' @description transform_agent_areas() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform agent areas. Function argument agent_areas_tb specifies the object to be updated. Argument area_var_nm_1L_chr provides the object to be updated. The function returns Agent areas (a tibble).
+#' @description transform_agent_areas() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform agent areas. The function returns Agent areas (a tibble).
 #' @param agent_areas_tb Agent areas (a tibble)
 #' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
 #' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: character(0)
@@ -25,7 +25,7 @@ transform_agent_areas <- function (agent_areas_tb, area_var_nm_1L_chr = "Suburb"
     return(agent_areas_tb)
 }
 #' Transform circles to bands
-#' @description transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. Function argument geomc_dist_circles_ls specifies the object to be updated. The function returns Bands (a list).
+#' @description transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. The function returns Bands (a list).
 #' @param geomc_dist_circles_ls Geometric distance circles (a list)
 #' @return Bands (a list)
 #' @rdname transform_circles_to_bands
@@ -46,7 +46,7 @@ transform_circles_to_bands <- function (geomc_dist_circles_ls)
     return(bands_ls)
 }
 #' Transform multiple values
-#' @description transform_multiple_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform multiple values. Function argument distribution_chr specifies the object to be updated. Argument dstr_param_1_dbl provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @description transform_multiple_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform multiple values. The function is called for its side effects and does not return a value.
 #' @param distribution_chr Distribution (a character vector)
 #' @param dstr_param_1_dbl Distribution parameter 1 (a double vector)
 #' @param dstr_param_2_dbl Distribution parameter 2 (a double vector)
@@ -66,7 +66,7 @@ transform_multiple_vals <- function (distribution_chr, dstr_param_1_dbl, dstr_pa
     return(tfd_vas_num)
 }
 #' Transform polyline to simple features object
-#' @description transform_polyline_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform polyline to simple features object. Function argument polyline_xx specifies the object to be updated. Argument crs_1L_dbl provides the object to be updated. The function returns Geometry (a simple features object).
+#' @description transform_polyline_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform polyline to simple features object. The function returns Geometry (a simple features object).
 #' @param polyline_xx Polyline (an output object of multiple potential types)
 #' @param crs_1L_dbl Coordinates reference system (a double vector of length one)
 #' @param mode_of_transport_1L_chr Mode of transport (a character vector of length one)
@@ -89,7 +89,7 @@ transform_polyline_to_sf <- function (polyline_xx, crs_1L_dbl, mode_of_transport
     return(geometry_sf)
 }
 #' Transform simple features object list
-#' @description transform_sf_ls() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform simple features object list. Function argument sf_ls specifies the object to be updated. The function returns Transformed (a list of simple features objects).
+#' @description transform_sf_ls() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform simple features object list. The function returns Transformed (a list of simple features objects).
 #' @param sf_ls Simple features object list (a list of simple features objects)
 #' @return Transformed (a list of simple features objects)
 #' @rdname transform_sf_ls
@@ -104,7 +104,7 @@ transform_sf_ls <- function (sf_ls)
     return(transformed_sf_ls)
 }
 #' Transform suffix to prefix
-#' @description transform_sfx_to_pfx() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform suffix to prefix. Function argument data_tb specifies the object to be updated. Argument suffix_1L_chr provides the object to be updated. The function returns Data (a tibble).
+#' @description transform_sfx_to_pfx() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform suffix to prefix. The function returns Data (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param suffix_1L_chr Suffix (a character vector of length one)
 #' @return Data (a tibble)
@@ -120,7 +120,7 @@ transform_sfx_to_pfx <- function (data_tb, suffix_1L_chr)
     return(data_tb)
 }
 #' Transform shape of population preductions dataset
-#' @description transform_shape_of_popl_predns_ds() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform shape of population preductions dataset. Function argument popl_predns_ds specifies the object to be updated. Argument prefix_1L_chr provides the object to be updated. The function returns Reshaped (a tibble).
+#' @description transform_shape_of_popl_predns_ds() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform shape of population preductions dataset. The function returns Reshaped (a tibble).
 #' @param popl_predns_ds PARAM_DESCRIPTION
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'Persons.'
 #' @return Reshaped (a tibble)
@@ -145,7 +145,7 @@ transform_shape_of_popl_predns_ds <- function (popl_predns_ds, prefix_1L_chr = "
     return(reshaped_tb)
 }
 #' Transform to simpler simple features object
-#' @description transform_to_simpler_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform to simpler simple features object. Function argument sf specifies the object to be updated. Argument crs_dbl provides the object to be updated. The function returns Polygons (a simple features object).
+#' @description transform_to_simpler_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform to simpler simple features object. The function returns Polygons (a simple features object).
 #' @param sf Simple features object (a simple features object)
 #' @param crs_dbl Coordinates reference system (a double vector), Default: NULL
 #' @return Polygons (a simple features object)
@@ -176,7 +176,7 @@ transform_to_simpler_sf <- function (sf, crs_dbl = NULL)
     return(polygons_sf)
 }
 #' Transform value
-#' @description transform_value() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform value. Function argument distribution_1L_chr specifies the object to be updated. Argument dstr_param_1_1L_dbl provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @description transform_value() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform value. The function is called for its side effects and does not return a value.
 #' @param distribution_1L_chr Distribution (a character vector of length one)
 #' @param dstr_param_1_1L_dbl Distribution parameter 1 (a double vector of length one)
 #' @param dstr_param_2_1L_dbl Distribution parameter 2 (a double vector of length one)

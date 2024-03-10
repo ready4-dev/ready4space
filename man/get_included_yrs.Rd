@@ -15,6 +15,6 @@ get_included_yrs(geometry_sf, pfx_1L_chr = "y2")
 Years (a double vector)
 }
 \description{
-get_included_yrs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get included years. Function argument geometry_sf specifies the where to look for the required object. The function returns Years (a double vector).
+get_included_yrs() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get included years. The function returns Years (a double vector).
 }
 \keyword{internal}

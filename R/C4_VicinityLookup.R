@@ -2,13 +2,13 @@
 #' 
 #' Look up tables for spatiotemporal data
 #' 
-#' @slot vicinity_abbreviations_r3 Vicinity abbreviations (a ready4 S3)
-#' @slot vicinity_raw_r3 Vicinity raw (a ready4 S3)
-#' @slot vicinity_processed_r3 Vicinity processed (a ready4 S3)
-#' @slot vicinity_resolutions_r3 Vicinity resolutions (a ready4 S3)
-#' @slot vicinity_points_r3 Vicinity points (a ready4 S3)
-#' @slot vicinity_templates_r3 Vicinity templates (a ready4 S3)
-#' @slot vicinity_identifiers_r3 Vicinity identifiers (a ready4 S3)
+#' @slot vicinity_abbreviations_r3 Vicinity abbreviations (a ready4 submodule)
+#' @slot vicinity_raw_r3 Vicinity raw (a ready4 submodule)
+#' @slot vicinity_processed_r3 Vicinity processed (a ready4 submodule)
+#' @slot vicinity_resolutions_r3 Vicinity resolutions (a ready4 submodule)
+#' @slot vicinity_points_r3 Vicinity points (a ready4 submodule)
+#' @slot vicinity_templates_r3 Vicinity templates (a ready4 submodule)
+#' @slot vicinity_identifiers_r3 Vicinity identifiers (a ready4 submodule)
 #' @name VicinityLookup-class
 #' @rdname VicinityLookup-class
 #' @export VicinityLookup

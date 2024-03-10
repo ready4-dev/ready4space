@@ -1,6 +1,6 @@
-#' Renew values in a dataset
-#' @description renew.vicinity_points() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function is called for its side effects and does not return a value.
-#' @param x An instance of ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+#' Renew (update) values
+#' @description renew.vicinity_points() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function is called for its side effects and does not return a value.
+#' @param x An instance of `vicinity_points`, a ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 #' @param service_type_chr Service type (a character vector), Default: character(0)
 #' @param cluster_name_chr Cluster name (a character vector), Default: character(0)
 #' @param service_name_chr Service name (a character vector), Default: character(0)
@@ -28,9 +28,9 @@ renew.vicinity_points <- function (x, service_type_chr = character(0), cluster_n
 #' @aliases renew,vicinity_points-method
 #' @importFrom ready4 renew
 methods::setMethod("renew", methods::className("vicinity_points", package = "vicinity"), renew.vicinity_points)
-#' Renew values in a dataset
-#' @description renew.vicinity_processed() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
-#' @param x An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' Renew (update) values
+#' @description renew.vicinity_processed() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
+#' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
@@ -79,9 +79,9 @@ renew.vicinity_processed <- function (x, args_ls = NULL, area_type_chr = charact
 #' @aliases renew,vicinity_processed-method
 #' @importFrom ready4 renew
 methods::setMethod("renew", methods::className("vicinity_processed", package = "vicinity"), renew.vicinity_processed)
-#' Renew values in a dataset
-#' @description renew.vicinity_raw() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' Renew (update) values
+#' @description renew.vicinity_raw() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
 #' @param country_chr Country (a character vector), Default: character(0)
@@ -148,7 +148,7 @@ renew.vicinity_raw <- function (x, area_type_chr = character(0), area_bndy_yr_ch
 #' @importFrom ready4 renew
 methods::setMethod("renew", methods::className("vicinity_raw", package = "vicinity"), renew.vicinity_raw)
 #' 
-#' Renew values in a dataset
+#' Renew (update) values
 #' @name renew-VicinityLookup
 #' @description renew method applied to VicinityLookup
 #' @param x An object of class VicinityLookup
@@ -250,7 +250,7 @@ methods::setMethod("renew", "VicinityLookup", function (x, package_1L_chr = char
     return(x)
 })
 #' 
-#' Renew values in a dataset
+#' Renew (update) values
 #' @name renew-VicinityArguments
 #' @description renew method applied to VicinityArguments
 #' @param x An object of class VicinityArguments

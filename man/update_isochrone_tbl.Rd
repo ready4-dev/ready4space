@@ -17,6 +17,6 @@ update_isochrone_tbl(index_val_1L_int, temporal_bands_ls, travel_mode_1L_chr)
 Isochrone (a tibble)
 }
 \description{
-update_isochrone_tbl() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update isochrone table. Function argument index_val_1L_int specifies the object to be updated. Argument temporal_bands_ls provides the object to be updated. The function returns Isochrone (a tibble).
+update_isochrone_tbl() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update isochrone table. The function returns Isochrone (a tibble).
 }
 \keyword{internal}

@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_templates.R
 \name{make_new_vicinity_templates}
 \alias{make_new_vicinity_templates}
-\title{make new vicinity templates ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.}
+\title{make new vicinity templates ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.}
 \usage{
 make_new_vicinity_templates(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+An unvalidated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \keyword{internal}

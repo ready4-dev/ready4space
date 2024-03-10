@@ -4,7 +4,7 @@
 \alias{vicinity_identifiers}
 \alias{make_pt_vicinity_identifiers}
 \alias{is_vicinity_identifiers}
-\title{ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
+\title{ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
 \usage{
 vicinity_identifiers(x = make_pt_vicinity_identifiers())
 
@@ -26,15 +26,15 @@ is_vicinity_identifiers(x)
 \item{var_name_chr}{Variable name (a character vector), Default: character(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+A validated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 
-A prototype for ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+A prototype for ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }

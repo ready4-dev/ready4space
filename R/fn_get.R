@@ -1,5 +1,5 @@
 #' Get agent areas
-#' @description get_agent_areas() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get agent areas. Function argument agent_areas_tb specifies the where to look for the required object. The function returns Agent areas (an output object of multiple potential types).
+#' @description get_agent_areas() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get agent areas. The function returns Agent areas (an output object of multiple potential types).
 #' @param agent_areas_tb Agent areas (a tibble), Default: NULL
 #' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
 #' @param path_1L_chr Path (a character vector of length one), Default: character(0)
@@ -28,7 +28,7 @@ get_agent_areas <- function (agent_areas_tb = NULL, area_var_nm_1L_chr = "Suburb
     return(agent_areas_xx)
 }
 #' Get included years
-#' @description get_included_yrs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get included years. Function argument geometry_sf specifies the where to look for the required object. The function returns Years (a double vector).
+#' @description get_included_yrs() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get included years. The function returns Years (a double vector).
 #' @param geometry_sf Geometry (a simple features object)
 #' @param pfx_1L_chr Prefix (a character vector of length one), Default: 'y2'
 #' @return Years (a double vector)
@@ -48,7 +48,7 @@ get_included_yrs <- function (geometry_sf, pfx_1L_chr = "y2")
     return(years_dbl)
 }
 #' Get maximum or minimum year of simple features object
-#' @description get_max_or_min_yr_of_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get maximum or minimum year of simple features object. Function argument geometry_sf specifies the where to look for the required object. The function returns Year (a double vector of length one).
+#' @description get_max_or_min_yr_of_sf() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get maximum or minimum year of simple features object. The function returns Year (a double vector of length one).
 #' @param geometry_sf Geometry (a simple features object)
 #' @param max_1L_lgl Maximum (a logical vector of length one), Default: T
 #' @param pfx_1L_chr Prefix (a character vector of length one), Default: 'y2'
@@ -65,7 +65,7 @@ get_max_or_min_yr_of_sf <- function (geometry_sf, max_1L_lgl = T, pfx_1L_chr = "
     return(year_1L_dbl)
 }
 #' Get name from path character vector
-#' @description get_name_from_path_chr() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get name from path character vector. Function argument path_1L_chr specifies the where to look for the required object. The function returns Name (a character vector of length one).
+#' @description get_name_from_path_chr() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get name from path character vector. The function returns Name (a character vector of length one).
 #' @param path_1L_chr Path (a character vector of length one)
 #' @param with_ext_1L_lgl With extension (a logical vector of length one), Default: TRUE
 #' @return Name (a character vector of length one)
@@ -88,7 +88,7 @@ get_name_from_path_chr <- function (path_1L_chr, with_ext_1L_lgl = TRUE)
     return(name_1L_chr)
 }
 #' Get set difference longitude lat simple features object
-#' @description get_set_diff_lng_lat_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get set difference longitude lat simple features object. Function argument geometry_sf specifies the where to look for the required object. The function returns Difference (a simple features object).
+#' @description get_set_diff_lng_lat_sf() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get set difference longitude lat simple features object. The function returns Difference (a simple features object).
 #' @param geometry_sf Geometry (a simple features object)
 #' @param cut_sf Cut (a simple features object)
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector)

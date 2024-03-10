@@ -1,6 +1,6 @@
 #' Author and document datasets
-#' @description authorData.vicinity_raw() is an authorData method that authors and saves files necessary for creating and documenting datasets. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector of length one).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description authorData.vicinity_raw() is an authorData method that authors and saves files necessary for creating and documenting datasets. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector of length one).
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param path_1L_chr Path (a character vector of length one)
 #' @param data_match_value_xx Data match value (an output object of multiple potential types)
 #' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: 'name'
@@ -98,7 +98,7 @@ methods::setMethod("authorData", methods::className("vicinity_raw", package = "v
 #' @name authorData-VicinityLocal
 #' @description authorData method applied to VicinityLocal
 #' @param x An object of class VicinityLocal
-#' @param return_r4_1L_lgl Return ready4 S4 (a logical vector of length one), Default: F
+#' @param return_r4_1L_lgl Return ready4 module (a logical vector of length one), Default: F
 #' @return Return (an output object of multiple potential types)
 #' @rdname authorData-methods
 #' @aliases authorData,VicinityLocal-method

@@ -17,6 +17,6 @@ get_max_or_min_yr_of_sf(geometry_sf, max_1L_lgl = T, pfx_1L_chr = "y2")
 Year (a double vector of length one)
 }
 \description{
-get_max_or_min_yr_of_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get maximum or minimum year of simple features object. Function argument geometry_sf specifies the where to look for the required object. The function returns Year (a double vector of length one).
+get_max_or_min_yr_of_sf() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get maximum or minimum year of simple features object. The function returns Year (a double vector of length one).
 }
 \keyword{internal}

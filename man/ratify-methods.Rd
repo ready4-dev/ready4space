@@ -3,7 +3,7 @@
 \name{ratify.vicinity_processed}
 \alias{ratify.vicinity_processed}
 \alias{ratify,vicinity_processed-method}
-\title{Ratify that a dataset meets validity criteria}
+\title{Ratify that input or output data meet validity criteria}
 \usage{
 ratify.vicinity_processed(
   x,
@@ -20,7 +20,7 @@ ratify.vicinity_processed(
 )
 }
 \arguments{
-\item{x}{An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\item{x}{An instance of \code{vicinity_processed}, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 
 \item{data_items_chr}{Data items (a character vector), Default: character(0)}
 
@@ -32,5 +32,5 @@ ratify.vicinity_processed(
 Ratified (a logical vector of length one)
 }
 \description{
-ratify.vicinity_processed() is a ratify method that ratifies that an instance of a class conforms to specified criteria. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Ratified (a logical vector of length one).
+ratify.vicinity_processed() is a ratify method that ratifies that an instance of a class conforms to specified criteria. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Ratified (a logical vector of length one).
 }

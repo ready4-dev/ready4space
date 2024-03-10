@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_parameters","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @param x A prototype for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment., Default: make_pt_vicinity_parameters()
-#' @return A validated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @details ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @param x A prototype for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment., Default: make_pt_vicinity_parameters()
+#' @return A validated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @details ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @rdname vicinity_parameters
 #' @export 
 vicinity_parameters <- function(x = make_pt_vicinity_parameters()){ 
 validate_vicinity_parameters(make_new_vicinity_parameters(x))
 }
-#' make new vicinity parameters ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @param x A prototype for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @details ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' make new vicinity parameters ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @param x A prototype for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @details ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @rdname make_new_vicinity_parameters
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,7 +25,7 @@ class(x) <- append(c("vicinity_parameters",setdiff(make_pt_vicinity_parameters()
 class(x))
 x
 }
-#' make prototype vicinity parameters ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' make prototype vicinity parameters ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @param param_name_chr Parameter name (a character vector), Default: character(0)
 #' @param deterministic_val_dbl Deterministic value (a double vector), Default: numeric(0)
 #' @param distribution_chr Distribution (a character vector), Default: character(0)
@@ -36,7 +36,7 @@ x
 #' @param transformation_chr Transformation (a character vector), Default: character(0)
 #' @param use_in_chr Use in (a character vector), Default: character(0)
 #' @param source_chr Source (a character vector), Default: character(0)
-#' @return A prototype for ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @return A prototype for ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' 
 #' @rdname vicinity_parameters
 #' @export 
@@ -65,11 +65,11 @@ use_in_chr = use_in_chr,
 source_chr = source_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity parameters ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @description Validate an instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @return A prototpe for ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
-#' @details ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' validate vicinity parameters ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @description Validate an instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @return A prototpe for ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @details ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @rdname validate_vicinity_parameters
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -114,9 +114,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity parameters ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' is vicinity parameters ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' 
 #' @rdname vicinity_parameters
 #' @export 

@@ -4,7 +4,7 @@
 \alias{vicinity_abbreviations}
 \alias{make_pt_vicinity_abbreviations}
 \alias{is_vicinity_abbreviations}
-\title{ready4 S3 class for tibble object lookup table for spatial data abbreviations.}
+\title{ready4 submodule class for tibble object lookup table for spatial data abbreviations.}
 \usage{
 vicinity_abbreviations(x = make_pt_vicinity_abbreviations())
 
@@ -26,15 +26,15 @@ is_vicinity_abbreviations(x)
 \item{type_chr}{Type (a character vector), Default: character(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+A validated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 
-A prototype for ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+A prototype for ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 }
 \details{
-ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+ready4 submodule for tibble object lookup table for spatial data abbreviations.
 }

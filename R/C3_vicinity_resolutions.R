@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_resolutions","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects., Default: make_pt_vicinity_resolutions()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects., Default: make_pt_vicinity_resolutions()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @rdname vicinity_resolutions
 #' @export 
 vicinity_resolutions <- function(x = make_pt_vicinity_resolutions()){ 
 validate_vicinity_resolutions(make_new_vicinity_resolutions(x))
 }
-#' make new vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' make new vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @rdname make_new_vicinity_resolutions
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,7 +25,7 @@ class(x) <- append(c("vicinity_resolutions",setdiff(make_pt_vicinity_resolutions
 class(x))
 x
 }
-#' make prototype vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' make prototype vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @param parent_area_chr Parent area (a character vector), Default: character(0)
 #' @param boundary_year_dbl Boundary year (a double vector), Default: numeric(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
@@ -33,7 +33,7 @@ x
 #' @param complete_lgl Complete (a logical vector), Default: logical(0)
 #' @param summed_area_dbl Summed area (a double vector), Default: numeric(0)
 #' @param mean_size_dbl Mean size (a double vector), Default: numeric(0)
-#' @return A prototype for ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @return A prototype for ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' 
 #' @rdname vicinity_resolutions
 #' @export 
@@ -56,11 +56,11 @@ summed_area_dbl = summed_area_dbl,
 mean_size_dbl = mean_size_dbl) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @return A prototpe for ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' validate vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @return A prototpe for ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @rdname validate_vicinity_resolutions
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -105,9 +105,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' is vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' 
 #' @rdname vicinity_resolutions
 #' @export 

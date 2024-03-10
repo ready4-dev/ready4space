@@ -15,6 +15,6 @@ remove_grouped_popl_vars(profiled_sf, featured_var_pfx_1L_chr)
 Profiled (a simple features object)
 }
 \description{
-remove_grouped_popl_vars() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove grouped population variables. Function argument profiled_sf specifies the object to be updated. Argument featured_var_pfx_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+remove_grouped_popl_vars() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove grouped population variables. The function returns Profiled (a simple features object).
 }
 \keyword{internal}

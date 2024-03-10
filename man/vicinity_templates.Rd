@@ -4,7 +4,7 @@
 \alias{vicinity_templates}
 \alias{make_pt_vicinity_templates}
 \alias{is_vicinity_templates}
-\title{ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.}
+\title{ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.}
 \usage{
 vicinity_templates(x = make_pt_vicinity_templates())
 
@@ -32,15 +32,15 @@ is_vicinity_templates(x)
 \item{subdivision_chr}{Subdivision (a character vector), Default: character(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+A validated instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 
-A prototype for ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+A prototype for ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table for base file used in creation of certain spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table for base file used in creation of certain spatial objects.
+ready4 submodule for tibble object lookup table for base file used in creation of certain spatial objects.
 }

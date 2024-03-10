@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_processed.R
 \name{make_new_vicinity_processed}
 \alias{make_new_vicinity_processed}
-\title{make new vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\title{make new vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 \usage{
 make_new_vicinity_processed(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+An unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \details{
-ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \keyword{internal}

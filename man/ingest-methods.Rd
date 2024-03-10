@@ -92,9 +92,9 @@ Ingest (an output object of multiple potential types)
 Object (an output object of multiple potential types)
 }
 \description{
-ingest.vicinity_processed() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
+ingest.vicinity_processed() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
 
-ingest.vicinity_raw() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Ingest (an output object of multiple potential types).
+ingest.vicinity_raw() is an ingest method that ingests data saved in external files into R objects stored in working memory. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Ingest (an output object of multiple potential types).
 
 ingest method applied to VicinityProfile
 }

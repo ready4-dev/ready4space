@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_values.R
 \name{make_new_vicinity_values}
 \alias{make_new_vicinity_values}
-\title{make new vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.}
+\title{make new vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.}
 \usage{
 make_new_vicinity_values(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.}
+\item{x}{A prototype for the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+An unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+Create a new unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \details{
-ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 }
 \keyword{internal}

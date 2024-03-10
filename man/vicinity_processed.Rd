@@ -4,7 +4,7 @@
 \alias{vicinity_processed}
 \alias{make_pt_vicinity_processed}
 \alias{is_vicinity_processed}
-\title{ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
+\title{ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).}
 \usage{
 vicinity_processed(x = make_pt_vicinity_processed())
 
@@ -53,15 +53,15 @@ is_vicinity_processed(x)
 \item{additional_detail_chr}{Additional detail (a character vector), Default: character(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+A validated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 
-A prototype for ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+A prototype for ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+Create a new valid instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }
 \details{
-ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 }

@@ -1,6 +1,6 @@
 #' Manufacture a new object
-#' @description manufacture.vicinity_abbreviations() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description manufacture.vicinity_abbreviations() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_abbreviations`, a ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' @param agent_areas_tb Agent areas (a tibble), Default: NULL
 #' @param area_names_chr Area names (a character vector), Default: character(0)
 #' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: 'Suburb'
@@ -135,8 +135,8 @@ manufacture.vicinity_abbreviations <- function (x, agent_areas_tb = NULL, area_n
 #' @importFrom ready4 manufacture
 methods::setMethod("manufacture", methods::className("vicinity_abbreviations", package = "vicinity"), manufacture.vicinity_abbreviations)
 #' Manufacture a new object
-#' @description manufacture.vicinity_parameters() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @description manufacture.vicinity_parameters() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_parameters`, a ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @param y_vicinity_mapes PARAM_DESCRIPTION, Default: NULL
 #' @param n_its_int N its (an integer vector), Default: integer(0)
 #' @param joint_dstr_1L_lgl Joint distribution (a logical vector of length one), Default: T
@@ -166,8 +166,8 @@ manufacture.vicinity_parameters <- function (x, y_vicinity_mapes = NULL, n_its_i
 #' @importFrom ready4 manufacture
 methods::setMethod("manufacture", methods::className("vicinity_parameters", package = "vicinity"), manufacture.vicinity_parameters)
 #' Manufacture a new object
-#' @description manufacture.vicinity_points() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+#' @description manufacture.vicinity_points() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_points`, a ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 #' @param bands_1L_dbl Bands (a double vector of length one), Default: numeric(0)
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector), Default: numeric(0)
 #' @param land_sf Land (a simple features object), Default: NULL
@@ -256,8 +256,8 @@ manufacture.vicinity_points <- function (x, bands_1L_dbl = numeric(0), crs_nbr_d
 #' @importFrom ready4 manufacture
 methods::setMethod("manufacture", methods::className("vicinity_points", package = "vicinity"), manufacture.vicinity_points)
 #' Manufacture a new object
-#' @description manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description manufacture.vicinity_processed() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param approximation_1L_chr Approximation (a character vector of length one), Default: 'abs'
 #' @param main_incld_feature_chr Main included feature (a character vector), Default: character(0)
 #' @param target_area_1L_chr Target area (a character vector of length one), Default: character(0)
@@ -284,8 +284,8 @@ manufacture.vicinity_processed <- function (x, approximation_1L_chr = "abs", mai
 #' @importFrom ready4 manufacture
 methods::setMethod("manufacture", methods::className("vicinity_processed", package = "vicinity"), manufacture.vicinity_processed)
 #' Manufacture a new object
-#' @description manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description manufacture.vicinity_raw() is a manufacture method that manufactures a novel R object using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector), Default: NA
 #' @param fn Function (a function), Default: function(x, ...) {

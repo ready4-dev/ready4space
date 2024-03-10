@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_processed","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data)., Default: make_pt_vicinity_processed()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @details ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data)., Default: make_pt_vicinity_processed()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @details ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @rdname vicinity_processed
 #' @export 
 vicinity_processed <- function(x = make_pt_vicinity_processed()){ 
 validate_vicinity_processed(make_new_vicinity_processed(x))
 }
-#' make new vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @details ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' make new vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @details ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @rdname make_new_vicinity_processed
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,7 +25,7 @@ class(x) <- append(c("vicinity_processed",setdiff(make_pt_vicinity_processed() %
 class(x))
 x
 }
-#' make prototype vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' make prototype vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param name_chr Name (a character vector), Default: character(0)
 #' @param country_chr Country (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
@@ -38,7 +38,7 @@ x
 #' @param year_end_chr Year end (a character vector), Default: character(0)
 #' @param source_reference_chr Source reference (a character vector), Default: character(0)
 #' @param additional_detail_chr Additional detail (a character vector), Default: character(0)
-#' @return A prototype for ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @return A prototype for ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' 
 #' @rdname vicinity_processed
 #' @export 
@@ -71,11 +71,11 @@ source_reference_chr = source_reference_chr,
 additional_detail_chr = additional_detail_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @return A prototpe for ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
-#' @details ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' validate vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @return A prototpe for ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @details ready4 submodule for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @rdname validate_vicinity_processed
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -120,9 +120,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity processed ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' is vicinity processed ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' 
 #' @rdname vicinity_processed
 #' @export 

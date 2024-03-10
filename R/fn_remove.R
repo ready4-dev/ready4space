@@ -1,5 +1,5 @@
 #' Remove grouped population variables
-#' @description remove_grouped_popl_vars() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove grouped population variables. Function argument profiled_sf specifies the object to be updated. Argument featured_var_pfx_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+#' @description remove_grouped_popl_vars() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove grouped population variables. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param featured_var_pfx_1L_chr Featured variable prefix (a character vector of length one)
 #' @return Profiled (a simple features object)
@@ -19,7 +19,7 @@ remove_grouped_popl_vars <- function (profiled_sf, featured_var_pfx_1L_chr)
     return(profiled_sf)
 }
 #' Remove outlier areas
-#' @description remove_outlier_areas() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove outlier areas. Function argument areas_sf specifies the object to be updated. Argument outliers_chr provides the object to be updated. The function returns Areas (a simple features object).
+#' @description remove_outlier_areas() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove outlier areas. The function returns Areas (a simple features object).
 #' @param areas_sf Areas (a simple features object)
 #' @param outliers_chr Outliers (a character vector)
 #' @param area_var_nm_1L_chr Area variable name (a character vector of length one), Default: character(0)

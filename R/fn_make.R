@@ -425,7 +425,7 @@ make_nse_objs_ls <- function (concept_1L_chr, spatial_unit_1L_chr, reference_var
 #' @description make_path_for_raw_outp_dir() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path for raw output directory. The function is called for its side effects and does not return a value.
 #' @param category_1L_chr Category (a character vector of length one)
 #' @param raw_fls_dir_1L_chr Raw files directory (a character vector of length one)
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname make_path_for_raw_outp_dir
 #' @export 
 #' @keywords internal

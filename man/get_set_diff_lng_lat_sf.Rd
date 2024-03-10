@@ -27,6 +27,6 @@ get_set_diff_lng_lat_sf(
 Difference (a simple features object)
 }
 \description{
-get_set_diff_lng_lat_sf() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get set difference longitude lat simple features object. Function argument geometry_sf specifies the where to look for the required object. The function returns Difference (a simple features object).
+get_set_diff_lng_lat_sf() is a Get function that extracts data from an object. Specifically, this function implements an algorithm to get set difference longitude lat simple features object. The function returns Difference (a simple features object).
 }
 \keyword{internal}

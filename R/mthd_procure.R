@@ -1,6 +1,6 @@
 #' Procure items from a dataset
-#' @description procure.vicinity_abbreviations() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' @description procure.vicinity_abbreviations() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_abbreviations`, a ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' @param col_nm_1L_chr Column name (a character vector of length one), Default: 'short_name_chr'
 #' @param match_value_xx Match value (an output object of multiple potential types)
 #' @return Object (an output object of multiple potential types)
@@ -20,8 +20,8 @@ procure.vicinity_abbreviations <- function (x, col_nm_1L_chr = "short_name_chr",
 #' @importFrom ready4 procure
 methods::setMethod("procure", methods::className("vicinity_abbreviations", package = "vicinity"), procure.vicinity_abbreviations)
 #' Procure items from a dataset
-#' @description procure.vicinity_identifiers() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @description procure.vicinity_identifiers() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_identifiers`, a ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @param col_nm_1L_chr Column name (a character vector of length one), Default: 'spatial_unit_chr'
 #' @param geometry_rsl_1L_chr Geometry resolution (a character vector of length one), Default: character(0)
 #' @param group_at_geom_unit_1L_lgl Group at geometry unit (a logical vector of length one), Default: TRUE
@@ -62,8 +62,8 @@ procure.vicinity_identifiers <- function (x, col_nm_1L_chr = "spatial_unit_chr",
 #' @importFrom ready4 procure
 methods::setMethod("procure", methods::className("vicinity_identifiers", package = "vicinity"), procure.vicinity_identifiers)
 #' Procure items from a dataset
-#' @description procure.vicinity_raw() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description procure.vicinity_raw() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param inc_script_1L_lgl Include script (a logical vector of length one), Default: T
 #' @param forced_choice_chr Forced choice (a character vector), Default: 'NA'
 #' @param match_value_xx Match value (an output object of multiple potential types), Default: NULL
@@ -107,8 +107,8 @@ procure.vicinity_raw <- function (x, inc_script_1L_lgl = T, forced_choice_chr = 
 #' @importFrom ready4 procure
 methods::setMethod("procure", methods::className("vicinity_raw", package = "vicinity"), procure.vicinity_raw)
 #' Procure items from a dataset
-#' @description procure.vicinity_resolutions() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects. The function returns Resolution (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+#' @description procure.vicinity_resolutions() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects. The function returns Resolution (an output object of multiple potential types).
+#' @param x An instance of `vicinity_resolutions`, a ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 #' @param options_chr Options (a character vector), Default: character(0)
 #' @param what_1L_chr What (a character vector of length one), Default: 'resolution'
 #' @param whole_area_1L_lgl Whole area (a logical vector of length one), Default: TRUE

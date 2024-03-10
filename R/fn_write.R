@@ -1,10 +1,10 @@
 #' Write attribute tibble
-#' @description write_att_tb() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write attribute tibble. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_att_tb() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write attribute tibble. The function is called for its side effects and does not return a value.
 #' @param att_tb Attribute (a tibble)
 #' @param object_nm_1L_chr Object name (a character vector of length one)
 #' @param processed_fls_dir_1L_chr Processed files directory (a character vector of length one)
 #' @param overwrite_1L_lgl Overwrite (a logical vector of length one)
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname write_att_tb
 #' @export 
 #' @keywords internal
@@ -17,9 +17,9 @@ write_att_tb <- function (att_tb, object_nm_1L_chr, processed_fls_dir_1L_chr,
         saveRDS(att_tb, file = path_to_att_tb_chr)
 }
 #' Write directories for import
-#' @description write_dirs_for_imp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write directories for import. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_dirs_for_imp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write directories for import. The function is called for its side effects and does not return a value.
 #' @param paths_chr Paths (a character vector)
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname write_dirs_for_imp
 #' @export 
 #' @importFrom purrr walk

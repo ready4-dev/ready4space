@@ -27,6 +27,6 @@ add_popl_counts(
 Profiled (a simple features object)
 }
 \description{
-add_popl_counts() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add population counts. Function argument profiled_sf specifies the object to be updated. The function returns Profiled (a simple features object).
+add_popl_counts() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add population counts. The function returns Profiled (a simple features object).
 }
 \keyword{internal}

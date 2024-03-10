@@ -13,6 +13,6 @@ transform_sf_ls(sf_ls)
 Transformed (a list of simple features objects)
 }
 \description{
-transform_sf_ls() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform simple features object list. Function argument sf_ls specifies the object to be updated. The function returns Transformed (a list of simple features objects).
+transform_sf_ls() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform simple features object list. The function returns Transformed (a list of simple features objects).
 }
 \keyword{internal}

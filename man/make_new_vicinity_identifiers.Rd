@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_identifiers.R
 \name{make_new_vicinity_identifiers}
 \alias{make_new_vicinity_identifiers}
-\title{make new vicinity identifiers ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
+\title{make new vicinity identifiers ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
 \usage{
 make_new_vicinity_identifiers(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+An unvalidated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.
 }
 \keyword{internal}

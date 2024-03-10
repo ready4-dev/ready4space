@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_abbreviations","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table for spatial data abbreviations., Default: make_pt_vicinity_abbreviations()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @details ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table for spatial data abbreviations., Default: make_pt_vicinity_abbreviations()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @details ready4 submodule for tibble object lookup table for spatial data abbreviations.
 #' @rdname vicinity_abbreviations
 #' @export 
 vicinity_abbreviations <- function(x = make_pt_vicinity_abbreviations()){ 
 validate_vicinity_abbreviations(make_new_vicinity_abbreviations(x))
 }
-#' make new vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @details ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' make new vicinity abbreviations ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @details ready4 submodule for tibble object lookup table for spatial data abbreviations.
 #' @rdname make_new_vicinity_abbreviations
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,11 +25,11 @@ class(x) <- append(c("vicinity_abbreviations",setdiff(make_pt_vicinity_abbreviat
 class(x))
 x
 }
-#' make prototype vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' make prototype vicinity abbreviations ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' @param long_name_chr Long name (a character vector), Default: character(0)
 #' @param short_name_chr Short name (a character vector), Default: character(0)
 #' @param type_chr Type (a character vector), Default: character(0)
-#' @return A prototype for ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' @return A prototype for ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' 
 #' @rdname vicinity_abbreviations
 #' @export 
@@ -44,11 +44,11 @@ short_name_chr = short_name_chr,
 type_chr = type_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @return A prototpe for ready4 S3 class for tibble object lookup table for spatial data abbreviations.
-#' @details ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' validate vicinity abbreviations ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @return A prototpe for ready4 submodule class for tibble object lookup table for spatial data abbreviations.
+#' @details ready4 submodule for tibble object lookup table for spatial data abbreviations.
 #' @rdname validate_vicinity_abbreviations
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -93,9 +93,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' is vicinity abbreviations ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 #' 
 #' @rdname vicinity_abbreviations
 #' @export 

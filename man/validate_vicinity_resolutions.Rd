@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_resolutions.R
 \name{validate_vicinity_resolutions}
 \alias{validate_vicinity_resolutions}
-\title{validate vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.}
+\title{validate vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.}
 \usage{
 validate_vicinity_resolutions(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+A prototpe for ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+Validate an instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \keyword{internal}

@@ -7,7 +7,7 @@
 \alias{metamorphose,VicinityLocalProcessed-method}
 \alias{metamorphose-VicinityLocal}
 \alias{metamorphose,VicinityLocal-method}
-\title{Metamorphose data from one model module (or sub-module) instance to an instance of a different model module or sub-module}
+\title{Metamorphose a ready4 model module to a ready4 model module of a different class}
 \usage{
 metamorphose.vicinity_raw(
   x,
@@ -64,7 +64,7 @@ Y (Look up tables for spatiotemporal data)
 X (Object defining data to be saved in local directory in a processed (R) format.)
 }
 \description{
-metamorphose.vicinity_raw() is a metamorphose method that metamorphoses an instance of a class into an instance of a different (non-child) class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
+metamorphose.vicinity_raw() is a metamorphose method that metamorphoses an instance of a class into an instance of a different (non-child) class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
 
 metamorphose method applied to VicinityLocalProcessed
 

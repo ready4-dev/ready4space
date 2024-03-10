@@ -17,6 +17,6 @@ remove_outlier_areas(areas_sf, outliers_chr, area_var_nm_1L_chr = character(0))
 Areas (a simple features object)
 }
 \description{
-remove_outlier_areas() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove outlier areas. Function argument areas_sf specifies the object to be updated. Argument outliers_chr provides the object to be updated. The function returns Areas (a simple features object).
+remove_outlier_areas() is a Remove function that edits an object, removing a specified element or elements. Specifically, this function implements an algorithm to remove outlier areas. The function returns Areas (a simple features object).
 }
 \keyword{internal}

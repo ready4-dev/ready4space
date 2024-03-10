@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_raw","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import., Default: make_pt_vicinity_raw()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @details ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import., Default: make_pt_vicinity_raw()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @details ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @rdname vicinity_raw
 #' @export 
 vicinity_raw <- function(x = make_pt_vicinity_raw()){ 
 validate_vicinity_raw(make_new_vicinity_raw(x))
 }
-#' make new vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @details ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' make new vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @details ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @rdname make_new_vicinity_raw
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,7 +25,7 @@ class(x) <- append(c("vicinity_raw",setdiff(make_pt_vicinity_raw() %>% class(),c
 class(x))
 x
 }
-#' make prototype vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' make prototype vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param file_type_chr File type (a character vector), Default: character(0)
 #' @param file_name_chr File name (a character vector), Default: character(0)
 #' @param data_repo_chr Data repository (a character vector), Default: character(0)
@@ -51,7 +51,7 @@ x
 #' @param year_end_chr Year end (a character vector), Default: character(0)
 #' @param uid_chr Unique identifier (a character vector), Default: character(0)
 #' @param add_bndys_from_ls Add boundaries from (a list), Default: list()
-#' @return A prototype for ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @return A prototype for ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' 
 #' @rdname vicinity_raw
 #' @export 
@@ -110,11 +110,11 @@ uid_chr = uid_chr,
 add_bndys_from_ls = add_bndys_from_ls) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @return A prototpe for ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
-#' @details ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' validate vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @return A prototpe for ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @details ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @rdname validate_vicinity_raw
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -159,9 +159,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' is vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' 
 #' @rdname vicinity_raw
 #' @export 

@@ -137,13 +137,13 @@ Resolution (an output object of multiple potential types)
 Object (an output object of multiple potential types)
 }
 \description{
-procure.vicinity_abbreviations() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
+procure.vicinity_abbreviations() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table for spatial data abbreviations. The function returns Object (an output object of multiple potential types).
 
-procure.vicinity_identifiers() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects. The function returns Object (an output object of multiple potential types).
+procure.vicinity_identifiers() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects. The function returns Object (an output object of multiple potential types).
 
-procure.vicinity_raw() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
+procure.vicinity_raw() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Object (an output object of multiple potential types).
 
-procure.vicinity_resolutions() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects. The function returns Resolution (an output object of multiple potential types).
+procure.vicinity_resolutions() is a procure method that procures data by executing a search and retrieval algorithm using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects. The function returns Resolution (an output object of multiple potential types).
 
 procure method applied to VicinityProfile
 }

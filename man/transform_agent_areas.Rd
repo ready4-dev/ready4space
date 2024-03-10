@@ -27,6 +27,6 @@ transform_agent_areas(
 Agent areas (a tibble)
 }
 \description{
-transform_agent_areas() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform agent areas. Function argument agent_areas_tb specifies the object to be updated. Argument area_var_nm_1L_chr provides the object to be updated. The function returns Agent areas (a tibble).
+transform_agent_areas() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform agent areas. The function returns Agent areas (a tibble).
 }
 \keyword{internal}

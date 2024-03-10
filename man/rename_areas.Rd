@@ -15,6 +15,6 @@ rename_areas(area_names_chr, correspondences_lup = NULL)
 Area names (a character vector)
 }
 \description{
-rename_areas() is a Rename function that renames elements of an object based on a pre-speccified schema. Specifically, this function implements an algorithm to rename areas. The function returns Area names (a character vector).
+rename_areas() is a Rename function that renames elements of an object based on a pre-specified schema. Specifically, this function implements an algorithm to rename areas. The function returns Area names (a character vector).
 }
 \keyword{internal}

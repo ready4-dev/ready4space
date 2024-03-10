@@ -15,6 +15,6 @@ transform_to_simpler_sf(sf, crs_dbl = NULL)
 Polygons (a simple features object)
 }
 \description{
-transform_to_simpler_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform to simpler simple features object. Function argument sf specifies the object to be updated. Argument crs_dbl provides the object to be updated. The function returns Polygons (a simple features object).
+transform_to_simpler_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform to simpler simple features object. The function returns Polygons (a simple features object).
 }
 \keyword{internal}

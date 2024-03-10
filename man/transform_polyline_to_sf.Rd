@@ -24,6 +24,6 @@ transform_polyline_to_sf(
 Geometry (a simple features object)
 }
 \description{
-transform_polyline_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform polyline to simple features object. Function argument polyline_xx specifies the object to be updated. Argument crs_1L_dbl provides the object to be updated. The function returns Geometry (a simple features object).
+transform_polyline_to_sf() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform polyline to simple features object. The function returns Geometry (a simple features object).
 }
 \keyword{internal}

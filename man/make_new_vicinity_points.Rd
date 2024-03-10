@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_points.R
 \name{make_new_vicinity_points}
 \alias{make_new_vicinity_points}
-\title{make new vicinity points ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
+\title{make new vicinity points ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
 \usage{
 make_new_vicinity_points(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+An unvalidated instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
+ready4 submodule for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes.
 }
 \keyword{internal}

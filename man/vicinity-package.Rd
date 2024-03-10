@@ -8,11 +8,11 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop geospatial models. Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/). This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use. If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).
+Modules from the readyforwhatsnext youth mental health economic model (https://readyforwhatsnext.org) that can be used to develop geospatial models. Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/). This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use. If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).
 
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop geospatial models. Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/). This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use. If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).
+Modules from the readyforwhatsnext youth mental health economic model (https://readyforwhatsnext.org) that can be used to develop geospatial models. Designed for use in models developed with the ready4 framework (https://www.ready4-dev.com/). This development version of the vicinity package has been made available as part of the process of testing and documenting the package. It is currently highly unstable and is not yet recommended for use. If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).
 }
 \seealso{
 Useful links:

@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_raw.R
 \name{validate_vicinity_raw}
 \alias{validate_vicinity_raw}
-\title{validate vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\title{validate vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
 \usage{
 validate_vicinity_raw(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+A prototpe for ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+Validate an instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \details{
-ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \keyword{internal}

@@ -4,7 +4,7 @@
 \alias{vicinity_resolutions}
 \alias{make_pt_vicinity_resolutions}
 \alias{is_vicinity_resolutions}
-\title{ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.}
+\title{ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.}
 \usage{
 vicinity_resolutions(x = make_pt_vicinity_resolutions())
 
@@ -38,15 +38,15 @@ is_vicinity_resolutions(x)
 \item{mean_size_dbl}{Mean size (a double vector), Default: numeric(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+A validated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 
-A prototype for ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+A prototype for ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 }

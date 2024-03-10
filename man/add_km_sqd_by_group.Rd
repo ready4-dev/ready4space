@@ -27,6 +27,6 @@ add_km_sqd_by_group(
 Geometry (a simple features object)
 }
 \description{
-add_km_sqd_by_group() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add kilometre squared by group. Function argument geometry_sf specifies the object to be updated. The function returns Geometry (a simple features object).
+add_km_sqd_by_group() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add kilometre squared by group. The function returns Geometry (a simple features object).
 }
 \keyword{internal}

@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_abbreviations.R
 \name{validate_vicinity_abbreviations}
 \alias{validate_vicinity_abbreviations}
-\title{validate vicinity abbreviations ready4 S3 class for tibble object lookup table for spatial data abbreviations.}
+\title{validate vicinity abbreviations ready4 submodule class for tibble object lookup table for spatial data abbreviations.}
 \usage{
 validate_vicinity_abbreviations(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+A prototpe for ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+Validate an instance of the ready4 submodule class for tibble object lookup table for spatial data abbreviations.
 }
 \details{
-ready4 S3 class for tibble object lookup table for spatial data abbreviations.
+ready4 submodule for tibble object lookup table for spatial data abbreviations.
 }
 \keyword{internal}

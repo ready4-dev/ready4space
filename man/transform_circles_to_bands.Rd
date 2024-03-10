@@ -13,6 +13,6 @@ transform_circles_to_bands(geomc_dist_circles_ls)
 Bands (a list)
 }
 \description{
-transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. Function argument geomc_dist_circles_ls specifies the object to be updated. The function returns Bands (a list).
+transform_circles_to_bands() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform circles to bands. The function returns Bands (a list).
 }
 \keyword{internal}

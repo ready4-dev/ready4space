@@ -27,6 +27,6 @@ transform_value(
 Transformed value length one (a numeric)
 }
 \description{
-transform_value() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform value. Function argument distribution_1L_chr specifies the object to be updated. Argument dstr_param_1_1L_dbl provides the object to be updated. The function is called for its side effects and does not return a value.
+transform_value() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform value. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

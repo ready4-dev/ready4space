@@ -1,9 +1,9 @@
 #' Author and save files
-#' @description author.vicinity_processed() is an author method that authors and saves files to local or remote locations. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
-#' @param x An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' @description author.vicinity_processed() is an author method that authors and saves files to local or remote locations. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
+#' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param path_1L_chr Path (a character vector of length one)
 #' @param crs_dbl Coordinates reference system (a double vector)
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname author-methods
 #' @export 
 #' @importFrom dplyr filter pull
@@ -21,8 +21,8 @@ author.vicinity_processed <- function (x, path_1L_chr, crs_dbl)
 #' @importFrom ready4 author
 methods::setMethod("author", methods::className("vicinity_processed", package = "vicinity"), author.vicinity_processed)
 #' Author and save files
-#' @description author.vicinity_raw() is an author method that authors and saves files to local or remote locations. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' @description author.vicinity_raw() is an author method that authors and saves files to local or remote locations. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector).
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param crs_dbl Coordinates reference system (a double vector), Default: numeric(0)
 #' @param imports_ls Imports (a list), Default: NULL
 #' @param match_vals_xx Match values (an output object of multiple potential types), Default: NULL
@@ -98,7 +98,7 @@ methods::setMethod("author", methods::className("vicinity_raw", package = "vicin
 #' @description author method applied to VicinityLocalProcessed
 #' @param x An object of class VicinityLocalProcessed
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector)
-#' @param return_r4_1L_lgl Return ready4 S4 (a logical vector of length one), Default: T
+#' @param return_r4_1L_lgl Return ready4 module (a logical vector of length one), Default: T
 #' @return Return (an output object of multiple potential types)
 #' @rdname author-methods
 #' @aliases author,VicinityLocalProcessed-method

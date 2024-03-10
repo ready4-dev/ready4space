@@ -4,7 +4,7 @@
 \alias{vicinity_values}
 \alias{make_pt_vicinity_values}
 \alias{is_vicinity_values}
-\title{ready4 S3 class for tibble object that stores simulation parameter values for each iteration.}
+\title{ready4 submodule class for tibble object that stores simulation parameter values for each iteration.}
 \usage{
 vicinity_values(x = make_pt_vicinity_values())
 
@@ -23,15 +23,15 @@ is_vicinity_values(x)
 \item{iteration_1_dbl}{Iteration 1 (a double vector), Default: numeric(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+A validated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 
-A prototype for ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+A prototype for ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+Create a new valid instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \details{
-ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 }

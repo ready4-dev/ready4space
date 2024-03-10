@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_values","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @param x A prototype for the ready4 S3 class for tibble object that stores simulation parameter values for each iteration., Default: make_pt_vicinity_values()
-#' @return A validated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @details ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @param x A prototype for the ready4 submodule class for tibble object that stores simulation parameter values for each iteration., Default: make_pt_vicinity_values()
+#' @return A validated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @details ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 #' @rdname vicinity_values
 #' @export 
 vicinity_values <- function(x = make_pt_vicinity_values()){ 
 validate_vicinity_values(make_new_vicinity_values(x))
 }
-#' make new vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @param x A prototype for the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @details ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' make new vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @param x A prototype for the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @details ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 #' @rdname make_new_vicinity_values
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,10 +25,10 @@ class(x) <- append(c("vicinity_values",setdiff(make_pt_vicinity_values() %>% cla
 class(x))
 x
 }
-#' make prototype vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' make prototype vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 #' @param param_name_chr Parameter name (a character vector), Default: character(0)
 #' @param iteration_1_dbl Iteration 1 (a double vector), Default: numeric(0)
-#' @return A prototype for ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' @return A prototype for ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 #' 
 #' @rdname vicinity_values
 #' @export 
@@ -41,11 +41,11 @@ args_ls <- list(param_name_chr = param_name_chr,
 iteration_1_dbl = iteration_1_dbl) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @description Validate an instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @return A prototpe for ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
-#' @details ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' validate vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @description Validate an instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @return A prototpe for ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
+#' @details ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 #' @rdname validate_vicinity_values
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -90,9 +90,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' is vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 #' 
 #' @rdname vicinity_values
 #' @export 

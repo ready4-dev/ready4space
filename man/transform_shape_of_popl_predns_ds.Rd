@@ -15,6 +15,6 @@ transform_shape_of_popl_predns_ds(popl_predns_ds, prefix_1L_chr = "Persons.")
 Reshaped (a tibble)
 }
 \description{
-transform_shape_of_popl_predns_ds() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform shape of population preductions dataset. Function argument popl_predns_ds specifies the object to be updated. Argument prefix_1L_chr provides the object to be updated. The function returns Reshaped (a tibble).
+transform_shape_of_popl_predns_ds() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform shape of population preductions dataset. The function returns Reshaped (a tibble).
 }
 \keyword{internal}

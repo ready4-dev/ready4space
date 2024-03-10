@@ -17,6 +17,6 @@ add_att_to_sf(area_sf, att_data_tb, att_data_desc_1L_chr)
 Updated area (a simple features object)
 }
 \description{
-add_att_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attribute to simple features object. Function argument area_sf specifies the object to be updated. The function returns Updated area (a simple features object).
+add_att_to_sf() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add attribute to simple features object. The function returns Updated area (a simple features object).
 }
 \keyword{internal}

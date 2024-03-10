@@ -4,7 +4,7 @@
 \alias{vicinity_parameters}
 \alias{make_pt_vicinity_parameters}
 \alias{is_vicinity_parameters}
-\title{ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.}
+\title{ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.}
 \usage{
 vicinity_parameters(x = make_pt_vicinity_parameters())
 
@@ -47,15 +47,15 @@ is_vicinity_parameters(x)
 \item{source_chr}{Source (a character vector), Default: character(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+A validated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 
-A prototype for ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+A prototype for ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+Create a new valid instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 }
 \details{
-ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.
 }

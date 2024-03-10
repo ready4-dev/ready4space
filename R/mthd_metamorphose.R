@@ -1,6 +1,6 @@
-#' Metamorphose data from one model module (or sub-module) instance to an instance of a different model module or sub-module
-#' @description metamorphose.vicinity_raw() is a metamorphose method that metamorphoses an instance of a class into an instance of a different (non-child) class. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
-#' @param x An instance of ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+#' Metamorphose a ready4 model module to a ready4 model module of a different class
+#' @description metamorphose.vicinity_raw() is a metamorphose method that metamorphoses an instance of a class into an instance of a different (non-child) class. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
+#' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param y_VicinityLookup PARAM_DESCRIPTION, Default: NULL
 #' @param package_1L_chr Package (a character vector of length one)
 #' @param raw_fls_dir_1L_chr Raw files directory (a character vector of length one)
@@ -36,7 +36,7 @@ metamorphose.vicinity_raw <- function (x, y_VicinityLookup = NULL, package_1L_ch
 #' @importFrom ready4 metamorphose
 methods::setMethod("metamorphose", methods::className("vicinity_raw", package = "vicinity"), metamorphose.vicinity_raw)
 #' 
-#' Metamorphose data from one model module (or sub-module) instance to an instance of a different model module or sub-module
+#' Metamorphose a ready4 model module to a ready4 model module of a different class
 #' @name metamorphose-VicinityLocalProcessed
 #' @description metamorphose method applied to VicinityLocalProcessed
 #' @param x An object of class VicinityLocalProcessed
@@ -61,7 +61,7 @@ methods::setMethod("metamorphose", "VicinityLocalProcessed", function (x)
     return(y_VicinityLookup)
 })
 #' 
-#' Metamorphose data from one model module (or sub-module) instance to an instance of a different model module or sub-module
+#' Metamorphose a ready4 model module to a ready4 model module of a different class
 #' @name metamorphose-VicinityLocal
 #' @description metamorphose method applied to VicinityLocal
 #' @param x An object of class VicinityLocal

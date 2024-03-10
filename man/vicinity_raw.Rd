@@ -4,7 +4,7 @@
 \alias{vicinity_raw}
 \alias{make_pt_vicinity_raw}
 \alias{is_vicinity_raw}
-\title{ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\title{ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
 \usage{
 vicinity_raw(x = make_pt_vicinity_raw())
 
@@ -92,15 +92,15 @@ is_vicinity_raw(x)
 \item{add_bndys_from_ls}{Add boundaries from (a list), Default: list()}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+A validated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 
-A prototype for ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+A prototype for ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+Create a new valid instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \details{
-ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }

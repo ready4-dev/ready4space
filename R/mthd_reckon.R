@@ -1,6 +1,6 @@
 #' Reckon (calculate) a value
-#' @description reckon.vicinity_mapes() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors. The function returns Mean absolute prediction error (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+#' @description reckon.vicinity_mapes() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors. The function returns Mean absolute prediction error (an output object of multiple potential types).
+#' @param x An instance of `vicinity_mapes`, a ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 #' @param iter_1L_int Iteration (an integer vector of length one), Default: 1
 #' @param n_its_int N its (an integer vector), Default: 1
 #' @param joint_dstr_1L_lgl Joint distribution (a logical vector of length one), Default: T
@@ -67,8 +67,8 @@ reckon.vicinity_mapes <- function (x, iter_1L_int = 1, n_its_int = 1, joint_dstr
 #' @importFrom ready4 reckon
 methods::setMethod("reckon", methods::className("vicinity_mapes", package = "vicinity"), reckon.vicinity_mapes)
 #' Reckon (calculate) a value
-#' @description reckon.vicinity_parameters() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Value (an output object of multiple potential types).
-#' @param x An instance of ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+#' @description reckon.vicinity_parameters() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Value (an output object of multiple potential types).
+#' @param x An instance of `vicinity_parameters`, a ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 #' @param iter_1L_int Iteration (an integer vector of length one), Default: integer(0)
 #' @param n_its_int N its (an integer vector), Default: integer(0)
 #' @param type_1L_chr Type (a character vector of length one), Default: 'outer'

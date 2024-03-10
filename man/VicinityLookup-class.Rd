@@ -11,18 +11,18 @@ Look up tables for spatiotemporal data
 \section{Slots}{
 
 \describe{
-\item{\code{vicinity_abbreviations_r3}}{Vicinity abbreviations (a ready4 S3)}
+\item{\code{vicinity_abbreviations_r3}}{Vicinity abbreviations (a ready4 submodule)}
 
-\item{\code{vicinity_raw_r3}}{Vicinity raw (a ready4 S3)}
+\item{\code{vicinity_raw_r3}}{Vicinity raw (a ready4 submodule)}
 
-\item{\code{vicinity_processed_r3}}{Vicinity processed (a ready4 S3)}
+\item{\code{vicinity_processed_r3}}{Vicinity processed (a ready4 submodule)}
 
-\item{\code{vicinity_resolutions_r3}}{Vicinity resolutions (a ready4 S3)}
+\item{\code{vicinity_resolutions_r3}}{Vicinity resolutions (a ready4 submodule)}
 
-\item{\code{vicinity_points_r3}}{Vicinity points (a ready4 S3)}
+\item{\code{vicinity_points_r3}}{Vicinity points (a ready4 submodule)}
 
-\item{\code{vicinity_templates_r3}}{Vicinity templates (a ready4 S3)}
+\item{\code{vicinity_templates_r3}}{Vicinity templates (a ready4 submodule)}
 
-\item{\code{vicinity_identifiers_r3}}{Vicinity identifiers (a ready4 S3)}
+\item{\code{vicinity_identifiers_r3}}{Vicinity identifiers (a ready4 submodule)}
 }}
 

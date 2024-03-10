@@ -36,6 +36,6 @@ update_popl_by_incld_area(
 Profiled (a simple features object)
 }
 \description{
-update_popl_by_incld_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by included area. Function argument profiled_sf specifies the object to be updated. Argument concept_1L_chr provides the object to be updated. The function returns Profiled (a simple features object).
+update_popl_by_incld_area() is an Update function that edits an object, while preserving core object attributes. Specifically, this function implements an algorithm to update population by included area. The function returns Profiled (a simple features object).
 }
 \keyword{internal}

@@ -1,5 +1,5 @@
 #' Add attribute to simple features object
-#' @description add_att_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add attribute to simple features object. Function argument area_sf specifies the object to be updated. The function returns Updated area (a simple features object).
+#' @description add_att_to_sf() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add attribute to simple features object. The function returns Updated area (a simple features object).
 #' @param area_sf Area (a simple features object)
 #' @param att_data_tb Attribute data (a tibble)
 #' @param att_data_desc_1L_chr Attribute data description (a character vector of length one)
@@ -26,7 +26,7 @@ add_att_to_sf <- function (area_sf, att_data_tb, att_data_desc_1L_chr)
     return(updated_area_sf)
 }
 #' Add dynamic variables to simple features object
-#' @description add_dynamic_vars_to_sf() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dynamic variables to simple features object. Function argument dynamic_vars_sf specifies the object to be updated. The function returns Profiled (a simple features object).
+#' @description add_dynamic_vars_to_sf() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add dynamic variables to simple features object. The function returns Profiled (a simple features object).
 #' @param dynamic_vars_sf Dynamic variables (a simple features object)
 #' @param crs_nbr_dbl Coordinates reference system number (a double vector)
 #' @param data_year_1L_chr Data year (a character vector of length one)
@@ -63,7 +63,7 @@ add_dynamic_vars_to_sf <- function (dynamic_vars_sf, crs_nbr_dbl, data_year_1L_c
     return(profiled_sf)
 }
 #' Add kilometre squared
-#' @description add_km_sqd() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add kilometre squared. Function argument geometry_sf specifies the object to be updated. The function returns Geometry (a simple features object).
+#' @description add_km_sqd() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add kilometre squared. The function returns Geometry (a simple features object).
 #' @param geometry_sf Geometry (a simple features object)
 #' @param feature_nm_1L_chr Feature name (a character vector of length one)
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'whl_'
@@ -85,7 +85,7 @@ add_km_sqd <- function (geometry_sf, feature_nm_1L_chr, prefix_1L_chr = "whl_",
     return(geometry_sf)
 }
 #' Add kilometre squared by group
-#' @description add_km_sqd_by_group() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add kilometre squared by group. Function argument geometry_sf specifies the object to be updated. The function returns Geometry (a simple features object).
+#' @description add_km_sqd_by_group() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add kilometre squared by group. The function returns Geometry (a simple features object).
 #' @param geometry_sf Geometry (a simple features object)
 #' @param feature_nm_1L_chr Feature name (a character vector of length one)
 #' @param group_by_var_1L_chr Group by variable (a character vector of length one)
@@ -109,7 +109,7 @@ add_km_sqd_by_group <- function (geometry_sf, feature_nm_1L_chr, group_by_var_1L
     return(geometry_sf)
 }
 #' Add names
-#' @description add_names() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add names. Function argument ds_tb specifies the object to be updated. The function returns Dataset (a tibble).
+#' @description add_names() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add names. The function returns Dataset (a tibble).
 #' @param ds_tb Dataset (a tibble)
 #' @return Dataset (a tibble)
 #' @rdname add_names
@@ -138,7 +138,7 @@ add_names <- function (ds_tb)
     return(ds_tb)
 }
 #' Add population counts
-#' @description add_popl_counts() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add population counts. Function argument profiled_sf specifies the object to be updated. The function returns Profiled (a simple features object).
+#' @description add_popl_counts() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add population counts. The function returns Profiled (a simple features object).
 #' @param profiled_sf Profiled (a simple features object)
 #' @param group_by_var_1L_chr Group by variable (a character vector of length one)
 #' @param nse_objs_ls Non-standard evaluation objects (a list)

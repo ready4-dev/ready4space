@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_parameters.R
 \name{make_new_vicinity_parameters}
 \alias{make_new_vicinity_parameters}
-\title{make new vicinity parameters ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.}
+\title{make new vicinity parameters ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.}
 \usage{
 make_new_vicinity_parameters(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.}
+\item{x}{A prototype for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+An unvalidated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+Create a new unvalidated instance of the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.
 }
 \details{
-ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.
+ready4 submodule for tibble object that stores simulation structural parameters relating to the spatial environment.
 }
 \keyword{internal}

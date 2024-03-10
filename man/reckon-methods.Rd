@@ -38,7 +38,7 @@ reckon.vicinity_parameters(
 )
 }
 \arguments{
-\item{x}{An instance of ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment.}
+\item{x}{An instance of \code{vicinity_parameters}, a ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment.}
 
 \item{iter_1L_int}{Iteration (an integer vector of length one), Default: integer(0)}
 
@@ -54,7 +54,7 @@ Mean absolute prediction error (an output object of multiple potential types)
 Value (an output object of multiple potential types)
 }
 \description{
-reckon.vicinity_mapes() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors. The function returns Mean absolute prediction error (an output object of multiple potential types).
+reckon.vicinity_mapes() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors. The function returns Mean absolute prediction error (an output object of multiple potential types).
 
-reckon.vicinity_parameters() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 S3 class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Value (an output object of multiple potential types).
+reckon.vicinity_parameters() is a reckon method that reckons a value by performing a calculation using data contained in an instance of a class. This method is implemented for the ready4 submodule class for tibble object that stores simulation structural parameters relating to the spatial environment. The function returns Value (an output object of multiple potential types).
 }

@@ -44,7 +44,7 @@ authorData.vicinity_raw(
 
 \item{what_1L_chr}{What (a character vector of length one), Default: 'outer'}
 
-\item{return_r4_1L_lgl}{Return ready4 S4 (a logical vector of length one), Default: F}
+\item{return_r4_1L_lgl}{Return ready4 module (a logical vector of length one), Default: F}
 }
 \value{
 Files written (a logical vector of length one)
@@ -52,7 +52,7 @@ Files written (a logical vector of length one)
 Return (an output object of multiple potential types)
 }
 \description{
-authorData.vicinity_raw() is an authorData method that authors and saves files necessary for creating and documenting datasets. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector of length one).
+authorData.vicinity_raw() is an authorData method that authors and saves files necessary for creating and documenting datasets. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector of length one).
 
 authorData method applied to VicinityLocal
 }

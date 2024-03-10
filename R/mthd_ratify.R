@@ -1,6 +1,6 @@
-#' Ratify that a dataset meets validity criteria
-#' @description ratify.vicinity_processed() is a ratify method that ratifies that an instance of a class conforms to specified criteria. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Ratified (a logical vector of length one).
-#' @param x An instance of ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
+#' Ratify that input or output data meet validity criteria
+#' @description ratify.vicinity_processed() is a ratify method that ratifies that an instance of a class conforms to specified criteria. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function returns Ratified (a logical vector of length one).
+#' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param data_items_chr Data items (a character vector), Default: character(0)
 #' @param key_var_1L_chr Key variable (a character vector of length one), Default: character(0)
 #' @param what_1L_chr What (a character vector of length one), Default: 'population'

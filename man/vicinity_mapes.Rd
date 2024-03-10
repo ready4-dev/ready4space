@@ -4,7 +4,7 @@
 \alias{vicinity_mapes}
 \alias{make_pt_vicinity_mapes}
 \alias{is_vicinity_mapes}
-\title{ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.}
+\title{ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.}
 \usage{
 vicinity_mapes(x = make_pt_vicinity_mapes())
 
@@ -59,15 +59,15 @@ is_vicinity_mapes(x)
 \item{mape_15_yr_shp_dbl}{Mean absolute prediction error 15 year shape (a double vector), Default: numeric(0)}
 }
 \value{
-A validated instance of the ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+A validated instance of the ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 
-A prototype for ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+A prototype for ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 
-A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 }
 \description{
-Create a new valid instance of the ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+Create a new valid instance of the ready4 submodule class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 }
 \details{
-ready4 S3 class for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
+ready4 submodule for tibble object that stores spatial simulation parameters relating to Mean Absolute Prediction Errors.
 }

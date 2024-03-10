@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_values.R
 \name{validate_vicinity_values}
 \alias{validate_vicinity_values}
-\title{validate vicinity values ready4 S3 class for tibble object that stores simulation parameter values for each iteration.}
+\title{validate vicinity values ready4 submodule class for tibble object that stores simulation parameter values for each iteration.}
 \usage{
 validate_vicinity_values(x)
 }
 \arguments{
-\item{x}{An unvalidated instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.}
+\item{x}{An unvalidated instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.}
 }
 \value{
-A prototpe for ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+A prototpe for ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \description{
-Validate an instance of the ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+Validate an instance of the ready4 submodule class for tibble object that stores simulation parameter values for each iteration.
 }
 \details{
-ready4 S3 class for tibble object that stores simulation parameter values for each iteration.
+ready4 submodule for tibble object that stores simulation parameter values for each iteration.
 }
 \keyword{internal}

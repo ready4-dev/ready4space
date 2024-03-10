@@ -27,6 +27,6 @@ transform_multiple_vals(
 Transformed vas (a numeric)
 }
 \description{
-transform_multiple_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform multiple values. Function argument distribution_chr specifies the object to be updated. Argument dstr_param_1_dbl provides the object to be updated. The function is called for its side effects and does not return a value.
+transform_multiple_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform multiple values. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

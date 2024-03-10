@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_raw.R
 \name{make_new_vicinity_raw}
 \alias{make_new_vicinity_raw}
-\title{make new vicinity raw ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\title{make new vicinity raw ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
 \usage{
 make_new_vicinity_raw(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+An unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \details{
-ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
+ready4 submodule for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 }
 \keyword{internal}

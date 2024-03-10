@@ -2,20 +2,20 @@
 % Please edit documentation in R/C3_vicinity_resolutions.R
 \name{make_new_vicinity_resolutions}
 \alias{make_new_vicinity_resolutions}
-\title{make new vicinity resolutions ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.}
+\title{make new vicinity resolutions ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.}
 \usage{
 make_new_vicinity_resolutions(x)
 }
 \arguments{
-\item{x}{A prototype for the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.}
+\item{x}{A prototype for the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.}
 }
 \value{
-An unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+An unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \description{
-Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \details{
-ready4 S3 class for tibble object lookup table of the relative resolutions of different spatial objects.
+ready4 submodule for tibble object lookup table of the relative resolutions of different spatial objects.
 }
 \keyword{internal}

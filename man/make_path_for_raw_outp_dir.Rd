@@ -11,6 +11,9 @@ make_path_for_raw_outp_dir(category_1L_chr, raw_fls_dir_1L_chr)
 
 \item{raw_fls_dir_1L_chr}{Raw files directory (a character vector of length one)}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 make_path_for_raw_outp_dir() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path for raw output directory. The function is called for its side effects and does not return a value.
 }

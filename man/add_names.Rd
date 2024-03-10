@@ -13,6 +13,6 @@ add_names(ds_tb)
 Dataset (a tibble)
 }
 \description{
-add_names() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add names. Function argument ds_tb specifies the object to be updated. The function returns Dataset (a tibble).
+add_names() is an Add function that updates an object by adding new values to new or empty fields. Specifically, this function implements an algorithm to add names. The function returns Dataset (a tibble).
 }
 \keyword{internal}

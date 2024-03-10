@@ -1,20 +1,20 @@
 
 setOldClass(c("vicinity_identifiers","tbl_df", "tbl", "data.frame"))
-#' ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @description Create a new valid instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects., Default: make_pt_vicinity_identifiers()
-#' @return A validated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @description Create a new valid instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects., Default: make_pt_vicinity_identifiers()
+#' @return A validated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @rdname vicinity_identifiers
 #' @export 
 vicinity_identifiers <- function(x = make_pt_vicinity_identifiers()){ 
 validate_vicinity_identifiers(make_new_vicinity_identifiers(x))
 }
-#' make new vicinity identifiers ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @description Create a new unvalidated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @param x A prototype for the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @return An unvalidated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' make new vicinity identifiers ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @description Create a new unvalidated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @param x A prototype for the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @return An unvalidated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @rdname make_new_vicinity_identifiers
 #' @export 
 #' @importFrom tibble is_tibble
@@ -25,11 +25,11 @@ class(x) <- append(c("vicinity_identifiers",setdiff(make_pt_vicinity_identifiers
 class(x))
 x
 }
-#' make prototype vicinity identifiers ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' make prototype vicinity identifiers ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @param spatial_unit_chr Spatial unit (a character vector), Default: character(0)
 #' @param year_chr Year (a character vector), Default: character(0)
 #' @param var_name_chr Variable name (a character vector), Default: character(0)
-#' @return A prototype for ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @return A prototype for ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' 
 #' @rdname vicinity_identifiers
 #' @export 
@@ -44,11 +44,11 @@ year_chr = year_chr,
 var_name_chr = var_name_chr) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
-#' validate vicinity identifiers ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @description Validate an instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @param x An unvalidated instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @return A prototpe for ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
-#' @details ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' validate vicinity identifiers ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @description Validate an instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @param x An unvalidated instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @return A prototpe for ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @details ready4 submodule for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @rdname validate_vicinity_identifiers
 #' @export 
 #' @importFrom stringr str_detect str_c
@@ -93,9 +93,9 @@ call. = FALSE)
 }
 
 x}
-#' is vicinity identifiers ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' is vicinity identifiers ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' @param x An object of any type
-#' @return A logical value, TRUE if a valid instance of the ready4 S3 class for tibble object lookup table of unique feature identifiers used for different spatial objects.
+#' @return A logical value, TRUE if a valid instance of the ready4 submodule class for tibble object lookup table of unique feature identifiers used for different spatial objects.
 #' 
 #' @rdname vicinity_identifiers
 #' @export 

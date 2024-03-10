@@ -11,7 +11,7 @@
 \alias{renew,VicinityLookup-method}
 \alias{renew-VicinityArguments}
 \alias{renew,VicinityArguments-method}
-\title{Renew values in a dataset}
+\title{Renew (update) values}
 \usage{
 renew.vicinity_points(
   x,
@@ -181,11 +181,11 @@ x (An object of class VicinityLookup)
 x (An object of class VicinityArguments)
 }
 \description{
-renew.vicinity_points() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function is called for its side effects and does not return a value.
+renew.vicinity_points() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of the longitude and latitude cordinates of sites of services / homes. The function is called for its side effects and does not return a value.
 
-renew.vicinity_processed() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
+renew.vicinity_processed() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
 
-renew.vicinity_raw() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 S3 class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
+renew.vicinity_raw() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function is called for its side effects and does not return a value.
 
 renew method applied to VicinityLookup
 
