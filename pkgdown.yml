@@ -1,9 +1,9 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   vicinity: vicinity.html
-last_built: 2023-10-04T10:11Z
+last_built: 2024-03-10T23:50Z
 urls:
   reference: https://ready4-dev.github.io/vicinity/reference
   article: https://ready4-dev.github.io/vicinity/articles
