@@ -1,16 +1,16 @@
 Package: vicinity
 Title: Model Spatial Features of Health Systems
-Version: 0.0.0.9233
+Version: 0.0.0.9234
 Authors@R: c(
     person("Matthew", "Hamilton", , "matthew.hamilton1@monash.edu", role = c("aut", "cre", "fnd"),
            comment = c(ORCID = "0000-0001-7407-9194")),
     person("Orygen", role = c("cph", "fnd")),
     person("Australian Government Research Training Program", role = "fnd")
   )
-Description: Modules from the ready4 youth mental health economic model
-    (https://www.ready4-dev.com/docs/model/) that can be used to develop
-    geospatial models.  Designed for use in models developed with the
-    ready4 framework (https://www.ready4-dev.com/).  This development
+Description: Modules from the readyforwhatsnext youth mental health
+    economic model (https://readyforwhatsnext.org) that can be used to
+    develop geospatial models.  Designed for use in models developed with
+    the ready4 framework (https://www.ready4-dev.com/).  This development
     version of the vicinity package has been made available as part of the
     process of testing and documenting the package. It is currently highly
     unstable and is not yet recommended for use.  If you have any
@@ -22,11 +22,15 @@ URL: https://ready4-dev.github.io/vicinity/,
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
 Imports: 
     dplyr,
     geojsonio,
     googlePolylines,
-    knitr,
     knitrBootstrap,
     lifecycle,
     lubridate,
@@ -37,7 +41,7 @@ Imports:
     osrm,
     purrr,
     readxl,
-    ready4 (>= 0.0.0.9125),
+    ready4 (>= 0.1.6.9000),
     ready4use (>= 0.0.0.9231),
     rlang,
     rmapshaper,
@@ -45,12 +49,10 @@ Imports:
     stats,
     stringi,
     stringr,
-    testthat,
     tibble,
     tidyr,
     units,
     utils
-VignetteBuilder: knitr
 Collate: 
     'C3_vicinity_abbreviations.R'
     'C3_vicinity_identifiers.R'
@@ -99,8 +101,6 @@ Collate:
     'mthd_renew.R'
     'pkg_vicinity.R'
     'vicinity-package.R'
-Suggests: 
-    rmarkdown
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4use
