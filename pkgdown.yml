@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   vicinity: vicinity.html
-last_built: 2024-03-11T00:08Z
+last_built: 2024-03-11T01:19Z
 urls:
   reference: https://ready4-dev.github.io/vicinity/reference
   article: https://ready4-dev.github.io/vicinity/articles
