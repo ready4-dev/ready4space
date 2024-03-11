@@ -19,13 +19,14 @@
 #' @slot crs_dbl Coordinates reference system (a double vector)
 #' @slot temporal_min_dtm Temporal minimum (a date vector)
 #' @slot temporal_max_dtm Temporal maximum (a date vector)
+#' @slot dissemination_1L_chr Dissemination (a character vector of length one)
 #' @name VicinityMicro-class
 #' @rdname VicinityMicro-class
 #' @export VicinityMicro
 #' @exportClass VicinityMicro
 VicinityMicro <- methods::setClass("VicinityMicro",
 contains = "VicinityMesoArea",
-slots = c(geom_dist_km_cuts_dbl = "numeric",travel_time_mins_cuts_dbl = "numeric",travel_mode_chr = "character",area_type_chr = "character",area_chr = "character",area_bndy_yr_dbl = "numeric",region_type_chr = "character",region_chr = "character",region_bndy_yr_dbl = "numeric",a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt"),
+slots = c(geom_dist_km_cuts_dbl = "numeric",travel_time_mins_cuts_dbl = "numeric",travel_mode_chr = "character",area_type_chr = "character",area_chr = "character",area_bndy_yr_dbl = "numeric",region_type_chr = "character",region_chr = "character",region_bndy_yr_dbl = "numeric",a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt",dissemination_1L_chr = "character"),
 prototype =  list(geom_dist_km_cuts_dbl = NA_real_,travel_time_mins_cuts_dbl = NA_real_,travel_mode_chr = NA_character_))
 
 

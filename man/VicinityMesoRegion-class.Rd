@@ -30,5 +30,7 @@ Meso level context - region
 \item{\code{temporal_min_dtm}}{Temporal minimum (a date vector)}
 
 \item{\code{temporal_max_dtm}}{Temporal maximum (a date vector)}
+
+\item{\code{dissemination_1L_chr}}{Dissemination (a character vector of length one)}
 }}
 

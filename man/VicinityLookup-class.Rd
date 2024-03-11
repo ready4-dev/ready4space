@@ -24,5 +24,7 @@ Look up tables for spatiotemporal data
 \item{\code{vicinity_templates_r3}}{Vicinity templates (a ready4 submodule)}
 
 \item{\code{vicinity_identifiers_r3}}{Vicinity identifiers (a ready4 submodule)}
+
+\item{\code{dissemination_1L_chr}}{Dissemination (a character vector of length one)}
 }}
 

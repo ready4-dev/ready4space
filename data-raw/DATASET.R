@@ -162,7 +162,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                       "vicinity_identifiers"#"vicinity_identifiers"
                                                       ) %>% list() %>% list(),
                                             class_desc_chr = "Look up tables for spatiotemporal data",
-                                            parent_class_chr = NA_character_),
+                                            parent_class_chr = "Ready4Module"),#NA_character_
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "Macro", # macro
                                             class_desc_chr = "Macro level context",
@@ -179,7 +179,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                               "temporal_min_dtm",# temporal_min
                                                               "temporal_max_dtm"# temporal_max
                                                               )) %>% list(),
-                                            parent_class_chr = NA_character_,
+                                            parent_class_chr = "Ready4Module", #NA_character_
                                             inc_clss_ls = list("VicinityLookup") %>% list()),#?
     ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                             name_stub_chr = "MesoRegion", # meso_region

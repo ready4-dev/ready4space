@@ -10,12 +10,15 @@
 #' @slot crs_dbl Coordinates reference system (a double vector)
 #' @slot temporal_min_dtm Temporal minimum (a date vector)
 #' @slot temporal_max_dtm Temporal maximum (a date vector)
+#' @slot dissemination_1L_chr Dissemination (a character vector of length one)
+#' @import ready4
 #' @name VicinityMacro-class
 #' @rdname VicinityMacro-class
 #' @export VicinityMacro
 #' @exportClass VicinityMacro
 VicinityMacro <- methods::setClass("VicinityMacro",
-slots = c(a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt"),
+contains = "Ready4Module",
+slots = c(a_VicinityLookup = "VicinityLookup",global_region_chr = "character",country_chr = "character",country_bndy_yr_dbl = "numeric",crs_dbl = "numeric",temporal_min_dtm = "POSIXt",temporal_max_dtm = "POSIXt",dissemination_1L_chr = "character"),
 prototype =  list(a_VicinityLookup = VicinityLookup(),global_region_chr = NA_character_,country_chr = NA_character_,country_bndy_yr_dbl = NA_real_,crs_dbl = NA_real_,temporal_min_dtm = .POSIXct(NA_character_),temporal_max_dtm = .POSIXct(NA_character_)))
 
 
