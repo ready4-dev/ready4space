@@ -5,7 +5,8 @@ authorData_VicinityLocalRaw <- function(x, #"author" #write_raw_data_from_sp_loc
   raw_format_sp_dir <- write_raw_format_dir(data_type_chr = vicinity_raw_r3$data_type_chr,
                                             raw_fls_dir_1L_chr = x@raw_fls_dir_1L_chr)
   imports_chr <- manufacture(x@a_VicinityLookup,#make_imports_chr
-                            type_1L_chr = vicinity_raw_r3$data_type_chr)
+                            type_1L_chr = vicinity_raw_r3$data_type_chr,
+                            what_1L_chr = "imports")
   write_1L_lgl <- author(x = vicinity_raw_r3,
                          match_vals_xx = imports_chr,
                          path_1L_chr = raw_format_sp_dir,#dir_1L_chr

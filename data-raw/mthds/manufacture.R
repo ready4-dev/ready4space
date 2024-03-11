@@ -312,7 +312,7 @@ manufacture.vicinity_raw <- function(x, ## write_fls_and_mk_sngl_row_data_lup
   }
   if(what_1L_chr == "paths_chr"){ # make_paths_chr
     paths_chr <- purrr::map_chr(sub_dirs_chr,
-                                ~ ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_raw,
+                                ~ ready4::get_from_lup_obj(data_lookup_tb = x,#x_vicinity_raw
                                                            match_value_xx = match_value_xx,
                                                            match_var_nm_1L_chr = match_var_nm_1L_chr,
                                                            target_var_nm_1L_chr = .x,

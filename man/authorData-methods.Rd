@@ -11,7 +11,7 @@ authorData.vicinity_raw(
   x,
   path_1L_chr,
   data_match_value_xx,
-  match_var_nm_1L_chr = "name",
+  match_var_nm_1L_chr = "name_chr",
   sub_dirs_chr = NULL,
   overwrite_1L_lgl = F,
   what_1L_chr = "outer"
@@ -21,7 +21,7 @@ authorData.vicinity_raw(
   x,
   path_1L_chr,
   data_match_value_xx,
-  match_var_nm_1L_chr = "name",
+  match_var_nm_1L_chr = "name_chr",
   sub_dirs_chr = NULL,
   overwrite_1L_lgl = F,
   what_1L_chr = "outer"
@@ -36,7 +36,7 @@ authorData.vicinity_raw(
 
 \item{data_match_value_xx}{Data match value (an output object of multiple potential types)}
 
-\item{match_var_nm_1L_chr}{Match variable name (a character vector of length one), Default: 'name'}
+\item{match_var_nm_1L_chr}{Match variable name (a character vector of length one), Default: 'name_chr'}
 
 \item{sub_dirs_chr}{Sub directories (a character vector), Default: NULL}
 

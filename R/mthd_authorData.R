@@ -3,7 +3,7 @@
 #' @param x An instance of `vicinity_raw`, a ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import.
 #' @param path_1L_chr Path (a character vector of length one)
 #' @param data_match_value_xx Data match value (an output object of multiple potential types)
-#' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: 'name'
+#' @param match_var_nm_1L_chr Match variable name (a character vector of length one), Default: 'name_chr'
 #' @param sub_dirs_chr Sub directories (a character vector), Default: NULL
 #' @param overwrite_1L_lgl Overwrite (a logical vector of length one), Default: F
 #' @param what_1L_chr What (a character vector of length one), Default: 'outer'
@@ -15,7 +15,7 @@
 #' @importFrom dplyr select
 #' @importFrom ready4use ready4use_dataverses
 #' @importFrom utils download.file unzip
-authorData.vicinity_raw <- function (x, path_1L_chr, data_match_value_xx, match_var_nm_1L_chr = "name", 
+authorData.vicinity_raw <- function (x, path_1L_chr, data_match_value_xx, match_var_nm_1L_chr = "name_chr", 
     sub_dirs_chr = NULL, overwrite_1L_lgl = F, what_1L_chr = "outer") 
 {
     if (what_1L_chr == "outer") {
@@ -111,7 +111,8 @@ methods::setMethod("authorData", "VicinityLocalRaw", function (x, return_r4_1L_l
     ready4use::assert_single_row_tb(vicinity_raw_r3)
     raw_format_sp_dir <- write_raw_format_dir(data_type_chr = vicinity_raw_r3$data_type_chr, 
         raw_fls_dir_1L_chr = x@raw_fls_dir_1L_chr)
-    imports_chr <- manufacture(x@a_VicinityLookup, type_1L_chr = vicinity_raw_r3$data_type_chr)
+    imports_chr <- manufacture(x@a_VicinityLookup, type_1L_chr = vicinity_raw_r3$data_type_chr, 
+        what_1L_chr = "imports")
     write_1L_lgl <- author(x = vicinity_raw_r3, match_vals_xx = imports_chr, 
         path_1L_chr = raw_format_sp_dir, overwrite_1L_lgl = x@overwrite_1L_lgl)
     if (return_r4_1L_lgl) {

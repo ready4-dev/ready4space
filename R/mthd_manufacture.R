@@ -356,7 +356,7 @@ manufacture.vicinity_raw <- function (x, args_ls = NULL, crs_nbr_dbl = NA_real_,
             collapse = "/"))
     }
     if (what_1L_chr == "paths_chr") {
-        paths_chr <- purrr::map_chr(sub_dirs_chr, ~ready4::get_from_lup_obj(data_lookup_tb = x_vicinity_raw, 
+        paths_chr <- purrr::map_chr(sub_dirs_chr, ~ready4::get_from_lup_obj(data_lookup_tb = x, 
             match_value_xx = match_value_xx, match_var_nm_1L_chr = match_var_nm_1L_chr, 
             target_var_nm_1L_chr = .x, evaluate_1L_lgl = FALSE))
         paths_chr <- purrr::accumulate(paths_chr, ~paste0(.x, 

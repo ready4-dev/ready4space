@@ -1,7 +1,7 @@
 authorData.vicinity_raw <- function(x,
                                     path_1L_chr,
                                     data_match_value_xx,
-                                    match_var_nm_1L_chr = "name",
+                                    match_var_nm_1L_chr = "name_chr",
                                     sub_dirs_chr = NULL,
                                     overwrite_1L_lgl = F,
                                     what_1L_chr = "outer"){
