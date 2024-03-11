@@ -59,8 +59,8 @@ reference:
   - manufacture.vicinity_points
   - manufacture.vicinity_processed
   - manufacture.vicinity_raw
-  - metamorphose-VicinityLocal
   - metamorphose-VicinityLocalProcessed
+  - metamorphose-VicinityLocalRaw
   - metamorphose.vicinity_raw
   - procure-VicinityProfile
   - procure.vicinity_abbreviations

@@ -5,8 +5,8 @@
 \alias{metamorphose,vicinity_raw-method}
 \alias{metamorphose-VicinityLocalProcessed}
 \alias{metamorphose,VicinityLocalProcessed-method}
-\alias{metamorphose-VicinityLocal}
-\alias{metamorphose,VicinityLocal-method}
+\alias{metamorphose-VicinityLocalRaw}
+\alias{metamorphose,VicinityLocalRaw-method}
 \title{Metamorphose a ready4 model module to a ready4 model module of a different class}
 \usage{
 metamorphose.vicinity_raw(
@@ -33,10 +33,10 @@ metamorphose.vicinity_raw(
 
 \S4method{metamorphose}{VicinityLocalProcessed}(x)
 
-\S4method{metamorphose}{VicinityLocal}(x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl)
+\S4method{metamorphose}{VicinityLocalRaw}(x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl)
 }
 \arguments{
-\item{x}{An object of class VicinityLocal}
+\item{x}{An object of class VicinityLocalRaw}
 
 \item{y_VicinityLookup}{PARAM_DESCRIPTION, Default: NULL}
 
@@ -68,5 +68,5 @@ metamorphose.vicinity_raw() is a metamorphose method that metamorphoses an insta
 
 metamorphose method applied to VicinityLocalProcessed
 
-metamorphose method applied to VicinityLocal
+metamorphose method applied to VicinityLocalRaw
 }

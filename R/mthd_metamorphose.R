@@ -62,18 +62,18 @@ methods::setMethod("metamorphose", "VicinityLocalProcessed", function (x)
 })
 #' 
 #' Metamorphose a ready4 model module to a ready4 model module of a different class
-#' @name metamorphose-VicinityLocal
-#' @description metamorphose method applied to VicinityLocal
-#' @param x An object of class VicinityLocal
+#' @name metamorphose-VicinityLocalRaw
+#' @description metamorphose method applied to VicinityLocalRaw
+#' @param x An object of class VicinityLocalRaw
 #' @param imports_chr Imports (a character vector)
 #' @param raw_fls_dir_1L_chr Raw files directory (a character vector of length one)
 #' @param write_1L_lgl Write (a logical vector of length one)
 #' @return X (Object defining data to be saved in local directory in a processed (R) format.)
 #' @rdname metamorphose-methods
-#' @aliases metamorphose,VicinityLocal-method
+#' @aliases metamorphose,VicinityLocalRaw-method
 #' @export 
 #' @importFrom ready4 metamorphose
-methods::setMethod("metamorphose", "VicinityLocal", function (x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl) 
+methods::setMethod("metamorphose", "VicinityLocalRaw", function (x, imports_chr, raw_fls_dir_1L_chr, write_1L_lgl) 
 {
     x_VicinityLocalProcessed <- VicinityLocalProcessed(a_VicinityLookup = x@a_VicinityLookup, 
         imports_chr = imports_chr, merge_itms_chr = x@merge_itms_chr, 
