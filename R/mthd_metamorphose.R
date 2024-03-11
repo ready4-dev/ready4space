@@ -25,7 +25,7 @@ metamorphose.vicinity_raw <- function (x, y_VicinityLookup = NULL, package_1L_ch
         ~ready4::rowbind_all_tbs_in_r4_obj(tbs_r4 = .x, second_tbs_r4 = x %>% 
             dplyr::slice(.y) %>% manufacture(merge_itms_chr = manufacture(.x, 
             y_vicinity_raw = x %>% dplyr::slice(.y), path_1L_chr = processed_fls_dir_1L_chr, 
-            what_1L_chr = "imports_script"), package_1L_chr = package_1L_chr, 
+            what_1L_chr = "import_script"), package_1L_chr = package_1L_chr, 
             raw_fls_dir_1L_chr = raw_fls_dir_1L_chr, processed_fls_dir_1L_chr = processed_fls_dir_1L_chr, 
             crs_nbr_dbl = crs_nbr_dbl, overwrite_1L_lgl = overwrite_1L_lgl), 
             r4_name_1L_chr = "VicinityLookup"))

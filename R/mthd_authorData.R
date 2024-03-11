@@ -95,17 +95,17 @@ authorData.vicinity_raw <- function (x, path_1L_chr, data_match_value_xx, match_
 methods::setMethod("authorData", methods::className("vicinity_raw", package = "vicinity"), authorData.vicinity_raw)
 #' 
 #' Author and document datasets
-#' @name authorData-VicinityLocal
-#' @description authorData method applied to VicinityLocal
-#' @param x An object of class VicinityLocal
+#' @name authorData-VicinityLocalRaw
+#' @description authorData method applied to VicinityLocalRaw
+#' @param x An object of class VicinityLocalRaw
 #' @param return_r4_1L_lgl Return ready4 module (a logical vector of length one), Default: F
 #' @return Return (an output object of multiple potential types)
 #' @rdname authorData-methods
-#' @aliases authorData,VicinityLocal-method
+#' @aliases authorData,VicinityLocalRaw-method
 #' @export 
 #' @importFrom ready4use assert_single_row_tb
 #' @importFrom ready4 authorData
-methods::setMethod("authorData", "VicinityLocal", function (x, return_r4_1L_lgl = F) 
+methods::setMethod("authorData", "VicinityLocalRaw", function (x, return_r4_1L_lgl = F) 
 {
     vicinity_raw_r3 <- x@a_VicinityLookup@vicinity_raw_r3
     ready4use::assert_single_row_tb(vicinity_raw_r3)

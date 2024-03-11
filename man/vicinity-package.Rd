@@ -2,7 +2,6 @@
 % Please edit documentation in R/pkg_vicinity.R, R/vicinity-package.R
 \docType{package}
 \name{vicinity-package}
-\alias{vicinity}
 \alias{vicinity-package}
 \title{vicinity: Model Spatial Features of Health Systems}
 \description{

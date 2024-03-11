@@ -3,8 +3,8 @@
 \name{authorData.vicinity_raw}
 \alias{authorData.vicinity_raw}
 \alias{authorData,vicinity_raw-method}
-\alias{authorData-VicinityLocal}
-\alias{authorData,VicinityLocal-method}
+\alias{authorData-VicinityLocalRaw}
+\alias{authorData,VicinityLocalRaw-method}
 \title{Author and document datasets}
 \usage{
 authorData.vicinity_raw(
@@ -27,10 +27,10 @@ authorData.vicinity_raw(
   what_1L_chr = "outer"
 )
 
-\S4method{authorData}{VicinityLocal}(x, return_r4_1L_lgl = F)
+\S4method{authorData}{VicinityLocalRaw}(x, return_r4_1L_lgl = F)
 }
 \arguments{
-\item{x}{An object of class VicinityLocal}
+\item{x}{An object of class VicinityLocalRaw}
 
 \item{path_1L_chr}{Path (a character vector of length one)}
 
@@ -54,5 +54,5 @@ Return (an output object of multiple potential types)
 \description{
 authorData.vicinity_raw() is an authorData method that authors and saves files necessary for creating and documenting datasets. This method is implemented for the ready4 submodule class for tibble object lookup table of metadata about raw (un-processed) spatial data to import. The function returns Files written (a logical vector of length one).
 
-authorData method applied to VicinityLocal
+authorData method applied to VicinityLocalRaw
 }

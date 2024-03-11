@@ -1,4 +1,4 @@
-authorData_VicinityLocal <- function(x, #"author" #write_raw_data_from_sp_local_raw
+authorData_VicinityLocalRaw <- function(x, #"author" #write_raw_data_from_sp_local_raw ### Local
                                      return_r4_1L_lgl = F){
   vicinity_raw_r3 <- x@a_VicinityLookup@vicinity_raw_r3
   ready4use::assert_single_row_tb(vicinity_raw_r3)

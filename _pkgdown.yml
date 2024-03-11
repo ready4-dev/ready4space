@@ -47,7 +47,7 @@ reference:
   - author-VicinityLocalRaw
   - author.vicinity_processed
   - author.vicinity_raw
-  - authorData-VicinityLocal
+  - authorData-VicinityLocalRaw
   - authorData.vicinity_raw
   - ingest-VicinityProfile
   - ingest.vicinity_processed
