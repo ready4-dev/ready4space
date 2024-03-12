@@ -32,6 +32,7 @@ methods::setMethod("renew", methods::className("vicinity_points", package = "vic
 #' @description renew.vicinity_processed() is a renew method that renews an instance of a class by updating it with new data. This method is implemented for the ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data). The function is called for its side effects and does not return a value.
 #' @param x An instance of `vicinity_processed`, a ready4 submodule class for tibble object lookup table of meta-data for spatial data packs (imported and pre-processed data).
 #' @param args_ls Arguments (a list), Default: NULL
+#' @param additional_detail_chr Additional detail (a character vector), Default: character(0)
 #' @param area_type_chr Area type (a character vector), Default: character(0)
 #' @param area_bndy_yr_chr Area boundary year (a character vector), Default: character(0)
 #' @param country_chr Country (a character vector), Default: character(0)
@@ -41,7 +42,7 @@ methods::setMethod("renew", methods::className("vicinity_points", package = "vic
 #' @param region_chr Region (a character vector), Default: character(0)
 #' @param source_reference_chr Source reference (a character vector), Default: character(0)
 #' @param year_chr Year (a character vector), Default: character(0)
-#' @param year_end_chr Year end (a character vector), Default: ycharacter(0)
+#' @param year_end_chr Year end (a character vector), Default: character(0)
 #' @param year_start_chr Year start (a character vector), Default: character(0)
 #' @param what_1L_chr What (a character vector of length one), Default: 'table'
 #' @return x (An object)
@@ -49,11 +50,12 @@ methods::setMethod("renew", methods::className("vicinity_points", package = "vic
 #' @export 
 #' @importFrom rlang current_env
 #' @importFrom ready4 update_tb_r3 renew
-renew.vicinity_processed <- function (x, args_ls = NULL, area_type_chr = character(0), area_bndy_yr_chr = character(0), 
+renew.vicinity_processed <- function (x, args_ls = NULL, additional_detail_chr = character(0), 
+    area_type_chr = character(0), area_bndy_yr_chr = character(0), 
     country_chr = character(0), data_type_chr = character(0), 
     main_feature_chr = character(0), name_chr = character(0), 
     region_chr = character(0), source_reference_chr = character(0), 
-    year_chr = character(0), year_end_chr = ycharacter(0), year_start_chr = character(0), 
+    year_chr = character(0), year_end_chr = character(0), year_start_chr = character(0), 
     what_1L_chr = "table") 
 {
     if (what_1L_chr == "names") {
@@ -68,7 +70,8 @@ renew.vicinity_processed <- function (x, args_ls = NULL, area_type_chr = charact
                 year_end_chr = args_ls[[8]], main_feature_chr = args_ls[[9]])
         }
         else {
-            fn_env_ls <- as.list(rlang::current_env())[-1]
+            fn_env_ls <- as.list(rlang::current_env())[-c(1, 
+                2, 15)]
             x <- ready4::update_tb_r3(x, fn = renew.vicinity_processed, 
                 fn_env_ls = fn_env_ls)
         }

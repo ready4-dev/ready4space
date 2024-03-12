@@ -38,6 +38,7 @@ renew.vicinity_points(
 renew.vicinity_processed(
   x,
   args_ls = NULL,
+  additional_detail_chr = character(0),
   area_type_chr = character(0),
   area_bndy_yr_chr = character(0),
   country_chr = character(0),
@@ -47,7 +48,7 @@ renew.vicinity_processed(
   region_chr = character(0),
   source_reference_chr = character(0),
   year_chr = character(0),
-  year_end_chr = ycharacter(0),
+  year_end_chr = character(0),
   year_start_chr = character(0),
   what_1L_chr = "table"
 )
@@ -55,6 +56,7 @@ renew.vicinity_processed(
 \S4method{renew}{vicinity_processed}(
   x,
   args_ls = NULL,
+  additional_detail_chr = character(0),
   area_type_chr = character(0),
   area_bndy_yr_chr = character(0),
   country_chr = character(0),
@@ -64,7 +66,7 @@ renew.vicinity_processed(
   region_chr = character(0),
   source_reference_chr = character(0),
   year_chr = character(0),
-  year_end_chr = ycharacter(0),
+  year_end_chr = character(0),
   year_start_chr = character(0),
   what_1L_chr = "table"
 )
@@ -132,6 +134,8 @@ renew.vicinity_raw(
 \item{...}{Additional arguments}
 
 \item{args_ls}{Arguments (a list), Default: NULL}
+
+\item{additional_detail_chr}{Additional detail (a character vector), Default: character(0)}
 
 \item{area_type_chr}{Area type (a character vector), Default: character(0)}
 

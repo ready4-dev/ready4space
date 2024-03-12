@@ -1,5 +1,6 @@
 renew.vicinity_processed <- function(x, ## add_att_tb_to_processed_lup & add_attrs_to_processed_lup
                                      args_ls = NULL,
+                                     additional_detail_chr = character(0), ###
                                      area_type_chr = character(0),
                                      area_bndy_yr_chr = character(0),
                                      country_chr = character(0),
@@ -9,7 +10,7 @@ renew.vicinity_processed <- function(x, ## add_att_tb_to_processed_lup & add_att
                                      region_chr = character(0),
                                      source_reference_chr = character(0),
                                      year_chr = character(0),
-                                     year_end_chr = ycharacter(0),
+                                     year_end_chr = character(0),
                                      year_start_chr = character(0),
                                      what_1L_chr = "table"){
   if(what_1L_chr == "names"){
@@ -29,7 +30,7 @@ renew.vicinity_processed <- function(x, ## add_att_tb_to_processed_lup & add_att
                                     year_end_chr = args_ls[[8]],
                                     main_feature_chr = args_ls[[9]])
     }else{
-      fn_env_ls <- as.list(rlang::current_env())[-1]
+      fn_env_ls <- as.list(rlang::current_env())[-c(1,2,15)]
       x <- ready4::update_tb_r3(x,
                                 fn = renew.vicinity_processed,
                                 fn_env_ls = fn_env_ls)
