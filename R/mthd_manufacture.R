@@ -503,16 +503,20 @@ methods::setMethod("manufacture", "VicinityLookup", function (x, area_sf = NULL,
             }
             else {
                 script_1L_chr <- purrr::map_chr(y_vicinity_raw %>% 
-                  pull(add_bndys_from_ls) %>% purrr::pluck(1), 
-                  ~ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3, 
-                    match_value_xx = .x, match_var_nm_1L_chr = "uid_chr", 
-                    target_var_nm_1L_chr = "name_chr", evaluate_1L_lgl = FALSE) %>% 
-                    ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3, 
+                  dplyr::pull(add_bndys_from_ls) %>% purrr::pluck(1), 
+                  ~{
+                    obj_nm_1L_chr <- ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3, 
+                      match_value_xx = .x, match_var_nm_1L_chr = "uid_chr", 
+                      target_var_nm_1L_chr = "name_chr", evaluate_1L_lgl = FALSE)
+                    action_1L_chr <- obj_nm_1L_chr %>% ready4::get_from_lup_obj(data_lookup_tb = x@vicinity_raw_r3, 
                       match_value_xx = ., match_var_nm_1L_chr = "name_chr", 
-                      target_var_nm_1L_chr = "source_reference_chr", 
-                      evaluate_1L_lgl = FALSE) %>% ifelse(stringr::str_detect(., 
-                    "::"), ., paste0("readRDS(\"", path_1L_chr, 
-                    "/", ., ".rds\")")))
+                      target_var_nm_1L_chr = "path_to_make_script_chr", 
+                      evaluate_1L_lgl = FALSE)
+                    ifelse(is.na(action_1L_chr, action_1L_chr, 
+                      action_1L_chr %>% ifelse(stringr::str_detect(., 
+                        "::"), ., paste0("readRDS(\"", path_1L_chr, 
+                        "/", ., ".rds\")"))))
+                  })
             }
         }
         object_xx <- script_1L_chr
