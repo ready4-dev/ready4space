@@ -56,7 +56,7 @@ renew_VicinityLookup <- function(x,
                                                                             evaluate_1L_lgl = FALSE))) # Set names here to allow names based referencing in destination function.
     y_vicinity_processed <- purrr::reduce(data_pk_lup_arguments_ls,
                                       .init = x@vicinity_processed_r3,
-                                      ~ add_att_tb_to_processed_lup(.x,.y)) %>%
+                                      ~ renew.vicinity_processed(.x,.y)) %>% #add_att_tb_to_processed_lup
       dplyr::mutate(data_type_chr = tbl_data_type_1L_chr)
     package_1L_chr <- ifelse(package_1L_chr ==""|is.na(package_1L_chr),"", paste0(package_1L_chr,"::"))
     y_vicinity_processed <- y_vicinity_processed %>%

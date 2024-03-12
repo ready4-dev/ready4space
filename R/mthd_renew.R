@@ -194,7 +194,7 @@ methods::setMethod("renew", "VicinityLookup", function (x, package_1L_chr = char
                   match_var_nm_1L_chr = "name_chr", match_value_xx = .y, 
                   evaluate_1L_lgl = FALSE)))
         y_vicinity_processed <- purrr::reduce(data_pk_lup_arguments_ls, 
-            .init = x@vicinity_processed_r3, ~add_att_tb_to_processed_lup(.x, 
+            .init = x@vicinity_processed_r3, ~renew.vicinity_processed(.x, 
                 .y)) %>% dplyr::mutate(data_type_chr = tbl_data_type_1L_chr)
         package_1L_chr <- ifelse(package_1L_chr == "" | is.na(package_1L_chr), 
             "", paste0(package_1L_chr, "::"))
