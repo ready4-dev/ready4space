@@ -18,7 +18,7 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
     
     <a class="navbar-brand me-2" href="../index.html">vicinity</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9241</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9242</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,6 +89,7 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
 <span><span class="fu">renew.vicinity_processed</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  args_ls <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  additional_detail_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  area_type_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  area_bndy_yr_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  country_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
@@ -98,7 +99,7 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
 <span>  region_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  source_reference_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  year_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  year_end_chr <span class="op">=</span> <span class="fu">ycharacter</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  year_end_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  year_start_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  what_1L_chr <span class="op">=</span> <span class="st">"table"</span></span>
 <span><span class="op">)</span></span>
@@ -107,6 +108,7 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
 <span><span class="fu">renew</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  args_ls <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  additional_detail_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  area_type_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  area_bndy_yr_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  country_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
@@ -116,7 +118,7 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
 <span>  region_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  source_reference_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  year_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  year_end_chr <span class="op">=</span> <span class="fu">ycharacter</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  year_end_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  year_start_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  what_1L_chr <span class="op">=</span> <span class="st">"table"</span></span>
 <span><span class="op">)</span></span>
@@ -206,6 +208,10 @@ renew method applied to VicinityArguments"><meta property="og:image" content="ht
 
 <dt>args_ls</dt>
 <dd><p>Arguments (a list), Default: NULL</p></dd>
+
+
+<dt>additional_detail_chr</dt>
+<dd><p>Additional detail (a character vector), Default: character(0)</p></dd>
 
 
 <dt>area_type_chr</dt>
