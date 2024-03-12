@@ -134,12 +134,12 @@ manufacture_VicinityLookup <- function(x,
                                                                     match_var_nm_1L_chr = "name_chr",
                                                                     target_var_nm_1L_chr = "path_to_make_script_chr",#"source_reference_chr",
                                                                     evaluate_1L_lgl = FALSE)
-                                           ifelse(is.na(action_1L_chr,
+                                           ifelse(is.na(action_1L_chr),
                                                         action_1L_chr,
                                                         action_1L_chr %>%
                                                           ifelse(stringr::str_detect(.,"::"),
                                                                  .,
-                                                                 paste0("readRDS(\"",path_1L_chr,"/",.,".rds\")"))))
+                                                                 paste0("readRDS(\"",path_1L_chr,"/",.,".rds\")")))
 
                                          }
                                          )

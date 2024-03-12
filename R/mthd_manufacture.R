@@ -512,10 +512,10 @@ methods::setMethod("manufacture", "VicinityLookup", function (x, area_sf = NULL,
                       match_value_xx = ., match_var_nm_1L_chr = "name_chr", 
                       target_var_nm_1L_chr = "path_to_make_script_chr", 
                       evaluate_1L_lgl = FALSE)
-                    ifelse(is.na(action_1L_chr, action_1L_chr, 
+                    ifelse(is.na(action_1L_chr), action_1L_chr, 
                       action_1L_chr %>% ifelse(stringr::str_detect(., 
                         "::"), ., paste0("readRDS(\"", path_1L_chr, 
-                        "/", ., ".rds\")"))))
+                        "/", ., ".rds\")")))
                   })
             }
         }
