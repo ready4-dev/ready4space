@@ -113,7 +113,7 @@ renew_VicinityLookup <- function(x,
                                          country_chr = x@vicinity_raw_r3 %>% dplyr::pull(country_chr),
                                          area_type_chr = x@vicinity_raw_r3 %>% dplyr::pull(area_type_chr),
                                          area_bndy_yr_chr = x@vicinity_raw_r3 %>% dplyr::pull(area_bndy_yr_chr),
-                                         starter_sf = starter_sf_nm_1L_chr,
+                                         starter_sf_nm_chr = starter_sf_nm_1L_chr,
                                          subdivision_chr = x@vicinity_raw_r3 %>% dplyr::pull(uid_chr)) ## Assumes length one list
     x <- renewSlot(x,
                    "vicinity_templates_r3",
